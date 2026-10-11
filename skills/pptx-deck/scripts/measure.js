@@ -104,6 +104,7 @@ function extractInPage({ safety }) {
         e.lineSpacingPt = r2(lhPx * 0.75);
         e.paraSpaceAfter = blocks.length ? r2(parseFloat(getComputedStyle(blocks[0]).marginBottom) * 0.75) : 0;
         e.lineCount = Math.max(1, Math.round(r.height / lhPx));
+        e.border = ['Top', 'Right', 'Bottom', 'Left'].some((d) => parseFloat(cs['border' + d + 'Width']) > 0);
         e.fixed = el.hasAttribute('data-fixed');
         e.overflow = el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1;
         e.wrapStable = true;

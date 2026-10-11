@@ -27,6 +27,13 @@ function parseArgs(argv) {
 
 const print = (report) => console.log(JSON.stringify(report, null, 2));
 
+function attemptOf(opt) {
+  if (opt.attempt === undefined) return 0;
+  const n = Number(opt.attempt);
+  if (opt.attempt === true || !Number.isInteger(n) || n < 0) throw new Error('--attempt には 0 以上の整数を付ける(これまでの修正回数)');
+  return n;
+}
+
 async function checkHtml(htmlPath, opt, t) {
   const font = pickFont(detectInstalledFonts());
   const rasterDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pptx-deck-raster-'));
@@ -35,7 +42,7 @@ async function checkHtml(htmlPath, opt, t) {
   const summary = summarize(violations);
   const report = {
     ok: summary.errors === 0, stage: 'html', font, violations, summary,
-    suggestion: suggestFix(violations, Number(opt.attempt || 0), t),
+    suggestion: suggestFix(violations, attemptOf(opt), t),
   };
   return { report, model, rasterDir };
 }
@@ -76,7 +83,7 @@ async function main() {
       const out = {
         ...report, stage: 'pptx', ok: summary.errors === 0 && v.packageErrors.length === 0,
         violations: v.violations, summary, packageErrors: v.packageErrors, pptx: path.resolve(b),
-        suggestion: suggestFix(v.violations, Number(opt.attempt || 0), t),
+        suggestion: suggestFix(v.violations, attemptOf(opt), t),
       };
       if (!opt['no-render'] && findSoffice()) {
         const dir = path.join(opt.work || path.dirname(path.resolve(b)), 'render');

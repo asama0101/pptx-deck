@@ -79,3 +79,11 @@ ${r.stderr}`);
   assert.match(r.json.renderNote, /画像化に失敗/);
   assert.ok(fs.existsSync(path.join(work, 'report.json')));
 });
+
+test('check: --attempt に値がない・数値でないときは、段階がずれる前にエラーにする', () => {
+  for (const args of [['check', path.join(work, 'catalog.html'), '--attempt'], ['check', path.join(work, 'catalog.html'), '--attempt', 'abc']]) {
+    const r = run(args);
+    assert.equal(r.status, 1, r.stdout);
+    assert.match(r.stderr, /--attempt/);
+  }
+});

@@ -48,6 +48,7 @@ function convertToPdf(pptxPath, outDir) {
 
 function renderPptx(pptxPath, outDir, { dpi = 80 } = {}) {
   const pdf = convertToPdf(pptxPath, outDir);
+  for (const f of fs.readdirSync(outDir)) if (/^slide-[0-9]+\.png$/.test(f)) fs.rmSync(path.join(outDir, f));
   const pngs = runPython('pdf2png.py', [pdf, outDir, String(dpi)]);
   return { pdf, pngs };
 }

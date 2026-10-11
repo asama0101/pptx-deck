@@ -96,3 +96,9 @@ test('htmlOnly: 計測されなかった文字(unmeasured)を違反にする', (
   const v = g.htmlOnly(m, t);
   assert.ok(v.some((x) => x.rule === 'unmeasured' && /クラスなしの段落/.test(x.message)));
 });
+
+test('htmlOnly: pp-text の枠線(PPTX に写らない装飾)を違反にする', () => {
+  const m = model([slide([el({ id: 'b', border: true }), el({ id: 'ok', border: false, y: 3 })])]);
+  const v = g.htmlOnly(m, t);
+  assert.deepEqual(v.filter((x) => x.rule === 'textBorder').map((x) => x.id), ['b']);
+});

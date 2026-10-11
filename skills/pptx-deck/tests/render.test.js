@@ -40,3 +40,19 @@ test('変換失敗時に、利用者の LibreOffice を巻き込むイメージ�
   const src = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'render.js'), 'utf8');
   assert.doesNotMatch(src, /taskkill/);
 });
+
+test('画像化の前に、古い slide-NN.png を消す(枚数が減っても取り違えない)', { skip: !soffice }, async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pptx-deck-test-'));
+  const out = path.join(dir, 'png');
+  fs.mkdirSync(out);
+  fs.writeFileSync(path.join(out, 'slide-09.png'), 'stale');
+  const pres = new PptxGenJS();
+  pres.layout = 'LAYOUT_WIDE';
+  pres.addSlide().addText('一枚だけ', { x: 1, y: 1, w: 5, h: 1, fontSize: 24, margin: 0 });
+  const pptx = path.join(dir, 'a.pptx');
+  await pres.writeFile({ fileName: pptx });
+  const r = renderPptx(pptx, out, { dpi: 40 });
+  assert.equal(r.pngs.length, 1);
+  assert.ok(!fs.existsSync(path.join(out, 'slide-09.png')));
+  fs.rmSync(dir, { recursive: true, force: true });
+});

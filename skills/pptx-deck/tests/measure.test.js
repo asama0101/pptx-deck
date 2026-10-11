@@ -110,3 +110,12 @@ test('入れ子の箇条書きは、親も子も段落として落とさない',
   assert.deepEqual(texts, ['親項目', '子項目', '次の親']);
   assert.deepEqual(m.slides[0].unmeasured, []);
 });
+
+test('border: pp-text の枠線(border-bottom など)は PPTX に写らないので、要素に印を付ける', async () => {
+  const file = page(
+    `<section class="slide"><div class="pp-text" data-role="title" style="position:absolute;left:56px;top:40px;width:900px;border-bottom:4px solid #1F4E9C">線つきのタイトル</div>
+     <div class="pp-text" data-role="body" style="position:absolute;left:56px;top:200px;width:600px">枠線なし</div></section>`, 'border');
+  const m = await measureHtml(file, { fontName: 'BIZ UDPゴシック', thresholds: t, rasterDir: root });
+  assert.equal(m.slides[0].elements[0].border, true);
+  assert.equal(m.slides[0].elements[1].border, false);
+});

@@ -24,3 +24,14 @@ test('suggestFix: 本文量が原因でない違反は manual', () => {
   const v = [{ rule: 'overlap', severity: 'error', id: 'a', slide: 1, message: '' }];
   assert.equal(suggestFix(v, 0, t).action, 'manual');
 });
+
+test('suggestFix: wrapStable だけの違反には、行間でなく幅を広げる→フォント縮小を提案する', () => {
+  const wrap = [{ rule: 'wrapStable', severity: 'error', id: 'a', slide: 1, message: '' }];
+  assert.equal(suggestFix(wrap, 0, t).action, 'widenText');
+  assert.equal(suggestFix(wrap, 1, t).action, 'shrinkFont');
+  const stop = suggestFix(wrap, 2, t);
+  assert.equal(stop.action, 'proposeSplitOrTrim');
+  assert.match(stop.detail, /承認/);
+  const mixed = [...wrap, { rule: 'overflow', severity: 'error', id: 'b', slide: 1, message: '' }];
+  assert.equal(suggestFix(mixed, 1, t).action, 'tightenLineHeight');
+});

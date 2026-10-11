@@ -158,6 +158,16 @@ function checkUnmeasured(model) {
   return out;
 }
 
+function checkTextBorder(model) {
+  const out = [];
+  for (const s of model.slides) {
+    for (const e of s.elements) {
+      if (e.type === 'text' && e.border) out.push(viol('textBorder', s, e, 'pp-text の枠線(border)は PPTX に写らない。線は pp-line、囲みは pp-shape で作る'));
+    }
+  }
+  return out;
+}
+
 function all(model, t) {
   return [
     ...checkBounds(model, t), ...checkOverlap(model, t), ...checkMinFont(model, t),
@@ -166,9 +176,9 @@ function all(model, t) {
 }
 
 function htmlOnly(model, t) {
-  return [...checkOverflow(model, t), ...checkWrapStable(model, t), ...checkUnmeasured(model)];
+  return [...checkOverflow(model, t), ...checkWrapStable(model, t), ...checkUnmeasured(model), ...checkTextBorder(model)];
 }
 
 module.exports = {
-  all, htmlOnly, checkBounds, checkOverlap, checkMinFont, checkHierarchy, checkContrast, checkImages, checkOverflow, checkWrapStable, checkUnmeasured,
+  all, htmlOnly, checkBounds, checkOverlap, checkMinFont, checkHierarchy, checkContrast, checkImages, checkOverflow, checkWrapStable, checkUnmeasured, checkTextBorder,
 };
