@@ -1,0 +1,14 @@
+{
+  "safeMarginIn": 0.4,
+  "childOverflowPt": 1,
+  "overlapRatio": 0.05,
+  "minFontPt": { "title": 24, "lead": 14, "body": 14, "caption": 10, "label": 10 },
+  "hierarchyGapPt": 4,
+  "contrastMin": 4.5,
+  "wrapSafety": 0.92,
+  "usage": { "min": 0.4, "max": 0.85 },
+  "monotonyRun": 3,
+  "diagramOrChartMinFor10Slides": 2,
+  "titleAlignTolIn": 0.05,
+  "maxFixAttempts": 3
+}

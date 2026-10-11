@@ -1,0 +1,5 @@
+{
+  "name": "pptx-deck",
+  "version": "0.1.0",
+  "description": "テーマまたは原稿から、編集可能で AI っぽくない PowerPoint (.pptx) を作る。Windows 専用。"
+}
