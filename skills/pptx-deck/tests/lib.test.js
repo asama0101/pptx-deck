@@ -50,3 +50,8 @@ test('フォント: Windows の導入済みフォントを取得できる', () =
   assert.ok(fonts.length > 10);
   assert.ok(FONT_CANDIDATES.some((c) => fonts.includes(c)), '候補のどれも導入されていない');
 });
+
+test('フォント: システムの表示言語により英語名で列挙されても、日本語名の候補として選べる', () => {
+  assert.deepEqual(pickFont(['BIZ UDPGothic', 'Meiryo']), { name: 'BIZ UDPゴシック', fellBack: false });
+  assert.deepEqual(pickFont(['Meiryo'], ['BIZ UDPゴシック', 'メイリオ']), { name: 'メイリオ', fellBack: true });
+});

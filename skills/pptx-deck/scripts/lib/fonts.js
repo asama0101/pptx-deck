@@ -10,8 +10,11 @@ function detectInstalledFonts() {
   return out.split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
 }
 
+// 列挙されるフォント名はシステムの表示言語で変わる(日本語名のことも英語名のこともある)
+const ALIASES = { 'BIZ UDPゴシック': ['BIZ UDPGothic'], '游ゴシック': ['Yu Gothic'], 'メイリオ': ['Meiryo'] };
+
 function pickFont(installed, candidates = FONT_CANDIDATES) {
-  const name = candidates.find((c) => installed.includes(c));
+  const name = candidates.find((c) => installed.includes(c) || (ALIASES[c] || []).some((a) => installed.includes(a)));
   if (!name) throw new Error(`日本語フォントが見つからない。次のいずれかをインストールする: ${candidates.join('、')}`);
   return { name, fellBack: name !== candidates[0] };
 }
