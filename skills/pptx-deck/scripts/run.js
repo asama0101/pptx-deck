@@ -55,7 +55,7 @@ async function main() {
   if (cmd === 'init') {
     if (!a) throw new Error('使い方: run.js init <作業フォルダ>');
     fs.mkdirSync(a, { recursive: true });
-    for (const f of ['base.css', 'chart-preview.js', 'catalog.html']) fs.copyFileSync(path.join(DESIGN, f), path.join(a, f));
+    for (const f of ['base.css', 'chart-preview.js', 'catalog.html', 'diagrams.html', 'charts.html']) fs.copyFileSync(path.join(DESIGN, f), path.join(a, f));
     console.log(JSON.stringify({ ok: true, dir: path.resolve(a) }));
     return;
   }

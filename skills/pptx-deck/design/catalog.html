@@ -5,8 +5,13 @@
 <title>見本カタログ</title>
 <link rel="stylesheet" href="base.css">
 <script src="chart-preview.js"></script>
+<style>
+  .a { position: absolute; }
+  .sub { color: var(--sub); }
+  .acc { color: var(--accent); }
+</style>
 </head>
-<body>
+<body data-tone="trust">
 
 <!-- 1. 表紙 -->
 <section class="slide" data-layout="cover">
@@ -17,7 +22,28 @@
   <aside class="notes">表紙。結論から話す前に、目的と所要時間を伝える。</aside>
 </section>
 
-<!-- 2. 図解: フロー -->
+<!-- 2. サマリ（表紙の次。全体の要点を、罫線で区切った3行で先に示す。カードを並べない） -->
+<section class="slide" data-layout="content">
+  <p class="pp-text" data-role="title">要点：新規開拓に人員を寄せ、見積業務を標準化する</p>
+  <div class="area">
+    <p class="pp-text a sub" data-role="body" style="left:0;top:10px;width:110px">現状</p>
+    <p class="pp-text a" data-role="lead" style="left:140px;top:0;width:1028px;font-size:calc(22*var(--pt))">第4四半期の売上は、年間で最大になった</p>
+    <p class="pp-text a sub" data-role="body" style="left:140px;top:48px;width:1028px">第1〜第3四半期は横ばいが続いた。</p>
+    <div class="pp-line a" data-dir="right" style="left:0;top:150px;width:1168px;color:var(--neutral-chart)"></div>
+
+    <p class="pp-text a sub" data-role="body" style="left:0;top:186px;width:110px">提案</p>
+    <p class="pp-text a" data-role="lead" style="left:140px;top:176px;width:1028px;font-size:calc(22*var(--pt))">新規開拓に2名を追加し、見積はテンプレ化する</p>
+    <p class="pp-text a sub" data-role="body" style="left:140px;top:224px;width:1028px">見積の回答時間を半分にする。</p>
+    <div class="pp-line a" data-dir="right" style="left:0;top:326px;width:1168px;color:var(--neutral-chart)"></div>
+
+    <p class="pp-text a acc" data-role="body" style="left:0;top:362px;width:110px;font-weight:700">依頼</p>
+    <p class="pp-text a acc" data-role="lead" style="left:140px;top:352px;width:1028px;font-size:calc(22*var(--pt))">今期中に全拠点へ展開するため、人員配置を承認してほしい</p>
+    <p class="pp-text a sub" data-role="body" style="left:140px;top:400px;width:1028px">承認後、2週間で配置を完了する。</p>
+  </div>
+  <aside class="notes">サマリ。ここだけ読めば全体像がつかめるようにする。</aside>
+</section>
+
+<!-- 3. 図解: フロー -->
 <section class="slide" data-layout="diagram">
   <p class="pp-text" data-role="title">導入は4つのステップで進める</p>
   <div class="area row" data-diagram style="align-items:center;justify-content:space-between">
@@ -43,27 +69,37 @@
   </div>
 </section>
 
-<!-- 3. 内容(カード3枚) -->
+<!-- 4. 内容（施策→狙いの対応。罫線で区切った行と矢印。カードを並べない） -->
 <section class="slide" data-layout="content">
   <p class="pp-text" data-role="title">結論：新規開拓に人員を寄せると売上が最も伸びる</p>
-  <div class="area row" style="gap:32px">
-    <div class="pp-shape card" style="flex:1;height:360px">
-      <p class="pp-text" data-role="lead">① 新規開拓</p>
-      <p class="pp-text" data-role="body" style="margin-top:12px">商談化率が既存深耕の1.8倍。人員を2名追加して、訪問件数を増やす。</p>
-    </div>
-    <div class="pp-shape card" style="flex:1;height:360px">
-      <p class="pp-text" data-role="lead">② 既存深耕</p>
-      <p class="pp-text" data-role="body" style="margin-top:12px">解約率は低位で安定。定例訪問を月1回から四半期1回へ減らして負荷を下げる。</p>
-    </div>
-    <div class="pp-shape card accent" style="flex:1;height:360px">
-      <p class="pp-text" data-role="lead">③ 見積業務</p>
-      <p class="pp-text" data-role="body" style="margin-top:12px">テンプレ化で回答までの時間を半分にする。今期中に全拠点へ展開する。</p>
-    </div>
+  <div class="area" data-diagram>
+    <p class="pp-text a sub" data-role="body" style="left:0;top:0;width:460px">施策</p>
+    <p class="pp-text a sub" data-role="body" style="left:560px;top:0;width:608px">狙い</p>
+    <div class="pp-line a" data-dir="right" style="left:0;top:36px;width:1168px;color:var(--neutral-chart)"></div>
+
+    <p class="pp-text a" data-role="lead" style="left:0;top:64px;width:460px;font-size:calc(22*var(--pt))">新規開拓に2名を追加する</p>
+    <p class="pp-text a sub" data-role="body" style="left:0;top:108px;width:460px">訪問件数を増やす。</p>
+    <div class="pp-line a" data-dir="right" data-arrow="end" style="left:476px;top:92px;width:64px"></div>
+    <p class="pp-text a" data-role="lead" style="left:560px;top:64px;width:608px;font-size:calc(22*var(--pt))">商談化率が高い領域に寄せる</p>
+    <p class="pp-text a sub" data-role="body" style="left:560px;top:108px;width:608px">既存深耕の1.8倍。</p>
+    <div class="pp-line a" data-dir="right" style="left:0;top:180px;width:1168px;color:var(--neutral-chart)"></div>
+
+    <p class="pp-text a" data-role="lead" style="left:0;top:208px;width:460px;font-size:calc(22*var(--pt))">既存深耕の訪問を減らす</p>
+    <p class="pp-text a sub" data-role="body" style="left:0;top:252px;width:460px">月1回から四半期1回へ。</p>
+    <div class="pp-line a" data-dir="right" data-arrow="end" style="left:476px;top:236px;width:64px"></div>
+    <p class="pp-text a" data-role="lead" style="left:560px;top:208px;width:608px;font-size:calc(22*var(--pt))">負荷を下げる</p>
+    <p class="pp-text a sub" data-role="body" style="left:560px;top:252px;width:608px">解約率は低位で安定している。</p>
+    <div class="pp-line a" data-dir="right" style="left:0;top:324px;width:1168px;color:var(--neutral-chart)"></div>
+
+    <p class="pp-text a" data-role="lead" style="left:0;top:352px;width:460px;font-size:calc(22*var(--pt))">見積をテンプレ化する</p>
+    <p class="pp-text a sub" data-role="body" style="left:0;top:396px;width:460px">今期中に全拠点へ展開する。</p>
+    <div class="pp-line a" data-dir="right" data-arrow="end" style="left:476px;top:380px;width:64px"></div>
+    <p class="pp-text a acc" data-role="lead" style="left:560px;top:352px;width:608px;font-size:calc(22*var(--pt))">回答までの時間を半分にする</p>
   </div>
   <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">出典：2026年度第2四半期 営業実績（社内集計）</p>
 </section>
 
-<!-- 4. 図解: 2×2マトリクス -->
+<!-- 5. 図解: 2×2マトリクス -->
 <section class="slide" data-layout="diagram">
   <p class="pp-text" data-role="title">優先度は「影響度×実現しやすさ」で決める</p>
   <div class="area" data-diagram style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:24px;height:470px">
@@ -75,7 +111,38 @@
   <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:632px;width:1168px">横軸：実現しやすさ（右ほど容易）／縦軸：影響度（上ほど大きい）</p>
 </section>
 
-<!-- 5. チャート -->
+<!-- 6. 図解: ガントチャート(絶対配置。行の帯の子にラベルと棒を置く。ラベル列 244px + 月 6 列 × 154px) -->
+<section class="slide" data-layout="diagram">
+  <p class="pp-text" data-role="title">全拠点への展開は9月末までに完了する</p>
+  <div class="area" data-diagram>
+    <p class="pp-text" data-role="body" style="position:absolute;left:244px;top:0;width:154px;text-align:center;color:var(--sub)">4月</p>
+    <p class="pp-text" data-role="body" style="position:absolute;left:398px;top:0;width:154px;text-align:center;color:var(--sub)">5月</p>
+    <p class="pp-text" data-role="body" style="position:absolute;left:552px;top:0;width:154px;text-align:center;color:var(--sub)">6月</p>
+    <p class="pp-text" data-role="body" style="position:absolute;left:706px;top:0;width:154px;text-align:center;color:var(--sub)">7月</p>
+    <p class="pp-text" data-role="body" style="position:absolute;left:860px;top:0;width:154px;text-align:center;color:var(--sub)">8月</p>
+    <p class="pp-text" data-role="body" style="position:absolute;left:1014px;top:0;width:154px;text-align:center;color:var(--sub)">9月</p>
+    <div class="pp-shape card" style="padding:0;position:absolute;left:0;top:48px;width:1168px;height:108px">
+      <p class="pp-text" data-role="lead" style="position:absolute;left:20px;top:34px;width:212px">現状把握</p>
+      <div class="pp-shape card" style="padding:0;background:var(--neutral-chart);position:absolute;left:244px;top:14px;width:154px;height:80px"></div>
+    </div>
+    <div class="pp-shape card" style="padding:0;position:absolute;left:0;top:168px;width:1168px;height:108px">
+      <p class="pp-text" data-role="lead" style="position:absolute;left:20px;top:34px;width:212px">標準化</p>
+      <div class="pp-shape card" style="padding:0;background:var(--neutral-chart);position:absolute;left:398px;top:14px;width:308px;height:80px"></div>
+    </div>
+    <div class="pp-shape card" style="padding:0;position:absolute;left:0;top:288px;width:1168px;height:108px">
+      <p class="pp-text" data-role="lead" style="position:absolute;left:20px;top:34px;width:212px">試行</p>
+      <div class="pp-shape card" style="padding:0;background:var(--neutral-chart);position:absolute;left:706px;top:14px;width:154px;height:80px"></div>
+    </div>
+    <div class="pp-shape card" style="padding:0;position:absolute;left:0;top:408px;width:1168px;height:108px">
+      <p class="pp-text" data-role="lead" style="position:absolute;left:20px;top:34px;width:212px">全拠点展開</p>
+      <div class="pp-shape card accent" style="padding:0;position:absolute;left:860px;top:14px;width:308px;height:80px"></div>
+    </div>
+  </div>
+  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:660px;width:1168px">濃い棒が最終工程。横軸は月</p>
+  <aside class="notes">ガントチャート。工程の期間と順序を見せる。</aside>
+</section>
+
+<!-- 7. チャート -->
 <section class="slide" data-layout="chart">
   <p class="pp-text" data-role="title">第4四半期の売上は年間で最大になった</p>
   <div class="pp-chart" data-chart='{"type":"bar","labels":["第1四半期","第2四半期","第3四半期","第4四半期"],"values":[120,135,128,172],"highlight":3,"labelPt":12}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
@@ -87,7 +154,7 @@
   <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：百万円。出典：社内集計</p>
 </section>
 
-<!-- 6. 図解: ピラミッド -->
+<!-- 8. 図解: ピラミッド -->
 <section class="slide" data-layout="diagram">
   <p class="pp-text" data-role="title">方針から実行まで、4つの階層で整理する</p>
   <div class="area" data-diagram style="display:flex;flex-direction:column;align-items:center;gap:12px">
@@ -98,7 +165,7 @@
   </div>
 </section>
 
-<!-- 7. 図解: ツリー(絶対配置) -->
+<!-- 9. 図解: ツリー(絶対配置) -->
 <section class="slide" data-layout="diagram">
   <p class="pp-text" data-role="title">営業組織は3つのチームで構成する</p>
   <div class="area" data-diagram>
@@ -112,6 +179,17 @@
     <div class="pp-shape card" style="position:absolute;left:414px;top:260px;width:340px;height:240px"><p class="pp-text" data-role="lead">既存深耕チーム</p><p class="pp-text" data-role="body" style="margin-top:8px">既存顧客の継続と拡大。</p></div>
     <div class="pp-shape card" style="position:absolute;left:828px;top:260px;width:340px;height:240px"><p class="pp-text" data-role="lead">営業企画チーム</p><p class="pp-text" data-role="body" style="margin-top:8px">見積・資料・分析の支援。</p></div>
   </div>
+</section>
+
+<!-- 10. チャート: 積み上げ棒（内訳と合計を 1 本の棒で見せる。注目の系列だけアクセント色） -->
+<section class="slide" data-layout="chart">
+  <p class="pp-text" data-role="title">第4四半期の伸びは、新規開拓が押し上げた</p>
+  <div class="pp-chart" data-chart='{"type":"stacked","labels":["第1四半期","第2四半期","第3四半期","第4四半期"],"series":[{"name":"既存深耕","values":[90,97,93,100]},{"name":"新規開拓","values":[30,38,35,72]}],"highlight":1,"labelPt":12}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
+  <div class="pp-line" data-dir="down" style="position:absolute;left:820px;top:152px;height:464px;color:var(--neutral-chart)"></div>
+  <p class="pp-text" data-role="lead" style="position:absolute;left:852px;top:152px;width:372px">ポイント</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:204px;width:372px">既存深耕は年間を通じて90〜100で安定している。</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:340px;width:372px">新規開拓は第4四半期に72へ増え、合計を押し上げた。</p>
+  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：百万円。出典：社内集計</p>
 </section>
 
 </body>

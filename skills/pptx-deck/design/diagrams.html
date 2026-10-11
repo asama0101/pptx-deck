@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>図解の見本（追加分）</title>
+<link rel="stylesheet" href="base.css">
+<script src="chart-preview.js"></script>
+<style>
+  .a { position: absolute; }
+  .sub { color: var(--sub); }
+  .acc { color: var(--accent); }
+  .circle { border-radius: 50%; }
+</style>
+</head>
+<body data-tone="trust" data-sample>
+
+<!-- 1. 縦フロー: 各ステップの説明を右に書き込みたいとき。上から下へ読む -->
+<section class="slide" data-layout="diagram">
+  <p class="pp-text" data-role="title">申請は4つの手順で承認される</p>
+  <div class="area" data-diagram>
+    <div class="pp-shape card a" style="left:0;top:0;width:320px;height:96px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:28px;width:272px">申請する</p></div>
+    <p class="pp-text a" data-role="body" style="left:360px;top:30px;width:808px">申請フォームに目的と金額を入力する。</p>
+    <div class="pp-line a" data-dir="down" data-arrow="end" style="left:160px;top:96px;height:36px"></div>
+    <div class="pp-shape card a" style="left:0;top:132px;width:320px;height:96px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:28px;width:272px">課長が確認する</p></div>
+    <p class="pp-text a" data-role="body" style="left:360px;top:162px;width:808px">内容と金額を確認する。差し戻しもここで行う。</p>
+    <div class="pp-line a" data-dir="down" data-arrow="end" style="left:160px;top:228px;height:36px"></div>
+    <div class="pp-shape card a" style="left:0;top:264px;width:320px;height:96px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:28px;width:272px">部長が承認する</p></div>
+    <p class="pp-text a" data-role="body" style="left:360px;top:294px;width:808px">予算の範囲かどうかを判断する。</p>
+    <div class="pp-line a" data-dir="down" data-arrow="end" style="left:160px;top:360px;height:36px"></div>
+    <div class="pp-shape card accent a" style="left:0;top:396px;width:320px;height:96px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:28px;width:272px">発注する</p></div>
+    <p class="pp-text a" data-role="body" style="left:360px;top:426px;width:808px">承認後、3営業日以内に発注する。</p>
+  </div>
+  <aside class="notes">縦フロー。各ステップに説明を添えるときに使う。</aside>
+</section>
+
+<!-- 2. サイクル: 繰り返しを表す。4つの工程を四角に並べ、右→下→左→上の矢印でつなぐ -->
+<section class="slide" data-layout="diagram">
+  <p class="pp-text" data-role="title">PDCAは4つの工程を繰り返して進める</p>
+  <div class="area" data-diagram>
+    <div class="pp-shape card a" style="left:120px;top:20px;width:360px;height:170px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:24px;width:312px">計画する</p><p class="pp-text a" data-role="body" style="left:24px;top:72px;width:312px">目標と手順を決める。</p></div>
+    <div class="pp-line a" data-dir="right" data-arrow="end" style="left:480px;top:105px;width:208px"></div>
+    <div class="pp-shape card a" style="left:688px;top:20px;width:360px;height:170px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:24px;width:312px">実行する</p><p class="pp-text a" data-role="body" style="left:24px;top:72px;width:312px">決めた手順で進める。</p></div>
+    <div class="pp-line a" data-dir="down" data-arrow="end" style="left:868px;top:190px;height:148px"></div>
+    <div class="pp-shape card a" style="left:688px;top:338px;width:360px;height:170px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:24px;width:312px">評価する</p><p class="pp-text a" data-role="body" style="left:24px;top:72px;width:312px">結果を数字で確かめる。</p></div>
+    <div class="pp-line a" data-dir="left" data-arrow="end" style="left:480px;top:423px;width:208px"></div>
+    <div class="pp-shape card accent a" style="left:120px;top:338px;width:360px;height:170px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:24px;width:312px">改善する</p><p class="pp-text a" data-role="body" style="left:24px;top:72px;width:312px">次の計画に反映する。</p></div>
+    <div class="pp-line a" data-dir="up" data-arrow="end" style="left:300px;top:190px;height:148px"></div>
+  </div>
+  <aside class="notes">サイクル図。繰り返しの工程に使う。</aside>
+</section>
+
+<!-- 3. ビフォーアフター: 前と後のコントラストを出す。後だけアクセント色 -->
+<section class="slide" data-layout="diagram">
+  <p class="pp-text" data-role="title">導入後は、見積の回答が3日から半日になる</p>
+  <div class="area" data-diagram>
+    <div class="pp-shape card a" style="left:0;top:0;width:500px;height:480px;padding:0">
+      <p class="pp-text a sub" data-role="body" style="left:32px;top:28px;width:436px">導入前</p>
+      <p class="pp-text a" data-role="lead" style="left:32px;top:76px;width:436px;font-size:calc(24*var(--pt))">回答まで3日かかる</p>
+      <p class="pp-text a" data-role="body" style="left:32px;top:144px;width:436px">拠点ごとに書式が違い、確認の往復が多くなる。</p>
+    </div>
+    <div class="pp-line a" data-dir="right" data-arrow="end" style="left:524px;top:240px;width:120px"></div>
+    <div class="pp-shape card accent a" style="left:668px;top:0;width:500px;height:480px;padding:0">
+      <p class="pp-text a" data-role="body" style="left:32px;top:28px;width:436px">導入後</p>
+      <p class="pp-text a" data-role="lead" style="left:32px;top:76px;width:436px;font-size:calc(24*var(--pt))">回答まで半日で済む</p>
+      <p class="pp-text a" data-role="body" style="left:32px;top:144px;width:436px">書式を統一し、テンプレから自動で作る。</p>
+    </div>
+  </div>
+  <aside class="notes">ビフォーアフター。前後の差がひと目で分かるようにする。</aside>
+</section>
+
+<!-- 4. 放射: 中心から広がる影響。主題を中心に置き、外へ矢印を向ける -->
+<section class="slide" data-layout="diagram">
+  <p class="pp-text" data-role="title">顧客データを中心に、4つの部門が動く</p>
+  <div class="area" data-diagram>
+    <div class="pp-shape card accent circle a" style="left:484px;top:164px;width:200px;height:200px;padding:0"><p class="pp-text a" data-role="lead" style="left:20px;top:84px;width:160px;text-align:center">顧客データ</p></div>
+    <div class="pp-line a" data-dir="up" data-arrow="end" style="left:584px;top:100px;height:64px"></div>
+    <div class="pp-shape card a" style="left:434px;top:0;width:300px;height:100px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:30px;width:252px;text-align:center">営業</p></div>
+    <div class="pp-line a" data-dir="down" data-arrow="end" style="left:584px;top:364px;height:64px"></div>
+    <div class="pp-shape card a" style="left:434px;top:428px;width:300px;height:100px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:30px;width:252px;text-align:center">サポート</p></div>
+    <div class="pp-line a" data-dir="left" data-arrow="end" style="left:320px;top:264px;width:164px"></div>
+    <div class="pp-shape card a" style="left:0;top:214px;width:320px;height:100px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:30px;width:272px;text-align:center">マーケティング</p></div>
+    <div class="pp-line a" data-dir="right" data-arrow="end" style="left:684px;top:264px;width:164px"></div>
+    <div class="pp-shape card a" style="left:848px;top:214px;width:320px;height:100px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:30px;width:272px;text-align:center">商品開発</p></div>
+  </div>
+  <aside class="notes">放射図。中心の主題を強調する。</aside>
+</section>
+
+<!-- 5. 数式: 要素の足し算で結論を示す。数字がなくても伝わる -->
+<section class="slide" data-layout="diagram">
+  <p class="pp-text" data-role="title">強い営業は、仕組みと人の掛け合わせで生まれる</p>
+  <div class="area" data-diagram>
+    <div class="pp-shape card a" style="left:0;top:100px;width:320px;height:280px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:96px;width:272px;text-align:center">標準の手順</p></div>
+    <p class="pp-text a" data-role="display" style="left:332px;top:210px;width:72px;text-align:center">＋</p>
+    <div class="pp-shape card a" style="left:416px;top:100px;width:320px;height:280px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:96px;width:272px;text-align:center">育成の機会</p></div>
+    <p class="pp-text a" data-role="display" style="left:748px;top:210px;width:72px;text-align:center">＝</p>
+    <div class="pp-shape card accent a" style="left:832px;top:100px;width:336px;height:280px;padding:0"><p class="pp-text a" data-role="lead" style="left:24px;top:96px;width:288px;text-align:center">安定した成果</p></div>
+  </div>
+  <aside class="notes">数式。実際の数字を使わず、関係だけを示す。</aside>
+</section>
+
+<!-- 6. 項目比較: 自社の列だけ背景を敷いて目立たせる。他社は無彩色 -->
+<section class="slide" data-layout="diagram">
+  <p class="pp-text" data-role="title">自社は、サポートと価格で他社より優れている</p>
+  <div class="area" data-diagram>
+    <div class="pp-shape card tint a" style="left:360px;top:0;width:280px;height:440px;padding:0">
+      <p class="pp-text a acc" data-role="lead" style="left:0;top:14px;width:280px;text-align:center">自社</p>
+      <p class="pp-text a acc" data-role="lead" style="left:0;top:98px;width:280px;text-align:center;font-size:calc(24*var(--pt))">◎</p>
+      <p class="pp-text a acc" data-role="lead" style="left:0;top:218px;width:280px;text-align:center;font-size:calc(24*var(--pt))">◎</p>
+      <p class="pp-text a acc" data-role="lead" style="left:0;top:338px;width:280px;text-align:center;font-size:calc(24*var(--pt))">○</p>
+    </div>
+    <p class="pp-text a" data-role="lead" style="left:640px;top:14px;width:260px;text-align:center">A社</p>
+    <p class="pp-text a" data-role="lead" style="left:900px;top:14px;width:268px;text-align:center">B社</p>
+    <div class="pp-line a" data-dir="right" style="left:0;top:60px;width:1168px;color:var(--neutral-chart)"></div>
+    <p class="pp-text a" data-role="body" style="left:0;top:108px;width:340px">サポートの手厚さ</p>
+    <p class="pp-text a" data-role="lead" style="left:640px;top:98px;width:260px;text-align:center;font-size:calc(24*var(--pt))">○</p>
+    <p class="pp-text a" data-role="lead" style="left:900px;top:98px;width:268px;text-align:center;font-size:calc(24*var(--pt))">△</p>
+    <div class="pp-line a" data-dir="right" style="left:0;top:180px;width:1168px;color:var(--neutral-chart)"></div>
+    <p class="pp-text a" data-role="body" style="left:0;top:228px;width:340px">価格の安さ</p>
+    <p class="pp-text a" data-role="lead" style="left:640px;top:218px;width:260px;text-align:center;font-size:calc(24*var(--pt))">△</p>
+    <p class="pp-text a" data-role="lead" style="left:900px;top:218px;width:268px;text-align:center;font-size:calc(24*var(--pt))">○</p>
+    <div class="pp-line a" data-dir="right" style="left:0;top:300px;width:1168px;color:var(--neutral-chart)"></div>
+    <p class="pp-text a" data-role="body" style="left:0;top:348px;width:340px">機能の幅広さ</p>
+    <p class="pp-text a" data-role="lead" style="left:640px;top:338px;width:260px;text-align:center;font-size:calc(24*var(--pt))">◎</p>
+    <p class="pp-text a" data-role="lead" style="left:900px;top:338px;width:268px;text-align:center;font-size:calc(24*var(--pt))">○</p>
+    <div class="pp-line a" data-dir="right" style="left:0;top:420px;width:1168px;color:var(--neutral-chart)"></div>
+  </div>
+  <aside class="notes">項目比較図。比較項目ごとに違いを強調する。</aside>
+</section>
+
+<!-- 7. 規模比較: 円の面積で大きさの差を見せる。数値を必ず併記する（円の大きさは厳密に比べにくい） -->
+<section class="slide" data-layout="diagram" data-numbers="visual">
+  <p class="pp-text" data-role="title">市場規模は、3年で約11倍に広がる</p>
+  <div class="area" data-diagram>
+    <div class="pp-shape circle a" style="left:60px;top:276px;width:120px;height:120px;padding:0;background:var(--neutral-chart)"></div>
+    <p class="pp-text a" data-role="lead" style="left:0;top:436px;width:240px;text-align:center">2024年</p>
+    <p class="pp-text a sub" data-role="body" style="left:0;top:476px;width:240px;text-align:center">100億円</p>
+    <div class="pp-shape circle a" style="left:360px;top:156px;width:240px;height:240px;padding:0;background:var(--neutral-chart)"></div>
+    <p class="pp-text a" data-role="lead" style="left:300px;top:412px;width:360px;text-align:center">2026年</p>
+    <p class="pp-text a sub" data-role="body" style="left:300px;top:452px;width:360px;text-align:center">400億円</p>
+    <div class="pp-shape card accent circle a" style="left:768px;top:-4px;width:400px;height:400px;padding:0"></div>
+    <p class="pp-text a acc" data-role="lead" style="left:768px;top:412px;width:400px;text-align:center">2027年</p>
+    <p class="pp-text a sub" data-role="body" style="left:768px;top:452px;width:400px;text-align:center">1,100億円</p>
+  </div>
+  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:660px;width:1168px">円の面積は金額に比例する</p>
+  <aside class="notes">規模比較図。円の大きさは厳密に比べにくいので、数値を併記する。</aside>
+</section>
+
+<!-- 8. TAM-SAM-SOM: 同心円で狙う範囲を示す。円は子として入れ子にする。狙う範囲(SOM)だけアクセント -->
+<section class="slide" data-layout="diagram" data-numbers="visual">
+  <p class="pp-text" data-role="title">まず取れる市場は、全体の約1%にあたる50億円</p>
+  <div class="area" data-diagram>
+    <div class="pp-shape circle a" style="left:0;top:24px;width:480px;height:480px;padding:0;background:var(--card)">
+      <div class="pp-shape circle a" style="left:80px;top:160px;width:320px;height:320px;padding:0;background:var(--accent-tint)">
+        <div class="pp-shape card accent circle a" style="left:80px;top:160px;width:160px;height:160px;padding:0"></div>
+      </div>
+    </div>
+    <div class="pp-line a" data-dir="right" style="left:240px;top:50px;width:300px;color:var(--neutral-chart)"></div>
+    <p class="pp-text a" data-role="lead" style="left:560px;top:20px;width:608px">TAM　全体の市場</p>
+    <p class="pp-text a sub" data-role="body" style="left:560px;top:60px;width:608px">国内の対象企業すべて。5,000億円。</p>
+    <div class="pp-line a" data-dir="right" style="left:240px;top:206px;width:300px;color:var(--neutral-chart)"></div>
+    <p class="pp-text a" data-role="lead" style="left:560px;top:176px;width:608px">SAM　狙える市場</p>
+    <p class="pp-text a sub" data-role="body" style="left:560px;top:216px;width:608px">自社の商品が届く業種。1,000億円。</p>
+    <div class="pp-line a" data-dir="right" style="left:240px;top:370px;width:300px;color:var(--neutral-chart)"></div>
+    <p class="pp-text a acc" data-role="lead" style="left:560px;top:340px;width:608px">SOM　まず取れる市場</p>
+    <p class="pp-text a sub" data-role="body" style="left:560px;top:380px;width:608px">3年以内に取れる範囲。50億円。</p>
+  </div>
+  <aside class="notes">TAM-SAM-SOM。市場の大きさと狙う範囲を示す。</aside>
+</section>
+
+<!-- 9. 階段・ステップ: 段階の数と段差で、進み具合を感覚的に示す。最終段だけアクセント -->
+<section class="slide" data-layout="diagram">
+  <p class="pp-text" data-role="title">定着までに、4つの段階を上る</p>
+  <div class="area" data-diagram>
+    <div class="pp-shape card a" style="left:0;top:380px;width:280px;height:128px;padding:0"><p class="pp-text a" data-role="lead" style="left:20px;top:20px;width:240px">知る</p><p class="pp-text a" data-role="body" style="left:20px;top:64px;width:240px">目的を理解する。</p></div>
+    <div class="pp-shape card a" style="left:296px;top:290px;width:280px;height:218px;padding:0"><p class="pp-text a" data-role="lead" style="left:20px;top:20px;width:240px">試す</p><p class="pp-text a" data-role="body" style="left:20px;top:64px;width:240px">小さく使ってみる。</p></div>
+    <div class="pp-shape card a" style="left:592px;top:200px;width:280px;height:308px;padding:0"><p class="pp-text a" data-role="lead" style="left:20px;top:20px;width:240px">広げる</p><p class="pp-text a" data-role="body" style="left:20px;top:64px;width:240px">全員の仕事に入れる。</p></div>
+    <div class="pp-shape card accent a" style="left:888px;top:110px;width:280px;height:398px;padding:0"><p class="pp-text a" data-role="lead" style="left:20px;top:20px;width:240px">定着する</p><p class="pp-text a" data-role="body" style="left:20px;top:64px;width:240px">当たり前になる。</p></div>
+  </div>
+  <aside class="notes">階段・ステップ図。段階の数を段差で示す。</aside>
+</section>
+
+</body>
+</html>

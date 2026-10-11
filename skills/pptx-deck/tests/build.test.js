@@ -73,6 +73,62 @@ test('チャート: ネイティブチャートで、注目データだけ別色
   assert.match(chart, /BFBFBF/);
 });
 
+test('積み上げ棒: 系列ごとに色を分け、注目の系列だけアクセント色にする', async () => {
+  const out = path.join(root, 'stacked.pptx');
+  const chart = { type: 'stackedh', labels: ['直接削減'], series: [{ name: '更新費', values: [3800] }, { name: '保守・賃料', values: [2000] }], highlight: 1, labelPt: 12 };
+  await buildPptx(model([slide([el({ type: 'chart', role: '', x: 1, y: 1, w: 8, h: 3, chart })])]), out);
+  const zip = await JSZip.loadAsync(fs.readFileSync(out));
+  const name = Object.keys(zip.files).find((n) => /^ppt\/charts\/chart\d+\.xml$/.test(n));
+  const xml = await zip.file(name).async('string');
+  assert.match(xml, /<c:grouping val="stacked"\/>/);
+  assert.match(xml, /<c:barDir val="bar"\/>/);
+  assert.equal((xml.match(/<c:ser>/g) || []).length, 2);
+  assert.match(xml, /1F4E9C/);
+  assert.match(xml, /767676/);
+});
+
+test('100% 積み上げ棒・面: ネイティブチャートの種別と積み方を書く', async () => {
+  const mk = (type) => ({ type, labels: ['2025', '2026', '2027'], series: [{ name: '既存', values: [5, 5, 5] }, { name: '新規', values: [1, 3, 6] }], highlight: 1, labelPt: 12 });
+  for (const [type, tag, grouping] of [['stacked100', 'barChart', 'percentStacked'], ['area', 'areaChart', 'stacked']]) {
+    const out = path.join(root, `${type}.pptx`);
+    await buildPptx(model([slide([el({ type: 'chart', role: '', x: 1, y: 1, w: 8, h: 4, chart: mk(type) })])]), out);
+    const zip = await JSZip.loadAsync(fs.readFileSync(out));
+    const name = Object.keys(zip.files).find((n) => /^ppt\/charts\/chart\d+\.xml$/.test(n));
+    const xml = await zip.file(name).async('string');
+    assert.match(xml, new RegExp(`<c:${tag}>`), type);
+    assert.match(xml, new RegExp(`<c:grouping val="${grouping}"/>`), type);
+    assert.equal((xml.match(/<c:ser>/g) || []).length, 2);
+    assert.match(xml, /1F4E9C/);
+  }
+});
+
+test('横棒: 先頭の項目を上にし、値軸は隠す', async () => {
+  const out = path.join(root, 'barh.pptx');
+  await buildPptx(model([slide([el({ type: 'chart', role: '', x: 1, y: 1, w: 8, h: 4, chart: { type: 'barh', labels: ['1位', '2位'], values: [3, 2], highlight: 1, labelPt: 12 } })])]), out);
+  const zip = await JSZip.loadAsync(fs.readFileSync(out));
+  const name = Object.keys(zip.files).find((n) => /^ppt\/charts\/chart\d+\.xml$/.test(n));
+  const xml = await zip.file(name).async('string');
+  assert.match(xml, /<c:orientation val="maxMin"\/>/);
+  assert.match(xml, /<c:delete val="1"\/>/);
+});
+
+test('累計の棒: 前年までの累計と増加分の 2 系列を積み上げ、合計と増加分を装飾のテキストで置く', async () => {
+  const out = path.join(root, 'cumulative.pptx');
+  const chart = { type: 'cumulative', labels: ['初期', '1年目', '2年目'], values: [3200, 4280, 5360], labelPt: 14 };
+  await buildPptx(model([slide([el({ id: 's1-e9', type: 'chart', role: '', x: 1, y: 1, w: 8, h: 4, chart })])]), out);
+  const zip = await JSZip.loadAsync(fs.readFileSync(out));
+  const name = Object.keys(zip.files).find((n) => /^ppt\/charts\/chart\d+\.xml$/.test(n));
+  const chartXml = await zip.file(name).async('string');
+  assert.match(chartXml, /<c:grouping val="stacked"\/>/);
+  assert.equal((chartXml.match(/<c:ser>/g) || []).length, 2);
+  assert.match(chartXml, /<c:manualLayout>/);
+  assert.match(chartXml, /1F4E9C/);
+  const slideXml = await zip.file('ppt/slides/slide1.xml').async('string');
+  assert.equal((slideXml.match(/＋1,080/g) || []).length, 2);
+  assert.match(slideXml, /5,360/);
+  assert.equal((slideXml.match(/s1-e10\d\d\|p=\|d=1\|r=body\|t=text/g) || []).length, 5); // 合計 3 + 増加分 2
+});
+
 test('ノート: スピーカーノートを書く', async () => {
   const zip = await build();
   const names = Object.keys(zip.files).filter((n) => /notesSlide\d+\.xml$/.test(n));
@@ -84,6 +140,6 @@ test('空のスライド・未対応のチャート型・存在しない画像�
   const out = path.join(root, 'empty.pptx');
   await buildPptx(model([slide([])]), out);
   assert.ok(fs.existsSync(out));
-  await assert.rejects(buildPptx(model([slide([el({ type: 'chart', chart: { type: 'stacked', labels: [], values: [] } })])]), path.join(root, 'x.pptx')), /未対応/);
+  await assert.rejects(buildPptx(model([slide([el({ type: 'chart', chart: { type: 'radar', labels: [], values: [] } })])]), path.join(root, 'x.pptx')), /未対応/);
   await assert.rejects(buildPptx(model([slide([el({ type: 'image', src: path.join(root, 'nothing.png'), alt: 'x' })])]), path.join(root, 'y.pptx')), /画像が見つからない/);
 });

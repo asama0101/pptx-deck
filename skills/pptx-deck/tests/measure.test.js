@@ -84,8 +84,23 @@ test('空のスライドは要素なしのモデル、スライドが無い HTML
 test('data-chart が壊れた JSON、または未対応の型ならスライド番号つきで停止する', async () => {
   const bad = page('<section class="slide"><div class="pp-chart" data-chart="{oops" style="width:100px;height:100px"></div></section>', 'badjson');
   await assert.rejects(measureHtml(bad, { thresholds: t, rasterDir: root }), /スライド 1.*data-chart.*JSON/);
-  const stacked = page(`<section class="slide"><div class="pp-chart" data-chart='{"type":"stacked","labels":["a"],"values":[1]}' style="width:100px;height:100px"></div></section>`, 'stacked');
+  const stacked = page(`<section class="slide"><div class="pp-chart" data-chart='{"type":"radar","labels":["a"],"values":[1]}' style="width:100px;height:100px"></div></section>`, 'radar');
   await assert.rejects(measureHtml(stacked, { thresholds: t, rasterDir: root }), /スライド 1.*未対応/);
+});
+
+test('積み上げ棒: series の長さが labels と合わない、または series がなければスライド番号つきで停止する', async () => {
+  const mk = (spec, name) => page(`<section class="slide"><div class="pp-chart" data-chart='${spec}' style="width:100px;height:100px"></div></section>`, name);
+  await assert.rejects(measureHtml(mk('{"type":"stacked","labels":["a","b"],"series":[{"name":"x","values":[1]}]}', 'st-len'), { thresholds: t, rasterDir: root }), /スライド 1.*積み上げ棒/);
+  await assert.rejects(measureHtml(mk('{"type":"stackedh","labels":["a"],"values":[1]}', 'st-none'), { thresholds: t, rasterDir: root }), /スライド 1.*積み上げ棒/);
+  const ok = await measureHtml(mk('{"type":"stackedh","labels":["a"],"series":[{"name":"x","values":[1]},{"name":"y","values":[2]}],"highlight":1}', 'st-ok'), { thresholds: t, rasterDir: root });
+  assert.equal(ok.slides[0].elements.find((e) => e.type === 'chart').chart.series.length, 2);
+});
+
+test('累計の棒: values が減るなら、スライド番号つきで停止する', async () => {
+  const mk = (spec, name) => page(`<section class="slide"><div class="pp-chart" data-chart='${spec}' style="width:100px;height:100px"></div></section>`, name);
+  await assert.rejects(measureHtml(mk('{"type":"cumulative","labels":["a","b"],"values":[5,3]}', 'cum-bad'), { thresholds: t, rasterDir: root }), /スライド 1.*累計/);
+  const ok = await measureHtml(mk('{"type":"cumulative","labels":["a","b"],"values":[3,5]}', 'cum-ok'), { thresholds: t, rasterDir: root });
+  assert.equal(ok.slides[0].elements.find((e) => e.type === 'chart').chart.type, 'cumulative');
 });
 
 test('スライドが 1280x720px でなければ明示エラー', async () => {

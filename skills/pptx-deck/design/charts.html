@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>チャートの見本（追加分）</title>
+<link rel="stylesheet" href="base.css">
+<script src="chart-preview.js"></script>
+</head>
+<body data-tone="trust" data-sample>
+
+<!-- 100%積み上げ棒: 構成比の変化を見せる。注目の系列だけアクセント色 -->
+<section class="slide" data-layout="chart">
+  <p class="pp-text" data-role="title">売上の構成は、新規の比率が年々高まっている</p>
+  <div class="pp-chart" data-chart='{"type":"stacked100","labels":["2024年","2025年","2026年"],"series":[{"name":"既存","values":[80,70,55]},{"name":"新規","values":[20,30,45]}],"highlight":1,"labelPt":12}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
+  <div class="pp-line" data-dir="down" style="position:absolute;left:820px;top:152px;height:464px;color:var(--neutral-chart)"></div>
+  <p class="pp-text" data-role="lead" style="position:absolute;left:852px;top:152px;width:372px">ポイント</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:204px;width:372px">既存の比率は80%から55%に下がった。</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:340px;width:372px">新規は20%から45%に伸び、構成が入れ替わりつつある。</p>
+  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：%。各年の合計を100%とする。出典：社内集計</p>
+</section>
+
+<!-- 面: 新しく積み上がる領域（成長している部分）だけアクセント色 -->
+<section class="slide" data-layout="chart">
+  <p class="pp-text" data-role="title">新規事業が、売上の伸びのほとんどを占める</p>
+  <div class="pp-chart" data-chart='{"type":"area","labels":["2024年","2025年","2026年","2027年"],"series":[{"name":"既存事業","values":[100,102,101,103]},{"name":"新規事業","values":[10,30,70,120]}],"highlight":1,"labelPt":12}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
+  <div class="pp-line" data-dir="down" style="position:absolute;left:820px;top:152px;height:464px;color:var(--neutral-chart)"></div>
+  <p class="pp-text" data-role="lead" style="position:absolute;left:852px;top:152px;width:372px">ポイント</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:204px;width:372px">既存事業は100億円前後で横ばいが続く。</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:340px;width:372px">新規事業は4年で10億円から120億円に積み上がった。</p>
+  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：億円。出典：社内集計</p>
+</section>
+
+<!-- 横棒: ランキングで、順位だけでは目立たない途中の項目を強調する -->
+<section class="slide" data-layout="chart">
+  <p class="pp-text" data-role="title">中位の3位でも、取引額は全体の約19%を占める</p>
+  <div class="pp-chart" data-chart='{"type":"barh","labels":["1位 A社","2位 B社","3位 当社","4位 C社","5位 D社"],"values":[42,31,24,18,11],"highlight":2,"labelPt":14}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
+  <div class="pp-line" data-dir="down" style="position:absolute;left:820px;top:152px;height:464px;color:var(--neutral-chart)"></div>
+  <p class="pp-text" data-role="lead" style="position:absolute;left:852px;top:152px;width:372px">ポイント</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:204px;width:372px">上位2社で全体の6割を占める。</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:340px;width:372px">3位の当社は、2位との差が7億円まで縮まった。</p>
+  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：億円。出典：業界団体の統計</p>
+</section>
+
+<!-- 累計の棒(cumulative): 累計が積み上がる推移。各年を「前年までの累計(無彩色)＋その年の増加分(アクセント色の塊)」に分け、毎年の増加分を見せる -->
+<section class="slide" data-layout="chart">
+  <p class="pp-text" data-role="title">会員数は、毎年同じ人数ずつ積み上がっている</p>
+  <div class="pp-chart" data-chart='{"type":"cumulative","labels":["初年度","2年目","3年目","4年目","5年目"],"values":[1200,1700,2200,2700,3200],"labelPt":14}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
+  <div class="pp-line" data-dir="down" style="position:absolute;left:820px;top:152px;height:464px;color:var(--neutral-chart)"></div>
+  <p class="pp-text" data-role="lead" style="position:absolute;left:852px;top:152px;width:372px">ポイント</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:204px;width:372px">2年目以降は、毎年500人ずつ増えている。</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:340px;width:372px">5年目の会員数は3,200人で、初年度の約2.7倍になる。</p>
+  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：人。青い塊は、その年に増えた会員数。出典：社内集計</p>
+</section>
+
+</body>
+</html>

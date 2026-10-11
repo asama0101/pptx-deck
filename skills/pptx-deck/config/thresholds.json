@@ -2,13 +2,59 @@
   "safeMarginIn": 0.4,
   "childOverflowPt": 1,
   "overlapRatio": 0.05,
-  "minFontPt": { "title": 24, "lead": 14, "body": 14, "caption": 10, "label": 10 },
+  "minFontPt": {
+    "title": 24,
+    "lead": 14,
+    "body": 14,
+    "caption": 10,
+    "label": 10,
+    "display": 24
+  },
   "hierarchyGapPt": 4,
   "contrastMin": 4.5,
   "wrapSafety": 0.92,
-  "usage": { "min": 0.4, "max": 0.85 },
+  "usage": {
+    "min": 0.4,
+    "max": 0.85,
+    "textPadIn": 0.15
+  },
   "monotonyRun": 3,
+  "cardRowMin": 2,
   "diagramOrChartMinFor10Slides": 2,
   "titleAlignTolIn": 0.05,
-  "maxFixAttempts": 3
+  "maxFixAttempts": 3,
+  "arrowReachIn": 0.35,
+  "arrowEdgeIn": 0.25,
+  "isolation": {
+    "maxCount": 6,
+    "maxRatio": 0.4
+  },
+  "zFlow": {
+    "startX": 0.4,
+    "startY": 0.4
+  },
+  "tones": {
+    "trust": [
+      190,
+      250
+    ],
+    "growth": [
+      90,
+      170
+    ],
+    "alert": [
+      345,
+      15
+    ],
+    "energy": [
+      15,
+      50
+    ],
+    "premium": [
+      255,
+      290
+    ],
+    "neutral": "any"
+  },
+  "numberCompareMin": 3
 }

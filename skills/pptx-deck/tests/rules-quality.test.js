@@ -64,6 +64,109 @@ test('runRules: stage により検査の範囲が変わる。空のモデルで�
   const m = model([slide([el({ id: 'x', overflow: true, w: 2, h: 0.5 })])]);
   assert.ok(runRules(m, t, { stage: 'html' }).some((v) => v.rule === 'overflow'));
   assert.ok(!runRules(m, t, { stage: 'pptx' }).some((v) => v.rule === 'overflow'));
-  assert.deepEqual(runRules(model([]), t), []);
+  const tone = { ...model([]), theme: { accent: '#1F4E9C', neutral: '#BFBFBF', tone: 'trust' } };
+  assert.deepEqual(runRules(tone, t), []);
   assert.deepEqual(summarize([{ rule: 'a', severity: 'error' }, { rule: 'a', severity: 'error' }, { rule: 'b', severity: 'warn' }]), { errors: 2, byRule: { a: 2, b: 1 } });
+});
+
+test('cardRow: 同じ大きさの四角の横並びは違反。図解の中・大きさや位置が違うものは対象外', () => {
+  const card = (id, x, o = {}) => el({ id, type: 'shape', x, y: 2, w: 3.5, h: 3, ...o });
+  const row = model([slide([card('a', 0.5), card('b', 4.5), card('c', 8.5)])]);
+  assert.equal(q.checkCardRow(row, t).length, 1);
+  const two = model([slide([card('a', 0.5), card('b', 4.5)])]);
+  assert.equal(q.checkCardRow(two, t).length, 1);
+  const inDiagram = model([slide([card('a', 0.5, { diagram: true }), card('b', 4.5, { diagram: true })])]);
+  assert.equal(q.checkCardRow(inDiagram, t).length, 0);
+  const stacked = model([slide([card('a', 0.5), card('b', 0.5, { y: 5.5, h: 1 })])]);
+  assert.equal(q.checkCardRow(stacked, t).length, 0);
+  const child = model([slide([card('a', 0.5), card('b', 4.5, { parent: 'a' })])]);
+  assert.equal(q.checkCardRow(child, t).length, 0);
+});
+
+const accentText = (id, o = {}) => el({ id, color: '#1F4E9C', ...o });
+
+test('arrowTarget: 先端に対象がない矢印は違反。対象があるもの・安全領域の端で終わるものは通る', () => {
+  const arrow = (o = {}) => el({ id: 'ar', type: 'line', dir: 'right', arrow: true, x: 2, y: 2, w: 1, h: 0, ...o });
+  const target = el({ id: 'tg', x: 3.2, y: 1.8, w: 2, h: 0.6 });
+  const source = el({ id: 'src', x: 0.5, y: 1.8, w: 1.4, h: 0.6 });
+  assert.equal(q.checkArrowTarget(model([slide([source, arrow(), target])]), t).length, 0);
+  assert.equal(q.checkArrowTarget(model([slide([source, arrow()])]), t).length, 1);
+  assert.equal(q.checkArrowTarget(model([slide([source, arrow({ x: 11.5, w: 1.3 })])]), t).length, 0);
+  assert.equal(q.checkArrowTarget(model([slide([source, arrow({ arrow: false })])]), t).length, 0);
+});
+
+test('isolation: アクセント色が多すぎると違反。1 点なら通る', () => {
+  const plain = (i) => el({ id: `p${i}`, y: 1 + i * 0.5 });
+  const one = model([slide([accentText('a1'), ...[1, 2, 3, 4].map(plain)])]);
+  assert.equal(q.checkIsolation(one, t).length, 0);
+  const many = model([slide([accentText('a1'), accentText('a2', { y: 3 }), accentText('a3', { y: 4 }), plain(1), plain(2)])]);
+  assert.equal(q.checkIsolation(many, t).length, 1);
+  const cover = model([slide([accentText('a1'), accentText('a2', { y: 3 })], { layout: 'cover' })]);
+  assert.equal(q.checkIsolation(cover, t).length, 0);
+});
+
+test('zFlow: 最大の強調が左上にある、または右下が空なら警告', () => {
+  const topLeft = model([slide([accentText('a1', { x: 0.6, y: 1.5, w: 3, h: 1 }), el({ id: 'b', x: 8, y: 5, w: 4, h: 1 })])]);
+  assert.deepEqual(q.checkZFlow(topLeft, t).map((v) => v.severity), ['warning']);
+  const emptyBR = model([slide([accentText('a1', { x: 8, y: 1.5, w: 3, h: 1 }), el({ id: 'b', x: 1, y: 2, w: 3, h: 1 })])]);
+  assert.equal(q.checkZFlow(emptyBR, t).length, 1);
+  const ok = model([slide([accentText('a1', { x: 8, y: 5, w: 4, h: 1 }), el({ id: 'b', x: 1, y: 2, w: 3, h: 1 })])]);
+  assert.equal(q.checkZFlow(ok, t).length, 0);
+});
+
+test('colorTone: トーン未指定は警告、色相が合わなければ error', () => {
+  const m = (theme) => ({ ...model([]), theme: { accent: '#1F4E9C', neutral: '#BFBFBF', ...theme } });
+  assert.equal(q.checkColorTone(m({}), t)[0].severity, 'warning');
+  assert.deepEqual(q.checkColorTone(m({ tone: 'trust' }), t), []);
+  assert.equal(q.checkColorTone(m({ tone: 'alert' }), t)[0].severity, 'error');
+  assert.deepEqual(q.checkColorTone(m({ tone: 'alert', accent: '#C0392B' }), t), []);
+  assert.deepEqual(q.checkColorTone(m({ tone: 'neutral' }), t), []);
+  assert.equal(q.checkColorTone(m({ tone: 'zzz' }), t)[0].severity, 'error');
+});
+
+test('numberCompare: 同じ単位の数字が 3 つ以上あるのにチャートがなければ違反。チャート・data-numbers があれば通る', () => {
+  const nums = ['3,200万円', '2,500万円', '2,200万円'].map((x, i) => el({ id: `n${i}`, y: 1 + i, text: x }));
+  assert.equal(q.checkNumberCompare(model([slide(nums)]), t).length, 1);
+  assert.equal(q.checkNumberCompare(model([slide([...nums, el({ id: 'c', type: 'chart', role: '', chart: { type: 'bar' } })])]), t).length, 0);
+  assert.equal(q.checkNumberCompare(model([slide(nums, { numbers: 'visual' })]), t).length, 0);
+  assert.equal(q.checkNumberCompare(model([slide(nums, { numbers: 'text' })]), t).length, 0);
+  assert.equal(q.checkNumberCompare(model([slide(nums, { layout: 'cover' })]), t).length, 0);
+  const mixed = ['3,200万円', '800台', '5年'].map((x, i) => el({ id: `m${i}`, y: 1 + i, text: x }));
+  assert.equal(q.checkNumberCompare(model([slide(mixed)]), t).length, 0);
+  const same = ['100万円', '100万円', '100万円'].map((x, i) => el({ id: `s${i}`, y: 1 + i, text: x }));
+  assert.equal(q.checkNumberCompare(model([slide(same)]), t).length, 0);
+});
+
+test('effectBeforeAfter: 効果を謳うタイトルに、前と後の対がなければ違反', () => {
+  const t1 = (text, o = {}) => el({ id: 'title', role: 'title', text, fontPt: 28, ...o });
+  const txt = (id, text) => el({ id, text, y: 2 });
+  assert.equal(q.checkEffectBeforeAfter(model([slide([t1('回答時間を半分に短縮できる'), txt('a', '見積を作る')])]), t).length, 1);
+  assert.equal(q.checkEffectBeforeAfter(model([slide([t1('回答時間を半分に短縮できる'), txt('a', '導入前'), txt('b', '導入後')])]), t).length, 0);
+  assert.equal(q.checkEffectBeforeAfter(model([slide([t1('費用を削減できる'), txt('a', '現状維持'), txt('b', '移行後')])]), t).length, 0);
+  const chart = el({ id: 'c', type: 'chart', role: '', chart: { type: 'bar', labels: ['現状（5年）', '移行後（5年）'], values: [3, 0] } });
+  assert.equal(q.checkEffectBeforeAfter(model([slide([t1('費用を削減できる'), chart])]), t).length, 0);
+  assert.equal(q.checkEffectBeforeAfter(model([slide([t1('費用を削減できる'), txt('a', '見積')], { effect: 'none' })]), t).length, 0);
+  assert.equal(q.checkEffectBeforeAfter(model([slide([t1('市場の見通し'), txt('a', '見積')])]), t).length, 0);
+  assert.equal(q.checkEffectBeforeAfter(model([slide([t1('費用を削減できる')], { layout: 'cover' })]), t).length, 0);
+});
+
+test('chartBreakdown: 「内訳」があるのに積み上げでないグラフは違反', () => {
+  const txt = el({ id: 'a', text: '内訳は次のとおり', y: 2 });
+  const chart = (type, extra = {}) => el({ id: 'c', type: 'chart', role: '', chart: { type, labels: ['a'], values: [1], ...extra } });
+  assert.equal(q.checkChartBreakdown(model([slide([txt, chart('bar')])]), t).length, 1);
+  assert.equal(q.checkChartBreakdown(model([slide([txt, chart('stackedh', { series: [{ name: 'x', values: [1] }] })])]), t).length, 0);
+  assert.equal(q.checkChartBreakdown(model([slide([txt, chart('bar')], { breakdown: 'none' })]), t).length, 0);
+  assert.equal(q.checkChartBreakdown(model([slide([el({ id: 'b', text: '概要', y: 2 }), chart('bar')])]), t).length, 0);
+});
+
+test('chartDiff: 前後を比べるグラフは、差額を数字の注記で示す', () => {
+  const chart = el({ id: 'c', type: 'chart', role: '', chart: { type: 'stacked', labels: ['現状維持', '移行後'], series: [{ name: '費用', values: [5, 0] }] } });
+  const note = (text) => el({ id: 'n', text, y: 2 });
+  assert.equal(q.checkChartDiff(model([slide([chart])]), t).length, 1);
+  assert.equal(q.checkChartDiff(model([slide([chart, note('費用の説明')])]), t).length, 1);
+  assert.equal(q.checkChartDiff(model([slide([chart, note('差額 ▲5,800万円')])]), t).length, 0);
+  assert.equal(q.checkChartDiff(model([slide([chart, note('▲5,800万円')])]), t).length, 0);
+  assert.equal(q.checkChartDiff(model([slide([chart], { diff: 'none' })]), t).length, 0);
+  const other = el({ id: 'c', type: 'chart', role: '', chart: { type: 'bar', labels: ['A社', 'B社'], values: [1, 2] } });
+  assert.equal(q.checkChartDiff(model([slide([other])]), t).length, 0);
 });

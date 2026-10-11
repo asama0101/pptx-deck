@@ -22,7 +22,7 @@ function run(args, env = {}) {
 test('init: 作業フォルダに見本一式をコピーする', () => {
   const r = run(['init', work]);
   assert.equal(r.status, 0, r.stderr);
-  for (const f of ['base.css', 'chart-preview.js', 'catalog.html']) assert.ok(fs.existsSync(path.join(work, f)), f);
+  for (const f of ['base.css', 'chart-preview.js', 'catalog.html', 'diagrams.html', 'charts.html']) assert.ok(fs.existsSync(path.join(work, f)), f);
 });
 
 test('check: 見本カタログは違反 0 件で合格する', () => {
@@ -33,9 +33,19 @@ test('check: 見本カタログは違反 0 件で合格する', () => {
   assert.ok(r.json.font.name);
 });
 
+test('check: 図解・チャートの見本集は、警告を含めて違反 0 件で合格する', () => {
+  for (const f of ['diagrams.html', 'charts.html']) {
+    const r = run(['check', path.join(work, f)]);
+    assert.equal(r.status, 0, `${f}
+${r.stdout}
+${r.stderr}`);
+    assert.deepEqual(r.json.violations, [], f);
+  }
+});
+
 test('check: 違反のある HTML は終了コード 2 と、修正の提案を返す', () => {
   const html = fs.readFileSync(path.join(work, 'catalog.html'), 'utf8')
-    .replace('data-role="body" style="margin-top:12px">商談化率が既存深耕の1.8倍。人員を2名追加して、訪問件数を増やす。', 'data-role="body" style="margin-top:12px;font-size:10px">商談化率');
+    .replace('data-role="body" style="left:0;top:108px;width:460px">訪問件数を増やす。', 'data-role="body" style="left:0;top:108px;width:460px;font-size:10px">訪問件数');
   const bad = path.join(work, 'bad.html');
   fs.writeFileSync(bad, html);
   const r = run(['check', bad, '--attempt', '0']);
@@ -45,6 +55,21 @@ test('check: 違反のある HTML は終了コード 2 と、修正の提案を�
   assert.ok(r.json.suggestion.action);
 });
 
+test('check: 何も指さない矢印・アクセント色だらけの HTML は、実際の DOM 計測でも検出する', () => {
+  const html = fs.readFileSync(path.join(work, 'catalog.html'), 'utf8')
+    .replace('</body>', '<section class="slide" data-layout="content"><p class="pp-text" data-role="title">矢印の確認</p>'
+      + '<div class="pp-line" data-dir="right" data-arrow="end" style="position:absolute;left:100px;top:400px;width:60px"></div>'
+      + ['a', 'b', 'c'].map((k, i) => `<p class="pp-text acc" data-role="body" style="position:absolute;left:${300 + i * 200}px;top:300px;width:180px;color:var(--accent)">${k}</p>`).join('')
+      + '</section></body>');
+  const f = path.join(work, 'arrow.html');
+  fs.writeFileSync(f, html);
+  const r = run(['check', f]);
+  assert.equal(r.status, 2);
+  const rules = r.json.violations.map((v) => v.rule);
+  assert.ok(rules.includes('arrowTarget'), rules.join());
+  assert.ok(rules.includes('isolation'), rules.join());
+});
+
 test('build: 合格した HTML から PPTX を作り、検証し、(LibreOffice があれば) 画像化する', { skip: !findSoffice() }, () => {
   const out = path.join(work, 'catalog.pptx');
   const r = run(['build', path.join(work, 'catalog.html'), out, '--work', work]);
@@ -52,7 +77,7 @@ test('build: 合格した HTML から PPTX を作り、検証し、(LibreOffice 
   assert.equal(r.json.ok, true);
   assert.ok(fs.existsSync(out));
   assert.deepEqual(r.json.packageErrors, []);
-  assert.equal(r.json.pngs.length, 7);
+  assert.equal(r.json.pngs.length, 10);
 });
 
 test('build: HTML 段階で違反があれば PPTX を作らない', () => {

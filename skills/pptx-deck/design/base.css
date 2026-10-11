@@ -32,6 +32,8 @@ section.slide {
 .pp-text[data-role="lead"] { font-size: calc(20 * var(--pt)); font-weight: 700; line-height: 1.4; }
 .pp-text[data-role="body"] { font-size: calc(16 * var(--pt)); line-height: 1.5; }
 .pp-text[data-role="caption"] { font-size: calc(11 * var(--pt)); color: var(--sub); line-height: 1.4; }
+/* 大きな数字・式。タイトルより大きくてよい(階層検査の対象外) */
+.pp-text[data-role="display"] { font-size: calc(36 * var(--pt)); font-weight: 700; line-height: 1.2; }
 /* タイトルは常に同じ位置(titleAlign の対策) */
 section.slide > .pp-text[data-role="title"] { position: absolute; left: 56px; top: 40px; width: 1168px; }
 

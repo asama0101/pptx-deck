@@ -6,7 +6,8 @@ const { pathToFileURL, fileURLToPath } = require('node:url');
 const { chromium } = require('playwright');
 const { SLIDE_W_IN, SLIDE_H_IN } = require('./lib/units');
 
-const CHART_TYPES = ['bar', 'barh', 'line', 'pie'];
+const CHART_TYPES = ['bar', 'barh', 'line', 'pie', 'stacked', 'stackedh', 'stacked100', 'area', 'cumulative'];
+const STACKED_TYPES = ['stacked', 'stackedh', 'stacked100', 'area'];
 
 // ブラウザ内で実行される。外側のスコープを参照しないこと。
 function extractInPage({ safety }) {
@@ -48,6 +49,8 @@ function extractInPage({ safety }) {
   const theme = {
     accent: root.getPropertyValue('--accent').trim().toUpperCase(),
     neutral: root.getPropertyValue('--neutral-chart').trim().toUpperCase(),
+    tone: (document.body.dataset.tone || '').trim(),
+    sample: document.body.hasAttribute('data-sample'),
   };
   const slides = [];
   document.querySelectorAll('section.slide').forEach((sec, si) => {
@@ -55,6 +58,10 @@ function extractInPage({ safety }) {
     const slide = {
       index: si + 1,
       layout: sec.dataset.layout || 'content',
+      numbers: sec.dataset.numbers || '',
+      effect: sec.dataset.effect || '',
+      breakdown: sec.dataset.breakdown || '',
+      diff: sec.dataset.diff || '',
       bg: toHex(getComputedStyle(sec).backgroundColor) || '#FFFFFF',
       notes: (sec.querySelector('aside.notes') || {}).textContent || '',
       size: [Math.round(sr.width), Math.round(sr.height)],
@@ -178,7 +185,14 @@ async function measureHtml(htmlPath, { fontName, thresholds, channel, rasterDir 
           let spec;
           try { spec = JSON.parse(e.chartRaw); } catch (err) { throw new Error(`スライド ${s.index}: data-chart が不正な JSON: ${err.message}`); }
           if (!CHART_TYPES.includes(spec.type)) throw new Error(`スライド ${s.index}: チャートの型 "${spec.type}" は未対応(${CHART_TYPES.join('/')})`);
-          if (!Array.isArray(spec.labels) || !Array.isArray(spec.values) || spec.labels.length !== spec.values.length || spec.values.some((v) => typeof v !== 'number')) {
+          if (STACKED_TYPES.includes(spec.type)) {
+            if (!Array.isArray(spec.labels) || !Array.isArray(spec.series) || !spec.series.length
+              || spec.series.some((x) => !x || typeof x.name !== 'string' || !Array.isArray(x.values) || x.values.length !== spec.labels.length || x.values.some((v) => typeof v !== 'number'))) {
+              throw new Error(`スライド ${s.index}: 積み上げ棒・面の data-chart は、labels と、name・values を持つ series（values は labels と同じ長さの数値）にする`);
+            }
+          } else if (spec.type === 'cumulative' && Array.isArray(spec.values) && spec.values.some((v, i) => i > 0 && v < spec.values[i - 1])) {
+            throw new Error(`スライド ${s.index}: 累計の棒(cumulative)の values は、前の値以上(増えるだけ)にする`);
+          } else if (!Array.isArray(spec.labels) || !Array.isArray(spec.values) || spec.labels.length !== spec.values.length || spec.values.some((v) => typeof v !== 'number')) {
             throw new Error(`スライド ${s.index}: data-chart の labels と values は同じ長さで、values は数値にする`);
           }
           e.chart = { labelPt: 12, ...spec };
@@ -196,7 +210,7 @@ async function measureHtml(htmlPath, { fontName, thresholds, channel, rasterDir 
         }
         elements.push(e);
       }
-      slides.push({ index: s.index, layout: s.layout, bg: s.bg, notes: s.notes, unmeasured: s.unmeasured, elements });
+      slides.push({ index: s.index, layout: s.layout, numbers: s.numbers, effect: s.effect, breakdown: s.breakdown, diff: s.diff, bg: s.bg, notes: s.notes, unmeasured: s.unmeasured, elements });
     }
     return { slideW: SLIDE_W_IN, slideH: SLIDE_H_IN, fontFace: fontName || 'BIZ UDPゴシック', theme: raw.theme, slides };
   } finally {
