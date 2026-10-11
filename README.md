@@ -37,4 +37,4 @@ npm test
 - このフォルダを OneDrive の配下に置くと、同期の競合で `.git` が壊れることがある。壊れたときは、リモートから取り直す。
 - PPTX の検証は、XML の整形式、`[Content_Types].xml`、チャートの軸 ID の宣言に絞っている（スキーマ(XSD)検証はしない）。
 - テンプレ（.pptx/.potx）への流し込み、既存 PPTX の修正は未対応。
-- ライセンスは未決定（公開前に決める）。
+- ライセンスは MIT（`LICENSE`）。フォントは同梱していない。依存（pptxgenjs=MIT、playwright=Apache-2.0、jszip、fast-xml-parser=MIT）はそれぞれのライセンスに従う。
