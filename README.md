@@ -2,12 +2,48 @@
 
 テーマまたは原稿から、PowerPoint で編集できる .pptx を作る Claude Code スキル（プラグイン構成）。Windows 専用。
 
-## できること
+## 概要
 
-- 構成案 → 原稿 → HTML プレビュー → PPTX の順に、承認を取りながら進める。
-- 本文を画像にせず、ネイティブの図形・テキスト・チャートで出力する。
-- はみ出し・重なり・最小フォントサイズ・コントラスト・AIっぽさ（単調さ・色数・余白など）を自動で検査する。
-- LibreOffice があれば、PPTX を画像化して崩れを目視確認する。
+「スライドを作って」と頼むと、Claude が構成案 → 原稿 → HTML プレビュー → PPTX の順に、承認を取りながら進める。HTML で体裁を検査して合格させてから PPTX にするので、はみ出し・重なり・AI っぽい単調さを、出力前に潰せる。
+
+- 本文を画像にせず、ネイティブの図形・テキスト・チャートで出力する（PowerPoint で編集できる）。
+- 13.33×7.5in（16:9）、BIZ UDPゴシック、無彩色＋アクセント 1 色。
+- 既存 PPTX の修正と、テンプレ（.pptx/.potx）への流し込みには使わない。
+
+## 進め方
+
+| 段階 | 内容 | 承認 |
+|---|---|---|
+| 1. 入力の確認 | テーマのみか原稿ありか。対象者・目的・枚数を確認し、伝えたい性質から**トーン（アクセント色）**を決める | |
+| 2. 構成案 | スライド一覧と各スライドで言い切るメッセージ（テーマのみの場合だけ） | 承認 |
+| 3. 原稿 | 見出し・本文・図解/グラフの型と理由・ノート。2 枚目は必ずサマリ。論理・抜け漏れ・読み手の視点で内容レビューしてから示す | 承認①（内容を凍結） |
+| 4. HTML プレビュー | `deck.html` を書き、`check` に合格させてからブラウザで見せる | 承認② |
+| 5. PPTX 出力 | `build` で PPTX を出し、出力後検査と画像化を行う | |
+| 6. 報告 | 検査結果と目視所見を伝える。PowerPoint での最終確認を勧める | |
+
+作業物（構成案・原稿・HTML・検査結果・画像）は `deck-work/<名前>/` にまとまり、途中から再開できる。
+
+## 自動検査
+
+`check`（HTML）と `build`（PPTX 出力後）が、JSON で違反と次の一手（`suggestion`）を返す。`error` は不合格、`warning` は合否に影響しない。
+
+| 分類 | 主な検査 |
+|---|---|
+| 幾何 | 安全余白、はみ出し、重なり、折り返しの安定（`wrapStable`）、タイトル位置 |
+| 文字 | 最小フォントサイズ、タイトルと本文の差（4pt 以上）、コントラスト比 4.5:1 以上 |
+| AI っぽさ | 同じ大きさのカードの横並び（`cardRow`）、同一レイアウトの連続、色数、余白の使用率 |
+| 内容の見せ方 | 数字の比較はグラフにする（`numberCompare`）、内訳は積み上げ（`chartBreakdown`）、差額は注記（`chartDiff`）、効果を謳うなら before/after（`effectBeforeAfter`） |
+| 視線設計 | 矢印は強調対象にだけ向ける（`arrowTarget`）、強調は 1 点に絞る（`isolation`）、右下を空けない（`zFlow`）、アクセント色が伝えたい性質に合う（`colorTone`） |
+
+違反は自動修正（余白縮小 → 行間 → フォント縮小、最大 3 回）で直し、それでも収まらないときはスライド分割案・文章の削減案を示して承認を得る。
+
+## 作れるもの
+
+- **レイアウト**: `cover`・`section`・`content`・`diagram`・`chart`・`closing`。
+- **図解**（`design/diagrams.html` に見本）: フロー（横・縦）、サイクル、ビフォーアフター、ツリー、ピラミッド、放射、マトリクス、数式、項目比較、規模比較、TAM-SAM-SOM、階段、ガントチャート。矩形・角丸矩形・円・直線矢印・テキストだけで描く。斜め線や六角形が要る図（地図・ハニカム・ベン図など）は作れない。
+- **チャート**（`design/charts.html` に見本）: `bar`・`barh`・`line`・`pie`・`stacked`・`stackedh`・`stacked100`・`area`・`cumulative`。データの関係から型を選ぶ。注目データだけアクセント色、他は無彩色。
+- **トーン**: `trust`・`growth`・`alert`・`energy`・`premium`・`neutral`。`data-tone` に宣言し、アクセント色の色相と合わないと不合格にする。
+- 設計の考え方は `skills/pptx-deck/references/design-guide.md`（視線設計と色彩心理、グラフ・図解の選び方、効果と内訳・差額の見せ方）。
 
 ## 必要なもの
 
@@ -18,23 +54,52 @@
 
 ## 使い方
 
+通常は Claude Code から「スライドを作って」「資料を作って」と頼む（`skills/pptx-deck/SKILL.md` の手順に従う）。コマンドを直接使うときは次のとおり。
+
 ```bash
 cd skills/pptx-deck
 npm install
-node scripts/run.js doctor          # 環境診断
-node scripts/run.js init deck-work/sample
+node scripts/run.js doctor                 # 環境診断
+node scripts/run.js init deck-work/sample  # 作業フォルダに base.css と見本をコピー
 node scripts/run.js check deck-work/sample/catalog.html
 node scripts/run.js build deck-work/sample/catalog.html deck-work/sample/catalog.pptx --work deck-work/sample
+node scripts/run.js verify deck-work/sample/catalog.pptx           # PPTX だけを検査
+node scripts/run.js render deck-work/sample/catalog.pptx deck-work/sample/render  # 画像化
 npm test
 ```
 
-通常は Claude Code から「スライドを作って」と頼む（`skills/pptx-deck/SKILL.md` の手順に従う）。
+| コマンド | 役割 |
+|---|---|
+| `doctor` | Node・Edge・フォント・LibreOffice・pymupdf の診断 |
+| `init` | 作業フォルダの作成と、CSS・プレビュー用 JS・見本 3 種のコピー |
+| `check` | HTML の計測と検査（`--attempt N` で自動修正の回数を渡す） |
+| `build` | HTML → PPTX、出力後検査、画像化 |
+| `verify` | 既存 PPTX の検査 |
+| `render` | PPTX を LibreOffice で PNG にする |
+
+## 構成
+
+```
+.claude-plugin/plugin.json      プラグイン定義
+skills/pptx-deck/
+  SKILL.md                      Claude への手順書
+  references/design-guide.md    設計ガイド
+  design/                       base.css と見本（catalog・diagrams・charts）
+  scripts/                      run.js（CLI）、measure・build・render、rules/（検査）
+  config/thresholds.json        検査のしきい値
+  samples/                      受入サンプルと expected.json
+  tests/                        npm test
+docs/specs/                     仕様（SPEC）
+```
 
 ## 注意
 
 - 画像化は LibreOffice による近似で、PowerPoint の表示と完全には一致しない。最終確認は PowerPoint で行う。
+- チャートの HTML プレビューも近似。
 - フォントは同梱しない。BIZ UDPゴシックがない環境では代替フォントになり、折り返しが変わることがある。
 - このフォルダを OneDrive の配下に置くと、同期の競合で `.git` が壊れることがある。壊れたときは、リモートから取り直す。
 - PPTX の検証は、XML の整形式、`[Content_Types].xml`、チャートの軸 ID の宣言に絞っている（スキーマ(XSD)検証はしない）。
+- 写真素材は自動で集めない。画像は利用者が渡したものとアイコン（SVG）だけ。
+- 第 2 軸・ウォーターフォール・3D のチャートは使わない。
 - テンプレ（.pptx/.potx）への流し込み、既存 PPTX の修正は未対応。
 - ライセンスは MIT（`LICENSE`）。フォントは同梱していない。依存（pptxgenjs=MIT、playwright=Apache-2.0、jszip、fast-xml-parser=MIT）はそれぞれのライセンスに従う。
