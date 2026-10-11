@@ -35,3 +35,8 @@ test('PPTX を PDF と PNG にできる（日本語・空白を含むパスで�
 test('存在しない PPTX は分かりやすいエラーにする', { skip: !soffice }, () => {
   assert.throws(() => renderPptx('C:\\no\\such\\file.pptx', os.tmpdir()), /見つからない/);
 });
+
+test('変換失敗時に、利用者の LibreOffice を巻き込むイメージ名指定の強制終了をしない', () => {
+  const src = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'render.js'), 'utf8');
+  assert.doesNotMatch(src, /taskkill/);
+});

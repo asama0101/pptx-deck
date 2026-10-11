@@ -67,6 +67,13 @@ function extractInPage({ safety }) {
       ids.set(el, id);
       el.setAttribute('data-pp-id', id);
     });
+    // pp-* の外にある文字は PPTX に出ない。クラスの付け忘れや <p> の中の <ul> を見逃さない
+    slide.unmeasured = [];
+    const walker = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT);
+    for (let tn = walker.nextNode(); tn; tn = walker.nextNode()) {
+      const txt = tn.textContent.trim();
+      if (txt && !tn.parentElement.closest('.pp-text, .pp-chart, aside.notes, script, style')) slide.unmeasured.push(txt.slice(0, 20));
+    }
     nodes.forEach((el) => {
       const cs = getComputedStyle(el);
       const r = el.getBoundingClientRect();
@@ -81,7 +88,7 @@ function extractInPage({ safety }) {
         x: r4((r.left - sr.left) / PX), y: r4((r.top - sr.top) / PX), w: r4(r.width / PX), h: r4(r.height / PX),
       };
       if (type === 'text') {
-        const blocks = [...el.querySelectorAll(':scope > p, :scope > li, :scope > ul > li, :scope > ol > li')];
+        const blocks = [...el.querySelectorAll(':scope > p, :scope li')];
         const sources = blocks.length ? blocks : [el];
         e.paras = sources.map((src) => ({ runs: collectRuns(src), bullet: src.tagName === 'LI' }));
         e.text = e.paras.map((p) => p.runs.map((x) => (x.br ? '\n' : x.text)).join('')).join('\n');
@@ -188,7 +195,7 @@ async function measureHtml(htmlPath, { fontName, thresholds, channel, rasterDir 
         }
         elements.push(e);
       }
-      slides.push({ index: s.index, layout: s.layout, bg: s.bg, notes: s.notes, elements });
+      slides.push({ index: s.index, layout: s.layout, bg: s.bg, notes: s.notes, unmeasured: s.unmeasured, elements });
     }
     return { slideW: SLIDE_W_IN, slideH: SLIDE_H_IN, fontFace: fontName || 'BIZ UDPゴシック', theme: raw.theme, slides };
   } finally {

@@ -12,8 +12,8 @@ const root = fs.mkdtempSync(path.join(os.tmpdir(), 'pptx-deck-cli-'));
 after(() => fs.rmSync(root, { recursive: true, force: true }));
 const work = path.join(root, 'deck-work', '日本語 名前'); // 日本語と空白を含む作業フォルダ
 
-function run(args) {
-  const r = spawnSync('node', [RUN, ...args], { encoding: 'utf8', timeout: 300000 });
+function run(args, env = {}) {
+  const r = spawnSync('node', [RUN, ...args], { encoding: 'utf8', timeout: 300000, env: { ...process.env, ...env } });
   let json = null;
   try { json = JSON.parse(r.stdout); } catch { /* 標準出力が JSON でない場合は null */ }
   return { status: r.status, json, stdout: r.stdout, stderr: r.stderr };
@@ -67,4 +67,15 @@ test('doctor: 必須項目の結果を一覧で出す', () => {
   assert.match(r.stdout, /\[(OK|NG)\] Node/);
   assert.match(r.stdout, /Edge/);
   assert.match(r.stdout, /フォント/);
+});
+
+test('build: 画像化に失敗しても(PyMuPDF なし)検査結果は返し、理由を renderNote に書く', { skip: !findSoffice() }, () => {
+  const out = path.join(work, 'norender.pptx');
+  const r = run(['build', path.join(work, 'catalog.html'), out, '--work', work], { PYTHON: 'no-such-python-for-test' });
+  assert.equal(r.status, 0, `${r.stdout}
+${r.stderr}`);
+  assert.equal(r.json.ok, true);
+  assert.ok(!r.json.pngs);
+  assert.match(r.json.renderNote, /画像化に失敗/);
+  assert.ok(fs.existsSync(path.join(work, 'report.json')));
 });

@@ -39,7 +39,6 @@ function convertToPdf(pptxPath, outDir) {
     { encoding: 'utf8', timeout: 180000, killSignal: 'SIGKILL' },
   );
   if (r.error || r.status !== 0) {
-    spawnSync('taskkill', ['/F', '/IM', 'soffice.bin'], { encoding: 'utf8' });
     throw new Error(`LibreOffice の変換に失敗した(180 秒で打ち切り): ${r.error ? r.error.message : r.stderr}`);
   }
   const pdf = path.join(outDir, path.basename(pptxPath).replace(/\.pptx$/i, '.pdf'));

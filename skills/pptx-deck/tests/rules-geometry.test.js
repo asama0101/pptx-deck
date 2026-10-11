@@ -90,3 +90,9 @@ test('htmlOnly: overflow と wrapStable=false を検出する', () => {
 test('all: 空のスライドでもクラッシュしない', () => {
   assert.deepEqual(g.all(model([slide([])]), t), []);
 });
+
+test('htmlOnly: 計測されなかった文字(unmeasured)を違反にする', () => {
+  const m = model([slide([el({ id: 'a' })], { unmeasured: ['クラスなしの段落'] })]);
+  const v = g.htmlOnly(m, t);
+  assert.ok(v.some((x) => x.rule === 'unmeasured' && /クラスなしの段落/.test(x.message)));
+});

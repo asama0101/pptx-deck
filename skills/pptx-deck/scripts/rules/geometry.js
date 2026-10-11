@@ -150,6 +150,14 @@ function checkWrapStable(model, t) {
   return out;
 }
 
+function checkUnmeasured(model) {
+  const out = [];
+  for (const s of model.slides) {
+    for (const txt of s.unmeasured || []) out.push(viol('unmeasured', s, null, `pp-* の外にある文字は PPTX に出ない: 「${txt}」(pp-text を付ける。箇条書きは <p> でなく <div class="pp-text"> に <ul> を入れる)`));
+  }
+  return out;
+}
+
 function all(model, t) {
   return [
     ...checkBounds(model, t), ...checkOverlap(model, t), ...checkMinFont(model, t),
@@ -158,9 +166,9 @@ function all(model, t) {
 }
 
 function htmlOnly(model, t) {
-  return [...checkOverflow(model, t), ...checkWrapStable(model, t)];
+  return [...checkOverflow(model, t), ...checkWrapStable(model, t), ...checkUnmeasured(model)];
 }
 
 module.exports = {
-  all, htmlOnly, checkBounds, checkOverlap, checkMinFont, checkHierarchy, checkContrast, checkImages, checkOverflow, checkWrapStable,
+  all, htmlOnly, checkBounds, checkOverlap, checkMinFont, checkHierarchy, checkContrast, checkImages, checkOverflow, checkWrapStable, checkUnmeasured,
 };

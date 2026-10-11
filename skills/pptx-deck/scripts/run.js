@@ -80,8 +80,12 @@ async function main() {
       };
       if (!opt['no-render'] && findSoffice()) {
         const dir = path.join(opt.work || path.dirname(path.resolve(b)), 'render');
-        out.pngs = renderPptx(b, dir).pngs;
-        out.renderNote = 'LibreOffice による近似の画像。PowerPoint で開いて最終確認することを勧める';
+        try {
+          out.pngs = renderPptx(b, dir).pngs;
+          out.renderNote = 'LibreOffice による近似の画像。PowerPoint で開いて最終確認することを勧める';
+        } catch (e) {
+          out.renderNote = `画像化に失敗した(検査結果は有効): ${e.message.split('\n')[0]}`;
+        }
       } else if (!opt['no-render']) {
         out.renderNote = 'LibreOffice が未導入のため画像化を省略した(幾何検査のみ)';
       }

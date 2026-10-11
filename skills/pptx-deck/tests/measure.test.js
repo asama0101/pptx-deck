@@ -91,3 +91,22 @@ test('data-chart が壊れた JSON、または未対応の型ならスライド�
 test('スライドが 1280x720px でなければ明示エラー', async () => {
   await assert.rejects(measureHtml(page('<section class="slide" style="width:800px"></section>', 'size'), { thresholds: t, rasterDir: root }), /1280x720/);
 });
+
+test('unmeasured: pp-* の外にある文字(クラスの付け忘れ、<p> の中の <ul>)は検出する', async () => {
+  const file = page(
+    `<section class="slide"><p>クラスを付け忘れた段落です。</p>
+     <p class="pp-text" data-role="body" style="position:absolute;left:56px;top:300px;width:600px"><ul><li>pの中のリスト</li></ul></p></section>`, 'unmeasured');
+  const m = await measureHtml(file, { fontName: 'BIZ UDPゴシック', thresholds: t, rasterDir: root });
+  const un = m.slides[0].unmeasured;
+  assert.ok(un.some((x) => x.includes('クラスを付け忘れた')), JSON.stringify(un));
+  assert.ok(un.some((x) => x.includes('pの中のリスト')), JSON.stringify(un));
+});
+
+test('入れ子の箇条書きは、親も子も段落として落とさない', async () => {
+  const file = page(
+    `<section class="slide"><div class="pp-text" data-role="body" style="position:absolute;left:56px;top:100px;width:600px"><ul><li>親項目<ul><li>子項目</li></ul></li><li>次の親</li></ul></div></section>`, 'nested');
+  const m = await measureHtml(file, { fontName: 'BIZ UDPゴシック', thresholds: t, rasterDir: root });
+  const texts = m.slides[0].elements[0].paras.map((p) => p.runs.map((r) => r.text).join(''));
+  assert.deepEqual(texts, ['親項目', '子項目', '次の親']);
+  assert.deepEqual(m.slides[0].unmeasured, []);
+});

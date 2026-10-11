@@ -29,3 +29,15 @@ test('枚数が範囲内で違反がなければ合格、範囲外・違反あ�
   assert.equal(r.ok, false);
   assert.match(r.failures.join('\n'), /minFont/);
 });
+
+test('HTML を渡すと、AIっぽさの客観チェック(HTML 段階のルール)も判定に含める', async () => {
+  const file = path.join(root, 'c.pptx');
+  await buildPptx(model([slide([text({ id: 's1-e1', x: 1, y: 2 })])]), file);
+  const css = require('node:url').pathToFileURL(path.join(__dirname, '..', 'design', 'base.css')).href;
+  const html = path.join(root, 'tiny.html');
+  fs.writeFileSync(html, `<!doctype html><html lang="ja"><head><meta charset="utf-8"><link rel="stylesheet" href="${css}"></head><body><section class="slide" data-layout="content"><p class="pp-text" data-role="body" style="position:absolute;left:56px;top:300px;width:600px;font-size:10px">小さい文字</p></section></body></html>`);
+  assert.equal((await acceptanceCheck(file, 1, 1, t)).ok, true);
+  const r = await acceptanceCheck(file, 1, 1, t, { html });
+  assert.equal(r.ok, false);
+  assert.match(r.failures.join('\n'), /HTML.*minFont/);
+});

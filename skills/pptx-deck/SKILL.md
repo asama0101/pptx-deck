@@ -37,6 +37,8 @@ description: テーマや原稿から、編集可能で AI っぽくない Power
 - 1 枚 = `<section class="slide" data-layout="…">`。`data-layout` は `cover | section | content | diagram | chart | closing`。同じレイアウトを 3 枚以上連続させない。10 枚以上なら図解かグラフを 2 枚以上入れる。
 - 使う要素は `pp-text`（`data-role` = `title | lead | body | caption`）、`pp-shape`（`.card` など）、`pp-line`（`data-dir` = `right | left | down | up`、`data-arrow="end"`）、`pp-image`（`alt` 必須。`data-role` = `icon | photo`）、`pp-chart`（`data-chart` に JSON）。それ以外は計測されず、PPTX に出ない。
 - **テキストは必ず幅を持たせる**（ブロックとして親に stretch、または `width` 指定）。幅が内容ぴったりだと PowerPoint で折り返しが変わる。`check` の `wrapStable` が検出する。
+- 箇条書きは `<div class="pp-text" data-role="body"><ul><li>…</li></ul></div>` と書く。`<p class="pp-text">` の中に `<ul>` は入れられない（HTML の仕様で `<p>` が閉じ、文字が PPTX から消える。`check` が `unmeasured` で検出する）。
+- `pp-*` クラスのない要素の文字は PPTX に出ない。
 - カードの中の文字は、DOM でもカードの子にする（子は親に含まれていれば重なり扱いにならない）。
 - 見出しの改行位置を固定したいときだけ `data-fixed` を付け、`<br>` で改行する。
 - タイトルは 1 枚 1 つ、`section.slide` の直下。全角 30 字以内（2 行までなら可）。末尾に句点を付けない。
@@ -63,7 +65,7 @@ description: テーマや原稿から、編集可能で AI っぽくない Power
 
 ## 5. 守ること
 
-- 本文を画像にしない。アイコン以外の画像には `alt` を付ける。
+- 本文を画像にしない。すべての画像（アイコンを含む）に `alt` を付ける。
 - 原稿の承認後は、承認なしで内容を変えない。
 - LibreOffice の画像は近似にすぎない。「PowerPoint で開いて確認してください」と必ず伝える。
 - エラーが出たら、原因と対処を示して止まる。推測で別の方法に切り替えない。
