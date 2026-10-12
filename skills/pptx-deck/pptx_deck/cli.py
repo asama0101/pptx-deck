@@ -128,6 +128,17 @@ def cmd_finalize(args) -> int:
     return 0
 
 
+def cmd_review_final(args) -> int:
+    from . import variants
+    mds = [Path(p).read_text(encoding="utf-8") for p in args.answers]
+    try:
+        print(variants.review_final(Path(args.workdir), mds, allow_comments=args.allow_comments))
+    except ValueError as e:
+        print(f"エラー:\n{e}", file=sys.stderr)
+        return 2
+    return 0
+
+
 def cmd_lint_script(args) -> int:
     from . import script_lint
     problems = script_lint.lint(Path(args.script).read_text(encoding="utf-8"))
@@ -174,6 +185,11 @@ def main(argv: list[str]) -> int:
                    help="回答の Markdown。回ごとに複数回指定できる（後の回答が前の回答を上書きする）")
     p.add_argument("--allow-comments", action="store_true")
     p.set_defaults(fn=cmd_finalize)
+    p = sub.add_parser("review-final")
+    p.add_argument("workdir")
+    p.add_argument("--answers", required=True, action="append", help="finalize と同じ回答の Markdown（回ごとに複数回指定できる）")
+    p.add_argument("--allow-comments", action="store_true")
+    p.set_defaults(fn=cmd_review_final)
     p = sub.add_parser("lint-script")
     p.add_argument("script")
     p.set_defaults(fn=cmd_lint_script)

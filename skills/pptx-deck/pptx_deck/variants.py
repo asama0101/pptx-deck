@@ -1,4 +1,7 @@
-"""3 案ページ（variants.html）の生成、回答の解析、最終 HTML（final.html）の統合。"""
+"""スライド案のレビューページ（variants.html・final-review.html）の生成、回答の解析、最終 HTML（final.html）の統合。
+
+レビューページは、点検ページ（Artifact）と同じ形。左に一覧、右に 1 枚ずつ縦に並べる（大きな 1 案、見どころ・前回のコメント・今回の直し、判断欄＝案のサムネ・承認／要修正・コメント）。「回答をコピー」は、判断欄の最後の行（右端）にある。「回答をコピー」を押すと、クリップボードへ入れると同時に
+window.__answersMd（回答の md）と window.__submitted が立つ。回答の形式は従来から変えない。"""
 import html as _html
 import json
 import re
@@ -9,36 +12,243 @@ HEAD = ('<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>{titl
         '<link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="base.css">'
         '<script src="chart-preview.js" defer></script>{extra}</head><body>')
 
-_STYLE = """<style>
-body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;padding:24px;background:#E5E5E5}
-.wrap{max-width:1700px;margin:0 auto}
-h1{font-size:22px;margin:0 0 4px}.lead{color:#595959;margin:0 0 24px}
-.sl{background:#fff;border:1px solid #BFBFBF;border-radius:8px;padding:16px;margin:0 0 20px}
-.sl h2{font-size:18px;margin:0 0 12px}
-.row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
-.opt{display:flex;flex-direction:column;gap:6px}
-.opt label{font-weight:700;display:flex;gap:6px;align-items:center;cursor:pointer}
-.thumb{width:512px;height:288px;overflow:hidden;border:1px solid #BFBFBF;position:relative}
-.thumb .scaled{width:1280px;height:720px;transform:scale(.4);transform-origin:0 0}
-.thumb .slide{margin:0}
-textarea{width:100%;box-sizing:border-box;height:56px;margin-top:12px;font:inherit;padding:6px}
-.bar{position:sticky;bottom:0;background:#fff;border-top:1px solid #BFBFBF;padding:12px 24px;display:flex;gap:16px;align-items:center}
-button{font:inherit;font-weight:700;padding:8px 24px;border:0;border-radius:6px;background:#1F3A5F;color:#fff;cursor:pointer}
-#state{color:#1E6B52;font-weight:700}
+_STYLE = r"""<style>
+:root{--bg:#14263E;--panel:#1B3250;--line:#33496B;--fg:#EAF0F8;--sub:#AEBBD0;--ok:#6FC3A0;--cm:#F0A060;--co:#E83E8C;--sel:#25406A}
+body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;padding:0;background:var(--bg);color:var(--fg);font-size:15px;line-height:1.6}
+.rv, .rv *{box-sizing:border-box}
+.rv h1,.rv h2,.rv h3,.rv p,.rv ol,.rv ul{margin:0;padding:0}.rv ol,.rv ul{list-style:none}
+.rv{max-width:1280px;margin:0 auto;padding:20px 16px 40px;display:flex;flex-direction:column;gap:16px}
+.rv h1{font-size:22px;line-height:1.4}
+.rv .lead{color:var(--sub);font-size:13.5px}
+.rv .strip{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13.5px;color:var(--sub);align-items:center}.rv .strip b{color:var(--fg)}
+.rv .body{display:grid;gap:16px;grid-template-columns:270px minmax(0,1fr);align-items:start}
+.rv nav{background:var(--panel);padding:10px 0;max-height:80vh;overflow-y:auto;overflow-x:hidden;position:sticky;top:8px}
+.rv nav button{display:grid;grid-template-columns:14px 1fr;gap:8px;align-items:center;width:100%;text-align:left;font:inherit;font-size:14px;color:var(--fg);background:none;border:0;border-left:3px solid transparent;padding:6px 14px 6px 11px;cursor:pointer}
+.rv nav button[aria-current="true"]{background:var(--sel);border-left-color:#fff;font-weight:700}
+.rv nav small{display:block;color:var(--sub);font-weight:400;font-size:12px;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rv .st{width:10px;height:10px;border-radius:50%;border:2px solid var(--sub)}.rv .st.ok{background:var(--ok);border-color:var(--ok)}.rv .st.cm{background:var(--cm);border-color:var(--cm)}
+.rv [hidden]{display:none!important}
+.rv .pane{display:grid;gap:14px;min-width:0}
+.rv .top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline}
+.rv .top h2{font-size:20px}
+.rv .showco{display:inline-flex;gap:6px;align-items:center;font-size:13.5px}
+.rv .nh{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 12px;margin-bottom:6px}.rv .nh h3{margin-bottom:0}
+.rv .thumb{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#fff;border:1px solid var(--line);--s:.5;padding:0;display:block}
+.rv .thumb .stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0}
+.rv .thumb .slide{margin:0}
+.rv .co-layer{position:absolute;left:0;top:0;width:1280px;height:720px;pointer-events:none}
+.rv .co{position:absolute;border:calc(3px / var(--s)) solid var(--co);background:rgba(232,62,140,.07)}
+.rv .co-n{position:absolute;right:calc(-14px / var(--s));top:calc(-14px / var(--s));width:calc(28px / var(--s));height:calc(28px / var(--s));border-radius:50%;background:var(--co);color:#fff;font:700 calc(16px / var(--s))/calc(28px / var(--s)) sans-serif;text-align:center}
+.rv .nocol .co-layer{display:none}
+.rv .cols{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.rv .cols>div{background:var(--panel);padding:12px 14px;font-size:13.5px;min-width:0}
+.rv .cols h3{font-size:12px;letter-spacing:.06em;color:var(--sub);margin-bottom:6px}
+.rv .cols .q{border-left:3px solid var(--cm);padding-left:10px}.rv .cols .fix{border-left:3px solid var(--ok);padding-left:10px}
+.rv .legend{display:grid;gap:4px}
+.rv .legend li{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:13.5px;line-height:1.5}
+.rv .dot{width:20px;height:20px;border-radius:50%;background:var(--co);color:#fff;font:700 12px/20px sans-serif;text-align:center;margin-top:1px}
+.rv .judge{display:grid;gap:10px;background:var(--panel);padding:12px 14px}
+.rv .judge .sub{color:var(--sub);font-size:13.5px}
+.rv .opts{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
+.rv .opt{display:flex;flex-direction:column;gap:6px;width:min(31%,260px)}
+.rv .opts.single{display:none}
+.rv .opt .thumb{cursor:pointer}.rv .opt.view .thumb{outline:3px solid #fff;outline-offset:2px}
+.rv .opt label{font-weight:700;display:flex;gap:6px;align-items:center;cursor:pointer}
+.rv textarea{width:100%;height:64px;font:inherit;font-size:14px;padding:8px 10px;background:var(--bg);color:var(--fg);border:1px solid var(--line)}
+.rv .btns{display:flex;flex-wrap:wrap;gap:8px}
+.rv button.b1{font:inherit;font-size:14px;padding:8px 16px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;border-radius:0}
+.rv .verdict .b1[aria-pressed="true"].ok{background:var(--ok);color:#0F1623;border-color:var(--ok);font-weight:700}
+.rv .verdict .b1[aria-pressed="true"].ng{background:var(--cm);color:#0F1623;border-color:var(--cm);font-weight:700}
+.rv .nav2{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rv :focus-visible{outline:2px solid var(--co);outline-offset:2px}
+.rv .act{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rv .act button{font:inherit;font-weight:700;padding:7px 26px;border:0;background:#fff;color:#14263E;cursor:pointer}
+.rv .copybox{width:100%;height:90px;font:12px/1.4 Consolas,monospace}
+.rv .state{color:var(--ok);font-weight:700;font-size:13px}
+@media (max-width:820px){.rv .body{grid-template-columns:1fr}.rv nav{position:static;max-height:220px}.rv .opt{width:min(100%,300px)}}
 </style>"""
 
-_SCRIPT = """<script>
-document.getElementById('submit').onclick = function () {
-  var lines = ['---', 'deck: ' + __DECK__, 'round: __ROUND__', '---'];
-  document.querySelectorAll('[data-slide]').forEach(function (sec) {
-    var sel = sec.querySelector('input[type=radio]:checked');
-    var c = sec.querySelector('textarea').value.replace(/\\r?\\n/g, ' ');
-    lines.push('## S' + sec.dataset.slide, '- 選択: ' + (sel ? sel.value : ''), '- コメント: ' + c);
+_SCRIPT = r"""<script>
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var panes = $$('.pane'), cur = 0, KEY = 'pptxdeck-review-' + __DECK__ + '-__ROUND__';
+
+  function store(o) { try { sessionStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} }
+  function load() { try { return JSON.parse(sessionStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; } }
+  function snapshot() {
+    var o = {};
+    panes.forEach(function (p) {
+      var r = $('input[type=radio]:checked', p);
+      o[p.dataset.slide] = { c: r ? r.value : '', t: $('textarea', p).value, v: p.dataset.verdict || '' };
+    });
+    return o;
+  }
+  function restore() {
+    var o = load();
+    panes.forEach(function (p) {
+      var a = o[p.dataset.slide]; if (!a) return;
+      if (a.c) { var r = $('input[type=radio][value="' + a.c + '"]', p); if (r) r.checked = true; }
+      $('textarea', p).value = a.t || '';
+      p.dataset.verdict = a.v || '';
+    });
+  }
+
+  function fit() {
+    $$('.thumb').forEach(function (t) {
+      var w = t.clientWidth; if (!w) return;
+      var s = w / 1280;
+      t.style.setProperty('--s', s);
+      t.firstElementChild.style.transform = 'scale(' + s + ')';
+    });
+  }
+  function rel(el, slide) {
+    var x = 0, y = 0, e = el;
+    while (e && e !== slide) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
+    return { x: x, y: y, w: el.offsetWidth, h: el.offsetHeight };
+  }
+  function viewKey(p) {
+    var r = $('input[type=radio]:checked', p);
+    return p.dataset.view || (r ? r.value : $('.opt', p).dataset.k);
+  }
+  function showBig(p, k) {
+    p.dataset.view = k;
+    $$('.opt', p).forEach(function (o) { o.classList.toggle('view', o.dataset.k === k); });
+    var src = $('.opt[data-k="' + k + '"] .stage .slide', p);
+    var big = $('.big .stage', p);
+    big.innerHTML = '';
+    if (!src) return;
+    var clone = src.cloneNode(true);
+    big.appendChild(clone);
+    var layer = document.createElement('div'); layer.className = 'co-layer';
+    var legend = $('.legend', p); legend.innerHTML = '';
+    $$('[data-note]', clone).forEach(function (el, i) {
+      var r = rel(el, clone);
+      var d = document.createElement('div'); d.className = 'co';
+      d.style.cssText = 'left:' + r.x + 'px;top:' + r.y + 'px;width:' + r.w + 'px;height:' + r.h + 'px';
+      d.innerHTML = '<span class="co-n">' + (i + 1) + '</span>';
+      layer.appendChild(d);
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="dot">' + (i + 1) + '</span><span></span>';
+      li.lastChild.textContent = el.getAttribute('data-note');
+      legend.appendChild(li);
+    });
+    big.appendChild(layer);
+    $('.notes', p).hidden = !legend.firstChild;                          // 見どころ・前回のコメント・今回の直しが何もなければ、枠ごと隠す
+    $('.cols', p).hidden = $$('.cols > div:not([hidden])', p).length === 0;
+    fit();
+  }
+  // 承認／要修正。1 案だけのスライド（採用／要修正・最終確認）は選択のラジオ（A / FIX）と連動し、3 案のときは案の選択とは別に持つ
+  function verdictOf(p) {
+    if (p.dataset.single === '1') {
+      var r = $('input[type=radio]:checked', p);
+      return r ? (r.value === 'FIX' ? '要修正' : '承認') : '';
+    }
+    return p.dataset.verdict || '';
+  }
+  function syncButtons(p) {
+    var v = verdictOf(p);
+    $$('.verdict button', p).forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === v); });
+  }
+  function setVerdict(p, v) {
+    if (verdictOf(p) === v) v = '';                           // 押した状態でもう一度押すと外れる
+    if (p.dataset.single === '1') {
+      $$('input[type=radio]', p).forEach(function (x) { x.checked = false; x.dataset.was = '0'; });
+      if (v) { var r = $('input[type=radio][value="' + (v === '要修正' ? 'FIX' : 'A') + '"]', p); r.checked = true; r.dataset.was = '1'; }
+    } else {
+      p.dataset.verdict = v;
+      if (v && !$('input[type=radio]:checked', p)) {          // 案を選んでいなければ、表示中の案を選ぶ
+        var rr = $('.opt[data-k="' + viewKey(p) + '"] input[type=radio]', p);
+        if (rr) { rr.checked = true; rr.dataset.was = '1'; }
+      }
+    }
+    refresh(); store(snapshot());
+  }
+  function refresh() {
+    panes.forEach(function (p, i) {
+      var b = $('#nav button[data-go="' + p.dataset.slide + '"] .st');
+      var chosen = !!$('input[type=radio]:checked', p), cm = $('textarea', p).value.trim() !== '' || verdictOf(p) === '要修正';
+      b.className = 'st' + (cm ? ' cm' : chosen ? ' ok' : '');
+      syncButtons(p);
+    });
+    var done = panes.filter(function (p) { return $('input[type=radio]:checked', p); }).length;
+    $('#prog').innerHTML = '選択済み <b>' + done + '</b> / ' + panes.length;
+  }
+  function go(i) {
+    cur = (i + panes.length) % panes.length;
+    panes.forEach(function (p, j) { p.hidden = j !== cur; });
+    $$('#nav button').forEach(function (b, j) { b.setAttribute('aria-current', j === cur); });
+    var p = panes[cur];
+    $$('.pp-chart', p).forEach(function (h) { if (window.__chartPreview) window.__chartPreview(h); });   // 非表示の間は大きさが 0 なので、表示してから描く
+    if (window.__arrows) window.__arrows(p);
+    fit();
+    showBig(p, viewKey(p));
+    window.scrollTo(0, 0);
+  }
+
+  $$('#nav button').forEach(function (b, i) { b.onclick = function () { go(i); }; });
+  panes.forEach(function (p) {
+    $$('.opt', p).forEach(function (o) {
+      var th = $('.thumb', o);
+      th.onclick = function () { showBig(p, o.dataset.k); };
+      th.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showBig(p, o.dataset.k); } };
+      $$('input[type=radio]', o).forEach(function (r) {
+        r.onchange = function () { showBig(p, o.dataset.k); refresh(); store(snapshot()); };
+        r.onclick = function () {      // 選んだラジオをもう一度押すと、選択が外れる
+          if (this.dataset.was === '1') { this.checked = false; this.dataset.was = '0'; refresh(); store(snapshot()); }
+          else { $$('input[type=radio]', p).forEach(function (x) { x.dataset.was = '0'; }); this.dataset.was = '1'; }
+        };
+      });
+    });
+    $('textarea', p).oninput = function () { refresh(); store(snapshot()); };
+    $('.coToggle', p).onchange = function () { $('.big', p).classList.toggle('nocol', !this.checked); };
+    $$('.verdict button', p).forEach(function (b) { b.onclick = function () { setVerdict(p, b.dataset.v); }; });
+    $('.clear', p).onclick = function () {
+      p.dataset.verdict = '';
+      $$('input[type=radio]', p).forEach(function (x) { x.checked = false; x.dataset.was = '0'; });
+      refresh(); store(snapshot());
+    };
+    $('.prev', p).onclick = function () { go(cur - 1); };
+    $('.next', p).onclick = function () { go(cur + 1); };
   });
-  window.__answersMd = lines.join('\\n') + '\\n';
-  window.__submitted = true;
-  document.getElementById('state').textContent = '送信しました。Claude に戻ってください。';
-};
+  window.addEventListener('resize', fit);
+
+  function buildMd() {
+    var lines = ['---', 'deck: ' + __DECK__, 'round: __ROUND__', '---'];
+    document.querySelectorAll('[data-slide]').forEach(function (sec) {
+      var sel = sec.querySelector('input[type=radio]:checked');
+      var c = sec.querySelector('textarea').value.replace(/\r?\n/g, ' ');
+      lines.push('## S' + sec.dataset.slide, '- 選択: ' + (sel ? sel.value : ''), '- 判定: ' + verdictOf(sec), '- コメント: ' + c);
+    });
+    return lines.join('\n') + '\n';
+  }
+  // 「回答をコピー」（判断欄の最後の行・右端）: 回答をクリップボードへ入れ、同時に window.__answersMd と window.__submitted を立てる。
+  // Claude が待ち受けていれば自動で受け取れ、そうでなければ利用者がチャットに貼り付ける（形式は同じ）
+  $$('.copyBtn').forEach(function (btn) {
+    btn.onclick = function () {
+      var pane = btn.closest('.pane'), md = buildMd(), st = $('.state', pane), box = $('.copybox', pane);
+      window.__answersMd = md;
+      window.__submitted = true;
+      var fallback = function () {
+        box.hidden = false; box.value = md; box.focus(); box.select();
+        st.textContent = 'コピーできませんでした。下の文字を選んで、コピーしてください。';
+      };
+      try {
+        navigator.clipboard.writeText(md).then(function () {
+          box.hidden = true;
+          st.textContent = 'コピーしました。Claude が待っていれば届きます。待っていなければ、チャットに貼り付けてください。';
+        }, fallback);
+      } catch (e) { fallback(); }
+    };
+  });
+
+  function start() {
+    restore();
+    $$('input[type=radio]:checked').forEach(function (x) { x.dataset.was = '1'; });
+    refresh(); go(0);
+  }
+  if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
+})();
 </script>"""
 
 
@@ -56,30 +266,103 @@ def collect(work: Path) -> dict[str, dict[str, str]]:
     return out
 
 
+def _title_of(fragment: str) -> str:
+    """一覧に出すスライドの題（題の要素の文字）。見つからなければ空。"""
+    m = re.search(r'<div[^>]*(?:data-role="title"|data-ph="title")[^>]*>(.*?)</div>', fragment, re.S)
+    return re.sub(r"<[^>]+>", "", m.group(1)).strip() if m else ""
+
+
+def parse_notes(md: str) -> dict[str, str]:
+    """今回の直しのメモ（round-N-notes.md）。「NN: 直した内容」「- S01: …」の行を読む。"""
+    out: dict[str, str] = {}
+    for line in md.splitlines():
+        m = re.match(r"^\s*(?:[-*]\s*)?S?(\d{2})\s*[:：]\s*(.+?)\s*$", line)
+        if m:
+            out[m.group(1)] = m.group(2)
+    return out
+
+
+def _read(path: Path) -> str:
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError:
+        return ""
+
+
+def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final: bool = False,
+          prev: dict[str, dict] | None = None, notes: dict[str, str] | None = None) -> str:
+    esc = _html.escape
+    prev, notes = prev or {}, notes or {}
+    title = "最終 HTML の確認" if final else "スライド案の選択"
+    if final:
+        lead = "選ばれた案を統合した最終版です。1 枚ずつ見て「承認」か「要修正」を選び、直したい点があればコメントに書いて、最後に判断欄の右端の「回答をコピー」を押してください。"
+    else:
+        lead = (f"ラウンド {round_label}。左の一覧から 1 枚ずつ見ます。案を選び（サムネを押すと大きく見えます）、"
+                "直したい点があればコメントに書いて、最後に判断欄の右端の「回答をコピー」を押してください。")
+    nav, panes = [], []
+    for nn, opts in frags.items():
+        letters = sorted(opts)
+        t = _title_of(opts[letters[0]])
+        nav.append(f'<button data-go="{nn}"><span class="st"></span><span>S{nn}<small>{esc(t)}</small></span></button>')
+        single = final or len(letters) == 1
+        p = [f'<section class="pane" data-slide="{nn}" data-single="{1 if single else 0}" hidden>',
+             f'<div class="top"><h2>S{nn}　{esc(t)}</h2></div>',
+             '<div class="big"><div class="thumb"><div class="stage"></div></div></div>',
+             '<div class="cols">']
+        pc = (prev.get(nn) or {}).get("comment", "")
+        fx = notes.get(nn, "")
+        if pc:
+            p.append(f'<div class="q"><h3>前回のコメント</h3>{esc(pc)}</div>')
+        if fx:
+            p.append(f'<div class="fix"><h3>今回の直し</h3>{esc(fx)}</div>')
+        p.append('<div class="notes"><div class="nh"><h3>見どころ</h3>'
+                 '<label class="showco"><input type="checkbox" class="coToggle" checked> 見どころの枠を表示</label></div>'
+                 '<ol class="legend"></ol></div></div>')
+        p.append('<div class="judge"><div class="sub">'
+                 + ("この内容を承認しますか。" if single else "案を選び（サムネを押すと大きく見えます）、承認か要修正を押してください。") + '</div>')
+        p.append('<div class="opts single">' if single else '<div class="opts">')     # 1 案だけのときは、案の選択（サムネとラジオ）を隠す
+        for k in letters:
+            p.append(f'<div class="opt" data-k="{k}"><div class="thumb" role="button" tabindex="0" aria-label="案 {k} を大きく見る">'
+                     f'<div class="stage">{opts[k]}</div></div>')
+            if final:
+                p.append(f'<label><input type="radio" name="s{nn}" value="A"> 承認</label>'
+                         f'<label><input type="radio" name="s{nn}" value="FIX"> 要修正</label>')
+            elif len(letters) > 1:
+                p.append(f'<label><input type="radio" name="s{nn}" value="{k}"> 案 {k}</label>')
+            else:
+                p.append(f'<label><input type="radio" name="s{nn}" value="A"> 採用</label>'
+                         f'<label><input type="radio" name="s{nn}" value="FIX"> 要修正</label>')
+            p.append("</div>")
+        p.append('</div><div class="btns verdict"><button class="b1 ok" type="button" data-v="承認" aria-pressed="false">承認</button>'
+                 '<button class="b1 ng" type="button" data-v="要修正" aria-pressed="false">要修正</button></div>'
+                 '<textarea placeholder="どうしてほしいか（任意）" aria-label="コメント"></textarea>'
+                 '<div class="nav2"><button class="b1 clear" type="button">選択を外す</button>'
+                 '<button class="b1 prev" type="button">前へ</button>'
+                 '<button class="b1 next" type="button">次へ</button>'
+                 '<span class="act"><span class="state"></span><button class="copyBtn" type="button">回答をコピー</button></span></div>'
+                 '<textarea class="copybox" hidden readonly aria-label="回答（コピー用）"></textarea></div></section>')
+        panes.append("".join(p))
+    parts = [HEAD.format(title=title, extra=_STYLE),
+             f'<div class="rv"><h1>{title}</h1><p class="lead">{lead}</p>'
+             f'<div class="strip"><span>スライド <b>{len(frags)}</b> 枚</span><span id="prog"></span>'
+             '</div>'
+             f'<div class="body"><nav id="nav" aria-label="スライドの一覧">{"".join(nav)}</nav><div>{"".join(panes)}</div></div>'
+             '</div>']
+    deck_js = json.dumps(work.name, ensure_ascii=False).replace("</", "<\\/")      # JS の文字列。</script> でも閉じない
+    parts.append(_SCRIPT.replace("__DECK__", deck_js).replace("__ROUND__", round_label))
+    parts.append("</body></html>")
+    return "".join(parts)
+
+
 def assemble(work: Path, round_no: int = 1) -> Path:
+    """variants.html を作る。2 回目以降は、前回の回答（answers-(N-1).md）のコメントと、
+    今回の直しのメモ（round-N-notes.md）があれば並べて出す。"""
     work = Path(work)
     frags = collect(work)
-    parts = [HEAD.format(title="スライド案の選択", extra=_STYLE),
-             '<div class="wrap"><h1>スライド案の選択</h1>'
-             f'<p class="lead">ラウンド {round_no}。各スライドの案を選び、直したい点があればコメントに書いて、最後に「送信」を押してください。</p>']
-    for nn, opts in frags.items():
-        parts.append(f'<div class="sl" data-slide="{nn}"><h2>S{nn}</h2><div class="row">')
-        letters = sorted(opts)
-        for k in letters:
-            parts.append(f'<div class="opt"><div class="thumb"><div class="scaled">{opts[k]}</div></div>')
-            if len(letters) > 1:
-                parts.append(f'<label><input type="radio" name="s{nn}" value="{k}"> 案 {k}</label>')
-            else:
-                parts.append(f'<label><input type="radio" name="s{nn}" value="A"> 採用</label>'
-                             f'<label><input type="radio" name="s{nn}" value="FIX"> 要修正</label>')
-            parts.append("</div>")
-        parts.append('</div><textarea placeholder="どうしてほしいか（任意）"></textarea></div>')
-    parts.append('</div><div class="bar"><button id="submit">送信</button><span id="state"></span></div>')
-    deck_js = json.dumps(work.name, ensure_ascii=False).replace("</", "<\\/")      # JS の文字列。</script> でも閉じない
-    parts.append(_SCRIPT.replace("__DECK__", deck_js).replace("__ROUND__", str(round_no)))
-    parts.append("</body></html>")
+    prev = parse_answers(_read(work / f"answers-{round_no - 1}.md")) if round_no > 1 else {}
+    notes = parse_notes(_read(work / f"round-{round_no}-notes.md")) if round_no > 1 else {}
     out = work / "variants.html"
-    out.write_text("".join(parts), encoding="utf-8")
+    out.write_text(_page(work, frags, str(round_no), prev=prev, notes=notes), encoding="utf-8")
     return out
 
 
@@ -93,6 +376,10 @@ def parse_answers(md: str) -> dict[str, dict]:
             out[cur] = {"choice": "", "comment": ""}
         elif cur and line.startswith("- 選択:"):
             out[cur]["choice"] = line.split(":", 1)[1].strip()
+        elif cur and line.startswith("- 判定:"):
+            v = line.split(":", 1)[1].strip()
+            if v:                                       # 判定の行は任意（古い回答にはない）。空なら入れない
+                out[cur]["verdict"] = v
         elif cur and line.startswith("- コメント:"):
             out[cur]["comment"] = line.split(":", 1)[1].strip()
     return out
@@ -109,8 +396,8 @@ def merge_answers(mds: list[str]) -> dict[str, dict]:
     return out
 
 
-def finalize(work: Path, answers_md: "str | list[str]", allow_comments: bool = False) -> Path:
-    work = Path(work)
+def _chosen(work: Path, answers_md: "str | list[str]", allow_comments: bool = False):
+    """回答から、選ばれた案を決める。決まらないスライドやコメント未反映があれば ValueError。"""
     frags = collect(work)
     ans = merge_answers([answers_md] if isinstance(answers_md, str) else list(answers_md))
     problems = []
@@ -121,9 +408,29 @@ def finalize(work: Path, answers_md: "str | list[str]", allow_comments: bool = F
             problems.append(f"S{nn}: 案が決まっていません（回答: {got}）")
         elif a["comment"] and not allow_comments:
             problems.append(f"S{nn}: コメントが未反映です: {a['comment']}")
+        elif a.get("verdict") == "要修正" and not allow_comments:
+            problems.append(f"S{nn}: 要修正と判定されています（直してから再提示してください）")
     if problems:
         raise ValueError("\n".join(problems))
+    return frags, ans
+
+
+def review_final(work: Path, answers_md: "str | list[str]", allow_comments: bool = False) -> Path:
+    """最終 HTML の確認ページ（final-review.html）を作る。final.html は変えない（build が使う）。
+    「回答をコピー」を押すと、承認は「選択: A」、要修正は「選択: FIX」で、従来と同じ形の回答が返る（answers-final.md に保存する）。"""
+    work = Path(work)
+    frags, ans = _chosen(work, answers_md, allow_comments)
+    one = {nn: {"A": frags[nn][ans[nn]["choice"]]} for nn in sorted(frags)}
+    out = work / "final-review.html"
+    out.write_text(_page(work, one, "final", final=True), encoding="utf-8")
+    return out
+
+
+def finalize(work: Path, answers_md: "str | list[str]", allow_comments: bool = False) -> Path:
+    work = Path(work)
+    frags, ans = _chosen(work, answers_md, allow_comments)
     body = "\n".join(frags[nn][ans[nn]["choice"]] for nn in sorted(frags))
     out = work / "final.html"
     out.write_text(HEAD.format(title=_html.escape(work.name), extra="") + body + "</body></html>", encoding="utf-8")
+    review_final(work, answers_md, allow_comments)             # 最終の確認ページも同時に作る
     return out
