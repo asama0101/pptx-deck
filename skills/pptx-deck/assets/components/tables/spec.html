@@ -1,0 +1,66 @@
+<!-- 用途: 項目一覧表（検証項目・機能一覧・要件一覧に共用）。「No｜項目｜観点・内容｜基準・要件値｜方法｜担当」の 6 列で、何を・どの基準で・どう確かめるかを項目ごとに 1 行にする。基準は必ず数値で書く（「問題ないこと」は書かない）。
+     見出しの行は基調色の面に白い文字、No の列はパネル地。戻せない判断に直結する項目（切替の可否を決める関門）の行だけ太字。情報の型（論点ボックスを置かず、注に環境・判定日と「→ 含意」を書く）。結果を書くときは tables/result（同じ項目の順で）を使う。
+     差し替える所: 図表タイトル・行 6（項目・観点は 2 行まで・基準の数値・方法・担当）・太字にする 1 行・注。機能一覧なら列を「No｜機能｜概要｜要件値｜方式｜担当」に読み替える。 -->
+<section class="slide" data-layout="table">
+  <div class="pp-text" data-role="title" style="height:44px">検証6項目はいずれも数値の合格基準を持つため、切替の可否を客観的に判定できる</div>
+  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">SD-WAN移行の検証項目と合格基準（PoC 2拠点、2027年1月。判定は情報システム委員会）</div>
+  <table class="pp-table" data-note="6 列の表：項目ごとに観点・数値の基準・確かめる方法・担当を 1 行で" style="left:64px;top:190px;width:1152px;font-size:19px;line-height:1.35">
+    <tr style="height:42px">
+      <td style="width:56px;padding:6px 10px;background:var(--accent);color:#FFFFFF;font-weight:700">No</td>
+      <td style="width:190px;padding:6px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">項目</td>
+      <td style="width:330px;padding:6px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">観点・内容</td>
+      <td style="width:226px;padding:6px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">合格基準</td>
+      <td style="width:210px;padding:6px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">方法</td>
+      <td style="width:140px;padding:6px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">担当</td>
+    </tr>
+    <tr style="height:60px">
+      <td style="padding:4px 10px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">1</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">回線切替時間</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">MPLSからSD-WANへの切替で業務が止まる時間</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">1拠点あたり2時間以内</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">夜間に切替し、業務端末で疎通を確認</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">基盤グループ</td>
+    </tr>
+    <tr style="height:60px">
+      <td style="padding:4px 10px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">2</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">経路の自動切替</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">主回線の断で副回線へ自動で切り替わる</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">30秒以内、セッション維持</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">主回線を手動で切断し3回計測</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">基盤グループ</td>
+    </tr>
+    <tr style="height:60px">
+      <td style="padding:4px 10px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">3</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">応答遅延</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">基幹系（ERP）の画面応答の増分</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">現行＋0.3秒以内</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">50画面を各10回計測し平均</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">業務システム部</td>
+    </tr>
+    <tr style="height:60px">
+      <td style="padding:4px 10px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">4</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">帯域</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">拠点のピーク時間帯の実効帯域</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">上り下りとも100Mbps以上</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">計測ツールで3営業日の連続測定</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">ベンダー</td>
+    </tr>
+    <tr style="height:60px">
+      <td style="padding:4px 10px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">5</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">監視の検知</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">回線断・機器故障を監視センターが検知し通報する</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">検知5分以内、通報10分以内</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">障害を模擬し、検知と通報の時刻を記録</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">運用センター</td>
+    </tr>
+    <tr style="height:60px" data-note="関門の項目：切替の可否に直結する行だけ太字">
+      <td style="padding:4px 10px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">6</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">戻し手順</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">切替に失敗したときにMPLSへ戻せる</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">1時間以内に復旧、手順書どおり</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">リハーサルで戻しを実施し実測</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">基盤グループ</td>
+    </tr>
+  </table>
+  <div class="pp-text" data-note="注：検証環境と判定日、基準を満たさないときの扱いを含意で締める" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 環境は本社とA工場の2拠点のPoC構成（本番と同じ機器・回線）。判定は2027年1月14日、経営会議（1/15）の前日<br>→ 6項目のうち1つでも基準を満たさなければ、本社の切替は次回の経営会議（3月）まで延期する</div>
+</section>

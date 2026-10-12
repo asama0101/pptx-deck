@@ -38,7 +38,7 @@ Claude Code で「スライドを作って」「稟議資料を作って」と�
 
 | 場所 | 内容 |
 |---|---|
-| `skills/pptx-deck/`（スキル） | `SKILL.md`、テンプレート（`assets/components/` のレイアウト 6・図解 10・表 5・グラフ 8。本文の部品は「見出し → 図表タイトル → 本体 → 注」の構成で、決定を求める型は最下部に論点ボックスを置く、`assets/icons/` のアイコン 14、`assets/template/standard.potx`）、設計図と原稿の手本（`assets/sample/`）、コード |
+| `skills/pptx-deck/`（スキル） | `SKILL.md`、テンプレート（`assets/components/` のレイアウト 7・図解 19・表 15・グラフ 10。稟議・障害報告・検証計画・検証結果報告・業務フロー・設計書・設備増減の計画を作れる型をそろえ、時系列・業務フロー・構成図・Before/After は横と縦の 2 パターンを持つ。本文の部品は「見出し → 図表タイトル → 本体 → 注」の構成で、決定を求める型は最下部に論点ボックスを置く、`assets/icons/` のアイコン 14、`assets/template/standard.potx`）、設計図と原稿の手本（`assets/sample/`）、コード |
 | 実行したディレクトリ直下の `<名前>/` | `design.md`（`init` が雛形を置く）、`script.md`、`slides/`、`variants.html`、`final.html`、`final-review.html`、`<名前>.pptx` ほか |
 | OS の一時フォルダ `%TEMP%\pptx-deck\<名前>\` | 確認用の画像など一過性のもの |
 
