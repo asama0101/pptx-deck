@@ -1,9 +1,12 @@
-<!-- 用途: 差額の内訳（ウォーターフォール）。最初と最後が合計、間が増減。totals は合計にする位置（0 始まり）。
-     減少は濃い灰、増加は基調色、合計は灰。差し替える所: data-chart・右の所見・出典。 -->
+<!-- 用途: 差額の内訳（ウォーターフォール）。最初と最後が合計、間が増減。totals は合計にする位置（0 始まり）。減少は濃い灰、増加は基調色、合計は灰。 注目点は吹き出しでグラフに直接書く（グラフは全幅）。
+     差し替える所: data-chart・吹き出しの文と位置（グラフの値に合わせて手で直す）。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-role="title" style="height:44px">年間の運用費は、保守費の削減で2,000万円から1,200万円に下がる</div>
-  <div class="pp-chart" data-chart='{"type":"waterfall","categories":["現状","保守費","電力費","監視費","導入後"],"series":[{"name":"運用費","values":[2000,-500,-200,-100,1200]}],"totals":[0,4],"fmt":"#,##0"}' style="left:64px;top:160px;width:720px;height:440px"></div>
-  <div class="pp-text b" style="left:830px;top:176px;width:386px;height:34px">読み取れること</div>
-  <div class="pp-text" style="left:830px;top:222px;width:386px;height:300px"><ul><li>差額は▲800万円</li><li>保守費の削減が最大で▲500万円</li><li>電力費・監視費は小さい</li></ul></div>
-  <div class="pp-text" data-role="caption" data-chrome style="left:64px;top:calc(var(--area-y) + var(--area-h));width:900px;height:24px">出典: 社内運用実績と見積り。単位は万円／年</div>
+  <div class="pp-chart" data-chart='{"type":"waterfall","categories":["現状","保守費","電力費","監視費","導入後"],"series":[{"name":"運用費","values":[2000,-500,-200,-100,1200]}],"totals":[0,4],"fmt":"#,##0"}' style="left:64px;top:160px;width:1152px;height:460px"></div>
+  <div class="pp-shape f-light r" data-overlap style="left:580px;top:262px;width:340px;height:76px"></div>
+  <div class="pp-text b" data-overlap style="left:592px;top:270px;width:316px;height:60px">保守費の削減が最大で、▲500万円</div>
+  <div class="pp-line" data-arrow="end" data-dir="rev" style="left:514px;top:300px;width:66px;background:var(--accent)"></div>
+  <div class="pp-shape f-light r" data-overlap style="left:940px;top:262px;width:276px;height:60px"></div>
+  <div class="pp-text b" data-overlap style="left:952px;top:270px;width:252px;height:44px">差額は▲800万円</div>
+  <div class="pp-line" data-arrow="end" style="left:1092px;top:324px;width:2px;height:56px;background:var(--accent)"></div>
 </section>

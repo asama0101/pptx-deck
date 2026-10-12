@@ -44,8 +44,8 @@ description: テーマ・素材・原稿から、コンサルテイストの承�
 
 書式は `assets/sample/script.md`（10 枚）に従う。スライドごとに次を書く。
 
-- `layout`（`cover|section|agenda|content|diagram|table|chart|closing`）、`見出し`（**結論を言い切る 1 文**）、`章名`（そのスライドが答える問い）、`本文`、`図表`（型と選んだ理由を 1 行）、`出典`、判断が要るスライドは `判断の枠`（決めること・期限・推奨）。
-- 1 スライド 1 メッセージ。結論 → 根拠の順。数字には出典と前提を書く。スピーカーノートは作らない。
+- `layout`（`cover|section|agenda|content|diagram|table|chart|closing`）、`見出し`（**結論を言い切る 1 文**）、`章名`（そのスライドが答える問い）、`本文`、`図表`（型と選んだ理由を 1 行）、必要なときだけ `出典`、判断が要るスライドは `判断の枠`（決めること・期限・推奨）。
+- 1 スライド 1 メッセージ。結論 → 根拠の順。出典は必要なときだけ書く（既定では書かない）。スピーカーノートは作らない。
 - 書いたら `python "<skill>/run.py" lint-script "<名前>/script.md"`。問題は全件出る。空になってからチャットで承認を求める。承認後は、承認なしに内容を変えない。
 
 ## 3. スライド案（3 案）
@@ -65,7 +65,7 @@ description: テーマ・素材・原稿から、コンサルテイストの承�
 - レイアウト: `cover`（表紙）・`section`（章扉）・`agenda`（目次）・`decision`（判断・承認依頼）・`closing`（裏表紙）
 - 図解: `flow-h`（手順）・`tree`（分解）・`matrix`（2×2）・`pyramid`（階層・優先度）・`cycle`（循環）・`gantt`（計画）・`venn`（重なり）・`before-after`（前後）・`layers`（構成）・`compare`（3 案の比較）
 - 表: `compare`（比較）・`rating`（◎○△）・`cost`（費用）・`schedule`（予定）
-- グラフ: `bar`・`line`・`stacked`・`waterfall`・`pie`（`data-chart` の書き方は断片のコメントと下記）
+- グラフ: `bar`・`line`・`stacked`・`waterfall`（注目点を吹き出しで書く。グラフは全幅）と、所見が長文のときの `bar-note`・`line-note`・`stacked-note`・`waterfall-note`（右の欄に「グラフから分からないこと」を書く）。円グラフ（`pie`）の型は置かない（`data-chart` の `pie` は使える。書き方は断片のコメントと下記）
 - 内容に合う型がなければ、断片の部品（下記）で組む。新しい型を作ったら、`assets/components/` に足して `tests/test_components.py` を通す。
 
 ## 4. HTML の書き方
@@ -74,7 +74,8 @@ description: テーマ・素材・原稿から、コンサルテイストの承�
 - 位置は `style="left;top;width;height"`（px）。文字には必ず幅を付ける。面と文字は兄弟要素にし、文字の中心を含む面が背景色になる。
 - 文字: `data-role` = `title|lead|body|caption|display`。表紙・裏表紙の題と副題は `data-ph="title|subtitle"`（位置はテンプレート）。箇条書きは `<div class="pp-text"><ul><li>`。
 - 色は `var(--accent)` などの変数だけ。基調色の文字は白地かつ 24px 以上のときだけ（薄い面の上の大きな数字は `num t-dark`）。**強調色（`f-emph`・`t-emph`）は 1 スライドに 1 点**（推奨・承認を求める対象）。
-- 本文 14pt（約 19px）以上、注記 10pt（14px）以上。出典は `data-role="caption" data-chrome`、本文領域の下端（`top:calc(var(--area-y) + var(--area-h))`。標準は y 640〜664）。領域が標準より狭いテンプレートでは、出典が上がって本文と重なるので、`overlap` の指摘に従って本文の位置を直す。
+- 本文 14pt（約 19px）以上、注記 10pt（14px）以上。出典を書くときだけ、`data-role="caption" data-chrome` で本文領域の下端（`top:calc(var(--area-y) + var(--area-h))`。標準は y 640〜664）に置く。領域が標準より狭いテンプレートでは、出典が上がって本文と重なるので、`overlap` の指摘に従って本文の位置を直す。
+- 視線誘導: 読む順は **Z の法則**（左上 → 右上 → 左下へ斜め → 右下）に従い、始点（題・結論）を左上、終点（承認・結論の帯）を右下まで届かせる。文の寄せ方は変えない（文は左寄せ。右寄せは数字の列だけ）。使える場面では次の 3 つも使う。**矢印効果**（矢印で読む順・因果を示す。循環は輪と矢印で回して見せ、直線の矢印だけにしない。矢印は矢じり付きで、手順・因果の図には必ず入れる）、**孤立効果**（目立たせたい 1 点だけ色・大きさを変える。強調色は 1 点）、**類同の法則**（同じ種類の要素は形・色・大きさをそろえ、違う種類は変える）。
 - 画像はアイコン（`icons/<名前>-<accent|emphasis|white|gray>.svg`、`alt` 必須）と利用者の写真だけ。
 - 重ねる図（ベン図など）は、重なる要素の両方に `data-overlap`。
 - グラフ: `data-chart='{"type":"bar|barh|line|pie|stacked|stacked100|waterfall","categories":[…],"series":[{"name":"…","values":[…]}],"highlight":番号,"fmt":"#,##0","totals":[…]}'`。ブラウザのプレビューは近似で、実際は PowerPoint のグラフになる。

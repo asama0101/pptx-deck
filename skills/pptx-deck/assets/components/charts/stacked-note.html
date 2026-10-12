@@ -1,0 +1,8 @@
+<!-- 用途: 内訳の推移（積み上げ棒）。系列は 3 本まで。合計の数字は吹き出しに書く。 グラフは左の約 6 割。右の欄には、グラフから分からないこと（前提・原因・条件）だけを書く。所見が長文のときに使う（短いときは吹き出しの版）。
+     差し替える所: data-chart・右の欄。 -->
+<section class="slide" data-layout="chart">
+  <div class="pp-text" data-role="title" style="height:44px">費用は初年度に集中し、2年目以降は運用費だけになる</div>
+  <div class="pp-chart" data-chart='{"type":"stacked","categories":["2027","2028","2029","2030","2031"],"series":[{"name":"構築","values":[9000,0,0,0,0]},{"name":"移行","values":[2000,0,0,0,0]},{"name":"運用","values":[1200,1200,1200,1200,1200]}],"fmt":"#,##0"}' style="left:64px;top:160px;width:720px;height:440px"></div>
+  <div class="pp-text b" style="left:830px;top:176px;width:386px;height:34px">グラフから分からないこと</div>
+  <div class="pp-text" style="left:830px;top:222px;width:386px;height:300px"><ul><li>構築・移行は初年度（2027年度）に集中する</li><li>運用費は保守契約により年1,200万円で一定</li><li>金額は税抜</li></ul></div>
+</section>

@@ -44,4 +44,6 @@ def test_preview_draws_svg_without_errors(name, tmp_path):
 
 def test_preview_does_not_touch_measured_classes(tmp_path):
     # プレビューは pp-* クラスを持つ要素を増やさない（計測に混ざらないように）
-    assert "pp-" not in JS.read_text(encoding="utf-8").replace(".pp-chart", "").replace("pp-chart", "")
+    # 矢印の向きを決めるために既存の pp-line を読むのは許す（要素は増やさない）
+    text = JS.read_text(encoding="utf-8").replace(".pp-chart", "").replace("pp-chart", "").replace(".pp-line[data-arrow]", "")
+    assert "pp-" not in text

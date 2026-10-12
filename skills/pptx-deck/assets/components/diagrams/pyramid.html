@@ -1,17 +1,24 @@
-<!-- 用途: 階層・優先度・段階。上ほど重要。層の幅は中央をそろえて 160/320/480/640px。右に各層の説明。
+<!-- 用途: 階層・優先度・段階。上ほど重要。三角形 1 つを白い線で 4 層に区切る（三角形は幅 640px、層の高さはそろえる）。右に各層の説明。各層と説明を横線で結び、説明どうしは細い線で区切る。
      差し替える所: 層の名前（短く）・説明。 -->
 <section class="slide" data-layout="diagram">
   <div class="pp-text" data-role="title" style="height:44px">判断の土台は、事実・影響・選択肢・推奨の順に積み上がる</div>
-  <div class="pp-shape f-dark" style="left:320px;top:170px;width:160px;height:100px"></div>
-  <div class="pp-text t-white b center" style="left:330px;top:206px;width:140px;height:30px">推奨</div>
-  <div class="pp-shape f-accent" style="left:240px;top:280px;width:320px;height:100px"></div>
-  <div class="pp-text t-white b center" style="left:250px;top:316px;width:300px;height:30px">選択肢</div>
-  <div class="pp-shape f-mid" style="left:160px;top:390px;width:480px;height:100px"></div>
-  <div class="pp-text b center" style="left:170px;top:426px;width:460px;height:30px">影響</div>
-  <div class="pp-shape f-light" style="left:80px;top:500px;width:640px;height:100px"></div>
-  <div class="pp-text b center" style="left:90px;top:536px;width:620px;height:30px">事実</div>
+  <div class="pp-shape f-accent" data-shape="triangle" style="left:80px;top:170px;width:640px;height:430px"></div>
+  <div class="pp-line" data-overlap style="left:60px;top:275px;width:680px;height:6px;background:#FFFFFF"></div>
+  <div class="pp-line" data-overlap style="left:60px;top:383px;width:680px;height:6px;background:#FFFFFF"></div>
+  <div class="pp-line" data-overlap style="left:60px;top:490px;width:680px;height:6px;background:#FFFFFF"></div>
+  <div class="pp-text t-white b center" style="left:360px;top:208px;width:80px;height:30px">推奨</div>
+  <div class="pp-text t-white b center" style="left:320px;top:316px;width:160px;height:30px">選択肢</div>
+  <div class="pp-text t-white b center" style="left:280px;top:424px;width:240px;height:30px">影響</div>
+  <div class="pp-text t-white b center" style="left:240px;top:532px;width:320px;height:30px">事実</div>
+  <div class="pp-line" data-overlap style="left:454px;top:224px;width:292px;background:var(--accent-mid)"></div>
+  <div class="pp-line" data-overlap style="left:534px;top:331px;width:212px;background:var(--accent-mid)"></div>
+  <div class="pp-line" data-overlap style="left:614px;top:438px;width:132px;background:var(--accent-mid)"></div>
+  <div class="pp-line" data-overlap style="left:694px;top:546px;width:52px;background:var(--accent-mid)"></div>
+  <div class="pp-line hr" style="left:760px;top:277px;width:456px"></div>
+  <div class="pp-line hr" style="left:760px;top:385px;width:456px"></div>
+  <div class="pp-line hr" style="left:760px;top:492px;width:456px"></div>
   <div class="pp-text" style="left:760px;top:196px;width:456px;height:56px">B案を採用する</div>
-  <div class="pp-text" style="left:760px;top:306px;width:456px;height:56px">3案を費用・期間・リスクで比べる</div>
-  <div class="pp-text" style="left:760px;top:416px;width:456px;height:56px">停止時間と業務への影響を測る</div>
-  <div class="pp-text" style="left:760px;top:526px;width:456px;height:56px">保守期限・現行費用・利用状況</div>
+  <div class="pp-text" style="left:760px;top:303px;width:456px;height:56px">3案を費用・期間・リスクで比べる</div>
+  <div class="pp-text" style="left:760px;top:411px;width:456px;height:56px">停止時間と業務への影響を測る</div>
+  <div class="pp-text" style="left:760px;top:518px;width:456px;height:56px">保守期限・現行費用・利用状況</div>
 </section>

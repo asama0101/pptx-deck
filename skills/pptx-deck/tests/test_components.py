@@ -60,7 +60,7 @@ def test_component_is_clean_and_buildable(path, work):
 
 
 def test_source_caption_follows_the_template_area(tmp_path):        # Review Focus 2
-    """出典は本文領域の下端に付く。領域が標準より狭い（フッターが高い）テンプレートでは、
+    """出典（書くときだけ）は本文領域の下端に付く。領域が標準より狭い（フッターが高い）テンプレートでは、
     出典が領域の内側に上がり、固定座標の本文と重なって検出される（フッターの上に黙って載らない）。"""
     from pptx.util import Emu
     from tests.test_template import STANDARD, _as_pptx
@@ -69,12 +69,17 @@ def test_source_caption_follows_the_template_area(tmp_path):        # Review Foc
     body = [l for l in prs.slide_layouts if l.name == "本文"][0]
     for ph in body.placeholders:
         if ph.placeholder_format.type == 7:                          # OBJECT（本文の領域）
-            ph.height = Emu(round(450 * 9525))                      # 下端 600px
+            ph.height = Emu(round(410 * 9525))                      # 下端 560px
     prs.save(tpl)
     w = tmp_path / "w"
     initdir.init(w, color="navy", template_path=tpl)
-    _, _, _, violations = check_fragment(COMP / "layouts" / "decision.html", w)
-    assert any(v["rule"] == "overlap" for v in violations), violations
+    # 部品庫の断片は出典を持たない。出典を書くときの形（SKILL.md）を、判断スライドに足して確かめる
+    caption = ('  <div class="pp-text" data-role="caption" data-chrome style="left:64px;top:calc(var(--area-y) + var(--area-h));'
+               'width:900px;height:24px">出典: 社内試算（2026年9月）</div></section>')
+    src = tmp_path / "decision_with_source.html"
+    src.write_text((COMP / "layouts" / "decision.html").read_text(encoding="utf-8").replace("</section>", caption), encoding="utf-8")
+    _, _, _, violations = check_fragment(src, w)
+    assert any(v["rule"] in ("overlap", "contrast") for v in violations), violations     # 帯に載った出典は、重なりか文字色の指摘になる
 
 
 @pytest.mark.parametrize("path", FILES, ids=lambda p: f"{p.parent.name}/{p.stem}")

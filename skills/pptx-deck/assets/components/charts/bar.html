@@ -1,9 +1,9 @@
-<!-- 用途: 案どうし・期間どうしの量の比較（縦棒）。注目する 1 本だけ強調色（highlight は 0 始まりの番号）。
-     差し替える所: data-chart の categories / series / highlight・右の所見・出典。 -->
+<!-- 用途: 案どうし・期間どうしの量の比較（縦棒）。注目する 1 本だけ強調色（highlight は 0 始まりの番号）。 注目点は吹き出しでグラフに直接書く（グラフは全幅）。
+     差し替える所: data-chart・吹き出しの文と位置（グラフの値に合わせて手で直す）。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-role="title" style="height:44px">B案の総費用は1.7億円で、A案より8,000万円低い</div>
-  <div class="pp-chart" data-chart='{"type":"bar","categories":["現行維持（C案）","A案","B案"],"series":[{"name":"総費用（万円）","values":[22000,25000,17000]}],"highlight":2,"fmt":"#,##0"}' style="left:64px;top:160px;width:720px;height:440px"></div>
-  <div class="pp-text b" style="left:830px;top:176px;width:386px;height:34px">読み取れること</div>
-  <div class="pp-text" style="left:830px;top:222px;width:386px;height:300px"><ul><li>A案は最も高く、2.5億円</li><li>B案は1.7億円で、A案より8,000万円低い</li><li>C案は保守延長を含めて2.2億円</li></ul></div>
-  <div class="pp-text" data-role="caption" data-chrome style="left:64px;top:calc(var(--area-y) + var(--area-h));width:900px;height:24px">出典: 見積書（2026年9月）。5年間の総額</div>
+  <div class="pp-chart" data-chart='{"type":"bar","categories":["現行維持（C案）","A案","B案"],"series":[{"name":"総費用（万円）","values":[22000,25000,17000]}],"highlight":2,"fmt":"#,##0"}' style="left:64px;top:160px;width:1152px;height:460px"></div>
+  <div class="pp-shape f-light r" data-overlap style="left:860px;top:214px;width:320px;height:76px"></div>
+  <div class="pp-text b" data-overlap style="left:872px;top:222px;width:296px;height:60px">B案が最も低く、A案より8,000万円安い</div>
+  <div class="pp-line" data-arrow="end" style="left:1020px;top:292px;width:2px;height:52px;background:var(--accent)"></div>
 </section>

@@ -8,12 +8,13 @@ body {
   position: relative; width: 1280px; height: 720px; margin: 0 auto 24px; overflow: hidden;
   background-color: var(--bg); background-size: 1280px 720px; background-repeat: no-repeat;
 }
+.slide { color: var(--text); }
 .pp-text, .pp-shape, .pp-line, .pp-image, .pp-table, .pp-chart { position: absolute; }
 .pp-text { font-size: 20px; line-height: 1.5; color: var(--text); }
 .pp-text ul { list-style: none; }
 .pp-text li { margin-bottom: 6px; }
 .pp-line { height: 2px; }
-table.pp-table { border-collapse: collapse; }
+table.pp-table { border-collapse: collapse; color: var(--text); }
 
 /* 役割ごとの文字（px。pt = px × 0.75） */
 [data-role="title"]   { font-size: 28px; font-weight: 700; line-height: 1.35; color: var(--text); }
@@ -42,6 +43,9 @@ table.pp-table { border-collapse: collapse; }
 .f-emph   { background: var(--emphasis); }
 .f-white  { background: #FFFFFF; border: 1px solid var(--line); }
 .r { border-radius: 10px; }
+/* 図形の形（PPTX では本物の楕円・三角形になる。プレビューの近似） */
+.pp-shape[data-shape="ellipse"] { border-radius: 50%; }
+.pp-shape[data-shape="triangle"] { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
 
 /* 文字の色・形 */
 .t-white  { color: #FFFFFF; }
@@ -53,6 +57,13 @@ table.pp-table { border-collapse: collapse; }
 .b      { font-weight: 700; }
 .num    { font-size: 44px; font-weight: 700; line-height: 1.2; color: var(--accent); }
 .t-dark { color: var(--accent-dark); }          /* 基調色の文字は白地だけ。薄い面の上は濃い基調色（.num と併用） */
+
+/* 矢印（data-arrow="end"）の矢じり。向きは chart-preview.js が ah/av（横/縦）・rv（逆向き）を付ける。PPTX では本物の矢印になる */
+.pp-line[data-arrow]::after { content: ""; position: absolute; width: 0; height: 0; border-style: solid; }
+.pp-line.ah::after { right: -2px; top: -6px; border-width: 7px 0 7px 12px; border-color: transparent transparent transparent var(--ac); }
+.pp-line.ah.rv::after { left: -2px; right: auto; border-width: 7px 12px 7px 0; border-color: transparent var(--ac) transparent transparent; }
+.pp-line.av::after { bottom: -2px; left: -6px; border-width: 12px 7px 0 7px; border-color: var(--ac) transparent transparent transparent; }
+.pp-line.av.rv::after { top: -2px; bottom: auto; border-width: 0 7px 12px 7px; border-color: transparent transparent var(--ac) transparent; }
 
 /* 罫線（pp-line と併用） */
 .hr { background: var(--line); }

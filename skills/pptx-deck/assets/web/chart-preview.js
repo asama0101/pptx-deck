@@ -1,7 +1,8 @@
 /* グラフのブラウザ用プレビュー（近似）。実際のグラフは PowerPoint のネイティブグラフで出る。 */
 (function () {
   var NS = 'http://www.w3.org/2000/svg';
-  var css = function (n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim() || '#333'; };
+  var ctx = document.documentElement;      // 色の変数を読む要素（描画するグラフ自身。親のクラスで配色を変えても追従する）
+  var css = function (n) { return getComputedStyle(ctx).getPropertyValue(n).trim() || '#333'; };
   var el = function (t, a, p) {
     var e = document.createElementNS(NS, t);
     for (var k in a) e.setAttribute(k, a[k]);
@@ -19,6 +20,13 @@
     if (v <= 0) return 1;
     var p = Math.pow(10, Math.floor(Math.log10(v))), m = v / p;
     return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * p;
+  };
+  // PowerPoint の自動目盛りに近い上限（目盛り幅は 1・2・5 × 10^n で、区間は 8 以下。データ最大に 5% の余白を足して切り上げる）
+  var niceMax = function (v) {
+    if (v <= 0) return 1;
+    var p = Math.pow(10, Math.floor(Math.log10(v))), step = p;
+    [0.1, 0.2, 0.5, 1, 2, 5, 10].some(function (m) { step = m * p; return v / step <= 8; });
+    return Math.ceil(v * 1.05 / step) * step;
   };
   var fmt = function (v) { return Math.round(v * 10) / 10 + ''; };
   var palette = function () {
@@ -65,7 +73,7 @@
     var pw = W - L - R, ph = H - T - B, st = stacks(spec);
     var lo = 0, hi = 0;
     st.forEach(function (c) { c.forEach(function (b) { lo = Math.min(lo, b.lo, b.hi); hi = Math.max(hi, b.lo, b.hi); }); });
-    hi = spec.type === 'stacked100' ? 100 : nice(hi);
+    hi = spec.type === 'stacked100' ? 100 : niceMax(hi);
     var range = hi - lo || 1, n = st.length, slot = (horizontal ? ph : pw) / n;
     var pos = function (v) { return (v - lo) / range * (horizontal ? pw : ph); };
     el('line', horizontal ? { x1: L + pos(0), y1: T, x2: L + pos(0), y2: T + ph, stroke: '#BFBFBF' }
@@ -89,14 +97,14 @@
   function line(svg, spec, W, H) {
     var L = 56, R = 16, T = 24, B = spec.series.length > 1 ? 56 : 40, pw = W - L - R, ph = H - T - B, pal = palette();
     var all = [].concat.apply([], spec.series.map(function (s) { return s.values; }));
-    var lo = Math.min(0, Math.min.apply(null, all)), hi = nice(Math.max.apply(null, all)), range = hi - lo || 1;
-    var n = spec.categories.length, step = n > 1 ? pw / (n - 1) : 0;
+    var lo = Math.min(0, Math.min.apply(null, all)), hi = niceMax(Math.max.apply(null, all)), range = hi - lo || 1;
+    var n = spec.categories.length, step = pw / n;
     spec.series.forEach(function (s, j) {
-      var pts = s.values.map(function (v, i) { return (L + (n > 1 ? i * step : pw / 2)) + ',' + (T + ph - (v - lo) / range * ph); });
+      var pts = s.values.map(function (v, i) { return (L + (i + 0.5) * step) + ',' + (T + ph - (v - lo) / range * ph); });
       el('polyline', { points: pts.join(' '), fill: 'none', stroke: pal[j % 5], 'stroke-width': 3 }, svg);
-      s.values.forEach(function (v, i) { el('circle', { cx: L + (n > 1 ? i * step : pw / 2), cy: T + ph - (v - lo) / range * ph, r: 4, fill: pal[j % 5] }, svg); });
+      s.values.forEach(function (v, i) { el('circle', { cx: L + (i + 0.5) * step, cy: T + ph - (v - lo) / range * ph, r: 4, fill: pal[j % 5] }, svg); });
     });
-    spec.categories.forEach(function (c, i) { txt(svg, L + (n > 1 ? i * step : pw / 2), T + ph + 20, c, { size: 13 }); });
+    spec.categories.forEach(function (c, i) { txt(svg, L + (i + 0.5) * step, T + ph + 20, c, { size: 13 }); });
     legend(svg, spec, W, H);
   }
 
@@ -122,6 +130,7 @@
 
   function draw(host) {
     var spec = JSON.parse(host.dataset.chart);
+    ctx = host;
     host.querySelectorAll('svg').forEach(function (s) { s.remove(); });
     var W = host.clientWidth || 600, H = host.clientHeight || 360;
     var svg = el('svg', { width: W, height: H, viewBox: '0 0 ' + W + ' ' + H, style: 'position:absolute;left:0;top:0' }, host);
@@ -131,7 +140,17 @@
     else columns(svg, spec, W, H, spec.type === 'barh');
   }
 
+  // 矢印の向きと色（矢じりの CSS 用）。スライドを後から差し込んだときは window.__arrows(root) を呼ぶ
+  function arrows(root) {
+    (root || document).querySelectorAll('.pp-line[data-arrow]').forEach(function (l) {
+      var horizontal = l.offsetWidth >= l.offsetHeight;
+      l.classList.add(horizontal ? 'ah' : 'av');
+      if (l.dataset.dir === 'rev') l.classList.add('rv');
+      l.style.setProperty('--ac', getComputedStyle(l).backgroundColor);
+    });
+  }
+  window.__arrows = arrows;
   window.__chartPreview = draw;
-  var run = function () { document.querySelectorAll('.pp-chart').forEach(draw); };
+  var run = function () { document.querySelectorAll('.pp-chart').forEach(draw); arrows(document); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
 })();
