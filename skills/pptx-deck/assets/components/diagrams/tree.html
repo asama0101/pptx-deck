@@ -1,24 +1,98 @@
-<!-- 用途: 分解・内訳・組織。根 → 3 つの枝 → 各枝の内訳。罫線は直角。
-     差し替える所: 根・枝の名前・内訳（各 2〜3 行）。 -->
+<!-- 用途: ロジックツリー（要因分解と打ち手の一覧）。左の根（基調色の面）を 2 段の枝に分け、右端の末端に施策（白＋罫線の箱）を並べ、その右に評価列（効果・実現期間）を置く。
+     枝の箱には名前と寄与（足し算で根に戻る値）を書く。枝の接続は直角の罫線。先に着手する施策（ここでは 1 年内に効く 3 手）だけ、基調色の枠とパネル地の評価欄で示す。最下部のまとめの行で、着手する手と残りの寄与を足し上げる。
+     差し替える所: 根・枝（名前と寄与）・末端の 6 行（施策・効果・実現期間）・まとめの行。末端は 6 行まで（14pt で収まる量）。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-note="題：内訳の構成を結論で言う" data-role="title" style="height:44px">総費用は、構築・運用・移行の3つに分けて管理できる</div>
-  <div class="pp-shape f-accent r" data-note="根：全体（基調色）" style="left:480px;top:160px;width:320px;height:64px"></div>
-  <div class="pp-text t-white b center" data-note="根：全体（基調色）" style="left:496px;top:174px;width:288px;height:36px;font-size:22px">5年間の総費用</div>
-  <div class="pp-line hr" style="left:639px;top:224px;width:2px;height:32px"></div>
-  <div class="pp-line hr" style="left:224px;top:256px;width:832px"></div>
-  <div class="pp-line hr" style="left:223px;top:256px;width:2px;height:36px"></div>
-  <div class="pp-line hr" style="left:639px;top:256px;width:2px;height:36px"></div>
-  <div class="pp-line hr" style="left:1055px;top:256px;width:2px;height:36px"></div>
-  <div class="pp-shape f-light r" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:64px;top:292px;width:320px;height:64px"></div>
-  <div class="pp-text b center" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:80px;top:306px;width:288px;height:36px">構築費</div>
-  <div class="pp-shape f-light r" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:480px;top:292px;width:320px;height:64px"></div>
-  <div class="pp-text b center" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:496px;top:306px;width:288px;height:36px">運用費</div>
-  <div class="pp-shape f-light r" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:896px;top:292px;width:320px;height:64px"></div>
-  <div class="pp-text b center" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:912px;top:306px;width:288px;height:36px">移行費</div>
-  <div class="pp-shape f-white r" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:64px;top:372px;width:320px;height:200px"></div>
-  <div class="pp-text" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:84px;top:388px;width:280px;height:170px"><ul><li>設計: 2,000万円</li><li>機器: 5,500万円</li><li>設定: 1,500万円</li></ul></div>
-  <div class="pp-shape f-white r" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:480px;top:372px;width:320px;height:200px"></div>
-  <div class="pp-text" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:500px;top:388px;width:280px;height:170px"><ul><li>保守: 3,000万円</li><li>監視: 1,200万円</li><li>人件費: 1,800万円</li></ul></div>
-  <div class="pp-shape f-white r" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:896px;top:372px;width:320px;height:200px"></div>
-  <div class="pp-text" data-note="3 つの枝と、各枝の内訳（罫線は直角）" style="left:916px;top:388px;width:280px;height:170px"><ul><li>データ移行: 900万円</li><li>試験: 600万円</li><li>教育: 500万円</li></ul></div>
+  <div class="pp-text" data-role="title" style="height:44px">利益率改善の過半は販管費側にあるため、1年内に効く3手から着手すべきだ</div>
+  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:620px;height:28px;font-size:20px">営業利益率改善の要因分解と打ち手（FY25→FY28、寄与はpt）</div>
+  <div class="pp-shape f-accent" data-note="評価列：末端の施策ごとに、効果（pt）と実現期間を並べる" style="left:1002px;top:188px;width:100px;height:36px"></div>
+  <div class="pp-text t-white b center" data-note="評価列：末端の施策ごとに、効果（pt）と実現期間を並べる" style="left:1002px;top:191px;width:100px;height:30px;font-size:19px">効果</div>
+  <div class="pp-shape f-accent" data-note="評価列：末端の施策ごとに、効果（pt）と実現期間を並べる" style="left:1114px;top:188px;width:102px;height:36px"></div>
+  <div class="pp-text t-white b center" data-note="評価列：末端の施策ごとに、効果（pt）と実現期間を並べる" style="left:1114px;top:191px;width:102px;height:30px;font-size:19px">実現期間</div>
+
+  <div class="pp-shape f-accent" data-note="根と枝：2段に分け、各箱に名前と寄与（pt）を書く。罫線は直角" style="left:64px;top:366px;width:160px;height:114px"></div>
+  <div class="pp-text t-white b center" data-note="根と枝：2段に分け、各箱に名前と寄与（pt）を書く。罫線は直角" style="left:68px;top:374px;width:152px;height:28px;font-size:19px">営業利益率</div>
+  <div class="pp-text t-white b center" style="left:68px;top:402px;width:152px;height:40px;font-size:30px;line-height:1.3">+3.8pt</div>
+  <div class="pp-text t-white center" data-role="caption" style="left:68px;top:446px;width:152px;height:22px">6.2%→10.0%</div>
+  <div class="pp-line" style="left:224px;top:423px;width:14px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:238px;top:333px;width:1px;height:181px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:238px;top:333px;width:14px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:238px;top:513px;width:14px;height:1px;background:var(--text-sub)"></div>
+
+  <div class="pp-shape f-outline" data-note="根と枝：2段に分け、各箱に名前と寄与（pt）を書く。罫線は直角" style="left:252px;top:305px;width:196px;height:56px"></div>
+  <div class="pp-text b center" style="left:256px;top:307px;width:188px;height:52px;font-size:19px;line-height:1.35">売上総利益率の改善<br><span style="color:var(--accent-dark)">+1.8pt</span></div>
+  <div class="pp-shape f-outline" data-note="根と枝：2段に分け、各箱に名前と寄与（pt）を書く。罫線は直角" style="left:252px;top:485px;width:196px;height:56px"></div>
+  <div class="pp-text b center" style="left:256px;top:487px;width:188px;height:52px;font-size:19px;line-height:1.35">販管費率の低減<br><span style="color:var(--accent-dark)">+2.0pt</span></div>
+  <div class="pp-line" style="left:448px;top:333px;width:11px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:459px;top:288px;width:1px;height:91px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:459px;top:288px;width:11px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:459px;top:378px;width:11px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:448px;top:513px;width:11px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:459px;top:468px;width:1px;height:91px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:459px;top:468px;width:11px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:459px;top:558px;width:11px;height:1px;background:var(--text-sub)"></div>
+
+  <div class="pp-shape f-soft" style="left:470px;top:260px;width:196px;height:56px"></div>
+  <div class="pp-text b center" style="left:474px;top:262px;width:188px;height:52px;font-size:19px;line-height:1.35">単価・ミックス改善<br><span style="color:var(--accent-dark)">+0.7pt</span></div>
+  <div class="pp-shape f-soft" style="left:470px;top:350px;width:196px;height:56px"></div>
+  <div class="pp-text b center" style="left:474px;top:352px;width:188px;height:52px;font-size:19px;line-height:1.35">原価の低減<br><span style="color:var(--accent-dark)">+1.1pt</span></div>
+  <div class="pp-shape f-soft" style="left:470px;top:440px;width:196px;height:56px"></div>
+  <div class="pp-text b center" style="left:474px;top:442px;width:188px;height:52px;font-size:19px;line-height:1.35">販売費の低減<br><span style="color:var(--accent-dark)">+1.2pt</span></div>
+  <div class="pp-shape f-soft" style="left:470px;top:530px;width:196px;height:56px"></div>
+  <div class="pp-text b center" style="left:474px;top:532px;width:188px;height:52px;font-size:19px;line-height:1.35">一般管理費の低減<br><span style="color:var(--accent-dark)">+0.8pt</span></div>
+  <div class="pp-line" style="left:666px;top:288px;width:12px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:678px;top:258px;width:1px;height:61px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:678px;top:258px;width:12px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:678px;top:318px;width:12px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:666px;top:378px;width:24px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:666px;top:468px;width:12px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:678px;top:438px;width:1px;height:61px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:678px;top:438px;width:12px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:678px;top:498px;width:12px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:666px;top:558px;width:24px;height:1px;background:var(--text-sub)"></div>
+
+  <div class="pp-shape f-outline" data-note="末端の施策：1年内に効く3手だけ、基調色の枠とパネル地の評価欄で示す" style="left:690px;top:232px;width:300px;height:52px"></div>
+  <div class="pp-text" style="left:702px;top:243px;width:284px;height:30px;font-size:19px">値引き運用の標準価格化</div>
+  <div class="pp-shape f-white" style="left:1002px;top:232px;width:100px;height:52px"></div>
+  <div class="pp-text b center" style="left:1006px;top:243px;width:92px;height:30px;font-size:19px">+0.3</div>
+  <div class="pp-shape f-soft" data-note="末端の施策：1年内に効く3手だけ、基調色の枠とパネル地の評価欄で示す" style="left:1114px;top:232px;width:102px;height:52px"></div>
+  <div class="pp-text b t-dark center" style="left:1118px;top:243px;width:94px;height:30px;font-size:19px">〜1年</div>
+
+  <div class="pp-shape f-white" style="left:690px;top:292px;width:300px;height:52px"></div>
+  <div class="pp-text" style="left:702px;top:303px;width:284px;height:30px;font-size:19px">車載・医療へのミックスシフト</div>
+  <div class="pp-shape f-white" style="left:1002px;top:292px;width:100px;height:52px"></div>
+  <div class="pp-text b center" style="left:1006px;top:303px;width:92px;height:30px;font-size:19px">+0.4</div>
+  <div class="pp-shape f-white" style="left:1114px;top:292px;width:102px;height:52px"></div>
+  <div class="pp-text center" style="left:1118px;top:303px;width:94px;height:30px;font-size:19px">1〜3年</div>
+
+  <div class="pp-shape f-outline" data-note="末端の施策：1年内に効く3手だけ、基調色の枠とパネル地の評価欄で示す" style="left:690px;top:352px;width:300px;height:52px"></div>
+  <div class="pp-text" style="left:702px;top:363px;width:284px;height:30px;font-size:19px">集中購買・部材の共通化</div>
+  <div class="pp-shape f-white" style="left:1002px;top:352px;width:100px;height:52px"></div>
+  <div class="pp-text b center" style="left:1006px;top:363px;width:92px;height:30px;font-size:19px">+1.1</div>
+  <div class="pp-shape f-soft" data-note="末端の施策：1年内に効く3手だけ、基調色の枠とパネル地の評価欄で示す" style="left:1114px;top:352px;width:102px;height:52px"></div>
+  <div class="pp-text b t-dark center" style="left:1118px;top:363px;width:94px;height:30px;font-size:19px">〜1年</div>
+
+  <div class="pp-shape f-outline" data-note="末端の施策：1年内に効く3手だけ、基調色の枠とパネル地の評価欄で示す" style="left:690px;top:412px;width:300px;height:52px"></div>
+  <div class="pp-text" style="left:702px;top:423px;width:284px;height:30px;font-size:19px">代理店手数料体系の再設計</div>
+  <div class="pp-shape f-white" style="left:1002px;top:412px;width:100px;height:52px"></div>
+  <div class="pp-text b center" style="left:1006px;top:423px;width:92px;height:30px;font-size:19px">+0.7</div>
+  <div class="pp-shape f-soft" data-note="末端の施策：1年内に効く3手だけ、基調色の枠とパネル地の評価欄で示す" style="left:1114px;top:412px;width:102px;height:52px"></div>
+  <div class="pp-text b t-dark center" style="left:1118px;top:423px;width:94px;height:30px;font-size:19px">〜1年</div>
+
+  <div class="pp-shape f-white" style="left:690px;top:472px;width:300px;height:52px"></div>
+  <div class="pp-text" style="left:702px;top:483px;width:284px;height:30px;font-size:19px">営業活動のCareシフト</div>
+  <div class="pp-shape f-white" style="left:1002px;top:472px;width:100px;height:52px"></div>
+  <div class="pp-text b center" style="left:1006px;top:483px;width:92px;height:30px;font-size:19px">+0.5</div>
+  <div class="pp-shape f-white" style="left:1114px;top:472px;width:102px;height:52px"></div>
+  <div class="pp-text center" style="left:1118px;top:483px;width:94px;height:30px;font-size:19px">1〜3年</div>
+
+  <div class="pp-shape f-white" style="left:690px;top:532px;width:300px;height:52px"></div>
+  <div class="pp-text" style="left:702px;top:543px;width:284px;height:30px;font-size:19px">階層削減（7→5）と間接再配置</div>
+  <div class="pp-shape f-white" style="left:1002px;top:532px;width:100px;height:52px"></div>
+  <div class="pp-text b center" style="left:1006px;top:543px;width:92px;height:30px;font-size:19px">+0.8</div>
+  <div class="pp-shape f-white" style="left:1114px;top:532px;width:102px;height:52px"></div>
+  <div class="pp-text center" style="left:1118px;top:543px;width:94px;height:30px;font-size:19px">1〜3年</div>
+
+  <div class="pp-line" style="left:470px;top:596px;width:746px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す" style="left:470px;top:600px;width:746px;height:40px"></div>
+  <div class="pp-text" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す" style="left:486px;top:604px;width:714px;height:30px;font-size:19px"><b style="color:var(--accent-dark)">1年内に効く3手で+2.1pt（過半）</b>、残りの3手は1〜3年で+1.7pt</div>
 </section>

@@ -52,6 +52,18 @@ def test_bar_highlight_uses_emphasis_color(tmp_path):
     assert str(ch.plots[0].series[0].format.fill.fore_color.rgb) == PAL.accent.lstrip("#")
 
 
+def test_axis_sets_min_max_and_major_unit(tmp_path):
+    # 小グラフを並べるときは、軸の最大・最小・目盛を全パネルで揃える（"axis" で指定する）
+    ch = built({**BASE, "type": "bar", "axis": {"min": 0, "max": 600, "major": 150}}, tmp_path)
+    ax = ch.value_axis
+    assert (ax.minimum_scale, ax.maximum_scale, ax.major_unit) == (0, 600, 150)
+
+
+def test_axis_is_automatic_without_spec(tmp_path):
+    ax = built({**BASE, "type": "bar"}, tmp_path).value_axis
+    assert ax.minimum_scale is None and ax.maximum_scale is None and ax.major_unit is None
+
+
 def test_fonts_are_at_least_10pt_and_biz(tmp_path):
     ch = built({**BASE, "type": "bar"}, tmp_path)
     assert ch.font.size.pt >= 10 and ch.font.name == "BIZ UDPゴシック"

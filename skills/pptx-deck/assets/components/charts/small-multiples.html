@@ -1,0 +1,30 @@
+<!-- 用途: 軸統一（小グラフ 4 パネル）。同じ型の棒グラフを横に 4 つ並べ、地域・事業などの推移を比べる。4 つの data-chart の axis で、軸の最大・最小・目盛を揃える（ここでは 0〜600、目盛 150）。揃えないと、パネルごとに目盛が変わり、棒の長さで比べられない。
+     各パネルの上に、名前（太字）・増分（太字）・伸び率（注記の文字）を置く。強調は 1 点だけ（増分が最大のパネルの増分を、基調色の太字）。単位は左上に 1 回だけ書く。全要素に実数ラベルが付く。
+     差し替える所: 4 つの data-chart（categories・values。axis は 4 つとも同じ値にする）・パネルの名前・増分・伸び率・吹き出しの文・注記。 -->
+<section class="slide" data-layout="chart">
+  <div class="pp-text" data-role="title" style="height:44px">伸び率は欧州が首位だが増分は北米が3倍あり、増強はまず北米に張るべきだ</div>
+  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">地域別売上の推移（FY21→FY25、億円、4パネルの縦軸は0〜600で統一）</div>
+  <div class="pp-text" data-note="軸の統一：4パネルの縦軸を0〜600・目盛150で揃え、棒の長さで比べる" data-role="caption" style="left:64px;top:248px;width:60px;height:20px">（億円）</div>
+  <div class="pp-text b center" style="left:128px;top:186px;width:200px;height:30px">日本</div>
+  <div class="pp-text b center" style="left:128px;top:216px;width:200px;height:30px;font-size:19px">増分 +10億円</div>
+  <div class="pp-text center" data-role="caption" style="left:128px;top:246px;width:200px;height:20px">伸び率 +2%</div>
+  <div class="pp-chart" data-note="軸の統一：4パネルの縦軸を0〜600・目盛150で揃え、棒の長さで比べる" data-chart='{"type":"bar","categories":["FY21","FY23","FY25"],"series":[{"name":"売上（億円）","values":[550,556,560]}],"fmt":"0","axis":{"min":0,"max":600,"major":150}}' style="left:64px;top:272px;width:280px;height:340px"></div>
+  <div class="pp-line hr" style="left:351px;top:186px;width:1px;height:426px"></div>
+  <div class="pp-text b center" style="left:384px;top:186px;width:240px;height:30px">北米</div>
+  <div class="pp-text b t-accent center" data-note="強調の1点：増分が最大の北米だけ、増分を基調色の太字にする" style="left:384px;top:216px;width:240px;height:30px;font-size:19px">増分 +90億円</div>
+  <div class="pp-text center" data-role="caption" style="left:384px;top:246px;width:240px;height:20px">伸び率 +43%</div>
+  <div class="pp-chart" data-note="軸の統一：4パネルの縦軸を0〜600・目盛150で揃え、棒の長さで比べる" data-chart='{"type":"bar","categories":["FY21","FY23","FY25"],"series":[{"name":"売上（億円）","values":[210,248,300]}],"fmt":"0","axis":{"min":0,"max":600,"major":150}}' style="left:356px;top:272px;width:280px;height:340px"></div>
+  <div class="pp-line hr" style="left:643px;top:186px;width:1px;height:426px"></div>
+  <div class="pp-text b center" style="left:676px;top:186px;width:240px;height:30px">中国・アジア</div>
+  <div class="pp-text b center" style="left:676px;top:216px;width:240px;height:30px;font-size:19px">増分 +60億円</div>
+  <div class="pp-text center" data-role="caption" style="left:676px;top:246px;width:240px;height:20px">伸び率 +35%</div>
+  <div class="pp-chart" data-note="軸の統一：4パネルの縦軸を0〜600・目盛150で揃え、棒の長さで比べる" data-chart='{"type":"bar","categories":["FY21","FY23","FY25"],"series":[{"name":"売上（億円）","values":[170,196,230]}],"fmt":"0","axis":{"min":0,"max":600,"major":150}}' style="left:648px;top:272px;width:280px;height:340px"></div>
+  <div class="pp-line hr" style="left:935px;top:186px;width:1px;height:426px"></div>
+  <div class="pp-text b center" style="left:968px;top:186px;width:240px;height:30px">欧州</div>
+  <div class="pp-text b center" style="left:968px;top:216px;width:240px;height:30px;font-size:19px">増分 +30億円</div>
+  <div class="pp-text center" data-role="caption" style="left:944px;top:246px;width:272px;height:20px">伸び率 +50%（4地域で最大）</div>
+  <div class="pp-chart" data-overlap data-note="軸の統一：4パネルの縦軸を0〜600・目盛150で揃え、棒の長さで比べる" data-chart='{"type":"bar","categories":["FY21","FY23","FY25"],"series":[{"name":"売上（億円）","values":[60,72,90]}],"fmt":"0","axis":{"min":0,"max":600,"major":150}}' style="left:940px;top:272px;width:276px;height:340px"></div>
+  <div class="pp-shape f-outline" data-overlap data-note="吹き出し：伸び率が首位の欧州でも、増分は北米の3分の1にとどまる" style="left:1000px;top:316px;width:200px;height:40px"></div>
+  <div class="pp-text b center" data-overlap data-note="吹き出し：伸び率が首位の欧州でも、増分は北米の3分の1にとどまる" style="left:1006px;top:320px;width:188px;height:30px;font-size:19px">増分は北米の1/3</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:618px;width:1152px;height:22px">注: 伸び率＝FY21→FY25の増加率。地域増強の順は、北米→中国・アジア→欧州とする</div>
+</section>

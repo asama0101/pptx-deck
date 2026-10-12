@@ -74,6 +74,9 @@
     var lo = 0, hi = 0;
     st.forEach(function (c) { c.forEach(function (b) { lo = Math.min(lo, b.lo, b.hi); hi = Math.max(hi, b.lo, b.hi); }); });
     hi = spec.type === 'stacked100' ? 100 : niceMax(hi);
+    var ax = spec.axis || {};                  // 軸の固定（小グラフを並べるときに全パネルで揃える）
+    if (ax.min !== undefined) lo = ax.min;
+    if (ax.max !== undefined) hi = ax.max;
     var range = hi - lo || 1, n = st.length, slot = (horizontal ? ph : pw) / n;
     var pos = function (v) { return (v - lo) / range * (horizontal ? pw : ph); };
     el('line', horizontal ? { x1: L + pos(0), y1: T, x2: L + pos(0), y2: T + ph, stroke: '#BFBFBF' }
@@ -97,7 +100,9 @@
   function line(svg, spec, W, H) {
     var L = 56, R = 16, T = 24, B = spec.series.length > 1 ? 56 : 40, pw = W - L - R, ph = H - T - B, pal = palette();
     var all = [].concat.apply([], spec.series.map(function (s) { return s.values; }));
-    var lo = Math.min(0, Math.min.apply(null, all)), hi = niceMax(Math.max.apply(null, all)), range = hi - lo || 1;
+    var ax = spec.axis || {};
+    var lo = ax.min !== undefined ? ax.min : Math.min(0, Math.min.apply(null, all));
+    var hi = ax.max !== undefined ? ax.max : niceMax(Math.max.apply(null, all)), range = hi - lo || 1;
     var n = spec.categories.length, step = pw / n;
     spec.series.forEach(function (s, j) {
       var pts = s.values.map(function (v, i) { return (L + (i + 0.5) * step) + ',' + (T + ph - (v - lo) / range * ph); });

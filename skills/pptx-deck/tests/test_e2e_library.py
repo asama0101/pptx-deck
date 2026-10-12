@@ -6,7 +6,6 @@ import pytest
 from pptx import Presentation
 
 from pptx_deck import cli, initdir, paths
-from tests.test_components import TEMP_SKIP_RULES
 from tests.test_template import STANDARD, _as_pptx
 
 pytestmark = pytest.mark.skipif(shutil.which("soffice") is None and not Path(
@@ -39,9 +38,7 @@ def test_full_deck_builds(tmp_path, capsys, template_kind):
     capsys.readouterr()
     assert cli.main(["build", str(w), "--footer", "社外秘"]) == 0
     out = json.loads(capsys.readouterr().out)
-    # TEMP(Task 6 で外す): 部品庫の作り直しまで emptyBand・sameWord・orphanLine を除外
-    left = [v for v in out["violations"] if v["rule"] not in TEMP_SKIP_RULES]
-    assert out["ok"] is True and left == []
+    assert out["ok"] is True and out["violations"] == []
     prs = Presentation(w / "deck.pptx")
     assert len(prs.slides) == 10
     assert prs.slides[0].slide_layout.name in ("表紙", "Title Slide")

@@ -1,31 +1,74 @@
-<!-- 用途: 導入前後・現状と目標の比較。左が BEFORE、右が AFTER。項目ごとに「前の値 → 後の値」と、増減（量と割合）。後の値だけ基調色の大きな数字。下の帯に効果をまとめる（帯は右下まで届かせる。文は左寄せ）。
-     差し替える所: 項目名・前後の値・増減・効果の帯。 -->
+<!-- 用途: 同位置の Before/After（業務の工程を減らす改革）。上段に現行、下段に改革後の工程ボックスを、同じ位置・同じ大きさで並べる（比較で要素の位置を変えない）。
+     消える工程は、下段で破線の箱（pp-shape dashed）にして「廃止」と書き、代わりの手段を箱の下に注記する。止める工程は上段で基調色の枠と「▼ 止める」で示す。段の間に基調色の下向き矢印と一文。
+     最下部にリードタイムの横棒 2 本（長さを日数に比例させる。1日＝90px）と、差を示す破線の枠・矢印・差の値を置く。
+     差し替える所: 工程の名前と日数（6 個まで。14pt で収まる量）・止める工程・代替の注記・段の間の一文・横棒の長さと値。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-note="題：効果を数字で言い切る" data-role="title" style="height:44px">導入後は、障害対応が月40時間から8時間に減る</div>
-  <div class="pp-shape f-soft r" data-note="BEFORE（左・灰色の面と札）：前の値" style="left:64px;top:150px;width:520px;height:350px"></div>
-  <div class="pp-shape f-mid r" data-note="BEFORE（左・灰色の面と札）：前の値" style="left:88px;top:166px;width:150px;height:36px"></div>
-  <div class="pp-text b center" data-note="BEFORE（左・灰色の面と札）：前の値" style="left:88px;top:166px;width:150px;height:30px">BEFORE</div>
-  <div class="pp-text b" data-note="BEFORE（左・灰色の面と札）：前の値" style="left:252px;top:168px;width:300px;height:34px">現状</div>
-  <div class="pp-text" data-note="BEFORE（左・灰色の面と札）：前の値" data-role="caption" style="left:88px;top:214px;width:472px;height:22px">障害対応（月）</div>
-  <div class="pp-text" data-note="BEFORE（左・灰色の面と札）：前の値" data-role="display" style="left:88px;top:236px;width:472px;height:60px">40時間</div>
-  <div class="pp-text" data-note="BEFORE（左・灰色の面と札）：前の値" data-role="caption" style="left:88px;top:304px;width:472px;height:22px">停止回数（年）</div>
-  <div class="pp-text" data-note="BEFORE（左・灰色の面と札）：前の値" data-role="display" style="left:88px;top:326px;width:472px;height:60px">6回</div>
-  <div class="pp-text" data-note="BEFORE（左・灰色の面と札）：前の値" data-role="caption" style="left:88px;top:394px;width:472px;height:22px">運用費（年）</div>
-  <div class="pp-text" data-note="BEFORE（左・灰色の面と札）：前の値" data-role="display" style="left:88px;top:416px;width:472px;height:60px">2,000万円</div>
-  <div class="pp-line" data-arrow="end" style="left:596px;top:324px;width:88px;background:var(--accent)"></div>
-  <div class="pp-shape f-light r" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" style="left:696px;top:150px;width:520px;height:350px"></div>
-  <div class="pp-shape f-accent r" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" style="left:720px;top:166px;width:150px;height:36px"></div>
-  <div class="pp-text t-white b center" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" style="left:720px;top:166px;width:150px;height:30px">AFTER</div>
-  <div class="pp-text b" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" style="left:884px;top:168px;width:300px;height:34px">導入後</div>
-  <div class="pp-text" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" data-role="caption" style="left:720px;top:214px;width:472px;height:22px;color:var(--text)">障害対応（月）</div>
-  <div class="pp-text num t-dark" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" style="left:720px;top:236px;width:250px;height:60px">8時間</div>
-  <div class="pp-text b t-dark" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" style="left:980px;top:250px;width:230px;height:34px">▲32時間（▲80%）</div>
-  <div class="pp-text" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" data-role="caption" style="left:720px;top:304px;width:472px;height:22px;color:var(--text)">停止回数（年）</div>
-  <div class="pp-text num t-dark" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" style="left:720px;top:326px;width:250px;height:60px">1回</div>
-  <div class="pp-text b t-dark" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" style="left:980px;top:340px;width:230px;height:34px">▲5回（▲83%）</div>
-  <div class="pp-text" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" data-role="caption" style="left:720px;top:394px;width:472px;height:22px;color:var(--text)">運用費（年）</div>
-  <div class="pp-text num t-dark" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" style="left:720px;top:416px;width:250px;height:60px">1,200万円</div>
-  <div class="pp-text b t-dark" data-note="AFTER（右・基調色の札）：後の値と、増減（量と割合）" style="left:980px;top:430px;width:230px;height:34px">▲800万円（▲40%）</div>
-  <div class="pp-shape f-accent r" data-note="年間の効果を 1 文でまとめる帯（右下まで届かせる）" style="left:64px;top:524px;width:1152px;height:96px"></div>
-  <div class="pp-text t-white b" data-note="年間の効果を 1 文でまとめる帯（右下まで届かせる）" style="left:88px;top:538px;width:1104px;height:68px;font-size:22px">年間の効果: 運用費を800万円、障害対応を384時間、停止を5回減らせる</div>
+  <div class="pp-text" data-role="title" style="height:44px">止める2工程は標準仕様と価格表で代替できるため、見積は4工程に縮む</div>
+  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">見積プロセスの工程と所要日数（現行FY25実績→FY27計画、営業日）</div>
+  <div class="pp-shape f-mid" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:64px;top:198px;width:12px;height:12px"></div>
+  <div class="pp-text b" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:84px;top:189px;width:320px;height:30px;font-size:19px">現行｜6工程・LT 10.0日</div>
+  <div class="pp-shape f-soft" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:64px;top:222px;width:178px;height:60px"></div>
+  <div class="pp-text b center" style="left:68px;top:227px;width:170px;height:28px;font-size:19px">引合受付</div>
+  <div class="pp-text center" data-role="caption" style="left:68px;top:256px;width:170px;height:20px">0.5日</div>
+  <div class="pp-line" data-arrow="end" style="left:244px;top:252px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:258px;top:222px;width:178px;height:60px"></div>
+  <div class="pp-text b center" style="left:262px;top:227px;width:170px;height:28px;font-size:19px">仕様確認</div>
+  <div class="pp-text center" data-role="caption" style="left:262px;top:256px;width:170px;height:20px">2.0日</div>
+  <div class="pp-line" data-arrow="end" style="left:438px;top:252px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-text b t-accent center" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:452px;top:192px;width:178px;height:26px;font-size:19px">▼ 止める</div>
+  <div class="pp-shape f-outline" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:452px;top:222px;width:178px;height:60px"></div>
+  <div class="pp-text b center" style="left:456px;top:227px;width:170px;height:28px;font-size:19px">技術検討</div>
+  <div class="pp-text center" data-role="caption" style="left:456px;top:256px;width:170px;height:20px">3.0日</div>
+  <div class="pp-line" data-arrow="end" style="left:632px;top:252px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:646px;top:222px;width:178px;height:60px"></div>
+  <div class="pp-text b center" style="left:650px;top:227px;width:170px;height:28px;font-size:19px">原価積算</div>
+  <div class="pp-text center" data-role="caption" style="left:650px;top:256px;width:170px;height:20px">2.0日</div>
+  <div class="pp-line" data-arrow="end" style="left:826px;top:252px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-text b t-accent center" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:840px;top:192px;width:178px;height:26px;font-size:19px">▼ 止める</div>
+  <div class="pp-shape f-outline" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:840px;top:222px;width:178px;height:60px"></div>
+  <div class="pp-text b center" style="left:844px;top:227px;width:170px;height:28px;font-size:19px">値引き稟議</div>
+  <div class="pp-text center" data-role="caption" style="left:844px;top:256px;width:170px;height:20px">2.0日</div>
+  <div class="pp-line" data-arrow="end" style="left:1020px;top:252px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:1034px;top:222px;width:178px;height:60px"></div>
+  <div class="pp-text b center" style="left:1038px;top:227px;width:170px;height:28px;font-size:19px">顧客提出</div>
+  <div class="pp-text center" data-role="caption" style="left:1038px;top:256px;width:170px;height:20px">0.5日</div>
+  <div class="pp-line" data-arrow="end" style="left:500px;top:290px;width:6px;height:40px;background:var(--accent)"></div>
+  <div class="pp-text" style="left:528px;top:296px;width:520px;height:30px;font-size:19px">2工程を止め、原価積算を0.5日圧縮する</div>
+  <div class="pp-shape f-accent" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:64px;top:348px;width:12px;height:12px"></div>
+  <div class="pp-text b" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:84px;top:339px;width:320px;height:30px;font-size:19px">改革後｜4工程・LT 4.5日</div>
+  <div class="pp-shape f-soft" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:64px;top:372px;width:178px;height:60px"></div>
+  <div class="pp-text b center" style="left:68px;top:377px;width:170px;height:28px;font-size:19px">引合受付</div>
+  <div class="pp-text center" data-role="caption" style="left:68px;top:406px;width:170px;height:20px">0.5日</div>
+  <div class="pp-line" data-arrow="end" style="left:244px;top:402px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:258px;top:372px;width:178px;height:60px"></div>
+  <div class="pp-text b center" style="left:262px;top:377px;width:170px;height:28px;font-size:19px">仕様確認</div>
+  <div class="pp-text center" data-role="caption" style="left:262px;top:406px;width:170px;height:20px">2.0日</div>
+  <div class="pp-line" data-arrow="end" style="left:438px;top:402px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape dashed" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:452px;top:372px;width:178px;height:60px"></div>
+  <div class="pp-text center" data-role="caption" style="left:456px;top:378px;width:170px;height:20px">技術検討</div>
+  <div class="pp-text b t-accent center" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:456px;top:399px;width:170px;height:28px;font-size:19px">廃止</div>
+  <div class="pp-text center" data-role="caption" style="left:452px;top:436px;width:178px;height:20px">標準仕様DBで代替</div>
+  <div class="pp-line" data-arrow="end" style="left:632px;top:402px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:646px;top:372px;width:178px;height:60px"></div>
+  <div class="pp-text b center" style="left:650px;top:377px;width:170px;height:28px;font-size:19px">原価積算</div>
+  <div class="pp-text center" data-role="caption" style="left:650px;top:406px;width:170px;height:20px">1.5日（▲0.5）</div>
+  <div class="pp-line" data-arrow="end" style="left:826px;top:402px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape dashed" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:840px;top:372px;width:178px;height:60px"></div>
+  <div class="pp-text center" data-role="caption" style="left:844px;top:378px;width:170px;height:20px">値引き稟議</div>
+  <div class="pp-text b t-accent center" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:844px;top:399px;width:170px;height:28px;font-size:19px">廃止</div>
+  <div class="pp-text center" data-role="caption" style="left:840px;top:436px;width:178px;height:20px">標準価格表で代替</div>
+  <div class="pp-line" data-arrow="end" style="left:1020px;top:402px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:1034px;top:372px;width:178px;height:60px"></div>
+  <div class="pp-text b center" style="left:1038px;top:377px;width:170px;height:28px;font-size:19px">顧客提出</div>
+  <div class="pp-text center" data-role="caption" style="left:1038px;top:406px;width:170px;height:20px">0.5日</div>
+  <div class="pp-text b" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:64px;top:476px;width:400px;height:28px;font-size:19px">見積リードタイム（営業日）</div>
+  <div class="pp-text" style="left:64px;top:513px;width:90px;height:26px;font-size:19px;line-height:1.25">現行</div>
+  <div class="pp-shape f-light" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:160px;top:510px;width:900px;height:32px"></div>
+  <div class="pp-text b" style="left:1070px;top:513px;width:146px;height:26px;font-size:19px;line-height:1.25">10.0日</div>
+  <div class="pp-text b t-accent center" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:565px;top:556px;width:495px;height:30px;font-size:19px">▲5.5日（▲55%）</div>
+  <div class="pp-text" style="left:64px;top:597px;width:90px;height:26px;font-size:19px;line-height:1.25">改革後</div>
+  <div class="pp-shape f-accent" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:160px;top:594px;width:405px;height:32px"></div>
+  <div class="pp-shape dashed" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:565px;top:594px;width:495px;height:32px"></div>
+  <div class="pp-text b t-accent" style="left:573px;top:597px;width:70px;height:26px;font-size:19px;line-height:1.25">4.5日</div>
+  <div class="pp-line" data-arrow="end" data-dir="rev" style="left:652px;top:609px;width:396px;height:2px;background:var(--accent)"></div>
 </section>

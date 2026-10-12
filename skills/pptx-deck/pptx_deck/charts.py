@@ -92,6 +92,13 @@ def add_chart(slide, el, palette):
     value_axis = chart.value_axis
     value_axis.has_major_gridlines = False
     value_axis.tick_labels.font.size = Pt(FONT_PT)
+    axis = spec.get("axis") or {}           # 小グラフを並べるときは、軸の最小・最大・目盛を全パネルで揃える
+    if "min" in axis:
+        value_axis.minimum_scale = axis["min"]
+    if "max" in axis:
+        value_axis.maximum_scale = axis["max"]
+    if "major" in axis:
+        value_axis.major_unit = axis["major"]
     chart.category_axis.tick_labels.font.size = Pt(FONT_PT)
     plot.gap_width = 60
 

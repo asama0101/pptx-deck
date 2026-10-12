@@ -12,9 +12,6 @@ FILES = sorted(COMP.rglob("*.html"))
 pytestmark = pytest.mark.skipif(shutil.which("soffice") is None and not Path(
     r"C:\Program Files\LibreOffice\program\soffice.exe").exists(), reason="LibreOffice なし")
 
-# TEMP(Task 6 で外す): 部品庫の作り直しまで emptyBand・sameWord・orphanLine を除外（Task 6 で断片を作り直すときに外す）
-TEMP_SKIP_RULES = {"emptyBand", "sameWord", "orphanLine"}
-
 COLORS = ["navy", "#FFFF00"]            # 暗い基調色と、明るい基調色（Review Focus 1）
 
 
@@ -48,7 +45,6 @@ def test_there_are_components():
 def test_component_is_clean_and_buildable(path, work):
     model, info, cfg, violations = check_fragment(path, work)
     assert len(model) == 1
-    violations = [v for v in violations if v["rule"] not in TEMP_SKIP_RULES]     # TEMP(Task 6 で外す)
     assert violations == [], violations
     # 基調色の文字は白地だけ（薄い面や濃い面の上には載せない）
     accent = theme.derive(cfg["color"]).accent.lstrip("#")
@@ -113,6 +109,14 @@ def test_sample_structure_markers():
         "layouts/decision": ["決定事項", "投資の考え方"],
         "charts/waterfall-note": ["打ち手", "削減"],
     }
+    want.update({
+        "diagrams/tree": ["効果", "実現期間"],
+        "diagrams/before-after": ["止める", "廃止"],
+        "diagrams/matrix": ["抽出ロジック"],
+        "diagrams/gantt": ["現在", "完了", "計画"],
+        "diagrams/layers": ["リーチ"],
+        "charts/small-multiples": ["軸"],
+    })
     for rel, words in want.items():
         text = (COMP / f"{rel}.html").read_text(encoding="utf-8")
         for w in words:

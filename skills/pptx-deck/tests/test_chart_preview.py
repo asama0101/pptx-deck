@@ -42,6 +42,25 @@ def test_preview_draws_svg_without_errors(name, tmp_path):
     assert n_rect >= 1
 
 
+def test_preview_uses_fixed_axis(tmp_path):
+    """axis の max を指定したプレビューは、棒の高さをその max に対する比で描く（パネル間で長さが比べられる）。"""
+    from playwright.sync_api import sync_playwright
+    spec = {"type": "bar", "categories": ["A"], "series": [{"name": "x", "values": [300]}], "axis": {"min": 0, "max": 600, "major": 150}}
+    html = tmp_path / "p.html"
+    html.write_text(
+        '<!doctype html><meta charset="utf-8"><style>:root{--accent:#1F3A5F;--accent-mid:#8A9AB0;--accent-dark:#142640;'
+        '--emphasis:#B85A0B;--text:#1A1A1A}.pp-chart{position:relative;width:600px;height:364px}</style>'
+        f"<div class='pp-chart' data-chart='{json.dumps(spec, ensure_ascii=False)}'></div>"
+        f"<script>{JS.read_text(encoding='utf-8')}</script>", encoding="utf-8")
+    with sync_playwright() as p:
+        b = p.chromium.launch()
+        pg = b.new_page()
+        pg.goto(html.as_uri())
+        h = pg.evaluate("parseFloat(document.querySelector('.pp-chart svg rect').getAttribute('height'))")
+        b.close()
+    assert h == pytest.approx((364 - 24 - 40) / 2, abs=0.5)        # 描画域の高さ 300px の半分
+
+
 def test_preview_does_not_touch_measured_classes(tmp_path):
     # プレビューは pp-* クラスを持つ要素を増やさない（計測に混ざらないように）
     # 矢印の向きを決めるために既存の pp-line を読むのは許す（要素は増やさない）

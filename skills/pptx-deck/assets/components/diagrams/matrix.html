@@ -1,23 +1,65 @@
-<!-- 用途: 2 軸で案を分類する。右上（効果が高く、負担が小さい）を推奨の象限にする。各軸の最小から最大へ矢印を引く。
-     差し替える所: 軸の名前と両端の言葉・各象限の見出しと一言・案の位置。 -->
+<!-- 用途: マトリクス＋抽出ロジック。左の 2×2（縦軸・横軸の名前と両端、4 象限の名前、点は 1 件ずつの楕円）で全体の分布を見せ、候補の象限だけパネル地の面・破線の枠・基調色の見出しで囲む。
+     右の枠に「抽出ロジック」（候補に入る条件 3 つと、その説明）と打ち手を書き、候補の枠と矢印の罫線で結ぶ。候補の点だけ基調色、他は淡色（主役と文脈）。
+     差し替える所: 軸の名前と両端・象限の名前・点の位置（data-shape="ellipse"）・候補の見出し・条件 3 つ・打ち手。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-note="題：推奨案がどの象限かを結論で言う" data-role="title" style="height:44px">効果が高く負担が小さい案は、B案だけである</div>
-  <div class="pp-text t-sub right" data-note="縦軸：効果。低から高へ矢印" style="left:64px;top:160px;width:120px;height:30px">効果 高</div>
-  <div class="pp-text t-sub right" data-note="縦軸：効果。低から高へ矢印" style="left:64px;top:570px;width:120px;height:30px">効果 低</div>
-  <div class="pp-line" data-note="縦軸：効果。低から高へ矢印" data-arrow="end" data-dir="rev" style="left:191px;top:200px;width:2px;height:360px;background:var(--accent)"></div>
-  <div class="pp-shape f-soft r" style="left:200px;top:160px;width:480px;height:212px"></div>
-  <div class="pp-text b" style="left:224px;top:176px;width:432px;height:34px">効果は高いが、負担も大きい</div>
-  <div class="pp-text" style="left:224px;top:216px;width:432px;height:140px">A案: 全面刷新。12か月、2.5億円</div>
-  <div class="pp-shape f-accent r" data-note="右上（効果が高く負担が小さい）が推奨の象限（濃色）" style="left:696px;top:160px;width:480px;height:212px"></div>
-  <div class="pp-text t-white b" data-note="右上（効果が高く負担が小さい）が推奨の象限（濃色）" style="left:720px;top:176px;width:432px;height:34px">効果が高く、負担が小さい</div>
-  <div class="pp-text t-white" data-note="右上（効果が高く負担が小さい）が推奨の象限（濃色）" style="left:720px;top:216px;width:432px;height:140px">B案: 段階移行。6か月、1.7億円</div>
-  <div class="pp-shape f-soft r" style="left:200px;top:388px;width:480px;height:212px"></div>
-  <div class="pp-text b" style="left:224px;top:404px;width:432px;height:34px">効果が低く、負担も大きい</div>
-  <div class="pp-text" style="left:224px;top:444px;width:432px;height:140px">該当なし</div>
-  <div class="pp-shape f-soft r" style="left:696px;top:388px;width:480px;height:212px"></div>
-  <div class="pp-text b" style="left:720px;top:404px;width:432px;height:34px">負担は小さいが、効果も低い</div>
-  <div class="pp-text" style="left:720px;top:444px;width:432px;height:140px">C案: 現状維持。保守延長を含め2.2億円、リスクが残る</div>
-  <div class="pp-text t-sub" data-note="横軸：負担。大から小へ矢印" style="left:200px;top:608px;width:110px;height:30px">負担 大</div>
-  <div class="pp-line" data-note="横軸：負担。大から小へ矢印" data-arrow="end" style="left:322px;top:622px;width:732px;background:var(--accent)"></div>
-  <div class="pp-text t-sub right" data-note="横軸：負担。大から小へ矢印" style="left:1066px;top:608px;width:110px;height:30px">負担 小</div>
+  <div class="pp-text" data-role="title" style="height:44px">シェアも成長も低い12型番は限界利益が赤字で、撤退の第一候補に置くべきだ</div>
+  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">FA事業の型番ポートフォリオの整理方針（FY2025、売上上位30型番）</div>
+  <div class="pp-text" data-note="2×2：縦軸＝市場成長率、横軸＝相対シェア。点は1型番。軸は低から高へ矢印" data-role="caption" style="left:130px;top:194px;width:300px;height:20px">市場成長率（年率）　高い</div>
+  <div class="pp-line" data-note="2×2：縦軸＝市場成長率、横軸＝相対シェア。点は1型番。軸は低から高へ矢印" data-arrow="end" data-dir="rev" style="left:119px;top:196px;width:2px;height:404px;background:var(--text-sub)"></div>
+  <div class="pp-line" data-note="2×2：縦軸＝市場成長率、横軸＝相対シェア。点は1型番。軸は低から高へ矢印" data-arrow="end" style="left:120px;top:599px;width:592px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-text right" data-role="caption" style="left:64px;top:574px;width:48px;height:20px">低い</div>
+  <div class="pp-text" data-role="caption" style="left:124px;top:608px;width:48px;height:20px">高い</div>
+  <div class="pp-text center" data-note="2×2：縦軸＝市場成長率、横軸＝相対シェア。点は1型番。軸は低から高へ矢印" data-role="caption" style="left:200px;top:608px;width:400px;height:20px">相対マーケットシェア（対 首位K社）</div>
+  <div class="pp-text right" data-role="caption" style="left:640px;top:608px;width:60px;height:20px">低い</div>
+  <div class="pp-shape f-soft" data-note="候補の象限：パネル地の面と破線の枠で囲み、件数と売上を見出しにする" style="left:396px;top:412px;width:304px;height:184px"></div>
+  <div class="pp-line hr" style="left:394px;top:222px;width:1px;height:374px"></div>
+  <div class="pp-line hr" style="left:124px;top:410px;width:576px;height:1px"></div>
+  <div class="pp-text center" data-role="caption" style="left:124px;top:226px;width:268px;height:20px">伸ばす（次の主力）</div>
+  <div class="pp-text center" data-role="caption" style="left:396px;top:226px;width:304px;height:20px">選んで賭ける</div>
+  <div class="pp-text center" data-role="caption" style="left:124px;top:416px;width:268px;height:20px">稼いで支える</div>
+  <div class="pp-shape f-accent" data-note="候補の象限：パネル地の面と破線の枠で囲み、件数と売上を見出しにする" style="left:408px;top:422px;width:280px;height:34px"></div>
+  <div class="pp-text t-white b center" data-note="候補の象限：パネル地の面と破線の枠で囲み、件数と売上を見出しにする" style="left:410px;top:424px;width:276px;height:30px;font-size:19px">撤退候補 12型番（21億円）</div>
+  <div class="pp-shape dashed" data-note="候補の象限：パネル地の面と破線の枠で囲み、件数と売上を見出しにする" style="left:408px;top:464px;width:280px;height:122px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:160px;top:270px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:220px;top:302px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:300px;top:262px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:250px;top:352px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:340px;top:330px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:180px;top:378px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:440px;top:282px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:520px;top:262px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:600px;top:302px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:660px;top:272px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:480px;top:352px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:640px;top:370px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:160px;top:470px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:230px;top:452px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:320px;top:482px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:200px;top:540px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:280px;top:562px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:350px;top:530px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:426px;top:480px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:470px;top:492px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:514px;top:480px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:558px;top:492px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:602px;top:480px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:646px;top:492px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:426px;top:544px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:470px;top:556px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:514px;top:544px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:558px;top:556px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:602px;top:544px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:646px;top:556px;width:14px;height:14px"></div>
+  <div class="pp-line" data-note="抽出ロジック：候補に入る条件3つと、打ち手を右の枠に書く" data-arrow="end" data-dir="rev" style="left:690px;top:524px;width:50px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-soft" data-note="抽出ロジック：候補に入る条件3つと、打ち手を右の枠に書く" style="left:740px;top:194px;width:476px;height:406px"></div>
+  <div class="pp-text b t-dark" data-note="抽出ロジック：候補に入る条件3つと、打ち手を右の枠に書く" style="left:760px;top:208px;width:436px;height:30px;font-size:19px">抽出ロジック：3条件すべてに該当</div>
+  <div class="pp-text b" style="left:760px;top:250px;width:436px;height:28px;font-size:19px">① 市場成長率が年率3%未満</div>
+  <div class="pp-text" data-role="caption" style="left:760px;top:280px;width:436px;height:20px">センサー市場全体の伸び（＋8%）を大きく下回る</div>
+  <div class="pp-text b" style="left:760px;top:314px;width:436px;height:28px;font-size:19px">② 相対シェアが0.5倍未満</div>
+  <div class="pp-text" data-role="caption" style="left:760px;top:344px;width:436px;height:20px">首位K社の半分に届かず、価格決定力を欠く</div>
+  <div class="pp-text b" style="left:760px;top:378px;width:436px;height:28px;font-size:19px">③ 限界利益が2年連続で赤字</div>
+  <div class="pp-text" data-role="caption" style="left:760px;top:408px;width:436px;height:20px">値引き対応で、採算割れが固定化している</div>
+  <div class="pp-line hr" style="left:760px;top:450px;width:436px;height:1px"></div>
+  <div class="pp-text b t-dark" data-note="抽出ロジック：候補に入る条件3つと、打ち手を右の枠に書く" style="left:760px;top:462px;width:436px;height:28px;font-size:19px">打ち手</div>
+  <div class="pp-text" style="left:760px;top:494px;width:436px;height:90px;font-size:19px;line-height:1.5">12型番をFY27末までに受注停止する。<br>売上▲21億円に対し、営業利益は＋4億円。<br>金型と保守要員は、車載へ再配分する。</div>
 </section>
