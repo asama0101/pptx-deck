@@ -9,6 +9,55 @@ _NEAR_MISS = re.compile(r"^#{2,3}\s*[Ss]\d+")
 _FIELD = re.compile(r"^- ([^:：]+)[:：]\s*(.*)$")
 _ITEM = re.compile(r"^\s+- (.*)$")
 
+_JUDGE = ["すべきだ", "べきだ", "に限られる", "に値する", "を左右しない", "ではなく", "にすぎず", "が見込める",
+          "できる", "が必要だ", "必要がある", "ある", "縮む", "減る", "増える", "高い", "低い", "ない", "切れる"]
+_CONNECT = ["ため", "だが", "ことで", "ば、", "が、", "ので"]
+_BODY_LAYOUTS = {"content", "diagram", "table", "chart"}
+_DASH = re.compile("[—―─]")
+_SELF = re.compile(r"本ページ|この1枚|この１枚|本スライド")
+_TYPES = [("提言", re.compile(r"べきだ|必要がある|が必要だ")), ("逆接", re.compile(r"だが|が、")),
+          ("条件", re.compile(r"ば、")), ("起因", re.compile(r"ではなく")),
+          ("評価", re.compile(r"を左右しない|の範囲にあり")), ("因果", re.compile(r"ため、|ことで"))]
+
+
+def sentence_type(head: str) -> str:
+    for name, rx in _TYPES:
+        if rx.search(head):
+            return name
+    return "その他"
+
+
+def _issues(md: str):
+    items, cur = [], False
+    for line in md.splitlines():
+        if line.startswith("## "):
+            break
+        m = _FIELD.match(line)
+        if m:
+            cur = m.group(1).strip() == "論点"
+            continue
+        it = _ITEM.match(line)
+        if it and cur:
+            items.append(it.group(1).strip())
+    return items
+
+
+def _head_problems(sid, head):
+    out = []
+    n = len(head)
+    if not (30 <= n <= 60):
+        out.append(f"{sid}: 見出しの字数が {n} です（30〜60 字。まず 1 行 36 字幅で書く）")
+    if "。" in head.rstrip("。"):
+        out.append(f"{sid}: 見出しが「A。B」の二段構えです（接続語で 1 文に畳む）")
+    if _DASH.search(head):
+        out.append(f"{sid}: 見出しにダッシュを使わないでください")
+    if _SELF.search(head):
+        out.append(f"{sid}: 見出しに自己言及（本ページ・この1枚）を書かないでください")
+    if not (any(j in head for j in _JUDGE) or any(c in head for c in _CONNECT)):
+        out.append(f"{sid}: 見出しに判断語か接続語がありません（題名ではなく、判断を言い切る一文に）")
+    return out
+
+
 
 def parse(md: str) -> list[dict]:
     slides, cur, field = [], None, None
@@ -69,10 +118,26 @@ def lint(md: str) -> list[str]:
             out.append(f"{sid}: 最初のスライドは表紙（layout: cover）にしてください")
         if not f.get("見出し"):
             out.append(f"{sid}: 見出しがありません")
+        elif layout in _BODY_LAYOUTS:
+            out.extend(_head_problems(sid, f["見出し"]))
         if layout not in ("cover", "closing") and not f.get("章名"):
             out.append(f"{sid}: 章名（そのスライドが答える問い）がありません")
         if layout not in ("cover", "closing", "agenda") and not (f.get("本文") or f.get("図表")):
             out.append(f"{sid}: 本文か図表のどちらかが必要です")
         if layout in ("diagram", "table", "chart") and not f.get("図表"):
             out.append(f"{sid}: layout が {layout} のときは図表（型と理由）が必要です")
+    issues = _issues(md)
+    if issues and not (3 <= len(issues) <= 6):
+        out.append(f"論点は 3〜6 個にしてください（今は {len(issues)} 個）")
+    run, prev = 0, None
+    for s in slides:
+        h = s["fields"].get("見出し")
+        if s["fields"].get("layout") not in _BODY_LAYOUTS or not isinstance(h, str):
+            run, prev = 0, None
+            continue
+        t = sentence_type(h)
+        run = run + 1 if t == prev and t != "その他" else 1
+        prev = t
+        if run == 3:
+            out.append(f"{s['id']}: 隣り合う 3 枚の見出しが同じ文型（{t}）です。文型を散らしてください")
     return out
