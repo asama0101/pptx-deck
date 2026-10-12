@@ -56,3 +56,98 @@ Claude Code で「スライドを作って」「稟議資料を作って」と�
 ## ライセンス
 
 MIT
+## 部品の種類と使い分け
+
+`skills/pptx-deck/assets/components/` に 51 本ある（一覧は `部品見本.html`）。各部品の先頭のコメントに「用途」と「差し替える所」がある。設計図の「型」はここから選ぶ。
+
+**共通の構成** 見出し（判断を言い切る 1 文）→ 図表タイトル → 図表本体 → 注。**決定を求める型**は最下部に論点ボックス（「論点　〜の可否」）を置く。**情報の型**は論点ボックスを置かず、注の末尾を「→ 含意」で締める。
+
+### レイアウト（7）
+
+| 型 | 使いどころ | 種別 |
+|---|---|---|
+| `cover` | 表紙 | — |
+| `section` | 章扉。章の問いと、この章で判断すること | — |
+| `agenda` | 目次。章ごとの結論 1 行とページ | — |
+| `summary` | 数字サマリ。数字カード 4 枚と根拠の表 | 決定 |
+| `decision` | クロージングの決定事項。表・スケジュール・審議基準 | 決定 |
+| `closing` | 裏表紙。決定事項の再掲と承認後のアクション | — |
+| `incident` | 障害の概要。停止時間・影響範囲・損失・復旧手段 | 情報 |
+
+### 図解（19）
+
+| 型 | 使いどころ | 種別 |
+|---|---|---|
+| `flow-h` | 手順。段階ごとの期間・成果物・承認点 | 情報 |
+| `tree` | ロジックツリー。要因を寄与つきで分解する | 情報 |
+| `pyramid` | 階層。層ごとの権限・件数・金額 | 情報 |
+| `cycle` | 循環。段階ごとの指標・頻度・担当 | 情報 |
+| `gantt` | フェーズごとの予定。現在線と判断点 | 決定 |
+| `venn` | 2 条件の重なりで候補を絞る | 情報 |
+| `layers` | 層×系列のマップ。自社の守備範囲 | 情報 |
+| `side-by-side` | 左右比較。現行｜計画を同じ項目で並べる | 決定 |
+| `before-after` | 現行と改革後（上下）。工程が横に流れる | 情報 |
+| `before-after-h` | 現行と改革後（左右）。工程が縦に流れる。5〜6 段のとき | 情報 |
+| `timeline-h` | 時系列（横）。区間の長さで待ちを見せる | 情報 |
+| `timeline-v` | 時系列（縦）。件数が多く、文で読ませる | 情報 |
+| `cause` | 原因の連鎖。事象から根本原因まで時間順に追う | 情報 |
+| `swimlane-h` | 業務フロー（横）。レーン＝部門。工程 6 段まで | 情報 |
+| `swimlane-v` | 業務フロー（縦）。工程 7〜8 段 | 情報 |
+| `architecture` | システム構成図（上下の層） | 情報 |
+| `topology` | 系統図（左右）。拠点とセンターを回線で結ぶ | 情報 |
+| `org` | 体制図。責任者・PM・チームと人数 | 情報 |
+| `roadmap` | 更改ロードマップ。設備×年度の増設・更改・撤去 | 情報 |
+
+### 表（15）
+
+| 型 | 使いどころ | 種別 |
+|---|---|---|
+| `compare` | エグゼクティブサマリ。論点｜求める決定｜根拠 | 決定 |
+| `rating` | 論証テーブル。事実と含意の 2 段 | 決定 |
+| `options` | 案の評価表。評価軸×A/B/C 案、推奨の列を強調 | 決定 |
+| `risk` | リスク｜影響（定量）｜対策｜残存｜オーナー | 決定 |
+| `cost` | 費用。費目×年度に 5 年計・累計 | 情報 |
+| `quote` | 見積内容。単価・数量・金額と見積合計 | 情報 |
+| `quote-compare` | 過去見積との比較。前回｜今回｜差額｜理由 | 決定 |
+| `effort` | 工数比較。工程×2 案の人日と差 | 情報 |
+| `spec` | 項目一覧。検証項目・機能・要件に共用 | 情報 |
+| `result` | 判定結果。基準と実測値、○△× | 決定 |
+| `issues` | 課題・不具合一覧。重要度・期限・状態 | 情報 |
+| `actions` | 再発防止策。恒久（■）と暫定（□） | 決定 |
+| `delta` | 設備増減表。現状・増・減・計画後 | 情報 |
+| `matrix` | 配置表。拠点種別×設備の台数 | 情報 |
+| `raci` | 役割分担表。工程×部門の責任・実行・支援 | 決定 |
+
+### グラフ（10）
+
+| 型 | 使いどころ |
+|---|---|
+| `bar` / `line` / `stacked` / `waterfall` | 棒・折れ線・積み上げ・滝。全幅で見せ、注目点は吹き出し 2 つまで |
+| `bar-note` / `line-note` / `stacked-note` / `waterfall-note` | 同じグラフに内訳の表を添える。所見が長文のとき |
+| `effort-bar` | 工数比較の横棒。表だけなら `effort` |
+| `quote-bridge` | 見積差額の滝グラフ。表だけなら `quote-compare` |
+
+### 同じ内容で見せ方が 2 つある型
+
+| 内容 | 横・上下 | 縦・左右 |
+|---|---|---|
+| 時系列 | `timeline-h`（区間の長さで待ちを見せる） | `timeline-v`（件数が多く文で読ませる） |
+| 業務フロー | `swimlane-h`（工程 6 段まで） | `swimlane-v`（工程 7 段以上） |
+| 構成図 | `architecture`（上下の層） | `topology`（左右の系統） |
+| 現行と改革後 | `before-after`（工程が横に流れる） | `before-after-h`（工程が縦に流れる） |
+| 工数・見積差 | 表（`effort`・`quote-compare`） | 図（`effort-bar`・`quote-bridge`） |
+
+### 文書の種類と使う型
+
+| 文書 | 冒頭 | 本体でよく使う型 | 結び |
+|---|---|---|---|
+| 稟議 | `summary`・`compare` | `options`・`cost`・`quote`・`quote-compare`・`effort`・`risk`・`flow-h`・`gantt`・`org` | `decision`・`closing` |
+| 障害報告 | `incident` | `timeline-h`/`-v`・`cause`・`tree`・`actions`・`issues` | `decision`・`closing` |
+| 検証計画 | `summary` | `spec`・`architecture`/`topology`・`org`・`raci`・`gantt`・`options` | `decision`・`closing` |
+| 検証結果報告 | `summary` | `result`・`bar`/`line`・`issues`・`spec` | `decision`・`closing` |
+| 業務フロー | `section` | `swimlane-h`/`-v`・`before-after`/`-h`・`raci`・`cycle` | `decision`・`closing` |
+| 設計書 | `agenda` | `architecture`/`topology`・`layers`・`spec`・`options`・`matrix` | `summary`・`closing` |
+| 設備増減の計画 | `summary` | `delta`・`matrix`・`roadmap`・`side-by-side`・`stacked`/`waterfall`・`cost` | `decision`・`closing` |
+
+内容に合う型がなければ、断片の部品で組む。新しい型を作ったら `assets/components/` に足し、`check` で違反が 0 件になることを確かめる。
+
