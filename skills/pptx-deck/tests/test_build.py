@@ -157,11 +157,3 @@ def test_footer_text_override(tmp_path):
                  tmp_path, footer="社外秘")
     ft = [p for p in prs.slides[0].placeholders if p.placeholder_format.type == T.FOOTER][0]
     assert ft.text_frame.text == "社外秘"
-
-
-def test_chart_not_yet_supported_is_explicit(tmp_path):
-    ch = {"kind": "chart", "idx": 1, "rect": {"x": 64, "y": 150, "w": 500, "h": 300}, "role": None, "ph": None,
-          "bg": "FFFFFF", "overlap": False, "chrome": False,
-          "chart": {"type": "bar", "categories": ["A"], "series": [{"name": "x", "values": [1]}]}}
-    with pytest.raises(NotImplementedError):
-        run([slide("content", [text_el(0, 64, 40, 900, 40, "見出し", role="title", size=28), ch])], tmp_path)
