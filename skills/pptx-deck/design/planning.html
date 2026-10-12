@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>検証計画書の見本</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  .a { position: absolute; }
+  .sub { color: var(--sub); }
+  .acc { color: var(--accent); }
+  .org { color: var(--accent2-dark); }
+  .w { color: #FFFFFF; }
+  .c { text-align: center; }
+  .r { text-align: right; }
+  .b { font-weight: 700; }
+  .unit { font-size: calc(24*var(--pt)); }
+  /* 稟議・検証計画書: 判断の枠(決めること・期限・推奨)＋1つの大きな図。橙=推奨(承認を求める案・基準値)、青=基調、灰=比較・背景 */
+  .r6-box { background: #FFFFFF; border: 2px solid var(--neutral-chart); padding: 0; border-radius: 4px; }
+  .r6-dia { padding: 0; border-radius: 0; }
+</style>
+</head>
+<body data-tone="trust" data-sample>
+<!--
+  検証計画書の見本（検証環境、試験工程、判定基準）。
+  デザインの考え方(判断に必要な情報を、視覚で読めるコンサル資料にする)。
+  - 章名は論点(問い)、タイトルは答え。下端は結論の帯。出典・ページ番号は共通の枠(base.css)。
+  - 判断が要るスライドは、見出しの下に判断の枠(.decide: 決めること・期限・推奨)を置く。説明が目的の図解は付けない。
+  - 色の役割: 橙=推奨・承認を求める案、青=基調・比較対象の強調、灰=背景情報。
+  - 記号: 玉=満ちるほど良い、棒=長いほど良い、四角3つ=満ちるほどリスクが大きい、◆=判断点。
+  - 表(行×列)と、図の横の説明パネルは使わない。説明は図の中のラベル・吹き出し・括弧で行う。
+  - アイコンは icons/ の線画。数字は例データ。
+-->
+
+<section class="slide" data-layout="diagram" data-numbers="text">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">01</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>論点｜何を、本番と同じ構成で検証するか</p>
+  <p class="pp-text" data-role="title">検証は、本番と同じ3層の構成で行う</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div data-chrome>
+    <div class="pp-line a" data-dir="right" style="left:56px;top:184px;width:1168px;color:var(--neutral-chart)"></div>
+    <p class="pp-text a sub" data-role="caption" style="left:56px;top:128px;width:500px">決めること</p>
+    <p class="pp-text a b " data-role="body" style="left:56px;top:150px;width:500px">検証の構成と、検証の対象範囲</p>
+    <p class="pp-text a sub" data-role="caption" style="left:588px;top:128px;width:260px">期限</p>
+    <p class="pp-text a b " data-role="body" style="left:588px;top:150px;width:260px">10月末の計画レビュー</p>
+    <p class="pp-text a sub" data-role="caption" style="left:876px;top:128px;width:348px">推奨</p>
+    <p class="pp-text a b org" data-role="body" style="left:876px;top:150px;width:348px">本番と同じ3層で検証</p>
+    <div class="pp-line a" data-dir="down" style="left:572px;top:128px;height:50px;color:var(--neutral-chart)"></div>
+    <div class="pp-line a" data-dir="down" style="left:860px;top:128px;height:50px;color:var(--neutral-chart)"></div>
+  </div>
+  <div class="area decide-body" data-diagram>
+<div class="pp-shape r6-box a"  style="left:0px;top:8px;width:320px;height:340px;padding:0;"><p class="pp-text a b" data-role="lead" style="left:26px;top:14px;width:264px;line-height:30px">利用者側</p>
+<p class="pp-text a sub" data-role="body" style="left:26px;top:50px;width:264px;line-height:24px;font-size:calc(14*var(--pt))">事務所・拠点</p>
+<div class="pp-shape card a"  style="left:22px;top:98px;width:272px;height:60px;padding:0;border-radius:4px"><div class="pp-shape dot a" style="left:12px;top:8px;width:44px;height:44px"><img class="pp-image" data-role="icon" src="icons/laptop.svg" alt="検証端末 20台" style="width:23px;height:23px"></div>
+<p class="pp-text a b" data-role="body" style="left:72px;top:16px;width:190px;line-height:28px;font-size:calc(14*var(--pt));color:var(--ink)">検証端末 20台</p>
+</div>
+<div class="pp-shape card a"  style="left:22px;top:174px;width:272px;height:60px;padding:0;border-radius:4px"><div class="pp-shape dot a" style="left:12px;top:8px;width:44px;height:44px"><img class="pp-image" data-role="icon" src="icons/shield.svg" alt="VPNクライアント" style="width:23px;height:23px"></div>
+<p class="pp-text a b" data-role="body" style="left:72px;top:16px;width:190px;line-height:28px;font-size:calc(14*var(--pt));color:var(--ink)">VPNクライアント</p>
+</div>
+<div class="pp-shape card a"  style="left:22px;top:250px;width:272px;height:60px;padding:0;border-radius:4px"><div class="pp-shape dot a" style="left:12px;top:8px;width:44px;height:44px"><img class="pp-image" data-role="icon" src="icons/key.svg" alt="認証トークン" style="width:23px;height:23px"></div>
+<p class="pp-text a b" data-role="body" style="left:72px;top:16px;width:190px;line-height:28px;font-size:calc(14*var(--pt));color:var(--ink)">認証トークン</p>
+</div>
+</div>
+<div class="pp-shape card accent a"  style="left:372px;top:8px;width:424px;height:340px;padding:0;border-radius:4px"><p class="pp-text a w b" data-role="lead" style="left:28px;top:16px;width:368px;line-height:30px">ネットワーク</p>
+<p class="pp-text a w" data-role="body" style="left:28px;top:52px;width:368px;line-height:24px;font-size:calc(14*var(--pt))">今回の検証対象</p>
+<div class="pp-shape card white a"  style="left:24px;top:100px;width:376px;height:60px;padding:0;border-radius:4px"><div class="pp-shape dot a" style="left:12px;top:8px;width:44px;height:44px"><img class="pp-image" data-role="icon" src="icons/network.svg" alt="中核スイッチ（冗長）" style="width:23px;height:23px"></div>
+<p class="pp-text a b" data-role="body" style="left:72px;top:16px;width:294px;line-height:28px;font-size:calc(14*var(--pt));color:var(--ink)">中核スイッチ（冗長）</p>
+</div>
+<div class="pp-shape card white a"  style="left:24px;top:176px;width:376px;height:60px;padding:0;border-radius:4px"><div class="pp-shape dot a" style="left:12px;top:8px;width:44px;height:44px"><img class="pp-image" data-role="icon" src="icons/shield.svg" alt="ファイアウォール" style="width:23px;height:23px"></div>
+<p class="pp-text a b" data-role="body" style="left:72px;top:16px;width:294px;line-height:28px;font-size:calc(14*var(--pt));color:var(--ink)">ファイアウォール</p>
+</div>
+<div class="pp-shape card white a"  style="left:24px;top:252px;width:376px;height:60px;padding:0;border-radius:4px"><div class="pp-shape dot a" style="left:12px;top:8px;width:44px;height:44px"><img class="pp-image" data-role="icon" src="icons/network.svg" alt="無線アクセスポイント" style="width:23px;height:23px"></div>
+<p class="pp-text a b" data-role="body" style="left:72px;top:16px;width:294px;line-height:28px;font-size:calc(14*var(--pt));color:var(--ink)">無線アクセスポイント</p>
+</div>
+</div>
+<div class="pp-shape r6-box a"  style="left:848px;top:8px;width:320px;height:340px;padding:0;"><p class="pp-text a b" data-role="lead" style="left:26px;top:14px;width:264px;line-height:30px">サーバー</p>
+<p class="pp-text a sub" data-role="body" style="left:26px;top:50px;width:264px;line-height:24px;font-size:calc(14*var(--pt))">基幹システム</p>
+<div class="pp-shape card a"  style="left:22px;top:98px;width:272px;height:60px;padding:0;border-radius:4px"><div class="pp-shape dot a" style="left:12px;top:8px;width:44px;height:44px"><img class="pp-image" data-role="icon" src="icons/server.svg" alt="認証サーバー" style="width:23px;height:23px"></div>
+<p class="pp-text a b" data-role="body" style="left:72px;top:16px;width:190px;line-height:28px;font-size:calc(14*var(--pt));color:var(--ink)">認証サーバー</p>
+</div>
+<div class="pp-shape card a"  style="left:22px;top:174px;width:272px;height:60px;padding:0;border-radius:4px"><div class="pp-shape dot a" style="left:12px;top:8px;width:44px;height:44px"><img class="pp-image" data-role="icon" src="icons/database.svg" alt="ファイルサーバー" style="width:23px;height:23px"></div>
+<p class="pp-text a b" data-role="body" style="left:72px;top:16px;width:190px;line-height:28px;font-size:calc(14*var(--pt));color:var(--ink)">ファイルサーバー</p>
+</div>
+<div class="pp-shape card a"  style="left:22px;top:250px;width:272px;height:60px;padding:0;border-radius:4px"><div class="pp-shape dot a" style="left:12px;top:8px;width:44px;height:44px"><img class="pp-image" data-role="icon" src="icons/graph.svg" alt="監視サーバー" style="width:23px;height:23px"></div>
+<p class="pp-text a b" data-role="body" style="left:72px;top:16px;width:190px;line-height:28px;font-size:calc(14*var(--pt));color:var(--ink)">監視サーバー</p>
+</div>
+</div>
+<div class="pp-line a" data-dir="right" data-arrow="end" style="left:326px;top:178px;width:40px;border-top-width:3px;color:var(--sub)"></div>
+<div class="pp-line a" data-dir="right" data-arrow="end" style="left:802px;top:178px;width:40px;border-top-width:3px;color:var(--sub)"></div>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">推奨</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">本番と同じ3層で検証し、ネットワーク層の機器の合否を判定する</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>出典：ネットワーク更改 検証計画書 v1.0（例）</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>1</p>
+  <aside class="notes"></aside>
+</section>
+
+<section class="slide" data-layout="diagram" data-numbers="text">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">02</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>論点｜いつ・どの順で試験し、いつ合否を決めるか</p>
+  <p class="pp-text" data-role="title">試験は8週間で行い、判定会で合否を決める</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div data-chrome>
+    <div class="pp-line a" data-dir="right" style="left:56px;top:184px;width:1168px;color:var(--neutral-chart)"></div>
+    <p class="pp-text a sub" data-role="caption" style="left:56px;top:128px;width:500px">決めること</p>
+    <p class="pp-text a b " data-role="body" style="left:56px;top:150px;width:500px">検証の合否の決め方と、試験の期間</p>
+    <p class="pp-text a sub" data-role="caption" style="left:588px;top:128px;width:260px">期限</p>
+    <p class="pp-text a b " data-role="body" style="left:588px;top:150px;width:260px">第8週の判定会</p>
+    <p class="pp-text a sub" data-role="caption" style="left:876px;top:128px;width:348px">推奨</p>
+    <p class="pp-text a b org" data-role="body" style="left:876px;top:150px;width:348px">8週間・4種類の試験</p>
+    <div class="pp-line a" data-dir="down" style="left:572px;top:128px;height:50px;color:var(--neutral-chart)"></div>
+    <div class="pp-line a" data-dir="down" style="left:860px;top:128px;height:50px;color:var(--neutral-chart)"></div>
+  </div>
+  <div class="area decide-body" data-diagram>
+<div class="pp-line a" data-dir="down" data-decor style="left:317px;top:32px;height:326px;border-left-width:1px;color:#E3E3E3"></div>
+<div class="pp-line a" data-dir="down" data-decor style="left:438px;top:32px;height:326px;border-left-width:1px;color:#E3E3E3"></div>
+<div class="pp-line a" data-dir="down" data-decor style="left:559px;top:32px;height:326px;border-left-width:1px;color:#E3E3E3"></div>
+<div class="pp-line a" data-dir="down" data-decor style="left:680px;top:32px;height:326px;border-left-width:1px;color:#E3E3E3"></div>
+<div class="pp-line a" data-dir="down" data-decor style="left:801px;top:32px;height:326px;border-left-width:1px;color:#E3E3E3"></div>
+<div class="pp-line a" data-dir="down" data-decor style="left:922px;top:32px;height:326px;border-left-width:1px;color:#E3E3E3"></div>
+<div class="pp-line a" data-dir="down" data-decor style="left:1043px;top:32px;height:326px;border-left-width:1px;color:#E3E3E3"></div>
+<p class="pp-text a c b sub" data-role="body" style="left:196px;top:2px;width:121px;line-height:24px;font-size:calc(14*var(--pt))">1週</p>
+<p class="pp-text a c b sub" data-role="body" style="left:317px;top:2px;width:121px;line-height:24px;font-size:calc(14*var(--pt))">2週</p>
+<p class="pp-text a c b sub" data-role="body" style="left:438px;top:2px;width:121px;line-height:24px;font-size:calc(14*var(--pt))">3週</p>
+<p class="pp-text a c b sub" data-role="body" style="left:559px;top:2px;width:121px;line-height:24px;font-size:calc(14*var(--pt))">4週</p>
+<p class="pp-text a c b sub" data-role="body" style="left:680px;top:2px;width:121px;line-height:24px;font-size:calc(14*var(--pt))">5週</p>
+<p class="pp-text a c b sub" data-role="body" style="left:801px;top:2px;width:121px;line-height:24px;font-size:calc(14*var(--pt))">6週</p>
+<p class="pp-text a c b sub" data-role="body" style="left:922px;top:2px;width:121px;line-height:24px;font-size:calc(14*var(--pt))">7週</p>
+<p class="pp-text a c b org" data-role="body" style="left:1043px;top:2px;width:121px;line-height:24px;font-size:calc(14*var(--pt))">8週</p>
+<div class="pp-line a" data-dir="right"  style="left:0px;top:32px;width:1168px;color:var(--sub)"></div>
+<p class="pp-text a b" data-role="body" style="left:0px;top:46px;width:190px;line-height:22px;font-size:calc(14*var(--pt))">環境構築</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:69px;width:190px;line-height:18px">機器の設置・設定</p>
+<div class="pp-shape card a"  style="left:196px;top:54px;width:242px;height:30px;padding:0;border-radius:2px;background:var(--accent-mid)"></div>
+<div class="pp-line a" data-dir="right" data-decor style="left:0px;top:102px;width:1168px;border-top-width:1px;color:#EDEDED"></div>
+<p class="pp-text a b" data-role="body" style="left:0px;top:112px;width:190px;line-height:22px;font-size:calc(14*var(--pt))">機能試験</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:135px;width:190px;line-height:18px">設定どおりに動くか</p>
+<div class="pp-shape card a"  style="left:438px;top:120px;width:242px;height:30px;padding:0;border-radius:2px;background:var(--accent-mid)"></div>
+<p class="pp-text a sub b r" data-role="caption" style="left:200px;top:125px;width:226px;line-height:18px">設定どおりに動作する</p>
+<div class="pp-line a" data-dir="right" data-decor style="left:0px;top:168px;width:1168px;border-top-width:1px;color:#EDEDED"></div>
+<p class="pp-text a b" data-role="body" style="left:0px;top:178px;width:190px;line-height:22px;font-size:calc(14*var(--pt))">性能試験</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:201px;width:190px;line-height:18px">ピーク時の通信量</p>
+<div class="pp-shape card a"  style="left:680px;top:186px;width:242px;height:30px;padding:0;border-radius:2px;background:var(--accent-mid)"></div>
+<p class="pp-text a sub b r" data-role="caption" style="left:348px;top:191px;width:320px;line-height:18px">スループット 1Gbps以上</p>
+<div class="pp-line a" data-dir="right" data-decor style="left:0px;top:234px;width:1168px;border-top-width:1px;color:#EDEDED"></div>
+<p class="pp-text a b" data-role="body" style="left:0px;top:244px;width:190px;line-height:22px;font-size:calc(14*var(--pt))">障害試験</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:267px;width:190px;line-height:18px">停止・復旧</p>
+<div class="pp-shape card a"  style="left:801px;top:252px;width:242px;height:30px;padding:0;border-radius:2px;background:var(--accent-mid)"></div>
+<p class="pp-text a sub b r" data-role="caption" style="left:469px;top:257px;width:320px;line-height:18px">切替30秒以内・復旧5分以内</p>
+<div class="pp-line a" data-dir="right" data-decor style="left:0px;top:300px;width:1168px;border-top-width:1px;color:#EDEDED"></div>
+<p class="pp-text a b org" data-role="body" style="left:0px;top:310px;width:190px;line-height:22px;font-size:calc(14*var(--pt))">判定会</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:333px;width:190px;line-height:18px">合否を決める</p>
+<div class="pp-shape card a"  style="left:1043px;top:318px;width:121px;height:30px;padding:0;border-radius:2px;background:var(--accent2)"></div>
+<div class="pp-shape r6-dia a" data-shape="poly" data-points="11,0 22,11 11,22 0,11" style="left:1011px;top:322px;width:22px;height:22px;padding:0;background:var(--accent2)"></div>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">次の一手</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">計画を承認いただき、第1週から環境構築に着手する</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>出典：ネットワーク更改 検証計画書 v1.0（例）</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>2</p>
+  <aside class="notes"></aside>
+</section>
+
+<section class="slide" data-layout="diagram" data-numbers="visual">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">03</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>論点｜何を満たせば合格とするか</p>
+  <p class="pp-text" data-role="title">合否は、事前に決めた4つの基準で判定する</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div data-chrome>
+    <div class="pp-line a" data-dir="right" style="left:56px;top:184px;width:1168px;color:var(--neutral-chart)"></div>
+    <p class="pp-text a sub" data-role="caption" style="left:56px;top:128px;width:500px">決めること</p>
+    <p class="pp-text a b " data-role="body" style="left:56px;top:150px;width:500px">合否の判定基準（4項目）と基準値</p>
+    <p class="pp-text a sub" data-role="caption" style="left:588px;top:128px;width:260px">期限</p>
+    <p class="pp-text a b " data-role="body" style="left:588px;top:150px;width:260px">第8週の判定会</p>
+    <p class="pp-text a sub" data-role="caption" style="left:876px;top:128px;width:348px">推奨</p>
+    <p class="pp-text a b org" data-role="body" style="left:876px;top:150px;width:348px">4基準をすべて満たすこと</p>
+    <div class="pp-line a" data-dir="down" style="left:572px;top:128px;height:50px;color:var(--neutral-chart)"></div>
+    <div class="pp-line a" data-dir="down" style="left:860px;top:128px;height:50px;color:var(--neutral-chart)"></div>
+  </div>
+  <div class="area decide-body" data-diagram>
+<p class="pp-text a b" data-role="lead" style="left:0px;top:10px;width:320px;line-height:30px">切替時間</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:44px;width:330px;line-height:18px">障害時に予備系へ切り替わる時間</p>
+<div class="pp-shape card a"  style="left:344px;top:22px;width:560px;height:26px;padding:0;border-radius:2px;background:#E6E6E6"><div class="pp-shape card accent a"  style="left:0px;top:0px;width:280px;height:26px;padding:0;border-radius:2px 0 0 2px"><p class="pp-text a b c" data-role="caption" style="left:0px;top:4px;width:280px;line-height:18px;color:#FFFFFF">合格</p>
+</div>
+</div>
+<div class="pp-line a" data-dir="down" data-decor style="left:624px;top:12px;height:46px;border-left-width:3px;color:var(--accent2)"></div>
+<p class="pp-text a sub c" data-role="caption" style="left:318px;top:60px;width:52px;line-height:18px">0</p>
+<p class="pp-text a sub c" data-role="caption" style="left:598px;top:60px;width:52px;line-height:18px">30</p>
+<p class="pp-text a sub c" data-role="caption" style="left:878px;top:60px;width:52px;line-height:18px">60秒</p>
+<p class="pp-text a b org r" data-role="lead" style="left:934px;top:14px;width:160px;line-height:30px">30秒</p>
+<p class="pp-text a sub" data-role="body" style="left:1100px;top:18px;width:68px;line-height:24px;font-size:calc(14*var(--pt))">以内</p>
+<div class="pp-line a" data-dir="right" data-decor style="left:0px;top:86px;width:1168px;border-top-width:1px;color:#EDEDED"></div>
+<p class="pp-text a b" data-role="lead" style="left:0px;top:98px;width:320px;line-height:30px">スループット</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:132px;width:330px;line-height:18px">ピーク時の通信量を処理できる</p>
+<div class="pp-shape card a"  style="left:344px;top:110px;width:560px;height:26px;padding:0;border-radius:2px;background:#E6E6E6"><div class="pp-shape card accent a"  style="left:280px;top:0px;width:280px;height:26px;padding:0;border-radius:0 2px 2px 0"><p class="pp-text a b c" data-role="caption" style="left:0px;top:4px;width:280px;line-height:18px;color:#FFFFFF">合格</p>
+</div>
+</div>
+<div class="pp-line a" data-dir="down" data-decor style="left:624px;top:100px;height:46px;border-left-width:3px;color:var(--accent2)"></div>
+<p class="pp-text a sub c" data-role="caption" style="left:318px;top:148px;width:52px;line-height:18px">0</p>
+<p class="pp-text a sub c" data-role="caption" style="left:598px;top:148px;width:52px;line-height:18px">1</p>
+<p class="pp-text a sub c" data-role="caption" style="left:869px;top:148px;width:70px;line-height:18px">2Gbps</p>
+<p class="pp-text a b org r" data-role="lead" style="left:934px;top:102px;width:160px;line-height:30px">1Gbps</p>
+<p class="pp-text a sub" data-role="body" style="left:1100px;top:106px;width:68px;line-height:24px;font-size:calc(14*var(--pt))">以上</p>
+<div class="pp-line a" data-dir="right" data-decor style="left:0px;top:174px;width:1168px;border-top-width:1px;color:#EDEDED"></div>
+<p class="pp-text a b" data-role="lead" style="left:0px;top:186px;width:320px;line-height:30px">可用性</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:220px;width:330px;line-height:18px">試験中、止まらずに稼働し続ける</p>
+<div class="pp-shape card a"  style="left:344px;top:198px;width:560px;height:26px;padding:0;border-radius:2px;background:#E6E6E6"><div class="pp-shape card accent a"  style="left:504px;top:0px;width:56px;height:26px;padding:0;border-radius:0 2px 2px 0"><p class="pp-text a b c" data-role="caption" style="left:0px;top:4px;width:56px;line-height:18px;color:#FFFFFF">合格</p>
+</div>
+</div>
+<div class="pp-line a" data-dir="down" data-decor style="left:848px;top:188px;height:46px;border-left-width:3px;color:var(--accent2)"></div>
+<p class="pp-text a sub c" data-role="caption" style="left:316px;top:236px;width:56px;line-height:18px">99.0</p>
+<p class="pp-text a sub c" data-role="caption" style="left:820px;top:236px;width:56px;line-height:18px">99.9</p>
+<p class="pp-text a sub c" data-role="caption" style="left:876px;top:236px;width:56px;line-height:18px">100%</p>
+<p class="pp-text a b org r" data-role="lead" style="left:934px;top:190px;width:160px;line-height:30px">99.9%</p>
+<p class="pp-text a sub" data-role="body" style="left:1100px;top:194px;width:68px;line-height:24px;font-size:calc(14*var(--pt))">以上</p>
+<div class="pp-line a" data-dir="right" data-decor style="left:0px;top:262px;width:1168px;border-top-width:1px;color:#EDEDED"></div>
+<p class="pp-text a b" data-role="lead" style="left:0px;top:274px;width:320px;line-height:30px">復旧時間</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:308px;width:330px;line-height:18px">障害から通常運用に戻るまでの時間</p>
+<div class="pp-shape card a"  style="left:344px;top:286px;width:560px;height:26px;padding:0;border-radius:2px;background:#E6E6E6"><div class="pp-shape card accent a"  style="left:0px;top:0px;width:280px;height:26px;padding:0;border-radius:2px 0 0 2px"><p class="pp-text a b c" data-role="caption" style="left:0px;top:4px;width:280px;line-height:18px;color:#FFFFFF">合格</p>
+</div>
+</div>
+<div class="pp-line a" data-dir="down" data-decor style="left:624px;top:276px;height:46px;border-left-width:3px;color:var(--accent2)"></div>
+<p class="pp-text a sub c" data-role="caption" style="left:318px;top:324px;width:52px;line-height:18px">0</p>
+<p class="pp-text a sub c" data-role="caption" style="left:598px;top:324px;width:52px;line-height:18px">5</p>
+<p class="pp-text a sub c" data-role="caption" style="left:878px;top:324px;width:52px;line-height:18px">10分</p>
+<p class="pp-text a b org r" data-role="lead" style="left:934px;top:278px;width:160px;line-height:30px">5分</p>
+<p class="pp-text a sub" data-role="body" style="left:1100px;top:282px;width:68px;line-height:24px;font-size:calc(14*var(--pt))">以内</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">推奨</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">4つの基準をすべて満たしたとき、合格とする</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>出典：ネットワーク更改 検証計画書 v1.0（例）。基準値は検証計画書で合意した値</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>3</p>
+  <aside class="notes"></aside>
+</section>
+
+</body>
+</html>

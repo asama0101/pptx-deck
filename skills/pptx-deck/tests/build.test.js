@@ -143,3 +143,73 @@ test('空のスライド・未対応のチャート型・存在しない画像�
   await assert.rejects(buildPptx(model([slide([el({ type: 'chart', chart: { type: 'radar', labels: [], values: [] } })])]), path.join(root, 'x.pptx')), /未対応/);
   await assert.rejects(buildPptx(model([slide([el({ type: 'image', src: path.join(root, 'nothing.png'), alt: 'x' })])]), path.join(root, 'y.pptx')), /画像が見つからない/);
 });
+
+test('ウォーターフォール: 土台・合計・増加・減少の 4 系列を積み上げ、土台は背景色にし、増減の値を装飾のテキストで置く', async () => {
+  const out = path.join(root, 'waterfall.pptx');
+  const chart = { type: 'waterfall', labels: ['前期', '新規', '人件費', '当期'], values: [100, 45, -20, 125], labelPt: 14 };
+  const m = model([slide([el({ id: 's1-e9', type: 'chart', role: '', x: 1, y: 1, w: 8, h: 4, chart })])]);
+  m.theme = { accent: '#1F4E9C', accent2: '#B85A0B', neutral: '#BFBFBF' };
+  await buildPptx(m, out);
+  const zip = await JSZip.loadAsync(fs.readFileSync(out));
+  const name = Object.keys(zip.files).find((n) => /^ppt\/charts\/chart\d+\.xml$/.test(n));
+  const chartXml = await zip.file(name).async('string');
+  assert.match(chartXml, /<c:grouping val="stacked"\/>/);
+  assert.equal((chartXml.match(/<c:ser>/g) || []).length, 4);
+  assert.match(chartXml, /<c:manualLayout>/);
+  assert.match(chartXml, /FFFFFF/); // 土台は背景色
+  assert.match(chartXml, /767676/); // 合計
+  assert.match(chartXml, /1F4E9C/); // 増加
+  assert.match(chartXml, /404040/); // 減少(橙は推奨専用)
+  assert.doesNotMatch(chartXml, /B85A0B/);
+  const slideXml = await zip.file('ppt/slides/slide1.xml').async('string');
+  assert.match(slideXml, /＋45/);
+  assert.match(slideXml, /▲20/);
+  assert.equal((slideXml.match(/s1-e10\d\d\|p=\|d=1\|r=body\|t=text/g) || []).length, 4);
+});
+
+test('斜めの線・三角形・半透明の塗り: 向きに合わせて反転し、透過を書き、重なりの許可をオブジェクト名に残す', async () => {
+  const out = path.join(root, 'diag.pptx');
+  const m = model([slide([
+    el({ id: 's1-e1', type: 'line', dir: 'ur', arrow: true, stroke: '#555555', strokeW: 1.5, x: 1, y: 1, w: 2, h: 1 }),
+    el({ id: 's1-e2', type: 'line', dir: 'dr', arrow: false, stroke: '#555555', strokeW: 1.5, x: 4, y: 1, w: 2, h: 1 }),
+    el({ id: 's1-e3', type: 'line', dir: 'ul', arrow: true, stroke: '#555555', strokeW: 1.5, x: 7, y: 1, w: 2, h: 1 }),
+    el({ id: 's1-e4', type: 'shape', kind: 'triangle', fill: '#1F4E9C', fillAlpha: 0.35, overlapOk: true, x: 1, y: 3, w: 3, h: 3, stroke: null, strokeW: 0 }),
+  ])]);
+  await buildPptx(m, out);
+  const zip = await JSZip.loadAsync(fs.readFileSync(out));
+  const xml = await zip.file('ppt/slides/slide1.xml').async('string');
+  assert.match(xml, /prst="triangle"/);
+  assert.match(xml, /<a:alpha val="35000"\/>/);
+  assert.match(xml, /name="s1-e4\|p=\|d=0\|r=body\|t=shape\|o=1"/);
+  const flips = [...xml.matchAll(/<a:xfrm([^>]*)>/g)].map((x) => x[1]).filter((a) => /flip/.test(a));
+  assert.equal(flips.filter((a) => /flipV="1"/.test(a) && !/flipH/.test(a)).length, 1); // ur
+  assert.equal(flips.filter((a) => /flipH="1"/.test(a) && /flipV="1"/.test(a)).length, 1); // ul
+});
+
+test('輪郭の多角形: PowerPoint のフリーフォーム(custGeom)に、輪郭ごとの moveTo と close を書く', async () => {
+  const out = path.join(root, 'poly.pptx');
+  const m = model([slide([el({ id: 's1-e1', type: 'shape', kind: 'poly', fill: '#9DB8E3', stroke: '#FFFFFF', strokeW: 0.75, x: 1, y: 1, w: 2, h: 2,
+    points: [[[0, 0], [2, 0], [2, 1], [0, 2]], [[0.2, 0.2], [0.5, 0.2], [0.5, 0.5]]] })])]);
+  await buildPptx(m, out);
+  const zip = await JSZip.loadAsync(fs.readFileSync(out));
+  const xml = await zip.file('ppt/slides/slide1.xml').async('string');
+  assert.match(xml, /<a:custGeom>/);
+  assert.equal((xml.match(/<a:moveTo>/g) || []).length, 2);
+  assert.equal((xml.match(/<a:close \/>/g) || []).length, 2);
+  assert.equal((xml.match(/<a:lnTo>/g) || []).length, 5);
+});
+
+test('複数系列の折れ線: 系列ごとの線を引き、注目の系列だけ橙、凡例を出す', async () => {
+  const out = path.join(root, 'multiline.pptx');
+  const chart = { type: 'line', labels: ['1年目', '2年目', '3年目'], series: [{ name: '現状維持', values: [3, 5, 8] }, { name: 'クラウド移行', values: [2, 4, 6] }], highlight: 1, labelPt: 14 };
+  const m = model([slide([el({ id: 's1-e9', type: 'chart', role: '', x: 1, y: 1, w: 8, h: 4, chart })])]);
+  m.theme.accent2 = '#B85A0B';
+  await buildPptx(m, out);
+  const zip = await JSZip.loadAsync(fs.readFileSync(out));
+  const name = Object.keys(zip.files).find((n) => /^ppt\/charts\/chart\d+\.xml$/.test(n));
+  const xml = await zip.file(name).async('string');
+  assert.match(xml, /<c:lineChart>/);
+  assert.equal((xml.match(/<c:ser>/g) || []).length, 2);
+  assert.match(xml, /B85A0B/);
+  assert.match(xml, /<c:legend>/);
+});

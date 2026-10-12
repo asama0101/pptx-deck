@@ -56,5 +56,6 @@
     ],
     "neutral": "any"
   },
-  "numberCompareMin": 3
+  "numberCompareMin": 3,
+  "accent2MinHueGap": 60
 }

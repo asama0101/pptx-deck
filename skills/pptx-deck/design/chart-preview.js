@@ -104,30 +104,67 @@
     const yOf = (v) => top + ph * (1 - v / max);
     const white = 'font-family="sans-serif" font-size="14" font-weight="700" fill="#fff" text-anchor="middle"';
     const dark = 'font-family="sans-serif" font-size="14" font-weight="700" fill="#333" text-anchor="middle"';
+    const hotCls = 'font-family="sans-serif" font-size="14" font-weight="700" fill="' + (theme.accent2 || '#333') + '" text-anchor="middle"';
+    const baseColor = theme.accentMid || '#BFBFBF';
     let body = '';
     values.forEach((v, i) => {
       const cx = left + ((i + 0.5) * pw) / n;
       const bw = (pw / n) / 1.5;
       const baseV = i === 0 ? v : values[i - 1];
       const inc = i === 0 ? 0 : v - values[i - 1];
-      body += `<rect x="${cx - bw / 2}" y="${yOf(baseV)}" width="${bw}" height="${yOf(0) - yOf(baseV)}" fill="#BFBFBF" stroke="#fff" stroke-width="1.5"/>`;
+      body += `<rect x="${cx - bw / 2}" y="${yOf(baseV)}" width="${bw}" height="${yOf(0) - yOf(baseV)}" fill="${baseColor}" stroke="#fff" stroke-width="1.5"/>`;
       if (inc > 0) {
         body += `<rect x="${cx - bw / 2}" y="${yOf(v)}" width="${bw}" height="${yOf(baseV) - yOf(v)}" fill="${theme.accent}" stroke="#fff" stroke-width="1.5"/>`;
         body += `<text x="${cx}" y="${(yOf(baseV) + yOf(v)) / 2 + 5}" ${white}>＋${fmt(inc)}</text>`;
       }
-      body += `<text x="${cx}" y="${yOf(v) - 8}" ${dark}>${fmt(v)}</text>`;
+      body += `<text x="${cx}" y="${yOf(v) - 8}" ${spec.hot === i ? hotCls : dark}>${fmt(v)}</text>`;
       body += `<text x="${cx}" y="${yOf(0) + 22}" text-anchor="middle" ${font}>${labels[i]}</text>`;
     });
-    body += `<rect x="${left}" y="${h - 22}" width="14" height="14" fill="#BFBFBF"/><text x="${left + 20}" y="${h - 10}" ${font}>前年までの累計</text>`;
+    body += `<rect x="${left}" y="${h - 22}" width="14" height="14" fill="${baseColor}"/><text x="${left + 20}" y="${h - 10}" ${font}>前年までの累計</text>`;
     body += `<rect x="${left + 160}" y="${h - 22}" width="14" height="14" fill="${theme.accent}"/><text x="${left + 180}" y="${h - 10}" ${font}>その年の増加分</text>`;
+    return body;
+  }
+
+  // ウォーターフォール。幾何は scripts/lib/waterfall.js と同じ(合計は先頭と末尾が既定)
+  function waterfallBody(spec, w, h, theme, font) {
+    const { labels, values } = spec;
+    const n = values.length;
+    const tset = new Set(Array.isArray(spec.totals) ? spec.totals : [0, n - 1]);
+    let run = 0;
+    const parts = values.map((v, i) => {
+      if (tset.has(i)) { run = v; return { kind: 'total', base: 0, size: v, top: v }; }
+      const next = run + v;
+      const p = { kind: v >= 0 ? 'up' : 'down', base: Math.min(run, next), size: Math.abs(v), top: Math.max(run, next) };
+      run = next;
+      return p;
+    });
+    const max = Math.max(...parts.map((p) => p.top), 1) * 1.15;
+    const left = PLOT_CUM.x * w;
+    const pw = PLOT_CUM.w * w;
+    const top = PLOT_CUM.y * h;
+    const ph = PLOT_CUM.h * h;
+    const yOf = (v) => top + ph * (1 - v / max);
+    const down = '#404040';
+    const fills = { total: '#767676', up: theme.accent, down };
+    const textFill = { total: '#333', up: theme.accent, down };
+    let body = '';
+    parts.forEach((p, i) => {
+      const cx = left + ((i + 0.5) * pw) / n;
+      const bw = (pw / n) / 1.5;
+      body += `<rect x="${cx - bw / 2}" y="${yOf(p.top)}" width="${bw}" height="${yOf(p.base) - yOf(p.top)}" fill="${fills[p.kind]}" stroke="#fff" stroke-width="1.5"/>`;
+      const text = p.kind === 'total' ? fmt(p.size) : (p.kind === 'up' ? '＋' : '▲') + fmt(p.size);
+      body += `<text x="${cx}" y="${yOf(p.top) - 8}" font-family="sans-serif" font-size="14" font-weight="700" fill="${textFill[p.kind]}" text-anchor="middle">${text}</text>`;
+      body += `<text x="${cx}" y="${yOf(0) + 22}" text-anchor="middle" ${font}>${labels[i]}</text>`;
+    });
     return body;
   }
 
   function chartSvg(spec, w, h, theme) {
     const { type, labels } = spec;
     const stacked = ['stacked', 'stackedh', 'stacked100', 'area'].includes(type);
-    const values = stacked ? [] : spec.values;
-    if (!['bar', 'barh', 'line', 'pie', 'stacked', 'stackedh', 'stacked100', 'area', 'cumulative'].includes(type)) throw new Error(`チャートの型が未対応: ${type}`);
+    const multiLine = type === 'line' && Array.isArray(spec.series);
+    const values = stacked ? [] : multiLine ? spec.series[0].values : spec.values;
+    if (!['bar', 'barh', 'line', 'pie', 'stacked', 'stackedh', 'stacked100', 'area', 'cumulative', 'waterfall'].includes(type)) throw new Error(`チャートの型が未対応: ${type}`);
     const n = values.length;
     const max = Math.max(...values, 1);
     const font = 'font-family="sans-serif" font-size="14" fill="#555"';
@@ -141,6 +178,8 @@
       body += stackedBody(spec, w, h, theme, pad, iw, ih, font);
     } else if (type === 'cumulative') {
       body += cumulativeBody(spec, w, h, theme, font);
+    } else if (type === 'waterfall') {
+      body += waterfallBody(spec, w, h, theme, font);
     } else if (type === 'bar') {
       const bw = iw / n;
       values.forEach((v, i) => {
@@ -158,6 +197,20 @@
         body += `<text x="${hg.labelW}" y="${pad.t + i * bh + bh / 2 + 5}" text-anchor="end" ${font}>${labels[i]}</text>`;
         body += `<text x="${hg.x0 + bw + 6}" y="${pad.t + i * bh + bh / 2 + 5}" ${font}>${fmt(v)}</text>`;
       });
+    } else if (multiLine) {
+      // 複数系列の折れ線: 注目の系列(推奨案)だけ橙、他は無彩色の濃淡(scripts/build.js と同じ)
+      const NEU = ['#767676', '#A6A6A6', '#595959'];
+      const all = spec.series.flatMap((x) => x.values);
+      const lmax = Math.max(...all, 1);
+      const px = (i) => pad.l + (i + 0.5) * (iw / n);
+      const py = (v) => pad.t + ih - (v / lmax) * ih;
+      spec.series.forEach((x, si) => {
+        const col = si === spec.highlight ? (theme.accent2 || theme.accent) : NEU[si % NEU.length];
+        body += `<polyline points="${x.values.map((v, i) => `${px(i)},${py(v)}`).join(' ')}" fill="none" stroke="${col}" stroke-width="3"/>`;
+        x.values.forEach((v, i) => { body += `<circle cx="${px(i)}" cy="${py(v)}" r="5" fill="${col}"/>`; });
+        body += `<text x="${pad.l + 8 + si * 130}" y="${pad.t + 10}" ${font}><tspan fill="${col}">●</tspan> ${x.name}</text>`;
+      });
+      labels.forEach((l, i) => { body += `<text x="${px(i)}" y="${h - 14}" text-anchor="middle" ${font}>${l}</text>`; });
     } else if (type === 'line') {
       const pts = values.map((v, i) => `${pad.l + (i + 0.5) * (iw / n)},${pad.t + ih - (v / max) * ih}`);
       body += `<polyline points="${pts.join(' ')}" fill="none" stroke="${theme.accent}" stroke-width="3"/>`;
@@ -186,8 +239,16 @@
 
   if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', function () {
+      // 輪郭の多角形(data-shape="poly")。data-points の px 座標で、枠を切り抜く
+      document.querySelectorAll('.pp-shape[data-shape="poly"][data-points]').forEach(function (el) {
+        const d = el.getAttribute('data-points').split('|').map(function (ring) {
+          return 'M' + ring.trim().split(/\s+/).join(' L') + ' Z';
+        }).join(' ').replace(/,/g, ' ');
+        el.style.clipPath = "path('" + d + "')";
+        el.style.borderRadius = '0';
+      });
       const cs = getComputedStyle(document.documentElement);
-      const theme = { accent: cs.getPropertyValue('--accent').trim(), neutral: cs.getPropertyValue('--neutral-chart').trim() };
+      const theme = { accent: cs.getPropertyValue('--accent').trim(), neutral: cs.getPropertyValue('--neutral-chart').trim(), accent2: cs.getPropertyValue('--accent2').trim(), accentMid: cs.getPropertyValue('--accent-mid').trim() };
       document.querySelectorAll('.pp-chart[data-chart]').forEach(function (el) {
         try {
           const r = el.getBoundingClientRect();

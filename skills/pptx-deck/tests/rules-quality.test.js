@@ -51,13 +51,14 @@ test('colorCount: 有彩色の色相グループが2つ以上なら違反。同�
 test('avoid: タイトル下の線・縦の装飾バー・センタリングした長い本文・末尾のピリオドを検出する', () => {
   const m = model([slide([
     title({ text: '結論です。' }),
-    el({ id: 'underline', type: 'line', x: 0.58, y: 1.1, w: 5, h: 0, strokeW: 2 }),
+    el({ id: 'underline', type: 'line', x: 0.58, y: 1.1, w: 5, h: 0, strokeW: 2, stroke: '#1F4E9C' }),
+    el({ id: 'greyRule', type: 'line', x: 0.58, y: 1.15, w: 12, h: 0, strokeW: 1, stroke: '#D4D4D4' }),
     el({ id: 'bar', type: 'shape', fill: '#1F4E9C', x: 0.58, y: 2, w: 0.08, h: 2 }),
     el({ id: 'center', y: 4, align: 'center', lineCount: 3 }),
     el({ id: 'centerShort', y: 5.5, align: 'center', lineCount: 1 }),
   ])]);
   const rules = q.checkAvoid(m, t).map((v) => `${v.id}:${v.message.split(':')[0]}`).sort();
-  assert.deepEqual(rules, ['bar:装飾バー', 'center:本文のセンタリング', 'title:タイトル末尾の句点', 'underline:タイトル下のアクセント線']);
+  assert.deepEqual(rules, ['bar:装飾バー', 'center:本文のセンタリング', 'title:タイトル末尾の句点', 'underline:タイトル下のアクセント色の線']);
 });
 
 test('runRules: stage により検査の範囲が変わる。空のモデルでも落ちない', () => {
@@ -169,4 +170,67 @@ test('chartDiff: 前後を比べるグラフは、差額を数字の注記で示
   assert.equal(q.checkChartDiff(model([slide([chart], { diff: 'none' })]), t).length, 0);
   const other = el({ id: 'c', type: 'chart', role: '', chart: { type: 'bar', labels: ['A社', 'B社'], values: [1, 2] } });
   assert.equal(q.checkChartDiff(model([slide([other])]), t).length, 0);
+});
+
+const withTheme = (m, theme) => ({ ...m, theme: { accent: '#1F4E9C', neutral: '#BFBFBF', ...theme } });
+
+test('colorCount: --accent2 があれば有彩色は 2 グループまで。--accent2 と違う色相は違反', () => {
+  const two = model([slide([el({ id: 'a', color: '#1F4E9C' }), el({ id: 'b', type: 'shape', fill: '#B85A0B' }), el({ id: 'c', type: 'shape', fill: '#FDF0E1' })])]);
+  assert.equal(q.checkColorCount(withTheme(two, { accent2: '#B85A0B' }), t).length, 0);
+  assert.equal(q.checkColorCount(withTheme(two, {}), t).length, 1);
+  const three = model([slide([el({ id: 'a', color: '#1F4E9C' }), el({ id: 'b', color: '#B85A0B' }), el({ id: 'c', color: '#2E7D4F' })])]);
+  assert.equal(q.checkColorCount(withTheme(three, { accent2: '#B85A0B' }), t).length, 1);
+  const wrong = model([slide([el({ id: 'a', color: '#1F4E9C' }), el({ id: 'b', color: '#2E7D4F' })])]);
+  assert.match(q.checkColorCount(withTheme(wrong, { accent2: '#B85A0B' }), t)[0].message, /--accent2/);
+});
+
+test('isolation: --accent2 の強調も数える。薄色・中間色は数えない', () => {
+  const plain = (i) => el({ id: `p${i}`, y: 1 + i * 0.5 });
+  const mixed = withTheme(model([slide([accentText('a1'), accentText('a2', { y: 3, color: '#B85A0B' }), accentText('a3', { y: 4 }), plain(1), plain(2)])]), { accent2: '#B85A0B' });
+  assert.equal(q.checkIsolation(mixed, t).length, 1);
+  const tints = withTheme(model([slide([accentText('a1'), el({ id: 't1', type: 'shape', fill: '#E6EDF8', y: 3 }), el({ id: 't2', type: 'shape', fill: '#9DB8E3', y: 4 }), plain(1), plain(2), plain(3)])]), { accent2: '#B85A0B' });
+  assert.equal(q.checkIsolation(tints, t).length, 0);
+});
+
+test('accent2Reco: 橙の要素があるのに推奨・承認・判断の語がないスライドは警告。共通の枠・語があれば通る', () => {
+  const th = { accent2: '#B85A0B' };
+  const orange = (o = {}) => accentText('o1', { color: '#B85A0B', text: '最優先の施策', ...o });
+  const bad = withTheme(model([slide([orange()])]), th);
+  const r = q.checkAccent2Reco(bad);
+  assert.equal(r.length, 1);
+  assert.equal(r[0].severity, 'warning');
+  assert.equal(q.checkAccent2Reco(withTheme(model([slide([orange(), el({ id: 'k', y: 3, text: '推奨：A社' })])]), th)).length, 0);
+  assert.equal(q.checkAccent2Reco(withTheme(model([slide([orange({ chrome: true })])]), th)).length, 0);
+  assert.equal(q.checkAccent2Reco(withTheme(model([slide([orange()], { layout: 'cover' })]), th)).length, 0);
+  assert.equal(q.checkAccent2Reco(model([slide([orange()])])).length, 0); // --accent2 がなければ対象外
+});
+
+test('colorTone: --accent2 の色相が基調に近いと警告', () => {
+  assert.deepEqual(q.checkColorTone(withTheme(model([]), { tone: 'trust', accent2: '#B85A0B' }), t), []);
+  const near = q.checkColorTone(withTheme(model([]), { tone: 'trust', accent2: '#2F6FBF' }), t);
+  assert.equal(near.length, 1);
+  assert.equal(near[0].severity, 'warning');
+});
+
+test('sourceMissing: 数字があるのに出典がないスライドは警告。出典があるもの・data-source="none" は通る', () => {
+  const num = el({ id: 'n', text: '初期費用は3,200万円' });
+  const src = el({ id: 's', role: 'caption', text: '出典：社内集計', y: 6 });
+  assert.equal(q.checkSourceMissing(model([slide([num])]), t).length, 1);
+  assert.equal(q.checkSourceMissing(model([slide([num])]), t)[0].severity, 'warning');
+  assert.equal(q.checkSourceMissing(model([slide([num, src])]), t).length, 0);
+  assert.equal(q.checkSourceMissing(model([slide([num], { source: 'none' })]), t).length, 0);
+  assert.equal(q.checkSourceMissing(model([slide([el({ id: 'n', text: '方針を決める' })])]), t).length, 0);
+  assert.equal(q.checkSourceMissing(model([slide([num], { layout: 'cover' })]), t).length, 0);
+});
+
+test('arrowTarget: 斜めの矢印は、終点(dr=右下、ur=右上、dl=左下、ul=左上)で判定する', () => {
+  const target = el({ id: 'tg', x: 6, y: 1.5, w: 2, h: 1 });
+  const diag = (dir, o = {}) => el({ id: 'ar', type: 'line', dir, arrow: true, x: 3, y: 1, w: 2.9, h: 1, ...o });
+  // 右下へ向かう矢印の終点は (5.9, 2) で、対象(6〜8, 1.5〜2.5)に届く
+  assert.equal(q.checkArrowTarget(model([slide([diag('dr'), target])]), t).length, 0);
+  // 右上へ向かう矢印は、枠の右上が終点。y=1.5 に置けば終点 (5.9, 1.5) が対象に届く
+  assert.equal(q.checkArrowTarget(model([slide([diag('ur', { y: 1.5 }), target])]), t).length, 0);
+  assert.equal(q.checkArrowTarget(model([slide([diag('ur'), target])]), t).length, 1); // y=1 だと終点 (5.9, 1) は遠い
+  // 左下へ向かう矢印の終点は (3, 2)。対象から遠いので違反
+  assert.equal(q.checkArrowTarget(model([slide([diag('dl'), target])]), t).length, 1);
 });

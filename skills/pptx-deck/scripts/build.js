@@ -1,9 +1,10 @@
 'use strict';
 const fs = require('node:fs');
 const PptxGenJS = require('pptxgenjs');
+const { waterfallParts } = require('./lib/waterfall');
 
 const hexNo = (h) => (h || '#000000').replace('#', '').toUpperCase();
-const objName = (e) => `${e.id}|p=${e.parent || ''}|d=${e.decor ? 1 : 0}|r=${e.role || ''}|t=${e.type}`;
+const objName = (e) => `${e.id}|p=${e.parent || ''}|d=${e.decor ? 1 : 0}|r=${e.role || ''}|t=${e.type}${e.overlapOk ? '|o=1' : ''}`;
 
 function textRuns(e) {
   const out = [];
@@ -34,13 +35,24 @@ function addText(slide, e, model) {
   });
 }
 
+// 輪郭の多角形(e.points: 枠の左上を原点とした in 座標の輪郭の配列)を、PowerPoint のフリーフォームにする
+function polyPoints(rings) {
+  const out = [];
+  for (const ring of rings) {
+    ring.forEach(([x, y], i) => out.push(i === 0 ? { x, y, moveTo: true } : { x, y }));
+    out.push({ close: true });
+  }
+  return out;
+}
+
 function addShape(pres, slide, e) {
-  const type = { rect: pres.shapes.RECTANGLE, roundRect: pres.shapes.ROUNDED_RECTANGLE, ellipse: pres.shapes.OVAL }[e.kind || 'rect'];
+  const type = { rect: pres.shapes.RECTANGLE, roundRect: pres.shapes.ROUNDED_RECTANGLE, ellipse: pres.shapes.OVAL, triangle: pres.shapes.ISOSCELES_TRIANGLE, poly: pres.shapes.CUSTOM_GEOMETRY }[e.kind || 'rect'];
   slide.addShape(type, {
     x: e.x, y: e.y, w: e.w, h: e.h,
-    fill: e.fill ? { color: hexNo(e.fill) } : { type: 'none' },
+    fill: e.fill ? { color: hexNo(e.fill), ...(e.fillAlpha !== undefined ? { transparency: Math.round((1 - e.fillAlpha) * 100) } : {}) } : { type: 'none' },
     line: e.stroke ? { color: hexNo(e.stroke), width: e.strokeW || 1 } : { type: 'none' },
     rectRadius: e.kind === 'roundRect' ? e.radius || 0.04 : undefined,
+    ...(e.kind === 'poly' ? { points: polyPoints(e.points) } : {}),
     objectName: objName(e),
   });
 }
@@ -48,7 +60,7 @@ function addShape(pres, slide, e) {
 function addLine(pres, slide, e) {
   slide.addShape(pres.shapes.LINE, {
     x: e.x, y: e.y, w: e.w, h: e.h,
-    flipH: e.dir === 'left', flipV: e.dir === 'up',
+    flipH: ['left', 'dl', 'ul'].includes(e.dir), flipV: ['up', 'ur', 'ul'].includes(e.dir),
     line: { color: hexNo(e.stroke), width: e.strokeW || 1.5, endArrowType: e.arrow ? 'triangle' : undefined },
     objectName: objName(e),
   });
@@ -92,24 +104,49 @@ function addCumulativeNotes(slide, e, model) {
   });
   c.values.forEach((v, i) => {
     const cx = e.x + (PLOT_CUM.x + (PLOT_CUM.w * (i + 0.5)) / n) * e.w;
-    put(v.toLocaleString('en-US'), i, 0, cx, top(v) - boxH - 0.005 * e.h, '333333');
+    const hot = c.hot === i && model.theme.accent2;
+    put(v.toLocaleString('en-US'), i, 0, cx, top(v) - boxH - 0.005 * e.h, hot ? hexNo(model.theme.accent2) : '333333');
     if (inc[i] > 0) put(`＋${inc[i].toLocaleString('en-US')}`, i, 1, cx, top(base[i] + inc[i] / 2) - boxH / 2, 'FFFFFF');
   });
 }
 
-function addChart(pres, slide, e, model) {
+// ウォーターフォール: 土台(背景色で見えなくする)・合計・増加・減少の 4 系列を積み上げる。値のラベルは、位置を計算した装飾のテキストで置く
+// (系列ごとにラベルを消せないため。cumulative と同じ方式で、プロット領域と軸の範囲を固定する)
+function addWaterfallNotes(slide, e, model, parts) {
   const c = e.chart;
-  const types = { bar: pres.charts.BAR, barh: pres.charts.BAR, line: pres.charts.LINE, pie: pres.charts.PIE, stacked: pres.charts.BAR, stackedh: pres.charts.BAR, stacked100: pres.charts.BAR, area: pres.charts.AREA, cumulative: pres.charts.BAR };
+  const n = parts.length;
+  const maxAxis = Math.max(...parts.map((p) => p.top)) * CUM_AXIS_MARGIN;
+  const catW = (PLOT_CUM.w * e.w) / n;
+  const boxH = 0.07 * e.h;
+  const top = (v) => e.y + (PLOT_CUM.y + PLOT_CUM.h * (1 - v / maxAxis)) * e.h;
+  const colorOf = { total: '333333', up: hexNo(model.theme.accent), down: '404040' };
+  parts.forEach((p, i) => {
+    const cx = e.x + (PLOT_CUM.x + (PLOT_CUM.w * (i + 0.5)) / n) * e.w;
+    const text = p.kind === 'total' ? p.size.toLocaleString('en-US') : `${p.kind === 'up' ? '＋' : '▲'}${p.size.toLocaleString('en-US')}`;
+    slide.addText(text, {
+      x: cx - catW / 2, y: top(p.top) - boxH - 0.005 * e.h, w: catW, h: boxH, margin: 0, valign: 'middle', align: 'center',
+      fontFace: model.fontFace, fontSize: c.labelPt || 14, bold: true, color: colorOf[p.kind], isTextBox: true,
+      objectName: `${noteId(e.id, i)}|p=|d=1|r=body|t=text`, // 装飾(重なり検査の対象外)
+    });
+  });
+}
+
+function addChart(pres, slide, e, model, bg = '#FFFFFF') {
+  const c = e.chart;
+  const types = { bar: pres.charts.BAR, barh: pres.charts.BAR, line: pres.charts.LINE, pie: pres.charts.PIE, stacked: pres.charts.BAR, stackedh: pres.charts.BAR, stacked100: pres.charts.BAR, area: pres.charts.AREA, cumulative: pres.charts.BAR, waterfall: pres.charts.BAR };
   if (!types[c.type]) throw new Error(`チャートの型が未対応: ${c.type}`);
   const accent = hexNo(model.theme.accent);
   const neutral = hexNo(model.theme.neutral);
   const pt = c.labelPt || 12;
   const stacked = ['stacked', 'stackedh', 'stacked100', 'area'].includes(c.type);
+  // 複数系列の折れ線: 注目の系列(推奨案)だけ橙、他は無彩色の濃淡(design/chart-preview.js と同じ)
+  const LINE_NEUTRALS = ['767676', 'A6A6A6', '595959'];
   // 積み上げ棒の系列色: 注目の系列だけアクセント、他は白文字が読める無彩色の濃淡(design/chart-preview.js と同じ)
   const SERIES_NEUTRALS = c.type === 'area' ? ['BFBFBF', 'D9D9D9', 'A6A6A6'] : ['767676', '595959', '404040'];
   let ni = 0;
   const colors = stacked
     ? c.series.map((_, i) => (i === c.highlight ? accent : SERIES_NEUTRALS[ni++ % SERIES_NEUTRALS.length]))
+    : c.type === 'line' && c.series ? c.series.map((_, i) => (i === c.highlight ? hexNo(model.theme.accent2 || model.theme.accent) : LINE_NEUTRALS[i % LINE_NEUTRALS.length]))
     : c.type === 'line' ? [accent] : c.values.map((_, i) => (i === c.highlight ? accent : neutral));
   const base = {
     x: e.x, y: e.y, w: e.w, h: e.h, chartColors: colors,
@@ -119,16 +156,30 @@ function addChart(pres, slide, e, model) {
     showLegend: c.type === 'pie', legendPos: 'r', legendFontFace: model.fontFace, legendFontSize: pt,
     valGridLine: { style: 'none' },
   };
-  const data = stacked
+  const data = stacked || (c.type === 'line' && c.series)
     ? c.series.map((x) => ({ name: x.name, labels: c.labels, values: x.values }))
     : [{ name: c.seriesName || '系列1', labels: c.labels, values: c.values }];
-  if (c.type === 'cumulative') {
+  if (c.type === 'waterfall') {
+    const parts = waterfallParts(c.values, c.totals);
+    const col = (kind) => parts.map((p) => (p.kind === kind ? p.size : 0));
+    slide.addChart(pres.charts.BAR, [
+      { name: '土台', labels: c.labels, values: parts.map((p) => p.base) },
+      { name: '合計', labels: c.labels, values: col('total') },
+      { name: '増加', labels: c.labels, values: col('up') },
+      { name: '減少', labels: c.labels, values: col('down') },
+    ], {
+      ...base, chartColors: [hexNo(bg), '767676', accent, '404040'], layout: PLOT_CUM, barDir: 'col', barGrouping: 'stacked', barGapWidthPct: 50,
+      showValue: false, showLegend: false, dataBorder: { pt: 1.5, color: hexNo(bg) }, valAxisHidden: true,
+      valAxisMinVal: 0, valAxisMaxVal: Math.max(...parts.map((p) => p.top)) * CUM_AXIS_MARGIN,
+    });
+    addWaterfallNotes(slide, e, model, parts);
+  } else if (c.type === 'cumulative') {
     const { base: baseV, inc } = cumulativeParts(c.values);
     slide.addChart(pres.charts.BAR, [
       { name: '前年までの累計', labels: c.labels, values: baseV },
       { name: 'その年の増加分', labels: c.labels, values: inc },
     ], {
-      ...base, chartColors: ['BFBFBF', accent], layout: PLOT_CUM, barDir: 'col', barGrouping: 'stacked', barGapWidthPct: 50,
+      ...base, chartColors: [model.theme.accentMid ? hexNo(model.theme.accentMid) : 'BFBFBF', accent], layout: PLOT_CUM, barDir: 'col', barGrouping: 'stacked', barGapWidthPct: 50,
       showValue: false, showLegend: true, legendPos: 'b', dataBorder: { pt: 1.5, color: 'FFFFFF' }, valAxisHidden: true,
       valAxisMinVal: 0, valAxisMaxVal: Math.max(...c.values) * CUM_AXIS_MARGIN,
     });
@@ -154,7 +205,8 @@ function addChart(pres, slide, e, model) {
       valAxisMinVal: Math.min(0, ...c.values), // 0 を含む棒が、負の軸に伸びないようにする
     });
   } else if (c.type === 'line') {
-    slide.addChart(types.line, data, { ...base, lineSize: 3, lineDataSymbolSize: 8, showValue: c.showValue !== false });
+    const multi = !!c.series; // 複数系列は、値ラベルを出さず凡例で系列名を示す
+    slide.addChart(types.line, data, { ...base, lineSize: 3, lineDataSymbolSize: 8, showValue: multi ? c.showValue === true : c.showValue !== false, ...(multi ? { showLegend: c.legend !== false, legendPos: 'b' } : {}) });
   } else {
     slide.addChart(types.pie, data, { ...base, showPercent: true, showValue: false });
   }
@@ -173,7 +225,7 @@ async function buildPptx(model, outPath) {
       else if (e.type === 'shape') addShape(pres, slide, e);
       else if (e.type === 'line') addLine(pres, slide, e);
       else if (e.type === 'image') addImage(slide, e);
-      else if (e.type === 'chart') addChart(pres, slide, e, model);
+      else if (e.type === 'chart') addChart(pres, slide, e, model, s.bg);
     }
   }
   await pres.writeFile({ fileName: outPath });

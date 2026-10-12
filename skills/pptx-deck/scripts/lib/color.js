@@ -40,4 +40,11 @@ function hueInfo(hex) {
   return { h, s, l };
 }
 
-module.exports = { parseCssColor, contrastRatio, hueInfo };
+// 前景(fg)を alpha で背景(bg)に重ねた色。半透明の塗りの上の文字のコントラストを測るために使う
+function blend(fg, bg, alpha) {
+  const f = channels(fg);
+  const b = channels(bg);
+  return '#' + f.map((c, i) => Math.round((c * alpha + b[i] * (1 - alpha)) * 255).toString(16).padStart(2, '0')).join('').toUpperCase();
+}
+
+module.exports = { parseCssColor, contrastRatio, hueInfo, blend };

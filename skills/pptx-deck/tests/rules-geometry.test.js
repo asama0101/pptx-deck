@@ -102,3 +102,20 @@ test('htmlOnly: pp-text の枠線(PPTX に写らない装飾)を違反にする'
   const v = g.htmlOnly(m, t);
   assert.deepEqual(v.filter((x) => x.rule === 'textBorder').map((x) => x.id), ['b']);
 });
+
+test('overlap: data-overlap(overlapOk)どうしの重なりは許し、片方だけなら違反にする', () => {
+  const circle = (id, x, extra = {}) => el({ id, type: 'shape', x, y: 1, w: 3, h: 3, ...extra });
+  const both = model([slide([circle('a', 1, { overlapOk: true }), circle('b', 2.5, { overlapOk: true })])]);
+  assert.equal(g.checkOverlap(both, t).length, 0);
+  const one = model([slide([circle('a', 1, { overlapOk: true }), circle('b', 2.5)])]);
+  assert.equal(g.checkOverlap(one, t).length, 1);
+});
+
+test('contrast: 半透明の塗り(fillAlpha)の上の文字は、下の色と混ぜた背景で測る', () => {
+  const venn = (fillAlpha) => model([slide([
+    el({ id: 'c', type: 'shape', x: 1, y: 1, w: 4, h: 4, fill: '#1F4E9C', fillAlpha }),
+    el({ id: 't', parent: 'c', x: 1.5, y: 2, w: 2, h: 0.5, color: '#1A1A1A' }),
+  ])]);
+  assert.equal(g.checkContrast(venn(0.35), t).length, 0); // 薄く透けた青の上の墨色
+  assert.equal(g.checkContrast(venn(undefined), t).length, 1); // 不透明な青の上の墨色
+});

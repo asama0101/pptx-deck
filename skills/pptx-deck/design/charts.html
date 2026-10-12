@@ -2,54 +2,234 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<title>チャートの見本（追加分）</title>
+<title>チャートの見本</title>
 <link rel="stylesheet" href="base.css">
 <script src="chart-preview.js"></script>
+<style>
+  .a { position: absolute; }
+  .sub { color: var(--sub); }
+  .acc { color: var(--accent); }
+  .org { color: var(--accent2-dark); }
+  .w { color: #FFFFFF; }
+  .c { text-align: center; }
+  .b { font-weight: 700; }
+  .unit { font-size: calc(24*var(--pt)); }
+  .r4-seg { position: absolute; padding: 0; border-radius: 0; border: 2px solid #FFFFFF; }
+</style>
 </head>
 <body data-tone="trust" data-sample>
+<!--
+  チャートの見本（10 種のうち、スライドに仕立てた 7 枚。複数系列の折れ線も使える）。
+  デザインの考え方(判断に必要な情報を、視覚で読めるコンサル資料にする)。
+  - 章名は論点(問い)、タイトルは答え。下端は結論の帯。出典・ページ番号は共通の枠(base.css)。
+  - 判断が要るスライドは、見出しの下に判断の枠(.decide: 決めること・期限・推奨)を置く。説明が目的の図解は付けない。
+  - 色の役割: 橙=推奨・承認を求める案、青=基調・比較対象の強調、灰=背景情報。
+  - 記号: 玉=満ちるほど良い、棒=長いほど良い、四角3つ=満ちるほどリスクが大きい、◆=判断点。
+  - 表(行×列)と、図の横の説明パネルは使わない。説明は図の中のラベル・吹き出し・括弧で行う。
+  - アイコンは icons/ の線画。数字は例データ。
+-->
 
-<!-- 100%積み上げ棒: 構成比の変化を見せる。注目の系列だけアクセント色 -->
 <section class="slide" data-layout="chart">
-  <p class="pp-text" data-role="title">売上の構成は、新規の比率が年々高まっている</p>
-  <div class="pp-chart" data-chart='{"type":"stacked100","labels":["2024年","2025年","2026年"],"series":[{"name":"既存","values":[80,70,55]},{"name":"新規","values":[20,30,45]}],"highlight":1,"labelPt":12}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
-  <div class="pp-line" data-dir="down" style="position:absolute;left:820px;top:152px;height:464px;color:var(--neutral-chart)"></div>
-  <p class="pp-text" data-role="lead" style="position:absolute;left:852px;top:152px;width:372px">ポイント</p>
-  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:204px;width:372px">既存の比率は80%から55%に下がった。</p>
-  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:340px;width:372px">新規は20%から45%に伸び、構成が入れ替わりつつある。</p>
-  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：%。各年の合計を100%とする。出典：社内集計</p>
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">01</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>どの拠点に売上が集まっているか</p>
+  <p class="pp-text" data-role="title">拠点別の売上は、東日本が最も大きい</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="pp-chart" data-chart='{"type":"bar","labels":["東日本","中部","西日本","九州"],"values":[320,210,260,140],"highlight":0,"labelPt":14}' style="position:absolute;left:56px;top:152px;width:810px;height:424px"></div>
+  <div class="area" style="left:880px;top:160px;width:344px;height:408px" data-diagram>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:0px;width:330px;">全体に占める東日本の割合</p>
+<p class="pp-text a acc b" data-role="display" style="left:0px;top:28px;width:330px;">34<span class="unit">%</span></p>
+<p class="pp-text a " data-role="body" style="left:0px;top:100px;width:330px;">東日本 320 は、最小の九州 140 の2.3倍</p>
+<div class="pp-shape a r4-seg"  style="left:0px;top:190px;width:114px;height:40px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r4-seg"  style="left:114px;top:190px;width:75px;height:40px;padding:0;background:var(--neutral-chart)"></div>
+<div class="pp-shape a r4-seg"  style="left:189px;top:190px;width:92px;height:40px;padding:0;background:var(--neutral-chart)"></div>
+<div class="pp-shape a r4-seg"  style="left:281px;top:190px;width:50px;height:40px;padding:0;background:var(--neutral-chart)"></div>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:238px;width:330px;">構成比の帯。青が東日本、灰が他の3拠点</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">結論</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">東日本に売上の3分の1が集まり、九州は最も小さい</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>単位：百万円。構成比は4拠点の合計 930 に対する割合。出典：社内集計</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>1</p>
+  <aside class="notes">棒グラフ。項目どうしの大小を比べ、注目の1本だけ青にする。右の列に、注目の構成比を大きな数字と帯で添える。</aside>
 </section>
 
-<!-- 面: 新しく積み上がる領域（成長している部分）だけアクセント色 -->
 <section class="slide" data-layout="chart">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">02</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>問い合わせは、どの窓口で増えているか</p>
+  <p class="pp-text" data-role="title">Web問い合わせが6月に電話を上回り、窓口の中心になった</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="decide" data-chrome>
+    <p class="pp-text decide-k" data-role="caption" style="left:0px;width:500px">決めること</p>
+    <p class="pp-text decide-v " data-role="body" style="left:0px;width:500px">問い合わせ窓口の人員配分</p>
+    <p class="pp-text decide-k" data-role="caption" style="left:532px;width:260px">期限</p>
+    <p class="pp-text decide-v " data-role="body" style="left:532px;width:260px">10月の体制会議</p>
+    <p class="pp-text decide-k" data-role="caption" style="left:820px;width:348px">推奨</p>
+    <p class="pp-text decide-v reco" data-role="body" style="left:820px;width:348px">Web窓口の増員</p>
+    <div class="pp-line decide-bar" data-dir="right"></div>
+    <div class="pp-line decide-sep" data-dir="down" style="left:516px"></div>
+    <div class="pp-line decide-sep" data-dir="down" style="left:804px"></div>
+  </div>
+  <div class="pp-chart" data-chart='{"type":"line","labels":["4月","5月","6月","7月","8月","9月"],"series":[{"name":"電話","values":[80,75,75,75,75,75]},{"name":"Web","values":[40,60,85,115,155,205]}],"highlight":1,"labelPt":14}' style="position:absolute;left:56px;top:196px;width:810px;height:376px"></div>
+  <div class="area" style="left:880px;top:204px;width:344px;height:360px" data-diagram>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:0px;width:330px;">9月の件数</p>
+<p class="pp-text a org b" data-role="display" style="left:0px;top:24px;width:330px;">205<span class="unit">件</span></p>
+<p class="pp-text a " data-role="body" style="left:0px;top:90px;width:330px;">Web は電話（75件）の2.7倍</p>
+<div class="pp-line a" data-dir="right" style="left:0px;top:140px;width:330px;color:var(--neutral-chart);"></div>
+<p class="pp-text a acc b" data-role="lead" style="left:0px;top:152px;width:330px;">6月に逆転</p>
+<p class="pp-text a sub" data-role="body" style="left:0px;top:196px;width:330px;">Web が 85件となり、<br>電話の 75件を上回った。<br>以降は差が広がっている。</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">推奨</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">Web窓口の人員を増やし、電話は現状の体制を維持する</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>単位：件（月間）。電話とWebの合計は、4月 120件から9月 280件。出典：社内集計</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>2</p>
+  <aside class="notes">複数系列の折れ線。推奨する系列（Web）だけ橙、他は灰。逆転した月と、最新月の差を右の列で示す。判断の枠で、決めること・期限・推奨を先に示す。</aside>
+</section>
+
+<section class="slide" data-layout="chart">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">03</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>成長の投資は、どの事業に寄せるか</p>
   <p class="pp-text" data-role="title">新規事業が、売上の伸びのほとんどを占める</p>
-  <div class="pp-chart" data-chart='{"type":"area","labels":["2024年","2025年","2026年","2027年"],"series":[{"name":"既存事業","values":[100,102,101,103]},{"name":"新規事業","values":[10,30,70,120]}],"highlight":1,"labelPt":12}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
-  <div class="pp-line" data-dir="down" style="position:absolute;left:820px;top:152px;height:464px;color:var(--neutral-chart)"></div>
-  <p class="pp-text" data-role="lead" style="position:absolute;left:852px;top:152px;width:372px">ポイント</p>
-  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:204px;width:372px">既存事業は100億円前後で横ばいが続く。</p>
-  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:340px;width:372px">新規事業は4年で10億円から120億円に積み上がった。</p>
-  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：億円。出典：社内集計</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="decide" data-chrome>
+    <p class="pp-text decide-k" data-role="caption" style="left:0px;width:500px">決めること</p>
+    <p class="pp-text decide-v " data-role="body" style="left:0px;width:500px">来期の投資配分</p>
+    <p class="pp-text decide-k" data-role="caption" style="left:532px;width:260px">期限</p>
+    <p class="pp-text decide-v " data-role="body" style="left:532px;width:260px">11月の予算会議</p>
+    <p class="pp-text decide-k" data-role="caption" style="left:820px;width:348px">推奨</p>
+    <p class="pp-text decide-v reco" data-role="body" style="left:820px;width:348px">新規事業へ重点配分</p>
+    <div class="pp-line decide-bar" data-dir="right"></div>
+    <div class="pp-line decide-sep" data-dir="down" style="left:516px"></div>
+    <div class="pp-line decide-sep" data-dir="down" style="left:804px"></div>
+  </div>
+  <div class="pp-chart" data-chart='{"type":"area","labels":["2024年","2025年","2026年","2027年"],"series":[{"name":"既存事業","values":[100,102,101,103]},{"name":"新規事業","values":[10,30,70,120]}],"highlight":1,"labelPt":12}' style="position:absolute;left:56px;top:196px;width:810px;height:376px"></div>
+  <div class="area" style="left:880px;top:204px;width:344px;height:360px" data-diagram>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:0px;width:330px;">売上の伸び（2024→2027年）</p>
+<p class="pp-text a acc b" data-role="display" style="left:0px;top:24px;width:330px;">+113<span class="unit">億円</span></p>
+<p class="pp-text a " data-role="body" style="left:0px;top:90px;width:330px;">うち新規事業が +110 億円</p>
+<div class="pp-shape a r4-seg"  style="left:0px;top:140px;width:320px;height:36px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r4-seg"  style="left:320px;top:140px;width:10px;height:36px;padding:0;background:var(--neutral-chart)"></div>
+<p class="pp-text a sub" data-role="body" style="left:0px;top:184px;width:330px;">新規事業が伸びの97%（青）<br>既存事業は +3 億円（灰）</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">推奨</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">来期の投資は、新規事業に重点を置く</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>単位：億円。売上合計は、2024年 110億円、2027年 223億円。出典：社内集計</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>3</p>
+  <aside class="notes">面グラフ。新しく積み上がる事業（新規）だけ青。右の列で、売上の伸びのうち新規が占める割合を示す。判断の枠で、投資配分の判断を先に示す。</aside>
 </section>
 
-<!-- 横棒: ランキングで、順位だけでは目立たない途中の項目を強調する -->
+<section class="slide" data-layout="chart" data-numbers="visual">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">04</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>利益の増減は、何で決まったか</p>
+  <p class="pp-text" data-role="title">営業利益は、新規売上が費用増を補って伸びた</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="pp-chart" data-chart='{"type":"waterfall","labels":["前期","新規売上","既存売上","人件費","広告費","当期"],"values":[100,45,-5,-20,-10,110],"labelPt":14}' style="position:absolute;left:56px;top:152px;width:810px;height:424px"></div>
+  <div class="area" style="left:880px;top:160px;width:344px;height:408px" data-diagram>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:0px;width:330px;">当期の営業利益</p>
+<p class="pp-text a acc b" data-role="display" style="left:0px;top:24px;width:330px;">110<span class="unit">百万円</span></p>
+<p class="pp-text a " data-role="body" style="left:0px;top:90px;width:330px;">前期 100 から +10（+10%）</p>
+<div class="pp-line a" data-dir="right" style="left:0px;top:140px;width:330px;color:var(--neutral-chart);"></div>
+<p class="pp-text a acc b" data-role="lead" style="left:0px;top:156px;width:100px;">＋45</p>
+<p class="pp-text a b" data-role="lead" style="left:112px;top:156px;width:100px;color:#404040">▲35</p>
+<p class="pp-text a b" data-role="lead" style="left:224px;top:156px;width:100px;">＝＋10</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:202px;width:106px;">新規売上</p>
+<p class="pp-text a sub" data-role="caption" style="left:112px;top:202px;width:106px;">既存・費用</p>
+<p class="pp-text a sub" data-role="caption" style="left:224px;top:202px;width:106px;">差し引き</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">結論</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">新規売上の +45 が、既存売上と費用の ▲35 を上回った</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>単位：百万円。青は増加、濃い灰は減少、灰色は合計。▲35 は既存売上 ▲5、人件費 ▲20、広告費 ▲10 の合計。出典：社内集計</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>4</p>
+  <aside class="notes">ウォーターフォール。増減の連なりで合計の変化を見せる。右の列で、増加と減少の合計と差引を式で示す。</aside>
+</section>
+
 <section class="slide" data-layout="chart">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">05</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>売上の構成は、どう変わったか</p>
+  <p class="pp-text" data-role="title">売上の構成は、新規の比率が年々高まっている</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="pp-chart" data-chart='{"type":"stacked100","labels":["2024年","2025年","2026年"],"series":[{"name":"既存","values":[80,70,55]},{"name":"新規","values":[20,30,45]}],"highlight":1,"labelPt":12}' style="position:absolute;left:56px;top:152px;width:810px;height:424px"></div>
+  <div class="area" style="left:880px;top:160px;width:344px;height:408px" data-diagram>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:0px;width:330px;">新規の構成比（2024→2026年）</p>
+<p class="pp-text a acc b" data-role="display" style="left:0px;top:24px;width:330px;">+25<span class="unit">pt</span></p>
+<p class="pp-text a " data-role="body" style="left:0px;top:90px;width:330px;">20% から 45% に伸びた</p>
+<div class="pp-line a" data-dir="right" style="left:0px;top:140px;width:330px;color:var(--neutral-chart);"></div>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:152px;width:330px;">既存</p>
+<p class="pp-text a b" data-role="lead" style="left:0px;top:176px;width:330px;">80% → 55%（−25pt）</p>
+<p class="pp-text a sub" data-role="body" style="left:0px;top:220px;width:330px;">構成が入れ替わる時期が近い。2027年には新規が既存を上回る見込み。</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">結論</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">新規の比率は2年で20%から45%になり、構成が入れ替わりつつある</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>単位：%。各年の売上合計を100%とする。2027年の見通しは社内の計画値。出典：社内集計</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>5</p>
+  <aside class="notes">100%積み上げ棒。構成比の変化を見せ、注目の系列だけ青。右の列で、新規の増加ポイントを大きな数字で示す。</aside>
+</section>
+
+<section class="slide" data-layout="chart">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">06</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>当社は、市場のどこに位置しているか</p>
   <p class="pp-text" data-role="title">中位の3位でも、取引額は全体の約19%を占める</p>
-  <div class="pp-chart" data-chart='{"type":"barh","labels":["1位 A社","2位 B社","3位 当社","4位 C社","5位 D社"],"values":[42,31,24,18,11],"highlight":2,"labelPt":14}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
-  <div class="pp-line" data-dir="down" style="position:absolute;left:820px;top:152px;height:464px;color:var(--neutral-chart)"></div>
-  <p class="pp-text" data-role="lead" style="position:absolute;left:852px;top:152px;width:372px">ポイント</p>
-  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:204px;width:372px">上位2社で全体の6割を占める。</p>
-  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:340px;width:372px">3位の当社は、2位との差が7億円まで縮まった。</p>
-  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：億円。出典：業界団体の統計</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="pp-chart" data-chart='{"type":"barh","labels":["1位 A社","2位 B社","3位 当社","4位 C社","5位 D社"],"values":[42,31,24,18,11],"highlight":2,"labelPt":14}' style="position:absolute;left:56px;top:152px;width:810px;height:424px"></div>
+  <div class="area" style="left:880px;top:160px;width:344px;height:408px" data-diagram>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:0px;width:330px;">当社（3位）の構成比</p>
+<p class="pp-text a acc b" data-role="display" style="left:0px;top:24px;width:330px;">19<span class="unit">%</span></p>
+<p class="pp-text a " data-role="body" style="left:0px;top:90px;width:330px;">2位との差は 7億円</p>
+<div class="pp-shape a r4-seg"  style="left:0px;top:186px;width:110px;height:40px;padding:0;background:var(--neutral-chart)"></div>
+<div class="pp-shape a r4-seg"  style="left:110px;top:186px;width:81px;height:40px;padding:0;background:var(--neutral-chart)"></div>
+<div class="pp-shape a r4-seg"  style="left:191px;top:186px;width:63px;height:40px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r4-seg"  style="left:254px;top:186px;width:47px;height:40px;padding:0;background:var(--neutral-chart)"></div>
+<div class="pp-shape a r4-seg"  style="left:301px;top:186px;width:29px;height:40px;padding:0;background:var(--neutral-chart)"></div>
+<div class="pp-line a" data-dir="right" style="left:0px;top:168px;width:191px;color:var(--sub);border-top-width:2px"></div>
+<p class="pp-text a sub b" data-role="caption" style="left:0px;top:134px;width:330px;">上位2社で 58%</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:234px;width:330px;">構成比の帯。青が当社、灰が他の4社</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">結論</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">上位2社の寡占ではなく、3位の当社も2割近い取引額を持つ</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>単位：億円。構成比は5社の合計 126 に対する割合。出典：業界団体の統計</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>6</p>
+  <aside class="notes">横棒。ランキングで、順位だけでは目立たない途中の項目を青にする。右の列で、構成比と上位2社の合計を帯と括弧で示す。</aside>
 </section>
 
-<!-- 累計の棒(cumulative): 累計が積み上がる推移。各年を「前年までの累計(無彩色)＋その年の増加分(アクセント色の塊)」に分け、毎年の増加分を見せる -->
 <section class="slide" data-layout="chart">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">07</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>会員数は、どのように積み上がっているか</p>
   <p class="pp-text" data-role="title">会員数は、毎年同じ人数ずつ積み上がっている</p>
-  <div class="pp-chart" data-chart='{"type":"cumulative","labels":["初年度","2年目","3年目","4年目","5年目"],"values":[1200,1700,2200,2700,3200],"labelPt":14}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
-  <div class="pp-line" data-dir="down" style="position:absolute;left:820px;top:152px;height:464px;color:var(--neutral-chart)"></div>
-  <p class="pp-text" data-role="lead" style="position:absolute;left:852px;top:152px;width:372px">ポイント</p>
-  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:204px;width:372px">2年目以降は、毎年500人ずつ増えている。</p>
-  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:340px;width:372px">5年目の会員数は3,200人で、初年度の約2.7倍になる。</p>
-  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：人。青い塊は、その年に増えた会員数。出典：社内集計</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="pp-chart" data-chart='{"type":"cumulative","labels":["初年度","2年目","3年目","4年目","5年目"],"values":[1200,1700,2200,2700,3200],"labelPt":14}' style="position:absolute;left:56px;top:152px;width:810px;height:424px"></div>
+  <div class="area" style="left:880px;top:160px;width:344px;height:408px" data-diagram>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:0px;width:330px;">毎年の増加</p>
+<p class="pp-text a acc b" data-role="display" style="left:0px;top:24px;width:330px;">+500<span class="unit">人</span></p>
+<p class="pp-text a " data-role="body" style="left:0px;top:90px;width:330px;">2年目から5年目まで一定</p>
+<div class="pp-shape a r4-seg"  style="left:0px;top:140px;width:74px;height:30px;padding:0;background:var(--accent)"></div>
+<p class="pp-text a sub c" data-role="caption" style="left:0px;top:176px;width:74px;">2年目</p>
+<div class="pp-shape a r4-seg"  style="left:84px;top:140px;width:74px;height:30px;padding:0;background:var(--accent)"></div>
+<p class="pp-text a sub c" data-role="caption" style="left:84px;top:176px;width:74px;">3年目</p>
+<div class="pp-shape a r4-seg"  style="left:168px;top:140px;width:74px;height:30px;padding:0;background:var(--accent)"></div>
+<p class="pp-text a sub c" data-role="caption" style="left:168px;top:176px;width:74px;">4年目</p>
+<div class="pp-shape a r4-seg"  style="left:252px;top:140px;width:74px;height:30px;padding:0;background:var(--accent)"></div>
+<p class="pp-text a sub c" data-role="caption" style="left:252px;top:176px;width:74px;">5年目</p>
+<div class="pp-line a" data-dir="right" style="left:0px;top:214px;width:330px;color:var(--neutral-chart);"></div>
+<p class="pp-text a b" data-role="lead" style="left:0px;top:226px;width:330px;">5年目 3,200人</p>
+<p class="pp-text a sub" data-role="body" style="left:0px;top:270px;width:330px;">初年度（1,200人）の約2.7倍。</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">結論</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">毎年 +500人ずつ増え、5年目には初年度の約2.7倍になる</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>単位：人。濃い青は、その年に増えた会員数。出典：社内集計</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>7</p>
+  <aside class="notes">累計の棒。累計が積み上がる推移で、各年の増加分を濃い青で見せる。右の列で、毎年の増加が一定であることを示す。</aside>
 </section>
 
 </body>

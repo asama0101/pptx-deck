@@ -5,8 +5,9 @@ const path = require('node:path');
 const { pathToFileURL, fileURLToPath } = require('node:url');
 const { chromium } = require('playwright');
 const { SLIDE_W_IN, SLIDE_H_IN } = require('./lib/units');
+const { waterfallParts } = require('./lib/waterfall');
 
-const CHART_TYPES = ['bar', 'barh', 'line', 'pie', 'stacked', 'stackedh', 'stacked100', 'area', 'cumulative'];
+const CHART_TYPES = ['bar', 'barh', 'line', 'pie', 'stacked', 'stackedh', 'stacked100', 'area', 'cumulative', 'waterfall'];
 const STACKED_TYPES = ['stacked', 'stackedh', 'stacked100', 'area'];
 
 // ブラウザ内で実行される。外側のスコープを参照しないこと。
@@ -48,6 +49,8 @@ function extractInPage({ safety }) {
   const root = getComputedStyle(document.documentElement);
   const theme = {
     accent: root.getPropertyValue('--accent').trim().toUpperCase(),
+    accent2: root.getPropertyValue('--accent2').trim().toUpperCase(),
+    accentMid: root.getPropertyValue('--accent-mid').trim().toUpperCase(),
     neutral: root.getPropertyValue('--neutral-chart').trim().toUpperCase(),
     tone: (document.body.dataset.tone || '').trim(),
     sample: document.body.hasAttribute('data-sample'),
@@ -62,6 +65,7 @@ function extractInPage({ safety }) {
       effect: sec.dataset.effect || '',
       breakdown: sec.dataset.breakdown || '',
       diff: sec.dataset.diff || '',
+      source: sec.dataset.source || '',
       bg: toHex(getComputedStyle(sec).backgroundColor) || '#FFFFFF',
       notes: (sec.querySelector('aside.notes') || {}).textContent || '',
       size: [Math.round(sr.width), Math.round(sr.height)],
@@ -91,7 +95,7 @@ function extractInPage({ safety }) {
       }
       const e = {
         id: ids.get(el), type, role: el.dataset.role || (type === 'text' ? 'body' : ''), parent,
-        decor: el.hasAttribute('data-decor'), diagram: !!el.closest('[data-diagram]'),
+        decor: el.hasAttribute('data-decor'), overlapOk: el.hasAttribute('data-overlap'), chrome: !!el.closest('[data-chrome]'), diagram: !!el.closest('[data-diagram]'),
         x: r4((r.left - sr.left) / PX), y: r4((r.top - sr.top) / PX), w: r4(r.width / PX), h: r4(r.height / PX),
       };
       if (type === 'text') {
@@ -131,8 +135,14 @@ function extractInPage({ safety }) {
         const bw = parseFloat(cs.borderTopWidth);
         e.stroke = bw > 0 ? toHex(cs.borderTopColor) : null;
         e.strokeW = bw > 0 ? r2(bw * 0.75) : 0;
+        const am = /rgba\(([^)]+)\)/.exec(cs.backgroundColor || '');
+        if (am) { const al = parseFloat(am[1].split(',')[3]); if (Number.isFinite(al) && al < 1) e.fillAlpha = al; }
         const radius = cs.borderTopLeftRadius;
-        if (radius.includes('%') && parseFloat(radius) >= 50) e.kind = 'ellipse';
+        if (el.dataset.shape === 'poly') {
+          e.kind = 'poly';
+          e.points = (el.dataset.points || '').split('|').map((ring) => ring.trim().split(/\s+/).map((p) => p.split(',').map((n) => r4(parseFloat(n) / PX)))).filter((ring) => ring.length >= 3);
+        } else if (el.dataset.shape === 'triangle') e.kind = 'triangle';
+        else if (radius.includes('%') && parseFloat(radius) >= 50) e.kind = 'ellipse';
         else if (parseFloat(radius) > 0) { e.kind = 'roundRect'; e.radius = r4(parseFloat(radius) / PX); } else e.kind = 'rect';
       } else if (type === 'line') {
         e.dir = el.dataset.dir || 'right';
@@ -142,9 +152,12 @@ function extractInPage({ safety }) {
         if (e.dir === 'right' || e.dir === 'left') {
           e.y = r4((r.top + r.height / 2 - sr.top) / PX);
           e.h = 0;
-        } else {
+        } else if (e.dir === 'up' || e.dir === 'down') {
           e.x = r4((r.left + r.width / 2 - sr.left) / PX);
           e.w = 0;
+        } else {
+          // 斜めの線(dr=右下、ur=右上、dl=左下、ul=左上)。x・y・w・h の枠の対角線を引く
+          e.strokeW = r2(parseFloat(el.dataset.strokeW) || 1.5);
         }
       } else if (type === 'image') {
         e.alt = el.getAttribute('alt') || '';
@@ -185,17 +198,22 @@ async function measureHtml(htmlPath, { fontName, thresholds, channel, rasterDir 
           let spec;
           try { spec = JSON.parse(e.chartRaw); } catch (err) { throw new Error(`スライド ${s.index}: data-chart が不正な JSON: ${err.message}`); }
           if (!CHART_TYPES.includes(spec.type)) throw new Error(`スライド ${s.index}: チャートの型 "${spec.type}" は未対応(${CHART_TYPES.join('/')})`);
-          if (STACKED_TYPES.includes(spec.type)) {
+          if (STACKED_TYPES.includes(spec.type) || (spec.type === 'line' && spec.series)) {
             if (!Array.isArray(spec.labels) || !Array.isArray(spec.series) || !spec.series.length
               || spec.series.some((x) => !x || typeof x.name !== 'string' || !Array.isArray(x.values) || x.values.length !== spec.labels.length || x.values.some((v) => typeof v !== 'number'))) {
-              throw new Error(`スライド ${s.index}: 積み上げ棒・面の data-chart は、labels と、name・values を持つ series（values は labels と同じ長さの数値）にする`);
+              throw new Error(`スライド ${s.index}: 積み上げ棒・面・複数系列の折れ線の data-chart は、labels と、name・values を持つ series（values は labels と同じ長さの数値）にする`);
             }
+          } else if (spec.type === 'waterfall') {
+            if (!Array.isArray(spec.labels) || !Array.isArray(spec.values) || spec.labels.length !== spec.values.length || spec.values.some((v) => typeof v !== 'number')) {
+              throw new Error(`スライド ${s.index}: data-chart の labels と values は同じ長さで、values は数値にする`);
+            }
+            try { waterfallParts(spec.values, spec.totals); } catch (err) { throw new Error(`スライド ${s.index}: ウォーターフォール(waterfall)の values が不正: ${err.message}`); }
           } else if (spec.type === 'cumulative' && Array.isArray(spec.values) && spec.values.some((v, i) => i > 0 && v < spec.values[i - 1])) {
             throw new Error(`スライド ${s.index}: 累計の棒(cumulative)の values は、前の値以上(増えるだけ)にする`);
           } else if (!Array.isArray(spec.labels) || !Array.isArray(spec.values) || spec.labels.length !== spec.values.length || spec.values.some((v) => typeof v !== 'number')) {
             throw new Error(`スライド ${s.index}: data-chart の labels と values は同じ長さで、values は数値にする`);
           }
-          e.chart = { labelPt: 12, ...spec };
+          e.chart = { labelPt: spec.type === 'waterfall' ? 14 : 12, ...spec };
           delete e.chartRaw;
         }
         if (e.type === 'image') {
@@ -210,7 +228,7 @@ async function measureHtml(htmlPath, { fontName, thresholds, channel, rasterDir 
         }
         elements.push(e);
       }
-      slides.push({ index: s.index, layout: s.layout, numbers: s.numbers, effect: s.effect, breakdown: s.breakdown, diff: s.diff, bg: s.bg, notes: s.notes, unmeasured: s.unmeasured, elements });
+      slides.push({ index: s.index, layout: s.layout, numbers: s.numbers, effect: s.effect, breakdown: s.breakdown, diff: s.diff, source: s.source, bg: s.bg, notes: s.notes, unmeasured: s.unmeasured, elements });
     }
     return { slideW: SLIDE_W_IN, slideH: SLIDE_H_IN, fontFace: fontName || 'BIZ UDPゴシック', theme: raw.theme, slides };
   } finally {

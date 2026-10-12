@@ -1,5 +1,5 @@
 'use strict';
-const { contrastRatio } = require('../lib/color');
+const { contrastRatio, blend } = require('../lib/color');
 
 const PT_IN = 1 / 72;
 
@@ -56,6 +56,7 @@ function checkOverlap(model, t) {
           const b = list[j];
           const area = overlapArea(a, b);
           const small = Math.min(a.w * a.h, b.w * b.h);
+          if (a.overlapOk && b.overlapOk) continue; // ベン図の円など、重なりが意味を持つ要素
           if (area > 0 && small > 0 && area / small > t.overlapRatio) {
             out.push(viol('overlap', s, b, `${a.id} と重なっている(${Math.round((area / small) * 100)}%)`));
           }
@@ -102,12 +103,11 @@ function checkContrast(model, t) {
     const byId = new Map(s.elements.map((e) => [e.id, e]));
     for (const e of s.elements) {
       if (e.decor || e.type !== 'text' || !e.text || !e.text.trim() || !e.color) continue;
+      // 外側から重ねた実効の背景色。半透明の塗り(fillAlpha)は、その下の色と混ぜる
+      const chain = [];
+      for (let p = e.parent ? byId.get(e.parent) : null; p; p = p.parent ? byId.get(p.parent) : null) if (p.fill) chain.unshift(p);
       let bg = s.bg;
-      let p = e.parent ? byId.get(e.parent) : null;
-      while (p) {
-        if (p.fill) { bg = p.fill; break; }
-        p = p.parent ? byId.get(p.parent) : null;
-      }
+      for (const p of chain) bg = p.fillAlpha !== undefined ? blend(p.fill, bg, p.fillAlpha) : p.fill;
       const ratio = contrastRatio(e.color, bg);
       if (ratio < t.contrastMin) out.push(viol('contrast', s, e, `コントラスト比 ${ratio.toFixed(2)} は ${t.contrastMin} 未満(${e.color} on ${bg})`));
     }

@@ -61,3 +61,24 @@ test('累計の棒: 各年を「前年までの累計＋その年の増加分」
   assert.match(svg, />5,360</);
   assert.equal((svg.match(/fill="#1F4E9C" stroke/g) || []).length, 2); // 増加分の塊は 2 つ(初期にはない)
 });
+
+test('ウォーターフォール: 合計は灰色、増加は基調色、減少は濃い灰で描き（橙は使わない）、増減の値を＋・▲で書く', () => {
+  const th = { accent: '#1F4E9C', neutral: '#BFBFBF', accent2: '#B85A0B' };
+  const svg = chartSvg({ type: 'waterfall', labels: ['前期', '新規', '人件費', '当期'], values: [100, 45, -20, 125] }, 740, 480, th);
+  assert.match(svg, /＋45</);
+  assert.match(svg, /▲20</);
+  assert.match(svg, />100</);
+  assert.match(svg, />125</);
+  assert.equal((svg.match(/fill="#767676" stroke/g) || []).length, 2); // 合計 2 本
+  assert.equal((svg.match(/fill="#1F4E9C" stroke/g) || []).length, 1);
+  assert.equal((svg.match(/fill="#404040" stroke/g) || []).length, 1);
+  assert.doesNotMatch(svg, /B85A0B/);
+});
+
+test('複数系列の折れ線: 系列ごとの polyline を描き、注目の系列だけ橙', () => {
+  const spec = { type: 'line', labels: ['A', 'B', 'C'], series: [{ name: '現状維持', values: [3, 5, 8] }, { name: 'クラウド', values: [2, 4, 6] }], highlight: 1 };
+  const svg = chartSvg(spec, 600, 400, { ...theme, accent2: '#B85A0B' });
+  assert.equal((svg.match(/<polyline/g) || []).length, 2);
+  assert.equal((svg.match(/stroke="#B85A0B"/g) || []).length, 1);
+  assert.match(svg, /現状維持/);
+});

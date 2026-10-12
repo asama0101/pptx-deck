@@ -31,7 +31,7 @@ test('基本: 役割・親子・線・画像・チャート・ノート・箇条
   const byRole = (r) => s.elements.filter((e) => e.role === r);
   const title = byRole('title')[0];
   assert.equal(title.fontPt, 28);
-  assert.ok(Math.abs(title.x - 56 / 96) < 0.01 && Math.abs(title.y - 40 / 96) < 0.01);
+  assert.ok(Math.abs(title.x - 56 / 96) < 0.01 && Math.abs(title.y - 62 / 96) < 0.01);
   const card = s.elements.find((e) => e.type === 'shape');
   assert.equal(card.kind, 'roundRect');
   assert.equal(card.fill, '#F3F3F3');
@@ -133,4 +133,49 @@ test('border: pp-text の枠線(border-bottom など)は PPTX に写らないの
   const m = await measureHtml(file, { fontName: 'BIZ UDPゴシック', thresholds: t, rasterDir: root });
   assert.equal(m.slides[0].elements[0].border, true);
   assert.equal(m.slides[0].elements[1].border, false);
+});
+
+test('ウォーターフォール: 合計が増減の合計と合わない、または values が数値でないなら、スライド番号つきで停止する', async () => {
+  const mk = (spec, name) => page(`<section class="slide"><div class="pp-chart" data-chart='${spec}' style="width:100px;height:100px"></div></section>`, name);
+  await assert.rejects(measureHtml(mk('{"type":"waterfall","labels":["a","b","c"],"values":[100,20,150]}', 'wf-bad'), { thresholds: t, rasterDir: root }), /スライド 1.*waterfall.*合わない/);
+  await assert.rejects(measureHtml(mk('{"type":"waterfall","labels":["a","b"],"values":[100]}', 'wf-len'), { thresholds: t, rasterDir: root }), /スライド 1/);
+  const ok = await measureHtml(mk('{"type":"waterfall","labels":["a","b","c"],"values":[100,20,120]}', 'wf-ok'), { thresholds: t, rasterDir: root });
+  const chart = ok.slides[0].elements.find((e) => e.type === 'chart').chart;
+  assert.equal(chart.type, 'waterfall');
+  assert.equal(chart.labelPt, 14); // 値のテキストは本文の最小サイズ(14pt)以上にする
+});
+
+test('斜めの線・三角形・半透明の塗り・重なりの許可を計測する', async () => {
+  const f = page('<section class="slide">'
+    + '<div class="pp-line" data-dir="ur" data-arrow="end" style="position:absolute;left:100px;top:100px;width:192px;height:96px;color:#555555"></div>'
+    + '<div class="pp-shape" data-shape="triangle" data-overlap style="position:absolute;left:400px;top:100px;width:192px;height:192px;background:rgba(31,78,156,0.35)"></div>'
+    + '<div class="pp-shape" style="position:absolute;left:700px;top:100px;width:96px;height:96px;background:#1F4E9C"></div></section>', 'diag');
+  const m = await measureHtml(f, { thresholds: t, rasterDir: root });
+  const [line, tri, plain] = m.slides[0].elements;
+  assert.equal(line.dir, 'ur');
+  assert.equal(line.arrow, true);
+  assert.deepEqual([line.w, line.h], [2, 1]); // 枠の対角線。h は 0 にならない
+  assert.equal(line.strokeW, 1.5);
+  assert.equal(tri.kind, 'triangle');
+  assert.equal(tri.fillAlpha, 0.35);
+  assert.equal(tri.overlapOk, true);
+  assert.equal(plain.fillAlpha, undefined);
+  assert.equal(plain.overlapOk, false);
+});
+
+test('輪郭の多角形(data-shape="poly")を、枠の左上を原点とした in 座標の輪郭の配列として計測する', async () => {
+  const f = page('<section class="slide"><div class="pp-shape" data-shape="poly" data-overlap data-points="0,0 96,0 96,48 0,96|10,10 20,10 20,20" style="position:absolute;left:100px;top:100px;width:96px;height:96px;background:#1F4E9C"></div></section>', 'poly');
+  const m = await measureHtml(f, { thresholds: t, rasterDir: root });
+  const shape = m.slides[0].elements[0];
+  assert.equal(shape.kind, 'poly');
+  assert.equal(shape.points.length, 2); // 輪郭が 2 つ(本島と離島のような使い方)
+  assert.deepEqual(shape.points[0], [[0, 0], [1, 0], [1, 0.5], [0, 1]]);
+  assert.equal(shape.points[1].length, 3);
+});
+
+test('複数系列の折れ線: series の長さが labels と合わなければ停止し、正しければ series を保つ', async () => {
+  const mk = (spec, name) => page(`<section class="slide"><div class="pp-chart" data-chart='${spec}' style="width:100px;height:100px"></div></section>`, name);
+  await assert.rejects(measureHtml(mk('{"type":"line","labels":["a","b"],"series":[{"name":"x","values":[1]}]}', 'ml-len'), { thresholds: t, rasterDir: root }), /スライド 1.*折れ線/);
+  const ok = await measureHtml(mk('{"type":"line","labels":["a","b"],"series":[{"name":"x","values":[1,2]},{"name":"y","values":[2,3]}],"highlight":1}', 'ml-ok'), { thresholds: t, rasterDir: root });
+  assert.equal(ok.slides[0].elements.find((e) => e.type === 'chart').chart.series.length, 2);
 });

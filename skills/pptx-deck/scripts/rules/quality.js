@@ -5,6 +5,8 @@ function viol(rule, slide, el, message, severity = 'error') {
   return { rule, slide: slide ? slide.index : null, id: el ? el.id : null, message, severity };
 }
 
+const sameColor = (a, b) => !!a && !!b && a.toUpperCase() === b.toUpperCase();
+const isAccentColor = (c, t0) => sameColor(c, t0.accent) || sameColor(c, t0.accent2);
 const NO_BODY_LAYOUTS = ['cover', 'section', 'closing'];
 
 function checkTitleAlign(model, t) {
@@ -74,6 +76,8 @@ function checkUsage(model, t) {
   return out;
 }
 
+// 有彩色の色相グループは、アクセント(--accent)と、あれば強調色(--accent2)の最大 2 つ。薄色・中間色は同じ色相のグループに数える
+const hueGap = (a, b) => Math.min(Math.abs(a - b), 360 - Math.abs(a - b));
 function checkColorCount(model) {
   const hues = [];
   for (const s of model.slides) {
@@ -87,12 +91,20 @@ function checkColorCount(model) {
   }
   const groups = [];
   for (const h of hues) {
-    const g = groups.find((r) => Math.min(Math.abs(r - h), 360 - Math.abs(r - h)) <= 20);
-    if (!g) groups.push(h);
+    if (!groups.some((r) => hueGap(r, h) <= 20)) groups.push(h);
   }
-  return groups.length > 1
-    ? [viol('colorCount', null, null, `有彩色の色相グループが ${groups.length} 個ある(アクセント 1 色のみ)`)]
-    : [];
+  const accent2 = model.theme.accent2;
+  const allowed = accent2 ? 2 : 1;
+  if (groups.length > allowed) {
+    return [viol('colorCount', null, null, `有彩色の色相グループが ${groups.length} 個ある(基調のアクセント${accent2 ? 'と強調色 --accent2 の 2 色まで' : ' 1 色のみ。強調色が要るなら base.css の --accent2 を使う'})`)];
+  }
+  if (groups.length === 2 && accent2) {
+    const h2 = hueInfo(accent2).h;
+    if (!groups.some((g) => hueGap(g, h2) <= 20)) {
+      return [viol('colorCount', null, null, `2 つ目の色相が --accent2(${accent2})と合わない。強調色は --accent2 だけを使う`)];
+    }
+  }
+  return [];
 }
 
 function checkAvoid(model) {
@@ -102,9 +114,10 @@ function checkAvoid(model) {
     if (title && /[。.]\s*$/.test(title.text || '')) out.push(viol('avoid', s, title, 'タイトル末尾の句点: 付けない'));
     for (const e of s.elements) {
       const thin = Math.min(e.w, e.h) <= 0.08;
-      if ((e.type === 'line' || e.type === 'shape') && thin && title && Math.max(e.w, e.h) >= 0.3 * title.w
+      const lineColor = e.type === 'line' ? e.stroke : e.fill;
+      if ((e.type === 'line' || e.type === 'shape') && thin && isAccentColor(lineColor, model.theme) && title && Math.max(e.w, e.h) >= 0.3 * title.w
           && e.y > title.y + title.h - 0.05 && e.y < title.y + title.h + 0.35 && e.x < title.x + title.w && e.x + e.w > title.x) {
-        out.push(viol('avoid', s, e, 'タイトル下のアクセント線: 使わない'));
+        out.push(viol('avoid', s, e, 'タイトル下のアクセント色の線: 使わない(無彩色の細線は可)'));
       } else if (e.type === 'shape' && e.w <= 0.12 && e.h >= 0.8) {
         out.push(viol('avoid', s, e, '装飾バー: 使わない'));
       }
@@ -137,8 +150,7 @@ function checkCardRow(model, t) {
 
 
 // --- 視線設計と色彩心理(矢印効果・孤立効果・Zの法則・色彩心理) ---
-const sameColor = (a, b) => !!a && !!b && a.toUpperCase() === b.toUpperCase();
-const isAccent = (e, t0) => (e.type === 'text' && sameColor(e.color, t0.accent)) || (e.type === 'shape' && sameColor(e.fill, t0.accent));
+const isAccent = (e, t0) => (e.type === 'text' && isAccentColor(e.color, t0)) || (e.type === 'shape' && isAccentColor(e.fill, t0));
 const isContentLayout = (s) => !NO_BODY_LAYOUTS.includes(s.layout);
 const inRect = (px, py, r, pad = 0) => px >= r.x - pad && px <= r.x + r.w + pad && py >= r.y - pad && py <= r.y + r.h + pad;
 
@@ -147,8 +159,8 @@ function checkArrowTarget(model, t) {
   const out = [];
   for (const s of model.slides) {
     for (const a of s.elements.filter((e) => e.type === 'line' && e.arrow)) {
-      const tip = { right: [a.x + a.w, a.y], left: [a.x, a.y], down: [a.x, a.y + a.h], up: [a.x, a.y] }[a.dir];
-      const tail = { right: [a.x, a.y], left: [a.x + a.w, a.y], down: [a.x, a.y], up: [a.x, a.y + a.h] }[a.dir];
+      const tip = { right: [a.x + a.w, a.y], left: [a.x, a.y], down: [a.x, a.y + a.h], up: [a.x, a.y], dr: [a.x + a.w, a.y + a.h], ur: [a.x + a.w, a.y], dl: [a.x, a.y + a.h], ul: [a.x, a.y] }[a.dir];
+      const tail = { right: [a.x, a.y], left: [a.x + a.w, a.y], down: [a.x, a.y], up: [a.x, a.y + a.h], dr: [a.x, a.y], ur: [a.x, a.y + a.h], dl: [a.x + a.w, a.y], ul: [a.x + a.w, a.y + a.h] }[a.dir];
       const edge = t.arrowEdgeIn;
       const nearEdge = tip[0] >= model.slideW - t.safeMarginIn - edge || tip[1] >= model.slideH - t.safeMarginIn - edge;
       const targets = s.elements.filter((e) => e.type !== 'line' && !e.decor && e.id !== a.id);
@@ -164,11 +176,29 @@ function checkIsolation(model, t) {
   const out = [];
   for (const s of model.slides) {
     if (!isContentLayout(s)) continue;
-    const items = s.elements.filter((e) => (e.type === 'text' || e.type === 'shape') && e.role !== 'title' && !e.decor);
+    const items = s.elements.filter((e) => (e.type === 'text' || e.type === 'shape') && e.role !== 'title' && !e.decor && !e.chrome);
     const acc = items.filter((e) => isAccent(e, model.theme));
     if (!acc.length) continue;
     if (acc.length > t.isolation.maxCount || acc.length / items.length > t.isolation.maxRatio) {
       out.push(viol('isolation', s, acc[0], `強調(アクセント色)が ${acc.length} 個(同種の要素の ${Math.round((acc.length / items.length) * 100)}%)ある。1 点に絞ると孤立効果で目立つ`));
+    }
+  }
+  return out;
+}
+
+// 橙(--accent2)は「推奨・承認を求める案」専用。橙の要素があるスライドに、推奨・承認・判断の語がなければ警告する
+// (意味までは判定できないので、語の有無だけを見る。共通の枠(chrome)・装飾は数えない)
+const RECO_WORDS = /推奨|承認|決裁|稟議|判断/;
+function checkAccent2Reco(model) {
+  const out = [];
+  const a2 = model.theme.accent2;
+  if (!a2) return out;
+  for (const s of model.slides) {
+    if (!isContentLayout(s)) continue;
+    const orange = s.elements.find((e) => !e.chrome && !e.decor && ((e.type === 'text' && sameColor(e.color, a2)) || (e.type === 'shape' && sameColor(e.fill, a2))));
+    if (!orange) continue;
+    if (!s.elements.some((e) => e.type === 'text' && RECO_WORDS.test(e.text || ''))) {
+      out.push(viol('accent2Reco', s, orange, '橙(--accent2)は「推奨・承認を求める案」専用。このスライドに推奨・承認・判断を示す語がない。推奨でないなら基調の青の濃色や太線にする', 'warning'));
     }
   }
   return out;
@@ -181,7 +211,7 @@ function checkZFlow(model, t) {
     if (!isContentLayout(s)) continue;
     const W = model.slideW;
     const H = model.slideH;
-    const body = s.elements.filter((e) => e.type !== 'line' && e.role !== 'title' && !e.decor && e.w > 0 && e.h > 0);
+    const body = s.elements.filter((e) => e.type !== 'line' && e.role !== 'title' && !e.decor && !e.chrome && e.w > 0 && e.h > 0);
     const acc = body.filter((e) => isAccent(e, model.theme));
     if (acc.length) {
       const big = acc.reduce((m, e) => (e.w * e.h > m.w * m.h ? e : m));
@@ -205,8 +235,12 @@ function checkColorTone(model, t) {
   if (range === 'any') return [];
   const { h, s } = hueInfo(model.theme.accent);
   const [lo, hi] = range;
+  const extra = [];
+  if (model.theme.accent2 && hueGap(h, hueInfo(model.theme.accent2).h) < t.accent2MinHueGap) {
+    extra.push(viol('colorTone', null, null, `強調色 --accent2(${model.theme.accent2})の色相が基調 ${model.theme.accent} に近すぎる(${t.accent2MinHueGap}° 以上離す)`, 'warning'));
+  }
   const ok = lo <= hi ? h >= lo && h <= hi : h >= lo || h <= hi;
-  return ok && s > 0.25 ? [] : [viol('colorTone', null, null, `アクセント色 ${model.theme.accent}(色相 ${Math.round(h)}°)が、トーン "${tone}"(${lo}〜${hi}°)に合わない。色を変えるか、トーンを選び直す`)];
+  return ok && s > 0.25 ? extra : [viol('colorTone', null, null, `アクセント色 ${model.theme.accent}(色相 ${Math.round(h)}°)が、トーン "${tone}"(${lo}〜${hi}°)に合わない。色を変えるか、トーンを選び直す`), ...extra];
 }
 
 // 数字の比較はグラフで可視化する。同じ単位の数字が 3 つ以上あるのに、チャートがないスライドは違反。
@@ -248,7 +282,7 @@ function checkEffectBeforeAfter(model) {
 }
 
 // グラフの内訳と差額: 内訳がある数字は積み上げで見せる。前後を比べるグラフは、差額の系列で差を見せる
-const STACKED_FAMILY = ['stacked', 'stackedh', 'stacked100', 'area', 'cumulative'];
+const STACKED_FAMILY = ['stacked', 'stackedh', 'stacked100', 'area', 'cumulative', 'waterfall'];
 function checkChartBreakdown(model) {
   const out = [];
   for (const s of model.slides) {
@@ -275,8 +309,22 @@ function checkChartDiff(model) {
   return out;
 }
 
-function all(model, t) {
-  return [...checkTitleAlign(model, t), ...checkMonotony(model, t), ...checkUsage(model, t), ...checkColorCount(model, t), ...checkAvoid(model, t), ...checkCardRow(model, t), ...checkArrowTarget(model, t), ...checkIsolation(model, t), ...checkZFlow(model, t), ...checkColorTone(model, t), ...checkNumberCompare(model, t), ...checkEffectBeforeAfter(model, t), ...checkChartBreakdown(model, t), ...checkChartDiff(model, t)];
+// 出典: 数字を載せるスライドには、出典(または出所)を書く。書かない場合は data-source="none" を section に付ける
+function checkSourceMissing(model) {
+  const out = [];
+  for (const s of model.slides) {
+    if (!isContentLayout(s) || s.source === 'none') continue;
+    const texts = s.elements.filter((e) => e.type === 'text' && !e.decor);
+    const hasNumbers = s.elements.some((e) => e.type === 'chart') || texts.some((e) => new RegExp(QUANTITY.source).test(e.text || ''));
+    if (hasNumbers && !texts.some((e) => /出典|出所|Source/i.test(e.text || ''))) {
+      out.push(viol('sourceMissing', s, null, '数字があるのに出典がない。「出典：…」を caption で添える(数字が自明なら data-source="none")', 'warning'));
+    }
+  }
+  return out;
 }
 
-module.exports = { all, checkTitleAlign, checkMonotony, checkUsage, checkColorCount, checkAvoid, checkCardRow, checkArrowTarget, checkIsolation, checkZFlow, checkColorTone, checkNumberCompare, checkEffectBeforeAfter, checkChartBreakdown, checkChartDiff };
+function all(model, t) {
+  return [...checkTitleAlign(model, t), ...checkMonotony(model, t), ...checkUsage(model, t), ...checkColorCount(model, t), ...checkAvoid(model, t), ...checkCardRow(model, t), ...checkArrowTarget(model, t), ...checkIsolation(model, t), ...checkAccent2Reco(model), ...checkZFlow(model, t), ...checkColorTone(model, t), ...checkNumberCompare(model, t), ...checkEffectBeforeAfter(model, t), ...checkChartBreakdown(model, t), ...checkChartDiff(model, t), ...checkSourceMissing(model, t)];
+}
+
+module.exports = { all, checkTitleAlign, checkMonotony, checkUsage, checkColorCount, checkAvoid, checkCardRow, checkArrowTarget, checkIsolation, checkAccent2Reco, checkZFlow, checkColorTone, checkNumberCompare, checkEffectBeforeAfter, checkChartBreakdown, checkChartDiff, checkSourceMissing };

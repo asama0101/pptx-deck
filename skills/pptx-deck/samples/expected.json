@@ -1,5 +1,6 @@
 [
   { "file": "01-theme-only.md", "slidesMin": 10, "slidesMax": 15 },
   { "file": "02-long-script.md", "slidesMin": 10, "slidesMax": 15 },
-  { "file": "03-diagram-chart.md", "slidesMin": 10, "slidesMax": 15 }
+  { "file": "03-diagram-chart.md", "slidesMin": 10, "slidesMax": 15 },
+  { "file": "04-approval.md", "slidesMin": 10, "slidesMax": 15 }
 ]

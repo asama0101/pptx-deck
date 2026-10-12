@@ -13,7 +13,12 @@ const parser = new XMLParser({
   isArray: (name) => ['p:sp', 'p:pic', 'p:cxnSp', 'p:graphicFrame', 'a:p', 'a:r'].includes(name),
 });
 
-const NAME = /^(s\d+-e\d+)\|p=([^|]*)\|d=(\d)\|r=([^|]*)\|t=(\w+)$/;
+const NAME = /^(s\d+-e\d+)\|p=([^|]*)\|d=(\d)\|r=([^|]*)\|t=(\w+)(\|o=1)?$/;
+const alphaOf = (node) => {
+  const a = node && node['a:solidFill'] && node['a:solidFill']['a:srgbClr'] && node['a:solidFill']['a:srgbClr']['a:alpha'];
+  const v = a && a['@_val'] !== undefined ? Number(a['@_val']) / 100000 : null;
+  return Number.isFinite(v) && v < 1 ? v : undefined;
+};
 const hexOf = (node) => {
   const v = node && node['a:solidFill'] && node['a:solidFill']['a:srgbClr'] && node['a:solidFill']['a:srgbClr']['@_val'];
   return v ? '#' + v.toUpperCase() : null;
@@ -30,7 +35,7 @@ function geometry(xfrm, off = 'a:off', ext = 'a:ext') {
 function identity(cNvPr, fallbackId, fallbackType) {
   const m = NAME.exec((cNvPr && cNvPr['@_name']) || '');
   return m
-    ? { id: m[1], parent: m[2] || null, decor: m[3] === '1', role: m[4], type: m[5] }
+    ? { id: m[1], parent: m[2] || null, decor: m[3] === '1', role: m[4], type: m[5], ...(m[6] ? { overlapOk: true } : {}) }
     : { id: fallbackId, parent: null, decor: false, role: '', type: fallbackType };
 }
 
@@ -97,7 +102,7 @@ async function readPptxModel(pptxPath) {
       const body = readText(sp);
       elements.push({
         ...id, diagram: false, ...geometry(spPr['a:xfrm']),
-        ...(id.type === 'text' ? { ...body, align: 'left', lineCount: 1, fixed: false, wrapStable: true, overflow: false } : { fill: hexOf(spPr) }),
+        ...(id.type === 'text' ? { ...body, align: 'left', lineCount: 1, fixed: false, wrapStable: true, overflow: false } : { fill: hexOf(spPr), ...(alphaOf(spPr) !== undefined ? { fillAlpha: alphaOf(spPr) } : {}) }),
       });
     }
     for (const cx of tree['p:cxnSp'] || []) {

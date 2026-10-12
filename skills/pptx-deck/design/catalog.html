@@ -2,194 +2,580 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<title>見本カタログ</title>
+<title>見本集</title>
 <link rel="stylesheet" href="base.css">
 <script src="chart-preview.js"></script>
 <style>
   .a { position: absolute; }
   .sub { color: var(--sub); }
   .acc { color: var(--accent); }
+  .org { color: var(--accent2-dark); }
+  .w { color: #FFFFFF; }
+  .c { text-align: center; }
+  .r { text-align: right; }
+  .b { font-weight: 700; }
+  .unit { font-size: calc(24*var(--pt)); }
+  .unit-s { font-size: calc(16*var(--pt)); }
+  /* 図解の本体: title-rule の下から結論の帯の手前まで(上 136px・高さ 436px) */
+  .area.r1-body { top: 136px; height: 436px; }
+  .r1-fr { background: #FFFFFF; border: 2px solid var(--neutral-chart); border-radius: 4px; padding: 0; }
+  .r1-fr.on { border: 3px solid var(--accent); }
+  .r1-bar { padding: 0; border-radius: 2px; }
+  .r1-person { padding: 0; border-radius: 50%; }
+  .circle { border-radius: 50%; }
 </style>
 </head>
-<body data-tone="trust">
+<body data-tone="trust" data-sample>
+<!--
+  見本集（表紙・要点・フロー・結論・マトリクス・ガント・棒グラフ・ピラミッド・ツリー・積み上げ棒）。
+  デザインの考え方(判断に必要な情報を、視覚で読めるコンサル資料にする)。
+  - 章名は論点(問い)、タイトルは答え。下端は結論の帯。出典・ページ番号は共通の枠(base.css)。
+  - 判断が要るスライドは、見出しの下に判断の枠(.decide: 決めること・期限・推奨)を置く。説明が目的の図解は付けない。
+  - 色の役割: 橙=推奨・承認を求める案、青=基調・比較対象の強調、灰=背景情報。
+  - 記号: 玉=満ちるほど良い、棒=長いほど良い、四角3つ=満ちるほどリスクが大きい、◆=判断点。
+  - 表(行×列)と、図の横の説明パネルは使わない。説明は図の中のラベル・吹き出し・括弧で行う。
+  - アイコンは icons/ の線画。数字は例データ。
+-->
 
-<!-- 1. 表紙 -->
-<section class="slide" data-layout="cover">
-  <div class="area full" style="display:flex;flex-direction:column;justify-content:center">
-    <p class="pp-text" data-role="title" data-fixed style="width:1000px;font-size:calc(40*var(--pt))">四半期の営業成果と<br>次の打ち手</p>
-    <p class="pp-text" data-role="lead" style="width:1000px;margin-top:24px;font-weight:400;color:var(--sub)">2026年度 第2四半期 営業レビュー</p>
-  </div>
-  <aside class="notes">表紙。結論から話す前に、目的と所要時間を伝える。</aside>
+<section class="slide" data-layout="cover" data-source="none">
+<p class="pp-text a sub b" data-chrome data-role="caption" style="left:56px;top:172px;width:560px;">営業レビュー　2026年度 第2四半期</p>
+  <p class="pp-text a" data-role="title" data-fixed style="left:56px;top:250px;width:600px;font-size:calc(40*var(--pt))">四半期の営業成果と<br>次の打ち手</p>
+<div class="pp-shape a" data-chrome style="left:56px;top:432px;width:96px;height:6px;padding:0;background:var(--accent);border-radius:0">
+</div>
+<p class="pp-text a sub" data-role="lead" style="left:56px;top:456px;width:600px;font-weight:400">新規開拓に人員を寄せ、<br>見積業務を標準化する提案</p>
+<p class="pp-text a sub" data-role="body" style="left:56px;top:540px;width:560px;">2026年10月　営業企画部</p>
+<p class="pp-text a sub b" data-chrome data-role="caption" style="left:704px;top:166px;width:200px;">目次</p>
+<div class="pp-line a" data-chrome data-dir="down" style="left:672px;top:172px;height:420px;color:var(--neutral-chart);"></div>
+<div class="pp-line a" data-chrome data-dir="right" style="left:704px;top:196px;width:520px;color:var(--neutral-chart);"></div>
+<p class="pp-text a acc" data-chrome data-role="display" style="left:704px;top:206px;width:56px;font-size:calc(28*var(--pt))">1</p>
+<p class="pp-text a b" data-role="lead" style="left:768px;top:198px;width:340px;font-size:calc(18*var(--pt))">要点</p>
+<p class="pp-text a sub" data-role="caption" style="left:768px;top:234px;width:350px;">承認してほしいことを1枚で</p>
+<p class="pp-text a sub r" data-role="body" style="left:1128px;top:210px;width:96px;">p.2</p>
+<div class="pp-line a" data-chrome data-dir="right" style="left:704px;top:262px;width:520px;color:var(--neutral-chart);"></div>
+<p class="pp-text a acc" data-chrome data-role="display" style="left:704px;top:272px;width:56px;font-size:calc(28*var(--pt))">2</p>
+<p class="pp-text a b" data-role="lead" style="left:768px;top:264px;width:340px;font-size:calc(18*var(--pt))">営業成果</p>
+<p class="pp-text a sub" data-role="caption" style="left:768px;top:300px;width:350px;">第4四半期は年間で最大</p>
+<p class="pp-text a sub r" data-role="body" style="left:1128px;top:276px;width:96px;">p.3</p>
+<div class="pp-line a" data-chrome data-dir="right" style="left:704px;top:328px;width:520px;color:var(--neutral-chart);"></div>
+<p class="pp-text a acc" data-chrome data-role="display" style="left:704px;top:338px;width:56px;font-size:calc(28*var(--pt))">3</p>
+<p class="pp-text a b" data-role="lead" style="left:768px;top:330px;width:340px;font-size:calc(18*var(--pt))">売上の伸び</p>
+<p class="pp-text a sub" data-role="caption" style="left:768px;top:366px;width:350px;">新規開拓が押し上げた</p>
+<p class="pp-text a sub r" data-role="body" style="left:1128px;top:342px;width:96px;">p.4</p>
+<div class="pp-line a" data-chrome data-dir="right" style="left:704px;top:394px;width:520px;color:var(--neutral-chart);"></div>
+<p class="pp-text a acc" data-chrome data-role="display" style="left:704px;top:404px;width:56px;font-size:calc(28*var(--pt))">4</p>
+<p class="pp-text a b" data-role="lead" style="left:768px;top:396px;width:340px;font-size:calc(18*var(--pt))">施策と効果</p>
+<p class="pp-text a sub" data-role="caption" style="left:768px;top:432px;width:350px;">3つの施策と、その狙い</p>
+<p class="pp-text a sub r" data-role="body" style="left:1128px;top:408px;width:96px;">p.5</p>
+<div class="pp-line a" data-chrome data-dir="right" style="left:704px;top:460px;width:520px;color:var(--neutral-chart);"></div>
+<p class="pp-text a acc" data-chrome data-role="display" style="left:704px;top:470px;width:56px;font-size:calc(28*var(--pt))">5</p>
+<p class="pp-text a b" data-role="lead" style="left:768px;top:462px;width:340px;font-size:calc(18*var(--pt))">実施計画</p>
+<p class="pp-text a sub" data-role="caption" style="left:768px;top:498px;width:350px;">承認後2週間で配置</p>
+<p class="pp-text a sub r" data-role="body" style="left:1128px;top:474px;width:96px;">p.6</p>
+<div class="pp-line a" data-chrome data-dir="right" style="left:704px;top:526px;width:520px;color:var(--neutral-chart);"></div>
+<p class="pp-text a acc" data-chrome data-role="display" style="left:704px;top:536px;width:56px;font-size:calc(28*var(--pt))">6</p>
+<p class="pp-text a b" data-role="lead" style="left:768px;top:528px;width:340px;font-size:calc(18*var(--pt))">判断してほしいこと</p>
+<p class="pp-text a sub" data-role="caption" style="left:768px;top:564px;width:350px;">2名の追加と、見積のテンプレ化</p>
+<p class="pp-text a sub r" data-role="body" style="left:1128px;top:540px;width:96px;">p.7</p>
+<div class="pp-line a" data-chrome data-dir="right" style="left:704px;top:592px;width:520px;color:var(--neutral-chart);"></div>
+  <aside class="notes">表紙(目次つき)。左にタイトル、右に縦の目次(番号・章名・一言・ページ)。</aside>
 </section>
 
-<!-- 2. サマリ（表紙の次。全体の要点を、罫線で区切った3行で先に示す。カードを並べない） -->
-<section class="slide" data-layout="content">
+<section class="slide" data-layout="diagram" data-numbers="visual">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">02</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>要点を先に</p>
   <p class="pp-text" data-role="title">要点：新規開拓に人員を寄せ、見積業務を標準化する</p>
-  <div class="area">
-    <p class="pp-text a sub" data-role="body" style="left:0;top:10px;width:110px">現状</p>
-    <p class="pp-text a" data-role="lead" style="left:140px;top:0;width:1028px;font-size:calc(22*var(--pt))">第4四半期の売上は、年間で最大になった</p>
-    <p class="pp-text a sub" data-role="body" style="left:140px;top:48px;width:1028px">第1〜第3四半期は横ばいが続いた。</p>
-    <div class="pp-line a" data-dir="right" style="left:0;top:150px;width:1168px;color:var(--neutral-chart)"></div>
-
-    <p class="pp-text a sub" data-role="body" style="left:0;top:186px;width:110px">提案</p>
-    <p class="pp-text a" data-role="lead" style="left:140px;top:176px;width:1028px;font-size:calc(22*var(--pt))">新規開拓に2名を追加し、見積はテンプレ化する</p>
-    <p class="pp-text a sub" data-role="body" style="left:140px;top:224px;width:1028px">見積の回答時間を半分にする。</p>
-    <div class="pp-line a" data-dir="right" style="left:0;top:326px;width:1168px;color:var(--neutral-chart)"></div>
-
-    <p class="pp-text a acc" data-role="body" style="left:0;top:362px;width:110px;font-weight:700">依頼</p>
-    <p class="pp-text a acc" data-role="lead" style="left:140px;top:352px;width:1028px;font-size:calc(22*var(--pt))">今期中に全拠点へ展開するため、人員配置を承認してほしい</p>
-    <p class="pp-text a sub" data-role="body" style="left:140px;top:400px;width:1028px">承認後、2週間で配置を完了する。</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="decide" data-chrome>
+    <p class="pp-text decide-k" data-role="caption" style="left:0px;width:500px">決めること</p>
+    <p class="pp-text decide-v " data-role="body" style="left:0px;width:500px">新規開拓への2名追加と、見積のテンプレ化</p>
+    <p class="pp-text decide-k" data-role="caption" style="left:532px;width:260px">期限</p>
+    <p class="pp-text decide-v " data-role="body" style="left:532px;width:260px">今期中</p>
+    <p class="pp-text decide-k" data-role="caption" style="left:820px;width:348px">推奨</p>
+    <p class="pp-text decide-v reco" data-role="body" style="left:820px;width:348px">承認</p>
+    <div class="pp-line decide-sep" data-dir="down" style="left:516px"></div>
+    <div class="pp-line decide-sep" data-dir="down" style="left:804px"></div>
+    <div class="pp-line decide-bar" data-dir="right"></div>
   </div>
-  <aside class="notes">サマリ。ここだけ読めば全体像がつかめるようにする。</aside>
+  <div class="area decide-body" data-diagram>
+<p class="pp-text a sub b" data-role="body" style="left:0px;top:0px;width:272px;">第4四半期の売上</p>
+<p class="pp-text a " data-role="display" style="left:0px;top:34px;width:280px;font-size:calc(40*var(--pt))">172<span class="unit">百万円</span></p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:108px;width:272px;">年間で最大（第3四半期＋44）</p>
+<p class="pp-text a sub b" data-role="body" style="left:312px;top:0px;width:272px;">前期比</p>
+<p class="pp-text a " data-role="display" style="left:312px;top:34px;width:280px;font-size:calc(40*var(--pt))">＋34<span class="unit">%</span></p>
+<p class="pp-text a sub" data-role="caption" style="left:312px;top:108px;width:272px;">第3四半期 128 → 第4四半期 172</p>
+<p class="pp-text a sub b" data-role="body" style="left:604px;top:0px;width:272px;">見積の回答時間</p>
+<p class="pp-text a " data-role="display" style="left:604px;top:34px;width:280px;font-size:calc(40*var(--pt))">−50<span class="unit">%</span></p>
+<p class="pp-text a sub" data-role="caption" style="left:604px;top:108px;width:272px;">テンプレ化で回答を半分の時間に</p>
+<p class="pp-text a sub b" data-role="body" style="left:896px;top:0px;width:272px;">追加する人員</p>
+<p class="pp-text a " data-role="display" style="left:896px;top:34px;width:280px;font-size:calc(40*var(--pt));color:var(--accent2-dark)">2<span class="unit">名</span></p>
+<p class="pp-text a sub" data-role="caption" style="left:896px;top:108px;width:272px;">新規開拓へ。2週間で配置</p>
+<div class="pp-line a" data-dir="down" style="left:292px;top:4px;height:124px;color:var(--neutral-chart);"></div>
+<div class="pp-line a" data-dir="down" style="left:584px;top:4px;height:124px;color:var(--neutral-chart);"></div>
+<div class="pp-line a" data-dir="down" style="left:876px;top:4px;height:124px;color:var(--neutral-chart);"></div>
+<div class="pp-shape dot a " style="left:0px;top:170px;width:56px;height:56px"><img class="pp-image" data-role="icon" src="icons/alert.svg" alt="リスク" style="width:30px;height:30px"></div>
+<p class="pp-text a acc b" data-role="caption" style="left:72px;top:162px;width:300px;">リスク</p>
+<p class="pp-text a b" data-role="lead" style="left:72px;top:186px;width:340px;">既存顧客との関係の低下</p>
+<p class="pp-text a sub" data-role="caption" style="left:72px;top:226px;width:330px;">訪問を月1回から四半期1回に減らす</p>
+<div class="pp-line a" data-dir="right" style="left:412px;top:214px;width:56px;color:var(--sub);"></div>
+<div class="pp-shape card tint a" style="left:490px;top:160px;width:678px;height:106px;padding:0;">
+<p class="pp-text a acc b" data-role="caption" style="left:24px;top:8px;width:200px;">対策</p>
+<div class="pp-shape dot a " style="left:24px;top:34px;width:28px;height:28px"><img class="pp-image" data-role="icon" src="icons/people.svg" alt="重要顧客" style="width:15px;height:15px"></div>
+<p class="pp-text a " data-role="body" style="left:64px;top:34px;width:610px;">解約率は低位で安定。重要顧客は、月1回の訪問を続ける</p>
+<div class="pp-shape dot a " style="left:24px;top:68px;width:28px;height:28px"><img class="pp-image" data-role="icon" src="icons/graph.svg" alt="確認" style="width:15px;height:15px"></div>
+<p class="pp-text a " data-role="body" style="left:64px;top:68px;width:610px;">四半期ごとに解約率を確認し、悪化したら訪問を戻す</p>
+</div>
+<p class="pp-text a sub b" data-role="caption" style="left:0px;top:276px;width:300px;">次のアクション</p>
+<div class="pp-shape a" data-decor style="left:0px;top:308px;width:40px;height:40px;padding:0;background:var(--accent2);border-radius:50%">
+<p class="pp-text a c" data-role="body" style="left:0px;top:6px;width:40px;font-size:calc(14*var(--pt));color:#FFFFFF;font-weight:700">1</p>
+</div>
+<p class="pp-text a b" data-role="lead" style="left:52px;top:302px;width:290px;">今期中　承認</p>
+<p class="pp-text a sub" data-role="caption" style="left:52px;top:342px;width:330px;">新規開拓への2名追加を承認</p>
+<div class="pp-line a" data-dir="right" style="left:372px;top:327px;width:20px;color:var(--sub);"></div>
+<div class="pp-shape a" data-decor style="left:400px;top:308px;width:40px;height:40px;padding:0;background:var(--accent);border-radius:50%">
+<p class="pp-text a c" data-role="body" style="left:0px;top:6px;width:40px;font-size:calc(14*var(--pt));color:#FFFFFF;font-weight:700">2</p>
+</div>
+<p class="pp-text a b" data-role="lead" style="left:452px;top:302px;width:290px;">承認後2週間</p>
+<p class="pp-text a sub" data-role="caption" style="left:452px;top:342px;width:330px;">2名を配置し、訪問を増やす</p>
+<div class="pp-line a" data-dir="right" style="left:772px;top:327px;width:20px;color:var(--sub);"></div>
+<div class="pp-shape a" data-decor style="left:800px;top:308px;width:40px;height:40px;padding:0;background:var(--accent);border-radius:50%">
+<p class="pp-text a c" data-role="body" style="left:0px;top:6px;width:40px;font-size:calc(14*var(--pt));color:#FFFFFF;font-weight:700">3</p>
+</div>
+<p class="pp-text a b" data-role="lead" style="left:852px;top:302px;width:290px;">続く四半期</p>
+<p class="pp-text a sub" data-role="caption" style="left:852px;top:342px;width:330px;">見積のテンプレを全拠点へ展開</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">推奨</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">新規開拓へ2名を追加し、見積をテンプレ化する案を承認してください</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>出典：2026年度第2四半期 営業実績（社内集計）。回答時間は現状比</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>2</p>
+  <aside class="notes">稟議の要旨。判断の枠（決めること・期限・推奨）と、売上・前期比・回答時間・人員の数字、リスクと対策、次のアクションを 1 枚で示す。</aside>
 </section>
 
-<!-- 3. 図解: フロー -->
 <section class="slide" data-layout="diagram">
-  <p class="pp-text" data-role="title">導入は4つのステップで進める</p>
-  <div class="area row" data-diagram style="align-items:center;justify-content:space-between">
-    <div class="pp-shape card" style="flex:none;width:248px;height:320px">
-      <p class="pp-text" data-role="lead">1. 現状把握</p>
-      <p class="pp-text" data-role="body" style="margin-top:12px">見積の流れと所要時間を計測する。</p>
-    </div>
-    <div class="pp-line" data-dir="right" data-arrow="end" style="width:36px"></div>
-    <div class="pp-shape card" style="flex:none;width:248px;height:320px">
-      <p class="pp-text" data-role="lead">2. 標準化</p>
-      <p class="pp-text" data-role="body" style="margin-top:12px">項目と承認ルールを統一する。</p>
-    </div>
-    <div class="pp-line" data-dir="right" data-arrow="end" style="width:36px"></div>
-    <div class="pp-shape card" style="flex:none;width:248px;height:320px">
-      <p class="pp-text" data-role="lead">3. 試行</p>
-      <p class="pp-text" data-role="body" style="margin-top:12px">2拠点で1か月試行する。</p>
-    </div>
-    <div class="pp-line" data-dir="right" data-arrow="end" style="width:36px"></div>
-    <div class="pp-shape card accent" style="flex:none;width:248px;height:320px">
-      <p class="pp-text" data-role="lead">4. 全拠点展開</p>
-      <p class="pp-text" data-role="body" style="margin-top:12px">研修とマニュアルを整えて展開する。</p>
-    </div>
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">03</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>導入は、どの順で何週間かけるか</p>
+  <p class="pp-text" data-role="title">導入は4つのステップ・約3か月で、全拠点へ展開する</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="area r1-body" data-diagram>
+<div class="pp-line a"  data-dir="right" style="left:0px;top:52px;width:1168px;color:var(--sub)"></div>
+<div class="pp-line a"  data-dir="down" style="left:0px;top:44px;height:16px;color:var(--sub)"></div>
+<p class="pp-text a c sub" data-role="caption" style="left:0px;top:14px;width:60px;">開始</p>
+<div class="pp-line a"  data-dir="down" style="left:194px;top:44px;height:16px;color:var(--sub)"></div>
+<p class="pp-text a c sub" data-role="caption" style="left:164px;top:14px;width:60px;">2週</p>
+<div class="pp-line a"  data-dir="down" style="left:389px;top:44px;height:16px;color:var(--sub)"></div>
+<p class="pp-text a c sub" data-role="caption" style="left:359px;top:14px;width:60px;">4週</p>
+<div class="pp-line a"  data-dir="down" style="left:778px;top:44px;height:16px;color:var(--sub)"></div>
+<p class="pp-text a c sub" data-role="caption" style="left:748px;top:14px;width:60px;">8週</p>
+<div class="pp-line a"  data-dir="down" style="left:1168px;top:44px;height:16px;color:var(--sub)"></div>
+<p class="pp-text a r sub" data-role="caption" style="left:1108px;top:14px;width:60px;">12週</p>
+<div class="pp-shape a "  style="left:0px;top:76px;width:191px;height:72px;padding:0;background:var(--accent-tint);border-radius:3px"><p class="pp-text a b acc" data-role="lead" style="left:14px;top:14px;width:26px;">1</p>
+<p class="pp-text a b " data-role="lead" style="left:46px;top:14px;width:135px;">現状把握</p>
+</div>
+<p class="pp-text a " data-role="body" style="left:4px;top:156px;width:183px;">見積の流れと所要時間を測る。</p>
+<div class="pp-shape dot a " style="left:4px;top:232px;width:28px;height:28px"><img class="pp-image" data-role="icon" src="icons/document.svg" alt="document" style="width:15px;height:15px"></div>
+<p class="pp-text a sub" data-role="caption" style="left:38px;top:238px;width:147px;">成果物</p>
+<p class="pp-text a b" data-role="body" style="left:4px;top:268px;width:183px;">現状分析シート</p>
+<div class="pp-line a"  data-dir="right" data-arrow="end" style="left:189px;top:108px;width:8px;height:0px;color:var(--sub)"></div>
+<div class="pp-shape a "  style="left:197px;top:76px;width:188px;height:72px;padding:0;background:var(--accent-tint);border-radius:3px"><p class="pp-text a b acc" data-role="lead" style="left:14px;top:14px;width:26px;">2</p>
+<p class="pp-text a b " data-role="lead" style="left:46px;top:14px;width:132px;">標準化</p>
+</div>
+<p class="pp-text a " data-role="body" style="left:201px;top:156px;width:180px;">項目と承認ルールを統一する。</p>
+<div class="pp-shape dot a " style="left:201px;top:232px;width:28px;height:28px"><img class="pp-image" data-role="icon" src="icons/document.svg" alt="document" style="width:15px;height:15px"></div>
+<p class="pp-text a sub" data-role="caption" style="left:235px;top:238px;width:144px;">成果物</p>
+<p class="pp-text a b" data-role="body" style="left:201px;top:268px;width:180px;">標準様式</p>
+<div class="pp-line a"  data-dir="right" data-arrow="end" style="left:383px;top:108px;width:8px;height:0px;color:var(--sub)"></div>
+<div class="pp-shape a "  style="left:392px;top:76px;width:383px;height:72px;padding:0;background:var(--accent-tint);border-radius:3px"><p class="pp-text a b acc" data-role="lead" style="left:14px;top:14px;width:26px;">3</p>
+<p class="pp-text a b " data-role="lead" style="left:46px;top:14px;width:327px;">試行</p>
+</div>
+<p class="pp-text a " data-role="body" style="left:396px;top:156px;width:375px;">2拠点で1か月試行する。</p>
+<div class="pp-shape dot a " style="left:396px;top:232px;width:28px;height:28px"><img class="pp-image" data-role="icon" src="icons/document.svg" alt="document" style="width:15px;height:15px"></div>
+<p class="pp-text a sub" data-role="caption" style="left:430px;top:238px;width:339px;">成果物</p>
+<p class="pp-text a b" data-role="body" style="left:396px;top:268px;width:375px;">試行報告書</p>
+<div class="pp-line a"  data-dir="right" data-arrow="end" style="left:773px;top:108px;width:8px;height:0px;color:var(--sub)"></div>
+<div class="pp-shape a "  style="left:781px;top:76px;width:386px;height:72px;padding:0;background:var(--accent);border-radius:3px"><p class="pp-text a b w" data-role="lead" style="left:14px;top:14px;width:26px;">4</p>
+<p class="pp-text a b w" data-role="lead" style="left:46px;top:14px;width:330px;">全拠点展開</p>
+</div>
+<p class="pp-text a " data-role="body" style="left:785px;top:156px;width:378px;">研修を整え、全拠点へ展開する。</p>
+<div class="pp-shape dot a " style="left:785px;top:232px;width:28px;height:28px"><img class="pp-image" data-role="icon" src="icons/document.svg" alt="document" style="width:15px;height:15px"></div>
+<p class="pp-text a sub" data-role="caption" style="left:819px;top:238px;width:342px;">成果物</p>
+<p class="pp-text a b" data-role="body" style="left:785px;top:268px;width:378px;">展開完了報告</p>
+<div class="pp-line a"  data-dir="right" style="left:0px;top:312px;width:1168px;color:var(--accent);border-top-width:2px;border-left-width:2px"></div>
+<div class="pp-line a"  data-dir="down" style="left:0px;top:304px;height:16px;color:var(--accent);border-top-width:2px;border-left-width:2px"></div>
+<div class="pp-line a"  data-dir="down" style="left:1166px;top:304px;height:16px;color:var(--accent);border-top-width:2px;border-left-width:2px"></div>
+<p class="pp-text a c b" data-role="display" style="left:0px;top:328px;width:1168px;">約12週 ＝ <span class="acc">約3か月</span>で、全拠点へ展開が完了する</p>
   </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">結論</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">最初の4週で土台（現状把握・標準化）を固め、残り8週で試行から展開まで進める</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>出典：社内の例データ（2026年4月時点）。期間は目安。ブロックの幅は所要週数に比例</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>3</p>
+  <aside class="notes">フロー図（横）。ブロックの幅を所要週数に比例させ、上の軸で全体の長さが読める。</aside>
 </section>
 
-<!-- 4. 内容（施策→狙いの対応。罫線で区切った行と矢印。カードを並べない） -->
-<section class="slide" data-layout="content">
-  <p class="pp-text" data-role="title">結論：新規開拓に人員を寄せると売上が最も伸びる</p>
-  <div class="area" data-diagram>
-    <p class="pp-text a sub" data-role="body" style="left:0;top:0;width:460px">施策</p>
-    <p class="pp-text a sub" data-role="body" style="left:560px;top:0;width:608px">狙い</p>
-    <div class="pp-line a" data-dir="right" style="left:0;top:36px;width:1168px;color:var(--neutral-chart)"></div>
-
-    <p class="pp-text a" data-role="lead" style="left:0;top:64px;width:460px;font-size:calc(22*var(--pt))">新規開拓に2名を追加する</p>
-    <p class="pp-text a sub" data-role="body" style="left:0;top:108px;width:460px">訪問件数を増やす。</p>
-    <div class="pp-line a" data-dir="right" data-arrow="end" style="left:476px;top:92px;width:64px"></div>
-    <p class="pp-text a" data-role="lead" style="left:560px;top:64px;width:608px;font-size:calc(22*var(--pt))">商談化率が高い領域に寄せる</p>
-    <p class="pp-text a sub" data-role="body" style="left:560px;top:108px;width:608px">既存深耕の1.8倍。</p>
-    <div class="pp-line a" data-dir="right" style="left:0;top:180px;width:1168px;color:var(--neutral-chart)"></div>
-
-    <p class="pp-text a" data-role="lead" style="left:0;top:208px;width:460px;font-size:calc(22*var(--pt))">既存深耕の訪問を減らす</p>
-    <p class="pp-text a sub" data-role="body" style="left:0;top:252px;width:460px">月1回から四半期1回へ。</p>
-    <div class="pp-line a" data-dir="right" data-arrow="end" style="left:476px;top:236px;width:64px"></div>
-    <p class="pp-text a" data-role="lead" style="left:560px;top:208px;width:608px;font-size:calc(22*var(--pt))">負荷を下げる</p>
-    <p class="pp-text a sub" data-role="body" style="left:560px;top:252px;width:608px">解約率は低位で安定している。</p>
-    <div class="pp-line a" data-dir="right" style="left:0;top:324px;width:1168px;color:var(--neutral-chart)"></div>
-
-    <p class="pp-text a" data-role="lead" style="left:0;top:352px;width:460px;font-size:calc(22*var(--pt))">見積をテンプレ化する</p>
-    <p class="pp-text a sub" data-role="body" style="left:0;top:396px;width:460px">今期中に全拠点へ展開する。</p>
-    <div class="pp-line a" data-dir="right" data-arrow="end" style="left:476px;top:380px;width:64px"></div>
-    <p class="pp-text a acc" data-role="lead" style="left:560px;top:352px;width:608px;font-size:calc(22*var(--pt))">回答までの時間を半分にする</p>
+<section class="slide" data-layout="diagram" data-numbers="visual">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">04</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>人員をどこに寄せるか</p>
+  <p class="pp-text" data-role="title">新規開拓に人員を寄せると、売上が最も伸びる</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="decide" data-chrome>
+    <p class="pp-text decide-k" data-role="caption" style="left:0px;width:500px">決めること</p>
+    <p class="pp-text decide-v " data-role="body" style="left:0px;width:500px">人員の配分と、見積業務の進め方</p>
+    <p class="pp-text decide-k" data-role="caption" style="left:532px;width:260px">期限</p>
+    <p class="pp-text decide-v " data-role="body" style="left:532px;width:260px">今期中</p>
+    <p class="pp-text decide-k" data-role="caption" style="left:820px;width:348px">推奨</p>
+    <p class="pp-text decide-v reco" data-role="body" style="left:820px;width:348px">3施策をすべて実施</p>
+    <div class="pp-line decide-sep" data-dir="down" style="left:516px"></div>
+    <div class="pp-line decide-sep" data-dir="down" style="left:804px"></div>
+    <div class="pp-line decide-bar" data-dir="right"></div>
   </div>
-  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">出典：2026年度第2四半期 営業実績（社内集計）</p>
+  <div class="area decide-body" data-diagram>
+<p class="pp-text a sub b" data-role="caption" style="left:0px;top:0px;width:440px;">施策</p>
+<p class="pp-text a sub b" data-role="caption" style="left:468px;top:0px;width:300px;">狙い</p>
+<p class="pp-text a sub b" data-role="caption" style="left:800px;top:0px;width:368px;">効果</p>
+<div class="pp-line a" data-dir="right" style="left:0px;top:30px;width:1168px;color:var(--neutral-chart);"></div>
+<div class="pp-shape dot a " style="left:0px;top:54px;width:56px;height:56px"><img class="pp-image" data-role="icon" src="icons/people.svg" alt="施策" style="width:30px;height:30px"></div>
+<p class="pp-text a b" data-role="lead" style="left:76px;top:48px;width:340px;">新規開拓に2名を追加する</p>
+<p class="pp-text a sub" data-role="body" style="left:76px;top:92px;width:340px;">訪問件数を増やす</p>
+<div class="pp-line a" data-dir="right" data-arrow="end" style="left:420px;top:76px;width:36px;color:var(--sub);"></div>
+<p class="pp-text a b" data-role="lead" style="left:468px;top:48px;width:320px;">商談化率の高い領域へ</p>
+<p class="pp-text a sub" data-role="body" style="left:468px;top:92px;width:320px;">既存深耕の1.8倍</p>
+<p class="pp-text a sub" data-role="caption" style="left:800px;top:54px;width:72px;">既存深耕</p>
+<div class="pp-shape a" data-decor style="left:876px;top:56px;width:200px;height:18px;padding:0;background:#E6E6E6">
+<div class="pp-shape a" data-decor style="left:0px;top:0px;width:111px;height:18px;padding:0;background:var(--neutral-chart)">
+</div>
+</div>
+<p class="pp-text a " data-role="caption" style="left:1088px;top:54px;width:80px;font-weight:700;">1.0</p>
+<p class="pp-text a sub" data-role="caption" style="left:800px;top:94px;width:72px;">新規開拓</p>
+<div class="pp-shape a" data-decor style="left:876px;top:96px;width:200px;height:18px;padding:0;background:#E6E6E6">
+<div class="pp-shape a" data-decor style="left:0px;top:0px;width:200px;height:18px;padding:0;background:var(--accent2)">
+</div>
+</div>
+<p class="pp-text a " data-role="caption" style="left:1088px;top:94px;width:80px;font-weight:700;color:var(--accent2-dark);">1.8</p>
+<div class="pp-line a" data-dir="right" style="left:0px;top:148px;width:1168px;color:var(--neutral-chart);border-top-width:1px;"></div>
+<div class="pp-shape dot a " style="left:0px;top:166px;width:56px;height:56px"><img class="pp-image" data-role="icon" src="icons/gear.svg" alt="施策" style="width:30px;height:30px"></div>
+<p class="pp-text a b" data-role="lead" style="left:76px;top:160px;width:340px;">既存深耕の訪問を減らす</p>
+<p class="pp-text a sub" data-role="body" style="left:76px;top:204px;width:340px;">月1回から四半期1回へ</p>
+<div class="pp-line a" data-dir="right" data-arrow="end" style="left:420px;top:188px;width:36px;color:var(--sub);"></div>
+<p class="pp-text a b" data-role="lead" style="left:468px;top:160px;width:320px;">営業の負荷を下げる</p>
+<p class="pp-text a sub" data-role="body" style="left:468px;top:204px;width:320px;">解約率は低位で安定</p>
+<p class="pp-text a sub" data-role="caption" style="left:800px;top:166px;width:72px;">現在</p>
+<div class="pp-shape a" data-decor style="left:876px;top:168px;width:200px;height:18px;padding:0;background:#E6E6E6">
+<div class="pp-shape a" data-decor style="left:0px;top:0px;width:200px;height:18px;padding:0;background:var(--neutral-chart)">
+</div>
+</div>
+<p class="pp-text a " data-role="caption" style="left:1088px;top:166px;width:80px;font-weight:700;">年12回</p>
+<p class="pp-text a sub" data-role="caption" style="left:800px;top:206px;width:72px;">提案</p>
+<div class="pp-shape a" data-decor style="left:876px;top:208px;width:200px;height:18px;padding:0;background:#E6E6E6">
+<div class="pp-shape a" data-decor style="left:0px;top:0px;width:67px;height:18px;padding:0;background:var(--accent)">
+</div>
+</div>
+<p class="pp-text a " data-role="caption" style="left:1088px;top:206px;width:80px;font-weight:700;">年4回</p>
+<div class="pp-line a" data-dir="right" style="left:0px;top:260px;width:1168px;color:var(--neutral-chart);border-top-width:1px;"></div>
+<div class="pp-shape dot a " style="left:0px;top:278px;width:56px;height:56px"><img class="pp-image" data-role="icon" src="icons/document.svg" alt="施策" style="width:30px;height:30px"></div>
+<p class="pp-text a b" data-role="lead" style="left:76px;top:272px;width:340px;">見積をテンプレ化する</p>
+<p class="pp-text a sub" data-role="body" style="left:76px;top:316px;width:340px;">今期中に全拠点へ展開する</p>
+<div class="pp-line a" data-dir="right" data-arrow="end" style="left:420px;top:300px;width:36px;color:var(--sub);"></div>
+<p class="pp-text a b" data-role="lead" style="left:468px;top:272px;width:320px;">回答時間を半分にする</p>
+<p class="pp-text a sub" data-role="body" style="left:468px;top:316px;width:320px;">入力と承認の手間を省く</p>
+<p class="pp-text a sub" data-role="caption" style="left:800px;top:278px;width:72px;">現在</p>
+<div class="pp-shape a" data-decor style="left:876px;top:280px;width:200px;height:18px;padding:0;background:#E6E6E6">
+<div class="pp-shape a" data-decor style="left:0px;top:0px;width:200px;height:18px;padding:0;background:var(--neutral-chart)">
+</div>
+</div>
+<p class="pp-text a " data-role="caption" style="left:1088px;top:278px;width:80px;font-weight:700;">1.0</p>
+<p class="pp-text a sub" data-role="caption" style="left:800px;top:318px;width:72px;">提案</p>
+<div class="pp-shape a" data-decor style="left:876px;top:320px;width:200px;height:18px;padding:0;background:#E6E6E6">
+<div class="pp-shape a" data-decor style="left:0px;top:0px;width:100px;height:18px;padding:0;background:var(--accent)">
+</div>
+</div>
+<p class="pp-text a " data-role="caption" style="left:1088px;top:318px;width:80px;font-weight:700;">0.5</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">結論</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">新規開拓へ寄せ、訪問を減らし、見積を半分の時間にする</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>出典：2026年度第2四半期 営業実績（社内集計）。商談化率は既存深耕を1.0とした比</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>4</p>
+  <aside class="notes">課題→対策。施策から狙いへ矢印でつなぎ、効果を棒で見せる。橙は、承認を求める最優先の施策（新規開拓）だけ。</aside>
 </section>
 
-<!-- 5. 図解: 2×2マトリクス -->
 <section class="slide" data-layout="diagram">
-  <p class="pp-text" data-role="title">優先度は「影響度×実現しやすさ」で決める</p>
-  <div class="area" data-diagram style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:24px;height:470px">
-    <div class="pp-shape card"><p class="pp-text" data-role="lead">計画して進める</p><p class="pp-text" data-role="body" style="margin-top:8px">影響が大きく難しい。全拠点の見積システム統合。</p></div>
-    <div class="pp-shape card accent"><p class="pp-text" data-role="lead">最優先で着手</p><p class="pp-text" data-role="body" style="margin-top:8px">影響が大きく容易。見積テンプレの標準化。</p></div>
-    <div class="pp-shape card"><p class="pp-text" data-role="lead">後回しにする</p><p class="pp-text" data-role="body" style="margin-top:8px">影響が小さく難しい。旧帳票の完全な移行。</p></div>
-    <div class="pp-shape card tint"><p class="pp-text" data-role="lead">すぐ片付ける</p><p class="pp-text" data-role="body" style="margin-top:8px">影響が小さく容易。入力項目の表記ゆれ修正。</p></div>
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">05</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>どの改善から着手するか</p>
+  <p class="pp-text" data-role="title">最初に着手するのは、見積テンプレの標準化と承認ルールの統一</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="decide" data-chrome>
+    <p class="pp-text decide-k" data-role="caption" style="left:0px;width:500px">決めること</p>
+    <p class="pp-text decide-v" data-role="body" style="left:0px;width:500px">最初の四半期に着手する改善案</p>
+    <p class="pp-text decide-k" data-role="caption" style="left:532px;width:260px">期限</p>
+    <p class="pp-text decide-v" data-role="body" style="left:532px;width:260px">10月の改善会議</p>
+    <p class="pp-text decide-k" data-role="caption" style="left:820px;width:348px">推奨</p>
+    <p class="pp-text decide-v reco" data-role="body" style="left:820px;width:348px">1 標準化 ＋ 2 ルール統一</p>
+    <div class="pp-line decide-sep" data-dir="down" style="left:516px"></div>
+    <div class="pp-line decide-sep" data-dir="down" style="left:804px"></div>
+    <div class="pp-line decide-bar" data-dir="right"></div>
   </div>
-  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:632px;width:1168px">横軸：実現しやすさ（右ほど容易）／縦軸：影響度（上ほど大きい）</p>
+  <div class="area decide-body" data-diagram>
+<div class="pp-shape reco-bg a" data-overlap style="left:380px;top:8px;width:300px;height:158px;padding:0;"><p class="pp-text a org b" data-role="body" style="left:12px;top:8px;width:104px;">最優先</p></div><div class="pp-line a" data-dir="down" style="left:380px;top:8px;height:316px;color:var(--neutral-chart)"></div><div class="pp-line a" data-dir="right" style="left:80px;top:166px;width:600px;color:var(--neutral-chart)"></div><div class="pp-line a" data-dir="up" data-arrow="end" style="left:72px;top:8px;height:320px;color:var(--sub)"></div><div class="pp-line a" data-dir="right" data-arrow="end" style="left:72px;top:328px;width:612px;color:var(--sub)"></div><p class="pp-text a sub b" data-role="caption" style="left:0px;top:6px;width:70px;">影響度 大</p><p class="pp-text a sub b" data-role="caption" style="left:0px;top:304px;width:70px;">小</p><p class="pp-text a sub b" data-role="caption" style="left:80px;top:334px;width:120px;">難しい</p><p class="pp-text a sub b c" data-role="caption" style="left:300px;top:334px;width:160px;">実現しやすさ</p><p class="pp-text a sub b r" data-role="caption" style="left:600px;top:334px;width:80px;">容易</p><div class="pp-shape card accent2 a" data-decor style="left:576px;top:19.6px;width:40px;height:40px;padding:0;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:6px;width:40px;color:#FFFFFF">1</p></div><div class="pp-shape card accent2 a" data-decor style="left:504px;top:57.5px;width:40px;height:40px;padding:0;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:6px;width:40px;color:#FFFFFF">2</p></div><div class="pp-shape card a" data-decor style="left:216px;top:13.3px;width:40px;height:40px;padding:0;background:#767676;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:6px;width:40px;color:#FFFFFF">3</p></div><div class="pp-shape card a" data-decor style="left:432px;top:158.6px;width:40px;height:40px;padding:0;background:#767676;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:6px;width:40px;color:#FFFFFF">4</p></div><div class="pp-shape card a" data-decor style="left:576px;top:228.2px;width:40px;height:40px;padding:0;background:#767676;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:6px;width:40px;color:#FFFFFF">5</p></div><div class="pp-shape card a" data-decor style="left:192px;top:240.8px;width:40px;height:40px;padding:0;background:#767676;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:6px;width:40px;color:#FFFFFF">6</p></div><p class="pp-text a sub b" data-role="body" style="left:760px;top:0px;width:400px;">改善案（影響度が大きい順）</p><div class="pp-line a" data-dir="right" style="left:760px;top:32px;width:408px;color:var(--neutral-chart)"></div><div class="pp-shape card a" data-decor style="left:760px;top:44px;width:36px;height:36px;padding:0;background:#767676;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:2px;width:36px;color:#FFFFFF">3</p></div><p class="pp-text a " data-role="body" style="left:808px;top:48px;width:356px;">見積システムの統合</p><div class="pp-shape card accent2 a" data-decor style="left:760px;top:90px;width:36px;height:36px;padding:0;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:2px;width:36px;color:#FFFFFF">1</p></div><p class="pp-text a org b" data-role="body" style="left:808px;top:94px;width:356px;">見積テンプレの標準化</p><div class="pp-shape card accent2 a" data-decor style="left:760px;top:136px;width:36px;height:36px;padding:0;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:2px;width:36px;color:#FFFFFF">2</p></div><p class="pp-text a org b" data-role="body" style="left:808px;top:140px;width:356px;">承認ルールの統一</p><div class="pp-shape card a" data-decor style="left:760px;top:182px;width:36px;height:36px;padding:0;background:#767676;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:2px;width:36px;color:#FFFFFF">4</p></div><p class="pp-text a " data-role="body" style="left:808px;top:186px;width:356px;">自動チェックの追加</p><div class="pp-shape card a" data-decor style="left:760px;top:228px;width:36px;height:36px;padding:0;background:#767676;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:2px;width:36px;color:#FFFFFF">5</p></div><p class="pp-text a " data-role="body" style="left:808px;top:232px;width:356px;">入力項目の表記ゆれ修正</p><div class="pp-shape card a" data-decor style="left:760px;top:274px;width:36px;height:36px;padding:0;background:#767676;border-radius:50%"><p class="pp-text a c b" data-role="body" style="left:0px;top:2px;width:36px;color:#FFFFFF">6</p></div><p class="pp-text a " data-role="body" style="left:808px;top:278px;width:356px;">旧帳票の完全な移行</p><div class="pp-line a" data-dir="right" style="left:760px;top:326px;width:408px;color:var(--neutral-chart)"></div><p class="pp-text a sub" data-role="caption" style="left:760px;top:334px;width:408px;">橙の2案を、最初の四半期で進める。</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">推奨</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">影響が大きく、すぐ着手できる2案から進める。システム統合は次の四半期に回す</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>出典：社内の例データ（見積業務の改善案6件。影響度・実現しやすさは、担当者の10点満点の評価の平均）</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>5</p>
+  <aside class="notes">マトリクス。縦軸=影響度、横軸=実現しやすさ。判断の枠で、決めること・期限・推奨を示す。橙は推奨の2案。</aside>
 </section>
 
-<!-- 6. 図解: ガントチャート(絶対配置。行の帯の子にラベルと棒を置く。ラベル列 244px + 月 6 列 × 154px) -->
-<section class="slide" data-layout="diagram">
+<section class="slide" data-layout="diagram" data-numbers="text">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">06</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>いつまでに、全拠点へ展開するか</p>
   <p class="pp-text" data-role="title">全拠点への展開は9月末までに完了する</p>
-  <div class="area" data-diagram>
-    <p class="pp-text" data-role="body" style="position:absolute;left:244px;top:0;width:154px;text-align:center;color:var(--sub)">4月</p>
-    <p class="pp-text" data-role="body" style="position:absolute;left:398px;top:0;width:154px;text-align:center;color:var(--sub)">5月</p>
-    <p class="pp-text" data-role="body" style="position:absolute;left:552px;top:0;width:154px;text-align:center;color:var(--sub)">6月</p>
-    <p class="pp-text" data-role="body" style="position:absolute;left:706px;top:0;width:154px;text-align:center;color:var(--sub)">7月</p>
-    <p class="pp-text" data-role="body" style="position:absolute;left:860px;top:0;width:154px;text-align:center;color:var(--sub)">8月</p>
-    <p class="pp-text" data-role="body" style="position:absolute;left:1014px;top:0;width:154px;text-align:center;color:var(--sub)">9月</p>
-    <div class="pp-shape card" style="padding:0;position:absolute;left:0;top:48px;width:1168px;height:108px">
-      <p class="pp-text" data-role="lead" style="position:absolute;left:20px;top:34px;width:212px">現状把握</p>
-      <div class="pp-shape card" style="padding:0;background:var(--neutral-chart);position:absolute;left:244px;top:14px;width:154px;height:80px"></div>
-    </div>
-    <div class="pp-shape card" style="padding:0;position:absolute;left:0;top:168px;width:1168px;height:108px">
-      <p class="pp-text" data-role="lead" style="position:absolute;left:20px;top:34px;width:212px">標準化</p>
-      <div class="pp-shape card" style="padding:0;background:var(--neutral-chart);position:absolute;left:398px;top:14px;width:308px;height:80px"></div>
-    </div>
-    <div class="pp-shape card" style="padding:0;position:absolute;left:0;top:288px;width:1168px;height:108px">
-      <p class="pp-text" data-role="lead" style="position:absolute;left:20px;top:34px;width:212px">試行</p>
-      <div class="pp-shape card" style="padding:0;background:var(--neutral-chart);position:absolute;left:706px;top:14px;width:154px;height:80px"></div>
-    </div>
-    <div class="pp-shape card" style="padding:0;position:absolute;left:0;top:408px;width:1168px;height:108px">
-      <p class="pp-text" data-role="lead" style="position:absolute;left:20px;top:34px;width:212px">全拠点展開</p>
-      <div class="pp-shape card accent" style="padding:0;position:absolute;left:860px;top:14px;width:308px;height:80px"></div>
-    </div>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="decide" data-chrome>
+    <p class="pp-text a decide-k" data-role="caption" style="left:0px;width:500px">決めること</p>
+    <p class="pp-text a decide-v" data-role="body" style="left:0px;width:500px">全拠点への展開スケジュールの承認</p>
+    <p class="pp-text a decide-k" data-role="caption" style="left:532px;width:260px">期限</p>
+    <p class="pp-text a decide-v" data-role="body" style="left:532px;width:260px">9月末（展開完了）</p>
+    <p class="pp-text a decide-k" data-role="caption" style="left:820px;width:348px">推奨</p>
+    <p class="pp-text a decide-v reco" data-role="body" style="left:820px;width:348px">4〜9月の段階展開</p>
+    <div class="pp-line a decide-sep" data-dir="down" style="left:516px"></div>
+    <div class="pp-line a decide-sep" data-dir="down" style="left:804px"></div>
+    <div class="pp-line a decide-bar" data-dir="right"></div>
   </div>
-  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:660px;width:1168px">濃い棒が最終工程。横軸は月</p>
-  <aside class="notes">ガントチャート。工程の期間と順序を見せる。</aside>
+  <div class="area decide-body" data-diagram>
+<div class="pp-line a" data-decor data-dir="down" style="left:403px;top:30px;height:282px;color:#E3E3E3;border-left-width:1px;"></div>
+<div class="pp-line a" data-decor data-dir="down" style="left:556px;top:30px;height:282px;color:#E3E3E3;border-left-width:1px;"></div>
+<div class="pp-line a" data-decor data-dir="down" style="left:709px;top:30px;height:282px;color:#E3E3E3;border-left-width:1px;"></div>
+<div class="pp-line a" data-decor data-dir="down" style="left:862px;top:30px;height:282px;color:#E3E3E3;border-left-width:1px;"></div>
+<div class="pp-line a" data-decor data-dir="down" style="left:1015px;top:30px;height:282px;color:#E3E3E3;border-left-width:1px;"></div>
+<p class="pp-text a c" data-role="body" style="left:250px;top:0px;width:153px;font-size:calc(14*var(--pt));font-weight:700;">4月</p>
+<p class="pp-text a c" data-role="body" style="left:403px;top:0px;width:153px;font-size:calc(14*var(--pt));font-weight:700;">5月</p>
+<p class="pp-text a c" data-role="body" style="left:556px;top:0px;width:153px;font-size:calc(14*var(--pt));font-weight:700;">6月</p>
+<p class="pp-text a c" data-role="body" style="left:709px;top:0px;width:153px;font-size:calc(14*var(--pt));font-weight:700;">7月</p>
+<p class="pp-text a c" data-role="body" style="left:862px;top:0px;width:153px;font-size:calc(14*var(--pt));font-weight:700;">8月</p>
+<p class="pp-text a c" data-role="body" style="left:1015px;top:0px;width:153px;font-size:calc(14*var(--pt));font-weight:700;">9月</p>
+<div class="pp-line a"  data-dir="right" style="left:0px;top:30px;width:1168px;color:#767676;border-top-width:1px;"></div>
+<p class="pp-text a " data-role="body" style="left:0px;top:40px;width:230px;font-size:calc(14*var(--pt));font-weight:700;color:var(--sub);">判断ポイント</p>
+<div class="pp-shape a" data-decor data-shape="poly" data-points="12.0,0 24.0,12.0 12.0,24.0 0,12.0" style="left:256px;top:42px;width:24px;height:24px;padding:0;background:var(--accent2)"></div>
+<p class="pp-text a org" data-role="body" style="left:288px;top:40px;width:360px;font-size:calc(14*var(--pt));font-weight:700;">4月  着手の承認</p>
+<div class="pp-shape a" data-decor data-shape="poly" data-points="12.0,0 24.0,12.0 12.0,24.0 0,12.0" style="left:715px;top:42px;width:24px;height:24px;padding:0;background:var(--accent)"></div>
+<p class="pp-text a acc" data-role="body" style="left:747px;top:40px;width:420px;font-size:calc(14*var(--pt));font-weight:700;">7月  試行の結果で、展開の可否を判定</p>
+<div class="pp-line a"  data-dir="right" style="left:0px;top:76px;width:1168px;color:#D9D9D9;border-top-width:1px;"></div>
+<p class="pp-text a " data-role="body" style="left:0px;top:86px;width:236px;font-size:calc(14*var(--pt));font-weight:700;">現状把握</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:114px;width:236px;">見積の流れと所要時間を計測</p>
+<div class="pp-shape a "  style="left:252px;top:92px;width:149px;height:34px;padding:0;background:var(--accent-mid);border-radius:2px">
+<p class="pp-text a c " data-role="body" style="left:0px;top:1px;width:149px;font-weight:700">1か月</p>
+</div>
+<div class="pp-line a"  data-dir="right" style="left:0px;top:136px;width:1168px;color:#EDEDED;border-top-width:1px;"></div>
+<p class="pp-text a " data-role="body" style="left:0px;top:142px;width:236px;font-size:calc(14*var(--pt));font-weight:700;">標準化</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:170px;width:236px;">項目と承認ルールを統一</p>
+<div class="pp-shape a "  style="left:405px;top:148px;width:302px;height:34px;padding:0;background:var(--accent-mid);border-radius:2px">
+<p class="pp-text a c " data-role="body" style="left:0px;top:1px;width:302px;font-weight:700">2か月</p>
+</div>
+<div class="pp-line a"  data-dir="right" style="left:0px;top:192px;width:1168px;color:#EDEDED;border-top-width:1px;"></div>
+<p class="pp-text a " data-role="body" style="left:0px;top:198px;width:236px;font-size:calc(14*var(--pt));font-weight:700;">試行</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:226px;width:236px;">2拠点で1か月試行</p>
+<div class="pp-shape a "  style="left:711px;top:204px;width:149px;height:34px;padding:0;background:var(--accent-mid);border-radius:2px">
+<p class="pp-text a c " data-role="body" style="left:0px;top:1px;width:149px;font-weight:700">1か月</p>
+</div>
+<div class="pp-line a"  data-dir="right" style="left:0px;top:248px;width:1168px;color:#EDEDED;border-top-width:1px;"></div>
+<p class="pp-text a " data-role="body" style="left:0px;top:254px;width:236px;font-size:calc(14*var(--pt));font-weight:700;color:var(--accent2-dark);">全拠点展開</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:282px;width:236px;">研修を整えて展開</p>
+<div class="pp-shape a "  style="left:864px;top:260px;width:302px;height:34px;padding:0;background:var(--accent2);border-radius:2px">
+<p class="pp-text a c w" data-role="body" style="left:0px;top:1px;width:302px;font-weight:700">2か月</p>
+</div>
+<div class="pp-line a" data-decor data-dir="down" style="left:1166px;top:24px;height:292px;color:var(--accent2);"></div>
+<p class="pp-text a org r" data-role="body" style="left:818px;top:316px;width:346px;font-size:calc(14*var(--pt));font-weight:700;">9月末  全拠点への展開が完了</p>
+<p class="pp-text a sub" data-role="caption" style="left:0px;top:322px;width:620px;">全体の期間は6か月（準備3か月＋試行1か月＋展開2か月）</p>
+  </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">次の一手</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">4月に着手を承認し、7月に試行の結果を見て、展開の可否を判定する</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>出典：社内の例データ（展開計画案）。横軸は月</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>6</p>
+  <aside class="notes">ガントチャート。月軸と判断ポイントの行で、期限と判断点を示す。</aside>
 </section>
 
-<!-- 7. チャート -->
-<section class="slide" data-layout="chart">
+<section class="slide" data-layout="chart" data-numbers="visual">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">07</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>売上はどう動いたか</p>
   <p class="pp-text" data-role="title">第4四半期の売上は年間で最大になった</p>
-  <div class="pp-chart" data-chart='{"type":"bar","labels":["第1四半期","第2四半期","第3四半期","第4四半期"],"values":[120,135,128,172],"highlight":3,"labelPt":12}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
-  <div class="pp-shape card" style="position:absolute;left:828px;top:144px;width:396px;height:480px">
-    <p class="pp-text" data-role="lead">ポイント</p>
-    <p class="pp-text" data-role="body" style="margin-top:12px">第4四半期は前期比で+34%。新規開拓チームの大型案件2件が押し上げた。</p>
-    <p class="pp-text" data-role="body" style="margin-top:12px">第1〜第3四半期は横ばい。水準を保てるかが課題。</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="pp-chart" data-chart='{"type":"bar","labels":["第1四半期","第2四半期","第3四半期","第4四半期"],"values":[120,135,128,172],"highlight":3,"labelPt":14}' style="position:absolute;left:56px;top:150px;width:800px;height:420px"></div>
+  <div class="pp-line" data-dir="right" data-decor style="position:absolute;left:158px;top:252px;width:464px;height:0px;color:var(--sub);border-top-width:2px;border-left-width:2px"></div>
+  <div class="pp-line" data-dir="down" data-decor style="position:absolute;left:158px;top:252px;width:0px;height:12px;color:var(--sub);border-top-width:2px;border-left-width:2px"></div>
+  <div class="pp-line" data-dir="down" data-decor style="position:absolute;left:622px;top:252px;width:0px;height:12px;color:var(--sub);border-top-width:2px;border-left-width:2px"></div>
+  <p class="pp-text" data-role="body" data-decor style="position:absolute;left:158px;top:220px;width:464px;font-size:calc(14*var(--pt));font-weight:700;color:var(--sub);text-align:center">第1〜第3四半期は横ばい（120〜135）</p>
+  <div class="pp-line" data-dir="down" style="position:absolute;left:872px;top:156px;height:404px;color:var(--neutral-chart)"></div>
+  <p class="pp-text" data-role="display" style="position:absolute;left:904px;top:176px;width:316px;font-size:calc(54*var(--pt));font-weight:700;color:var(--accent)">＋34<span style="font-size:calc(24*var(--pt))">%</span></p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:904px;top:288px;width:316px;color:var(--sub)">前期比<br>128 → 172（第3→第4期）</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:904px;top:360px;width:316px;font-weight:700">新規開拓の大型案件が要因</p>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">結論</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">第1〜第3四半期は横ばい。第4四半期は新規開拓の大型案件で、年間で最大になった</p>
   </div>
-  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：百万円。出典：社内集計</p>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>単位：百万円。出典：2026年度第2四半期 営業実績（社内集計）</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>7</p>
+  <aside class="notes">棒グラフ。注目の棒（第4四半期）だけ青。注記は図の中と右の数字で示す。</aside>
 </section>
 
-<!-- 8. 図解: ピラミッド -->
 <section class="slide" data-layout="diagram">
-  <p class="pp-text" data-role="title">方針から実行まで、4つの階層で整理する</p>
-  <div class="area" data-diagram style="display:flex;flex-direction:column;align-items:center;gap:12px">
-    <div class="pp-shape card accent" style="width:360px;height:108px;display:flex;flex-direction:column;justify-content:center;padding:0 24px"><p class="pp-text" data-role="lead" style="text-align:center">ビジョン</p><p class="pp-text" data-role="body" style="text-align:center">目指す姿</p></div>
-    <div class="pp-shape card tint" style="width:600px;height:108px;display:flex;flex-direction:column;justify-content:center;padding:0 24px"><p class="pp-text" data-role="lead" style="text-align:center">戦略</p><p class="pp-text" data-role="body" style="text-align:center">勝ち筋と重点領域</p></div>
-    <div class="pp-shape card" style="width:840px;height:108px;display:flex;flex-direction:column;justify-content:center;padding:0 24px"><p class="pp-text" data-role="lead" style="text-align:center">施策</p><p class="pp-text" data-role="body" style="text-align:center">四半期ごとの打ち手と担当</p></div>
-    <div class="pp-shape card" style="width:1080px;height:108px;display:flex;flex-direction:column;justify-content:center;padding:0 24px"><p class="pp-text" data-role="lead" style="text-align:center">日々の行動</p><p class="pp-text" data-role="body" style="text-align:center">訪問・提案・見積の実行と記録</p></div>
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">08</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>戦略は、どの順で積み上げるか</p>
+  <p class="pp-text" data-role="title">10年後のビジョンを頂点に、戦略・実行の3層で積み上げる</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="area r1-body" data-diagram>
+<div class="pp-shape a " data-shape="triangle" data-overlap style="left:620px;top:6px;width:480px;height:420px;padding:0;background:var(--accent-tint)"></div>
+<div class="pp-shape a " data-shape="triangle" data-overlap style="left:690px;top:6px;width:340px;height:294px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a " data-shape="triangle" data-overlap style="left:760px;top:6px;width:200px;height:168px;padding:0;background:var(--accent)"></div>
+<div class="pp-line a" data-decor data-dir="right" style="left:759px;top:174px;width:202px;color:#FFFFFF;border-top-width:4px;border-left-width:4px"></div>
+<div class="pp-line a" data-decor data-dir="right" style="left:689px;top:300px;width:342px;color:#FFFFFF;border-top-width:4px;border-left-width:4px"></div>
+<div class="pp-shape a "  style="left:0px;top:50px;width:88px;height:28px;padding:0;background:var(--accent);border-radius:2px"><p class="pp-text a c b" data-role="caption" style="left:0px;top:3px;width:88px;color:#FFFFFF">10年後</p>
+</div>
+<p class="pp-text a b acc" data-role="lead" style="left:104px;top:44px;width:300px;">ビジョン</p>
+<p class="pp-text a " data-role="body" style="left:104px;top:82px;width:420px;">目指す姿を1文で示す。すべての判断の軸にする。</p>
+<div class="pp-line a"  data-dir="right" style="left:540px;top:90px;width:234px;color:var(--accent)"></div>
+<div class="pp-shape a "  style="left:0px;top:196px;width:88px;height:28px;padding:0;background:var(--accent-tint);border-radius:2px"><p class="pp-text a c b" data-role="caption" style="left:0px;top:3px;width:88px;color:var(--accent)">3か年</p>
+</div>
+<p class="pp-text a b" data-role="lead" style="left:104px;top:190px;width:300px;">戦略</p>
+<p class="pp-text a sub" data-role="body" style="left:104px;top:228px;width:420px;">勝ち筋と重点領域を決める。</p>
+<div class="pp-line a"  data-dir="right" style="left:540px;top:236px;width:194px;color:var(--neutral-chart)"></div>
+<div class="pp-shape a "  style="left:0px;top:326px;width:88px;height:28px;padding:0;background:var(--accent-tint);border-radius:2px"><p class="pp-text a c b" data-role="caption" style="left:0px;top:3px;width:88px;color:var(--accent)">年度</p>
+</div>
+<p class="pp-text a b" data-role="lead" style="left:104px;top:320px;width:300px;">実行</p>
+<p class="pp-text a sub" data-role="body" style="left:104px;top:358px;width:420px;">四半期ごとの打ち手と担当を決める。</p>
+<div class="pp-line a"  data-dir="right" style="left:540px;top:366px;width:134px;color:var(--neutral-chart)"></div>
+<div class="pp-line a"  data-dir="down" style="left:1140px;top:40px;height:340px;color:var(--sub)"></div>
+<p class="pp-text a c sub" data-role="caption" style="left:1112px;top:4px;width:56px;">抽象</p>
+<p class="pp-text a c sub" data-role="caption" style="left:1112px;top:384px;width:56px;">具体</p>
   </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">結論</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">最上位の「ビジョン」が軸になる。戦略と実行は、ビジョンから逆算して決める</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>出典：社内の例データ（2026年4月時点）。三角形の面積は重要度を表さない</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>8</p>
+  <aside class="notes">ピラミッド図。下が土台、上が上位概念。強調は頂点の層だけ。右の矢印は抽象度の向き。</aside>
 </section>
 
-<!-- 9. 図解: ツリー(絶対配置) -->
-<section class="slide" data-layout="diagram">
-  <p class="pp-text" data-role="title">営業組織は3つのチームで構成する</p>
-  <div class="area" data-diagram>
-    <div class="pp-shape card accent" style="position:absolute;left:384px;top:0;width:400px;height:130px"><p class="pp-text" data-role="lead">営業本部</p><p class="pp-text" data-role="body" style="margin-top:8px">全体の目標と配分を決める。</p></div>
-    <div class="pp-line" data-dir="down" style="position:absolute;left:584px;top:130px;height:65px"></div>
-    <div class="pp-line" data-dir="right" style="position:absolute;left:170px;top:195px;width:828px"></div>
-    <div class="pp-line" data-dir="down" style="position:absolute;left:170px;top:195px;height:65px"></div>
-    <div class="pp-line" data-dir="down" style="position:absolute;left:584px;top:195px;height:65px"></div>
-    <div class="pp-line" data-dir="down" style="position:absolute;left:998px;top:195px;height:65px"></div>
-    <div class="pp-shape card" style="position:absolute;left:0;top:260px;width:340px;height:240px"><p class="pp-text" data-role="lead">新規開拓チーム</p><p class="pp-text" data-role="body" style="margin-top:8px">新規顧客の発掘と初回提案。</p></div>
-    <div class="pp-shape card" style="position:absolute;left:414px;top:260px;width:340px;height:240px"><p class="pp-text" data-role="lead">既存深耕チーム</p><p class="pp-text" data-role="body" style="margin-top:8px">既存顧客の継続と拡大。</p></div>
-    <div class="pp-shape card" style="position:absolute;left:828px;top:260px;width:340px;height:240px"><p class="pp-text" data-role="lead">営業企画チーム</p><p class="pp-text" data-role="body" style="margin-top:8px">見積・資料・分析の支援。</p></div>
+<section class="slide" data-layout="diagram" data-numbers="visual">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">09</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>営業組織は、誰が何を担うか</p>
+  <p class="pp-text" data-role="title">営業組織は3チーム48人で、年間目標18億円を分担する</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="area r1-body" data-diagram>
+<div class="pp-shape a card accent"  style="left:404px;top:0px;width:360px;height:84px;padding:0;"><p class="pp-text a w" data-role="lead" style="left:24px;top:10px;width:312px;">営業本部</p>
+<p class="pp-text a w" data-role="body" style="left:24px;top:46px;width:312px;">48人 ／ 年間目標 18.0億円</p>
+</div>
+<div class="pp-line a"  data-dir="down" style="left:584px;top:84px;height:28px;color:var(--neutral-chart)"></div>
+<div class="pp-line a"  data-dir="right" style="left:194px;top:112px;width:780px;color:var(--neutral-chart)"></div>
+<div class="pp-line a"  data-dir="down" style="left:194px;top:112px;height:28px;color:var(--neutral-chart)"></div>
+<div class="pp-line a"  data-dir="down" style="left:584px;top:112px;height:28px;color:var(--neutral-chart)"></div>
+<div class="pp-line a"  data-dir="down" style="left:974px;top:112px;height:28px;color:var(--neutral-chart)"></div>
+<div class="pp-shape a r1-fr"  style="left:18px;top:140px;width:352px;height:296px;padding:0;"><p class="pp-text a b" data-role="lead" style="left:20px;top:12px;width:312px;">新規開拓チーム</p>
+<p class="pp-text a sub" data-role="caption" style="left:20px;top:54px;width:312px;">新規顧客の発掘</p>
+<p class="pp-text a " data-role="display" style="left:20px;top:80px;width:130px;">14<span class="unit">人</span></p>
+<div class="pp-shape a r1-person" data-decor style="left:166px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:186px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:206px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:226px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:246px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:266px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:286px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:306px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:166px;top:116px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:186px;top:116px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:206px;top:116px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:226px;top:116px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:246px;top:116px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:266px;top:116px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<p class="pp-text a sub" data-role="caption" style="left:20px;top:176px;width:200px;">年間目標</p>
+<div class="pp-shape a " data-decor style="left:20px;top:202px;width:312px;height:16px;padding:0;background:#E6E6E6;border-radius:2px"></div>
+<div class="pp-shape a r1-bar" data-decor style="left:20px;top:202px;width:208px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<p class="pp-text a b" data-role="lead" style="left:20px;top:226px;width:312px;">6.0<span class="unit-s">億円</span>　全体の33%</p>
+</div>
+<div class="pp-shape a r1-fr on"  style="left:408px;top:140px;width:352px;height:296px;padding:0;"><p class="pp-text a b" data-role="lead" style="left:20px;top:12px;width:312px;">既存深耕チーム</p>
+<p class="pp-text a sub" data-role="caption" style="left:20px;top:54px;width:312px;">既存顧客の継続と拡大</p>
+<p class="pp-text a acc" data-role="display" style="left:20px;top:80px;width:130px;">24<span class="unit">人</span></p>
+<div class="pp-shape a r1-person" data-decor style="left:166px;top:92px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:186px;top:92px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:206px;top:92px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:226px;top:92px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:246px;top:92px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:266px;top:92px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:286px;top:92px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:306px;top:92px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:166px;top:116px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:186px;top:116px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:206px;top:116px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:226px;top:116px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:246px;top:116px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:266px;top:116px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:286px;top:116px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:306px;top:116px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:166px;top:140px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:186px;top:140px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:206px;top:140px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:226px;top:140px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:246px;top:140px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:266px;top:140px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:286px;top:140px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:306px;top:140px;width:16px;height:16px;padding:0;background:var(--accent)"></div>
+<p class="pp-text a sub" data-role="caption" style="left:20px;top:176px;width:200px;">年間目標</p>
+<div class="pp-shape a " data-decor style="left:20px;top:202px;width:312px;height:16px;padding:0;background:#E6E6E6;border-radius:2px"></div>
+<div class="pp-shape a r1-bar" data-decor style="left:20px;top:202px;width:312px;height:16px;padding:0;background:var(--accent)"></div>
+<p class="pp-text a b" data-role="lead" style="left:20px;top:226px;width:312px;">9.0<span class="unit-s">億円</span>　全体の50%</p>
+</div>
+<div class="pp-shape a r1-fr"  style="left:798px;top:140px;width:352px;height:296px;padding:0;"><p class="pp-text a b" data-role="lead" style="left:20px;top:12px;width:312px;">営業企画チーム</p>
+<p class="pp-text a sub" data-role="caption" style="left:20px;top:54px;width:312px;">見積・資料・分析の支援</p>
+<p class="pp-text a " data-role="display" style="left:20px;top:80px;width:130px;">10<span class="unit">人</span></p>
+<div class="pp-shape a r1-person" data-decor style="left:166px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:186px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:206px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:226px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:246px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:266px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:286px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:306px;top:92px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:166px;top:116px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<div class="pp-shape a r1-person" data-decor style="left:186px;top:116px;width:16px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<p class="pp-text a sub" data-role="caption" style="left:20px;top:176px;width:200px;">年間目標</p>
+<div class="pp-shape a " data-decor style="left:20px;top:202px;width:312px;height:16px;padding:0;background:#E6E6E6;border-radius:2px"></div>
+<div class="pp-shape a r1-bar" data-decor style="left:20px;top:202px;width:104px;height:16px;padding:0;background:var(--accent-mid)"></div>
+<p class="pp-text a b" data-role="lead" style="left:20px;top:226px;width:312px;">3.0<span class="unit-s">億円</span>　全体の17%</p>
+</div>
   </div>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">結論</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">既存深耕が人員の半数・目標の半分を担う。人員配置と目標は、本部が一括で配分する</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>出典：社内の例データ（2026年4月時点）。点は1人、棒は目標の大きさ（9.0億円を満杯とする）</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>9</p>
+  <aside class="notes">ツリー図。本部の下に3チームを置き、人数は点（1点=1人）、目標は棒で見せる。</aside>
 </section>
 
-<!-- 10. チャート: 積み上げ棒（内訳と合計を 1 本の棒で見せる。注目の系列だけアクセント色） -->
-<section class="slide" data-layout="chart">
+<section class="slide" data-layout="chart" data-numbers="visual">
+  <div class="pp-shape chap-no" data-chrome><p class="pp-text" data-role="caption">10</p></div>
+  <p class="pp-text chap-name" data-role="caption" data-chrome>何が伸びを生んだか</p>
   <p class="pp-text" data-role="title">第4四半期の伸びは、新規開拓が押し上げた</p>
-  <div class="pp-chart" data-chart='{"type":"stacked","labels":["第1四半期","第2四半期","第3四半期","第4四半期"],"series":[{"name":"既存深耕","values":[90,97,93,100]},{"name":"新規開拓","values":[30,38,35,72]}],"highlight":1,"labelPt":12}' style="position:absolute;left:56px;top:144px;width:740px;height:480px"></div>
-  <div class="pp-line" data-dir="down" style="position:absolute;left:820px;top:152px;height:464px;color:var(--neutral-chart)"></div>
-  <p class="pp-text" data-role="lead" style="position:absolute;left:852px;top:152px;width:372px">ポイント</p>
-  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:204px;width:372px">既存深耕は年間を通じて90〜100で安定している。</p>
-  <p class="pp-text" data-role="body" style="position:absolute;left:852px;top:340px;width:372px">新規開拓は第4四半期に72へ増え、合計を押し上げた。</p>
-  <p class="pp-text" data-role="caption" style="position:absolute;left:56px;top:640px;width:1168px">単位：百万円。出典：社内集計</p>
+  <div class="pp-line title-rule" data-dir="right"></div>
+  <div class="pp-chart" data-chart='{"type":"stacked","labels":["第1四半期","第2四半期","第3四半期","第4四半期"],"series":[{"name":"既存深耕","values":[90,97,93,100]},{"name":"新規開拓","values":[30,38,35,72]}],"highlight":1,"labelPt":14}' style="position:absolute;left:56px;top:150px;width:800px;height:420px"></div>
+  <div class="pp-line" data-dir="right" data-arrow="end" data-decor style="position:absolute;left:802px;top:261px;width:94px;height:0px;color:var(--accent);border-top-width:2px;border-left-width:2px"></div>
+  <div class="pp-line" data-dir="down" style="position:absolute;left:872px;top:156px;height:404px;color:var(--neutral-chart)"></div>
+  <p class="pp-text" data-role="display" style="position:absolute;left:904px;top:176px;width:316px;font-size:calc(54*var(--pt));font-weight:700;color:var(--accent)">＋37<span style="font-size:calc(24*var(--pt))">百万円</span></p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:904px;top:288px;width:316px;color:var(--sub)">新規開拓の増加<br>35 → 72（第3→第4期）</p>
+  <p class="pp-text" data-role="body" style="position:absolute;left:904px;top:360px;width:316px;font-weight:700">既存深耕は90〜100で安定</p>
+  <div class="pp-shape take" data-chrome>
+    <div class="pp-shape take-k"><p class="pp-text" data-role="caption">結論</p></div>
+    <p class="pp-text take-t" data-role="lead" style="font-size:calc(18*var(--pt))">伸びのほとんどは新規開拓。既存深耕は年間を通じて安定している</p>
+  </div>
+  <p class="pp-text foot-src" data-role="caption" data-chrome>単位：百万円。出典：2026年度第2四半期 営業実績（社内集計）</p>
+  <p class="pp-text foot-page" data-role="caption" data-chrome>10</p>
+  <aside class="notes">積み上げ棒。新規開拓だけ青、既存深耕は灰。</aside>
 </section>
 
 </body>

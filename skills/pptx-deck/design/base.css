@@ -1,4 +1,4 @@
-/* 既定デザインシステム: 無彩色 + アクセント1色。サイズはpt基準(--pt = 1pt のpx換算 ×(96/72)) */
+/* 既定デザインシステム: 無彩色 + 基調のアクセント(青)+ 強調色(橙)。サイズはpt基準(--pt = 1pt のpx換算 ×(96/72)) */
 :root {
   --pt: 1.33333px;
   --font-main: "BIZ UDPゴシック", "Yu Gothic UI", "Meiryo UI", sans-serif;
@@ -8,6 +8,10 @@
   --card: #F3F3F3;
   --accent: #1F4E9C;
   --accent-tint: #E6EDF8;
+  --accent-mid: #9DB8E3;
+  --accent2: #B85A0B;
+  --accent2-tint: #FDF0E1;
+  --accent2-dark: #8F4607;
   --neutral-chart: #BFBFBF;
 }
 * { box-sizing: border-box; }
@@ -20,7 +24,7 @@ section.slide {
   background: var(--paper); color: var(--ink); font-family: var(--font-main); overflow: hidden;
 }
 /* 本文領域(安全マージン 0.4in の内側)。area 自体は計測対象ではない */
-.area { position: absolute; left: 56px; top: 144px; width: 1168px; height: 528px; }
+.area { position: absolute; left: 56px; top: 160px; width: 1168px; height: 512px; }
 .area.full { top: 56px; height: 608px; }
 .row { display: flex; align-items: stretch; }
 
@@ -35,18 +39,61 @@ section.slide {
 /* 大きな数字・式。タイトルより大きくてよい(階層検査の対象外) */
 .pp-text[data-role="display"] { font-size: calc(36 * var(--pt)); font-weight: 700; line-height: 1.2; }
 /* タイトルは常に同じ位置(titleAlign の対策) */
-section.slide > .pp-text[data-role="title"] { position: absolute; left: 56px; top: 40px; width: 1168px; }
+section.slide > .pp-text[data-role="title"] { position: absolute; left: 56px; top: 62px; width: 1168px; }
+
+/* 共通の枠(コンサル資料風): 章タグ(番号+章名)、出典、ページ番号、結論の帯。使う・使わないはスライドごとに選べる */
+section.slide > .chap-no { position: absolute; left: 56px; top: 40px; width: 40px; padding: 1px 0; border-radius: 2px; background: var(--accent); }
+section.slide > .chap-no .pp-text { color: #FFFFFF; font-weight: 700; line-height: 1.3; text-align: center; }
+section.slide > .chap-name { position: absolute; left: 108px; top: 41px; width: 600px; color: var(--accent); font-weight: 700; line-height: 1.3; }
+section.slide > .foot-src { position: absolute; left: 56px; top: 659px; width: 1000px; }
+section.slide > .foot-page { position: absolute; left: 1124px; top: 659px; width: 100px; text-align: right; }
+/* 見出し下の細線(無彩色)。タイトルが 1 行(全角 30 字まで)なら既定の位置。2 行なら .two を付ける */
+.title-rule { position: absolute; left: 56px; top: 112px; width: 1168px; color: var(--neutral-chart); }
+.title-rule.two { top: 146px; }
+/* 結論の帯: 幅いっぱいの青い面。ラベル(橙の面)+ 言い切りの一文。1 スライド 1 つ、下に置く */
+/* 判断の枠(決めること・期限・推奨)。title-rule の下に置く帯。本体は .area.decide-body(上から 196px・高さ 372px)。
+   色の役割: 橙=推奨・承認を求める案、青=基調・比較対象の強調、灰=背景情報 */
+section.slide > .decide { position: absolute; left: 56px; top: 118px; width: 1168px; height: 68px; }
+.decide .decide-k { position: absolute; top: 10px; color: var(--sub); }
+.decide .decide-v { position: absolute; top: 32px; font-weight: 700; }
+.decide .decide-v.reco { color: var(--accent2-dark); }
+.decide .decide-bar { position: absolute; top: 66px; left: 0; width: 1168px; color: var(--neutral-chart); }
+.decide .decide-sep { position: absolute; top: 10px; height: 50px; color: var(--neutral-chart); }
+.area.decide-body { top: 196px; height: 372px; }
+/* 推奨のタグ(橙の小さな札)と、推奨の列の面 */
+.tag-reco { background: var(--accent2); border-radius: 2px; padding: 0; }
+.tag-reco .pp-text { color: #FFFFFF; font-weight: 700; line-height: 1.3; text-align: center; }
+.reco-bg { background: var(--accent2-tint); border-radius: 4px; padding: 0; }
+.reco-text { color: var(--accent2-dark); }
+.take { position: absolute; left: 56px; top: 584px; width: 1168px; height: 56px; background: var(--accent); border-radius: 3px; color: #FFFFFF; }
+.take .take-k { position: absolute; left: 16px; top: 15px; width: 84px; padding: 2px 0; border-radius: 2px; background: var(--accent2); }
+.take .take-k .pp-text { color: #FFFFFF; font-weight: 700; line-height: 1.3; text-align: center; }
+.take .take-t { position: absolute; left: 124px; top: 14px; width: 1030px; color: #FFFFFF; font-weight: 700; }
 
 /* 図形 */
 .pp-shape { border-radius: 4px; }
 .card { background: var(--card); padding: 24px; border-radius: 4px; }
 .card.accent { background: var(--accent); color: #FFFFFF; }
 .card.tint { background: var(--accent-tint); }
+.card.accent2 { background: var(--accent2); color: #FFFFFF; }
+.card.tint2 { background: var(--accent2-tint); }
+.card.mid { background: var(--accent-mid); }
+.card.white { background: #FFFFFF; }
+/* アイコンの円: 薄色の円の中央に pp-image(data-role="icon")を置く。直径は style で指定する */
+.pp-shape.dot { border-radius: 50%; padding: 0; background: var(--accent-tint); display: flex; align-items: center; justify-content: center; }
+.pp-shape.dot.o { background: var(--accent2-tint); }
+.pp-shape.dot.solid { background: var(--accent); }
+.pp-shape.dot.solid.o { background: var(--accent2); }
 
 /* 線: 横は border-top、縦は border-left で太さを持たせ、色は color で指定 */
 .pp-line { color: var(--sub); flex: none; }
 .pp-line[data-dir="right"], .pp-line[data-dir="left"] { height: 0; border-top: 2px solid currentColor; }
 .pp-line[data-dir="up"], .pp-line[data-dir="down"] { width: 0; border-left: 2px solid currentColor; }
+/* 斜めの線: x・y・w・h（style で指定）の枠の対角線。dr=右下、ur=右上、dl=左下、ul=左上（矢印は終点側） */
+.pp-line[data-dir="dr"], .pp-line[data-dir="ul"] { background: linear-gradient(to top right, transparent calc(50% - 1px), currentColor calc(50% - 1px), currentColor calc(50% + 1px), transparent calc(50% + 1px)); }
+.pp-line[data-dir="ur"], .pp-line[data-dir="dl"] { background: linear-gradient(to bottom right, transparent calc(50% - 1px), currentColor calc(50% - 1px), currentColor calc(50% + 1px), transparent calc(50% + 1px)); }
+/* 三角形（二等辺）: data-shape="triangle"。ベン図などの重なる円には data-overlap を付ける */
+.pp-shape[data-shape="triangle"] { clip-path: polygon(50% 0, 0 100%, 100% 100%); border-radius: 0; }
 
 .pp-image { display: block; }
 .pp-chart { display: block; }

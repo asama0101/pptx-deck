@@ -11,6 +11,7 @@ const { suggestFix } = require('./suggest');
 const { buildPptx } = require('./build');
 const { verifyPptx } = require('./check-pptx');
 const { findSoffice, renderPptx } = require('./render');
+const { writeIcons, readAccents } = require('./lib/icons');
 
 const DESIGN = path.join(__dirname, '..', 'design');
 
@@ -55,8 +56,16 @@ async function main() {
   if (cmd === 'init') {
     if (!a) throw new Error('使い方: run.js init <作業フォルダ>');
     fs.mkdirSync(a, { recursive: true });
-    for (const f of ['base.css', 'chart-preview.js', 'catalog.html', 'diagrams.html', 'charts.html']) fs.copyFileSync(path.join(DESIGN, f), path.join(a, f));
-    console.log(JSON.stringify({ ok: true, dir: path.resolve(a) }));
+    // 作業フォルダには、deck.html が参照する base.css・chart-preview.js・icons/ だけを置く。見本 5 種は参照用なので、スキルの design/ をそのまま読む
+    for (const f of ['base.css', 'chart-preview.js']) fs.copyFileSync(path.join(DESIGN, f), path.join(a, f));
+    const icons = writeIcons(a, readAccents(path.join(a, 'base.css')));
+    console.log(JSON.stringify({ ok: true, dir: path.resolve(a), icons: icons.length, samples: DESIGN }));
+    return;
+  }
+  if (cmd === 'icons') {
+    if (!a) throw new Error('使い方: run.js icons <作業フォルダ>  (作業フォルダの base.css の --accent・--accent2 の色で icons/ を作り直す)');
+    const icons = writeIcons(a, readAccents(path.join(a, 'base.css')));
+    console.log(JSON.stringify({ ok: true, dir: path.resolve(a, 'icons'), icons: icons.length }));
     return;
   }
   if (cmd === 'doctor') {
@@ -72,7 +81,7 @@ async function main() {
     return;
   }
   if (cmd === 'build') {
-    if (!a || !b) throw new Error('使い方: run.js build <deck.html> <out.pptx> [--work <dir>] [--attempt N] [--no-render]');
+    if (!a || !b) throw new Error('使い方: run.js build <deck.html> <out.pptx> [--work <作業フォルダ(一時フォルダ内の名前に使う)>] [--attempt N] [--no-render]');
     const { report, model, rasterDir } = await checkHtml(a, opt, t);
     try {
       if (!report.ok) { print(report); process.exitCode = 2; return; }
@@ -85,8 +94,12 @@ async function main() {
         violations: v.violations, summary, packageErrors: v.packageErrors, pptx: path.resolve(b),
         suggestion: suggestFix(v.violations, attemptOf(opt), t),
       };
+      // 確認用の画像・検査結果は作業フォルダに置かず、OS の一時フォルダ(pptx-deck/<作業名>)に出す。消すのは OS の掃除に任せる
+      const tempDir = path.join(os.tmpdir(), 'pptx-deck', path.basename(path.resolve(opt.work || b)).replace(/\.pptx$/i, ''));
+      fs.mkdirSync(tempDir, { recursive: true });
+      out.tempDir = tempDir;
       if (!opt['no-render'] && findSoffice()) {
-        const dir = path.join(opt.work || path.dirname(path.resolve(b)), 'render');
+        const dir = path.join(tempDir, 'render');
         try {
           out.pngs = renderPptx(b, dir).pngs;
           out.renderNote = 'LibreOffice による近似の画像。PowerPoint で開いて最終確認することを勧める';
@@ -96,7 +109,8 @@ async function main() {
       } else if (!opt['no-render']) {
         out.renderNote = 'LibreOffice が未導入のため画像化を省略した(幾何検査のみ)';
       }
-      if (opt.work) fs.writeFileSync(path.join(opt.work, 'report.json'), JSON.stringify(out, null, 2));
+      out.reportPath = path.join(tempDir, 'report.json');
+      fs.writeFileSync(out.reportPath, JSON.stringify(out, null, 2));
       print(out);
       process.exitCode = out.ok ? 0 : 2;
     } finally {
@@ -117,7 +131,7 @@ async function main() {
     print({ ok: true, ...renderPptx(a, b) });
     return;
   }
-  throw new Error('使い方: run.js <init|doctor|check|build|verify|render> …');
+  throw new Error('使い方: run.js <init|icons|doctor|check|build|verify|render> …');
 }
 
 main().catch((e) => { console.error(`エラー: ${e.message}`); process.exit(1); });
