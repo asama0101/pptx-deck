@@ -1,12 +1,13 @@
-<!-- 用途: 内訳の推移（積み上げ棒）。系列は 3 本まで。合計の数字は吹き出しに書く。 注目点は吹き出しでグラフに直接書く（グラフは全幅）。
-     差し替える所: data-chart・吹き出しの文と位置（グラフの値に合わせて手で直す）。 -->
+<!-- 用途: 内訳の推移（積み上げ棒、吹き出し版）。グラフは全幅。系列は 3 本まで。合計の数字と注目点は枠線の吹き出しでグラフに直接書く（2 つまで）。
+     上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。所見が長いときは -note 版（グラフ×内訳表）を使う。
+     差し替える所: 図表タイトル・data-chart・吹き出しの文と位置（グラフの値に合わせて手で直す）・注。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-note="題：結論の一文になっているか" data-role="title" style="height:44px">費用は初年度に集中し、2年目以降は運用費だけになる</div>
-  <div class="pp-chart" data-note="グラフは全幅。注目する点だけ強調色" data-chart='{"type":"stacked","categories":["2027","2028","2029","2030","2031"],"series":[{"name":"構築","values":[9000,0,0,0,0]},{"name":"移行","values":[2000,0,0,0,0]},{"name":"運用","values":[1200,1200,1200,1200,1200]}],"fmt":"#,##0"}' style="left:64px;top:160px;width:1152px;height:460px"></div>
-  <div class="pp-shape f-light r" data-note="吹き出し 1：初年度" data-overlap style="left:360px;top:196px;width:300px;height:76px"></div>
-  <div class="pp-text b" data-note="吹き出し 1：初年度" data-overlap style="left:372px;top:204px;width:276px;height:60px">初年度は1.22億円で、5年間の72%</div>
-  <div class="pp-line" data-note="グラフは全幅。注目する点だけ強調色" data-arrow="end" data-dir="rev" style="left:302px;top:232px;width:54px;background:var(--accent)"></div>
-  <div class="pp-shape f-light r" data-note="吹き出し 2：2 年目以降" data-overlap style="left:560px;top:380px;width:500px;height:60px"></div>
-  <div class="pp-text b" data-note="吹き出し 2：2 年目以降" data-overlap style="left:572px;top:388px;width:476px;height:44px">2年目以降は、年1,200万円で一定</div>
-  <div class="pp-line" data-note="グラフは全幅。注目する点だけ強調色" data-arrow="end" style="left:660px;top:442px;width:2px;height:78px;background:var(--accent)"></div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">B案の年度別の費用（FY2027〜2031、構築・移行・運用の内訳、万円・税抜）</div>
+  <div class="pp-chart" data-overlap data-note="グラフは全幅。系列は 3 本まで" data-chart='{"type":"stacked","categories":["2027","2028","2029","2030","2031"],"series":[{"name":"構築","values":[9000,0,0,0,0]},{"name":"移行","values":[2000,0,0,0,0]},{"name":"運用","values":[1200,1200,1200,1200,1200]}],"fmt":"#,##0"}' style="left:64px;top:186px;width:1152px;height:400px"></div>
+  <div class="pp-shape f-outline" data-overlap data-note="吹き出し：合計と注目点をグラフに直接書く（2 つまで）" style="left:300px;top:230px;width:340px;height:44px"></div>
+  <div class="pp-text b center" data-overlap data-note="吹き出し：合計と注目点をグラフに直接書く（2 つまで）" style="left:308px;top:237px;width:324px;height:30px;font-size:19px">初年度12,200万円＝5年間の72%</div>
+  <div class="pp-shape f-outline" data-overlap data-note="吹き出し：合計と注目点をグラフに直接書く（2 つまで）" style="left:660px;top:400px;width:360px;height:44px"></div>
+  <div class="pp-text b center" data-overlap data-note="吹き出し：合計と注目点をグラフに直接書く（2 つまで）" style="left:668px;top:407px;width:344px;height:30px;font-size:19px">2年目以降は運用費1,200万円で一定</div>
+  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 構築・移行はベンダー見積（2026年9月）、運用は保守契約の固定額。5年計17,000万円<br>→ 初年度の12,200万円はFY2027予算で一括計上が必要になる</div>
 </section>

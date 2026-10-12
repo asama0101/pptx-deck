@@ -1,24 +1,35 @@
-<!-- 用途: 階層・優先度・段階。上ほど重要。三角形 1 つを白い線で 4 層に区切る（三角形は幅 640px、層の高さはそろえる）。右に各層の説明。各層と説明を横線で結び、説明どうしは細い線で区切る。
-     差し替える所: 層の名前（短く）・説明。 -->
+<!-- 用途: 階層・優先度・段階（各層に件数と担当、右に権限と数値）。三角形 1 つ（淡い階調 f-light。大きな面に濃い基調色は使わない）を白い線で 4 層に区切り（幅 640px、層の高さはそろえる）、層の中に名前を書く。
+     右に各層の説明（権限の範囲と金額・件数・所要日数）。各層と説明を横線で結び、説明どうしは細い線で区切る。注の末尾に、分布から言える含意を 1 文。
+     差し替える所: 層の名前（短く）・右の説明 3 行（権限｜件数・金額・所要｜注記）・注。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-note="題：判断の土台を結論で言う" data-role="title" style="height:44px">判断の土台は、事実・影響・選択肢・推奨の順に積み上がる</div>
-  <div class="pp-shape f-accent" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど重要" data-shape="triangle" style="left:80px;top:170px;width:640px;height:430px"></div>
-  <div class="pp-line" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど重要" data-overlap style="left:60px;top:275px;width:680px;height:6px;background:#FFFFFF"></div>
-  <div class="pp-line" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど重要" data-overlap style="left:60px;top:383px;width:680px;height:6px;background:#FFFFFF"></div>
-  <div class="pp-line" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど重要" data-overlap style="left:60px;top:490px;width:680px;height:6px;background:#FFFFFF"></div>
-  <div class="pp-text t-white b center" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど重要" style="left:360px;top:208px;width:80px;height:30px">推奨</div>
-  <div class="pp-text t-white b center" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど重要" style="left:320px;top:316px;width:160px;height:30px">選択肢</div>
-  <div class="pp-text t-white b center" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど重要" style="left:280px;top:424px;width:240px;height:30px">影響</div>
-  <div class="pp-text t-white b center" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど重要" style="left:240px;top:532px;width:320px;height:30px">事実</div>
-  <div class="pp-line" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" data-overlap style="left:454px;top:224px;width:292px;background:var(--accent-mid)"></div>
-  <div class="pp-line" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" data-overlap style="left:534px;top:331px;width:212px;background:var(--accent-mid)"></div>
-  <div class="pp-line" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" data-overlap style="left:614px;top:438px;width:132px;background:var(--accent-mid)"></div>
-  <div class="pp-line" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" data-overlap style="left:694px;top:546px;width:52px;background:var(--accent-mid)"></div>
-  <div class="pp-line hr" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" style="left:760px;top:277px;width:456px"></div>
-  <div class="pp-line hr" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" style="left:760px;top:385px;width:456px"></div>
-  <div class="pp-line hr" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" style="left:760px;top:492px;width:456px"></div>
-  <div class="pp-text" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" style="left:760px;top:196px;width:456px;height:56px">B案を採用する</div>
-  <div class="pp-text" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" style="left:760px;top:303px;width:456px;height:56px">3案を費用・期間・リスクで比べる</div>
-  <div class="pp-text" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" style="left:760px;top:411px;width:456px;height:56px">停止時間と業務への影響を測る</div>
-  <div class="pp-text" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" style="left:760px;top:518px;width:456px;height:56px">保守期限・現行費用・利用状況</div>
+  <div class="pp-text" data-role="title" style="height:44px">決裁の4階層のうち、件数の8割は部長層で決まり、経営会議の審議は年12件に絞れている</div>
+  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">投資案件の決裁階層（FY2025実績。年間の件数・金額・平均の所要日数）</div>
+  <div class="pp-shape f-light" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど権限が大きく、件数は少ない" data-shape="triangle" style="left:80px;top:186px;width:640px;height:404px"></div>
+  <div class="pp-line" data-overlap style="left:60px;top:287px;width:680px;height:6px;background:#FFFFFF"></div>
+  <div class="pp-line" data-overlap style="left:60px;top:388px;width:680px;height:6px;background:#FFFFFF"></div>
+  <div class="pp-line" data-overlap style="left:60px;top:489px;width:680px;height:6px;background:#FFFFFF"></div>
+  <div class="pp-text t-dark b center" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど権限が大きく、件数は少ない" style="left:340px;top:250px;width:120px;height:26px;font-size:19px">経営会議</div>
+  <div class="pp-text t-dark b center" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど権限が大きく、件数は少ない" style="left:300px;top:326px;width:200px;height:26px;font-size:19px">投資委員会</div>
+  <div class="pp-text t-dark b center" style="left:240px;top:426px;width:320px;height:26px;font-size:19px">本部長</div>
+  <div class="pp-text t-dark b center" style="left:200px;top:528px;width:400px;height:26px;font-size:19px">部長</div>
+  <div class="pp-line" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" data-overlap style="left:470px;top:236px;width:276px;background:var(--accent-mid)"></div>
+  <div class="pp-line" data-overlap style="left:530px;top:337px;width:216px;background:var(--accent-mid)"></div>
+  <div class="pp-line" data-overlap style="left:610px;top:438px;width:136px;background:var(--accent-mid)"></div>
+  <div class="pp-line" data-overlap style="left:690px;top:539px;width:56px;background:var(--accent-mid)"></div>
+  <div class="pp-line hr" style="left:760px;top:289px;width:456px"></div>
+  <div class="pp-line hr" style="left:760px;top:390px;width:456px"></div>
+  <div class="pp-line hr" style="left:760px;top:491px;width:456px"></div>
+  <div class="pp-text b" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" style="left:760px;top:194px;width:456px;height:28px;font-size:19px">10億円超、M&amp;A・新規事業</div>
+  <div class="pp-text" style="left:760px;top:224px;width:456px;height:28px;font-size:19px">12件・180億円（38%）・所要45日</div>
+  <div class="pp-text" data-role="caption" style="left:760px;top:254px;width:456px;height:20px">月1回の審議。中計の柱に関わる投資に絞る</div>
+  <div class="pp-text b" style="left:760px;top:295px;width:456px;height:28px;font-size:19px">1〜10億円、設備の更新・拡張</div>
+  <div class="pp-text" style="left:760px;top:325px;width:456px;height:28px;font-size:19px">40件・150億円（31%）・所要20日</div>
+  <div class="pp-text" data-role="caption" style="left:760px;top:355px;width:456px;height:20px">月2回の審議。経営会議には月次で件名と金額を報告</div>
+  <div class="pp-text b" style="left:760px;top:396px;width:456px;height:28px;font-size:19px">1,000万〜1億円、ライン改修・IT更新</div>
+  <div class="pp-text" style="left:760px;top:426px;width:456px;height:28px;font-size:19px">180件・90億円（19%）・所要7日</div>
+  <div class="pp-text" data-role="caption" style="left:760px;top:456px;width:456px;height:20px">随時。本部の予算枠内で決裁</div>
+  <div class="pp-text b" style="left:760px;top:497px;width:456px;height:28px;font-size:19px">1,000万円未満、修繕・備品</div>
+  <div class="pp-text" style="left:760px;top:527px;width:456px;height:28px;font-size:19px">900件・60億円（12%）・所要2日</div>
+  <div class="pp-text" data-role="caption" style="left:760px;top:557px;width:456px;height:20px">随時。件数の80%（900/1,132件）</div>
+  <div class="pp-text" data-note="注：数値の出所と、分布から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 件数・金額はFY2025の決裁実績（計1,132件・480億円）。所要は起案から決裁までの平均営業日<br>→ 金額の7割（330億円）は経営会議と投資委員会の52件で決まり、審議の時間はこの52件に集中させればよい</div>
 </section>

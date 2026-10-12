@@ -1,15 +1,49 @@
-<!-- 用途: 2 つの集合の重なり（共通点・両立する条件）。重なりの文言だけを太字にする。
-     円は半透明（color-mix）。重なる要素には data-overlap を両方に付ける。
-     差し替える所: 2 つの集合の名前・それぞれだけの特徴・重なり・右の「結論」（読み方ではなく、この図から言える結論を書く）。 -->
+<!-- 用途: 2 つの条件の重なりで候補を絞る（各領域に該当数と金額、右に抽出条件の表）。左の 2 円は淡い半透明（color-mix 20%。大きな面に濃い基調色は使わない）で、各円に条件の名前・該当数・金額、重なりに絞り込んだ数と金額（太字）。
+     右のパネルに抽出条件の表（条件｜定義｜該当）と、絞り込んだ候補の内訳。重なる要素には data-overlap を両方に付ける。注の末尾に、絞り込みから言える含意を 1 文。
+     差し替える所: 2 つの条件の名前・該当数・金額・重なりの数と金額・右の表 3 行と内訳 2 行・注。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-note="題：条件を満たす案を結論で言う" data-role="title" style="height:44px">必要な要件を満たす案は、2つの条件が重なるB案だけである</div>
-  <div class="pp-shape" data-shape="ellipse" data-overlap style="left:80px;top:170px;width:400px;height:400px;background:color-mix(in srgb, var(--accent) 35%, transparent)"></div>
-  <div class="pp-shape" data-shape="ellipse" data-overlap style="left:340px;top:170px;width:400px;height:400px;background:color-mix(in srgb, var(--accent-dark) 35%, transparent)"></div>
-  <div class="pp-text b center" style="left:100px;top:230px;width:220px;height:34px">費用が低い</div>
-  <div class="pp-text center" style="left:100px;top:290px;width:220px;height:100px">C案、B案</div>
-  <div class="pp-text b center" style="left:500px;top:230px;width:220px;height:34px">期間が短い</div>
-  <div class="pp-text center" style="left:500px;top:290px;width:220px;height:100px">A案、B案</div>
-  <div class="pp-text b center" data-note="重なり：両方を満たす案を太字に（data-overlap）" style="left:340px;top:330px;width:140px;height:60px">B案</div>
-  <div class="pp-text b" data-note="右：「結論」。読み方ではなく、この図から言える結論を書く" style="left:800px;top:196px;width:416px;height:34px">結論</div>
-  <div class="pp-text" data-note="右：「結論」。読み方ではなく、この図から言える結論を書く" style="left:800px;top:240px;width:416px;height:280px"><ul><li>費用と期間の両方の条件を満たすのは、B案だけである</li><li>C案は費用だけ、A案は期間だけを満たす</li><li>したがって、要件を満たす案はB案である</li></ul></div>
+  <div class="pp-text" data-role="title" style="height:44px">シェアも成長も低い120型番は限界利益が赤字で、撤退の第一候補に置くべきだ</div>
+  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">型番の抽出（FY2025、全1,200型番。2条件の重なりが撤退候補）</div>
+  <div class="pp-shape" data-note="2 つの円：条件の名前・該当数・金額。重なりに絞り込んだ数と金額" data-shape="ellipse" data-overlap style="left:64px;top:196px;width:380px;height:380px;background:color-mix(in srgb, var(--accent) 20%, transparent)"></div>
+  <div class="pp-shape" data-note="2 つの円：条件の名前・該当数・金額。重なりに絞り込んだ数と金額" data-shape="ellipse" data-overlap style="left:300px;top:196px;width:380px;height:380px;background:color-mix(in srgb, var(--accent-dark) 20%, transparent)"></div>
+  <div class="pp-text b center" data-overlap style="left:84px;top:300px;width:200px;height:28px;font-size:19px">① シェア下位30%</div>
+  <div class="pp-text b center t-dark" data-overlap style="left:84px;top:332px;width:200px;height:40px;font-size:30px">320型番</div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:84px;top:376px;width:200px;height:20px;color:var(--text)">売上82億円（全体の7%）</div>
+  <div class="pp-text b center" data-overlap style="left:460px;top:300px;width:200px;height:28px;font-size:19px">② 成長率マイナス</div>
+  <div class="pp-text b center t-dark" data-overlap style="left:460px;top:332px;width:200px;height:40px;font-size:30px">210型番</div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:460px;top:376px;width:200px;height:20px;color:var(--text)">売上46億円（全体の4%）</div>
+  <div class="pp-text b center" data-note="重なり：両方を満たす候補の数と金額を太字に" data-overlap style="left:302px;top:306px;width:140px;height:28px;font-size:19px">①かつ②</div>
+  <div class="pp-text b center t-dark" data-note="重なり：両方を満たす候補の数と金額を太字に" data-overlap style="left:302px;top:336px;width:140px;height:40px;font-size:30px">120</div>
+  <div class="pp-text b center" data-overlap style="left:282px;top:380px;width:180px;height:28px;font-size:19px">限界利益▲4億円</div>
+  <div class="pp-shape f-soft" data-note="右のパネル：抽出条件の表と、候補の内訳" style="left:720px;top:190px;width:496px;height:398px"></div>
+  <div class="pp-text b" data-note="右のパネル：抽出条件の表と、候補の内訳" style="left:736px;top:200px;width:464px;height:28px;font-size:19px">抽出条件と該当数</div>
+  <div class="pp-text" data-role="caption" style="left:748px;top:236px;width:120px;height:20px">条件</div>
+  <div class="pp-text" data-role="caption" style="left:878px;top:236px;width:200px;height:20px">定義</div>
+  <div class="pp-text" data-role="caption" style="left:1078px;top:236px;width:122px;height:20px;text-align:right">該当</div>
+  <div class="pp-line" style="left:736px;top:258px;width:464px;height:1px;background:var(--text-sub)"></div>
+  <table class="pp-table" style="left:736px;top:261px;width:464px;font-size:19px;line-height:1.4">
+    <tr style="height:44px">
+      <td style="width:130px;padding:6px 12px;border-bottom:1px solid var(--line);font-weight:700">① シェア</td>
+      <td style="width:204px;padding:6px 6px;border-bottom:1px solid var(--line)">市場シェア2%未満</td>
+      <td style="width:130px;padding:6px 12px;border-bottom:1px solid var(--line);text-align:right">320型番</td>
+    </tr>
+    <tr style="height:44px">
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line);font-weight:700">② 成長</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line)">3年CAGRが0%未満</td>
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line);text-align:right">210型番</td>
+    </tr>
+    <tr style="height:44px">
+      <td style="padding:6px 12px;border-bottom:2px solid var(--text);font-weight:700;color:var(--accent-dark)">①かつ②</td>
+      <td style="padding:6px 6px;border-bottom:2px solid var(--text);font-weight:700">両方を満たす</td>
+      <td style="padding:6px 12px;border-bottom:2px solid var(--text);text-align:right;font-weight:700;color:var(--accent-dark)">120型番</td>
+    </tr>
+  </table>
+  <div class="pp-text b" style="left:736px;top:410px;width:464px;height:28px;font-size:19px">候補120型番の内訳（限界利益）</div>
+  <div class="pp-shape f-accent" data-note="内訳の棒：赤字と黒字の型番数を長さで示す" style="left:736px;top:446px;width:367px;height:26px"></div>
+  <div class="pp-text t-white" data-role="caption" style="left:746px;top:449px;width:350px;height:20px">赤字 95型番（▲4.6億円）</div>
+  <div class="pp-shape f-light" data-note="内訳の棒：赤字と黒字の型番数を長さで示す" style="left:1103px;top:446px;width:97px;height:26px"></div>
+  <div class="pp-text" data-role="caption" style="left:736px;top:478px;width:464px;height:20px">黒字 25型番（＋0.6億円）は継続。売上は計28億円（全体の2.3%）</div>
+  <div class="pp-line hr" style="left:736px;top:508px;width:464px;height:1px"></div>
+  <div class="pp-text" data-role="caption" style="left:736px;top:518px;width:464px;height:60px">廃止の手順: 受注停止 → 在庫消化（6か月）→ 型番削除。顧客への案内は代替型番つきで3か月前に行う</div>
+  <div class="pp-text" data-note="注：定義の出所と、絞り込みから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 限界利益＝売上−変動費（FY2025実績）。シェアは国内の金額ベース<br>→ 赤字95型番の廃止で限界利益は＋4.6億円、売上の減少は全体の2%にとどまる</div>
 </section>

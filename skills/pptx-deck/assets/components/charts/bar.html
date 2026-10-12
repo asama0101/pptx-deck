@@ -1,9 +1,11 @@
-<!-- 用途: 案どうし・期間どうしの量の比較（縦棒）。注目する 1 本だけ強調色（highlight は 0 始まりの番号）。 注目点は吹き出しでグラフに直接書く（グラフは全幅）。
-     差し替える所: data-chart・吹き出しの文と位置（グラフの値に合わせて手で直す）。 -->
+<!-- 用途: 案どうし・期間どうしの量の比較（縦棒、吹き出し版）。グラフは全幅で、注目する 1 本だけ強調色（highlight は 0 始まりの番号）。注目点は枠線の吹き出しでグラフに直接書く（2 つまで）。axis の max で吹き出しの余白を取る。
+     上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。所見が長いときは -note 版（グラフ×内訳表）を使う。
+     差し替える所: 図表タイトル・data-chart・吹き出しの文と位置（グラフの値に合わせて手で直す）・注。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-note="題：結論の一文になっているか" data-role="title" style="height:44px">B案の総費用は1.7億円で、A案より8,000万円低い</div>
-  <div class="pp-chart" data-note="グラフは全幅。注目する点だけ強調色" data-chart='{"type":"bar","categories":["現行維持（C案）","A案","B案"],"series":[{"name":"総費用（万円）","values":[22000,25000,17000]}],"highlight":2,"fmt":"#,##0"}' style="left:64px;top:160px;width:1152px;height:460px"></div>
-  <div class="pp-shape f-light r" data-note="吹き出し：注目点をグラフに直接書く" data-overlap style="left:860px;top:214px;width:320px;height:76px"></div>
-  <div class="pp-text b" data-note="吹き出し：注目点をグラフに直接書く" data-overlap style="left:872px;top:222px;width:296px;height:60px">B案が最も低く、A案より8,000万円安い</div>
-  <div class="pp-line" data-note="グラフは全幅。注目する点だけ強調色" data-arrow="end" style="left:1020px;top:292px;width:2px;height:52px;background:var(--accent)"></div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">3案の総費用の比較（5年間の構築＋運用、万円・税抜）</div>
+  <div class="pp-chart" data-overlap data-note="グラフは全幅。注目する 1 本だけ強調色" data-chart='{"type":"bar","categories":["現行維持（C案）","A案","B案"],"series":[{"name":"総費用（万円）","values":[22000,25000,17000]}],"highlight":2,"fmt":"#,##0","axis":{"min":0,"max":30000,"major":10000}}' style="left:64px;top:186px;width:1152px;height:400px"></div>
+  <div class="pp-shape f-outline" data-overlap data-note="吹き出し：注目点をグラフに直接書く（2 つまで）" style="left:950px;top:224px;width:250px;height:68px"></div>
+  <div class="pp-text b center" data-overlap data-note="吹き出し：注目点をグラフに直接書く（2 つまで）" style="left:958px;top:230px;width:234px;height:56px;font-size:19px;line-height:1.4">B案はA案より<br>8,000万円低い</div>
+  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 金額は2026年9月時点の見積り。C案は現行システムの保守延長（5年間）の費用<br>→ A案との差8,000万円は、B案の運用費（年1,200万円）の6.7年分に相当する</div>
 </section>

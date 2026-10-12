@@ -1,9 +1,10 @@
-<!-- 用途: フェーズ別工程表（ガント）。左に行の見出し（フェーズ名を基調色の面）、上に年と四半期の帯、本体に工程の棒を四半期の列に合わせて置く（1 四半期＝82px、x＝232＋82×開始の四半期）。
-     記号: 完了の棒は塗り、計画の棒は枠線のみ（f-outline）。現在の位置を基調色の太い縦線で全行に通し、その右に一言を書く。各フェーズの期間は行のパネル地で示す。凡例は右上に 1 行。
-     差し替える所: 年・四半期・フェーズ（4 行まで）・棒（1 行に 2 本まで。文字が収まる長さにする）・完了と計画の区別・現在線の位置と一言。 -->
+<!-- 用途: フェーズ別工程表（ガント）。左に行の見出し（フェーズ名・内容・担当を基調色の面）、上に年と四半期の帯、本体に工程の棒を四半期の列に合わせて置く（1 四半期＝82px、x＝232＋82×開始の四半期）。
+     記号: 完了の棒は塗り、計画の棒は枠線のみ（f-outline）。現在の位置を基調色の太い縦線で全行に通し、その右に一言を書く。承認の関門（判断点）は ◆（強調色・1 枚 1 点）で、棒の終わりに置く。各フェーズの期間は行のパネル地で示す。凡例は右上に 1 行。
+     差し替える所: 年・四半期・フェーズと担当（4 行まで。行は 74px）・棒（1 行に 2 本まで。文字が収まる長さにする）・完了と計画の区別・現在線の位置と一言・判断点の位置と日付・論点の文。最下部に論点ボックス。 -->
 <section class="slide" data-layout="diagram">
   <div class="pp-text" data-role="title" style="height:44px">フェーズ3へ進むには、FY27上期までに18億円の改善を先行確定させる必要がある</div>
   <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:800px;height:28px;font-size:20px">中計の実行工程（FY2026〜FY2028、四半期）　現在：FY2026 Q3末</div>
+  <div class="pp-text b t-emph" data-note="判断点：承認の関門を ◆（強調色・1 点）で置く" data-role="caption" style="left:800px;top:186px;width:90px;height:20px">◆ 判断点</div>
   <div class="pp-shape f-accent" data-note="棒：完了は塗り、計画は枠線のみ。四半期の列に合わせて置く" style="left:900px;top:190px;width:16px;height:14px"></div>
   <div class="pp-text" data-note="棒：完了は塗り、計画は枠線のみ。四半期の列に合わせて置く" data-role="caption" style="left:922px;top:186px;width:44px;height:20px">完了</div>
   <div class="pp-shape f-outline" data-note="棒：完了は塗り、計画は枠線のみ。四半期の列に合わせて置く" style="left:984px;top:190px;width:16px;height:14px"></div>
@@ -28,47 +29,59 @@
   <div class="pp-text center" data-role="caption" style="left:970px;top:242px;width:82px;height:20px">Q2</div>
   <div class="pp-text center" data-role="caption" style="left:1052px;top:242px;width:82px;height:20px">Q3</div>
   <div class="pp-text center" data-role="caption" style="left:1134px;top:242px;width:82px;height:20px">Q4</div>
-  <div class="pp-line hr" style="left:232px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:314px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:396px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:478px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:560px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:642px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:724px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:806px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:888px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:970px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:1052px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:1134px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-line hr" style="left:1216px;top:264px;width:1px;height:362px"></div>
-  <div class="pp-shape f-accent" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:64px;top:266px;width:156px;height:84px"></div>
-  <div class="pp-text t-white center" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:68px;top:281px;width:148px;height:54px;font-size:19px;line-height:1.4"><b>フェーズ1</b><br>診断・構想</div>
-  <div class="pp-shape f-soft" style="left:232px;top:266px;width:246px;height:84px"></div>
-  <div class="pp-shape f-accent" data-note="棒：完了は塗り、計画は枠線のみ。四半期の列に合わせて置く" style="left:234px;top:272px;width:160px;height:34px"></div>
-  <div class="pp-text t-white center" style="left:236px;top:276px;width:156px;height:28px;font-size:19px;line-height:1.25">現状診断</div>
-  <div class="pp-shape f-accent" style="left:316px;top:312px;width:160px;height:34px"></div>
-  <div class="pp-text t-white center" style="left:318px;top:316px;width:156px;height:28px;font-size:19px;line-height:1.25">中計の策定</div>
-  <div class="pp-shape f-accent" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:64px;top:356px;width:156px;height:84px"></div>
-  <div class="pp-text t-white center" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:68px;top:371px;width:148px;height:54px;font-size:19px;line-height:1.4"><b>フェーズ2</b><br>クイックウィン</div>
-  <div class="pp-shape f-soft" style="left:478px;top:356px;width:246px;height:84px"></div>
-  <div class="pp-shape f-outline" data-note="棒：完了は塗り、計画は枠線のみ。四半期の列に合わせて置く" style="left:480px;top:362px;width:242px;height:34px"></div>
-  <div class="pp-text center" style="left:482px;top:366px;width:238px;height:28px;font-size:19px;line-height:1.25">集中購買（▲12億円）</div>
-  <div class="pp-shape f-outline" style="left:480px;top:402px;width:242px;height:34px"></div>
-  <div class="pp-text center" style="left:482px;top:406px;width:238px;height:28px;font-size:19px;line-height:1.25">Care料金改定（+6億円）</div>
-  <div class="pp-shape f-accent" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:64px;top:446px;width:156px;height:84px"></div>
-  <div class="pp-text t-white center" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:68px;top:461px;width:148px;height:54px;font-size:19px;line-height:1.4"><b>フェーズ3</b><br>構造改革</div>
-  <div class="pp-shape f-soft" style="left:560px;top:446px;width:328px;height:84px"></div>
-  <div class="pp-shape f-outline" data-note="棒：完了は塗り、計画は枠線のみ。四半期の列に合わせて置く" style="left:562px;top:452px;width:324px;height:34px"></div>
-  <div class="pp-text center" style="left:564px;top:456px;width:320px;height:28px;font-size:19px;line-height:1.25">型番削減 1,200→800</div>
-  <div class="pp-shape f-outline" style="left:644px;top:492px;width:242px;height:34px"></div>
-  <div class="pp-text center" style="left:646px;top:496px;width:238px;height:28px;font-size:19px;line-height:1.25">組織7→5階層へ移行</div>
-  <div class="pp-shape f-accent" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:64px;top:536px;width:156px;height:84px"></div>
-  <div class="pp-text t-white center" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:68px;top:551px;width:148px;height:54px;font-size:19px;line-height:1.4"><b>フェーズ4</b><br>全社展開</div>
-  <div class="pp-shape f-soft" style="left:888px;top:536px;width:328px;height:84px"></div>
-  <div class="pp-shape f-outline" data-note="棒：完了は塗り、計画は枠線のみ。四半期の列に合わせて置く" style="left:890px;top:542px;width:242px;height:34px"></div>
-  <div class="pp-text center" style="left:892px;top:546px;width:238px;height:28px;font-size:19px;line-height:1.25">車載ラインC3量産</div>
-  <div class="pp-shape f-outline" style="left:890px;top:582px;width:324px;height:34px"></div>
-  <div class="pp-text center" style="left:892px;top:586px;width:320px;height:28px;font-size:19px;line-height:1.25">Care遠隔監視の全顧客展開</div>
-  <div class="pp-line" data-note="現在線：基調色の太い縦線で全行を貫き、いまの位置を示す" style="left:477px;top:240px;width:3px;height:388px;background:var(--accent)"></div>
-  <div class="pp-text b t-accent" data-note="現在線：基調色の太い縦線で全行を貫き、いまの位置を示す" style="left:488px;top:272px;width:300px;height:30px;font-size:19px">現在：フェーズ1の出口</div>
+  <div class="pp-line hr" style="left:232px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:314px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:396px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:478px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:560px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:642px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:724px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:806px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:888px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:970px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:1052px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:1134px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-line hr" style="left:1216px;top:264px;width:1px;height:322px"></div>
+  <div class="pp-shape f-accent" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:64px;top:266px;width:164px;height:74px"></div>
+  <div class="pp-text t-white b center" data-note="行の見出し：フェーズ名と担当を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:68px;top:274px;width:156px;height:26px;font-size:19px">フェーズ1</div>
+  <div class="pp-text t-white center" data-role="caption" style="left:68px;top:302px;width:156px;height:20px">診断・構想</div>
+  <div class="pp-text t-white center" data-role="caption" style="left:68px;top:318px;width:156px;height:20px">経営企画部</div>
+  <div class="pp-shape f-soft" style="left:232px;top:266px;width:246px;height:74px"></div>
+  <div class="pp-shape f-accent" data-note="棒：完了は塗り、計画は枠線のみ。四半期の列に合わせて置く" style="left:234px;top:271px;width:160px;height:30px"></div>
+  <div class="pp-text t-white center" style="left:236px;top:274px;width:156px;height:26px;font-size:19px;line-height:1.25">現状診断</div>
+  <div class="pp-shape f-accent" style="left:316px;top:305px;width:160px;height:30px"></div>
+  <div class="pp-text t-white center" style="left:318px;top:308px;width:156px;height:26px;font-size:19px;line-height:1.25">中計の策定</div>
+  <div class="pp-shape f-accent" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:64px;top:346px;width:164px;height:74px"></div>
+  <div class="pp-text t-white b center" data-note="行の見出し：フェーズ名と担当を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:68px;top:354px;width:156px;height:26px;font-size:19px">フェーズ2</div>
+  <div class="pp-text t-white center" data-role="caption" style="left:68px;top:382px;width:156px;height:20px">クイックウィン</div>
+  <div class="pp-text t-white center" data-role="caption" style="left:68px;top:398px;width:156px;height:20px">生産・サービス本部</div>
+  <div class="pp-shape f-soft" style="left:478px;top:346px;width:246px;height:74px"></div>
+  <div class="pp-shape f-outline" data-note="棒：完了は塗り、計画は枠線のみ。四半期の列に合わせて置く" style="left:480px;top:351px;width:242px;height:30px"></div>
+  <div class="pp-text center" style="left:482px;top:354px;width:238px;height:26px;font-size:19px;line-height:1.25">集中購買（▲12億円）</div>
+  <div class="pp-shape f-outline" style="left:480px;top:385px;width:242px;height:30px"></div>
+  <div class="pp-text center" style="left:482px;top:388px;width:238px;height:26px;font-size:19px;line-height:1.25">Care料金改定（+6億円）</div>
+  <div class="pp-shape f-accent" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:64px;top:426px;width:164px;height:74px"></div>
+  <div class="pp-text t-white b center" data-note="行の見出し：フェーズ名と担当を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:68px;top:434px;width:156px;height:26px;font-size:19px">フェーズ3</div>
+  <div class="pp-text t-white center" data-role="caption" style="left:68px;top:462px;width:156px;height:20px">構造改革</div>
+  <div class="pp-text t-white center" data-role="caption" style="left:68px;top:478px;width:156px;height:20px">業務改革室</div>
+  <div class="pp-shape f-soft" style="left:560px;top:426px;width:328px;height:74px"></div>
+  <div class="pp-shape f-outline" data-note="棒：完了は塗り、計画は枠線のみ。四半期の列に合わせて置く" style="left:562px;top:431px;width:324px;height:30px"></div>
+  <div class="pp-text center" style="left:564px;top:434px;width:320px;height:26px;font-size:19px;line-height:1.25">型番削減 1,200→800</div>
+  <div class="pp-shape f-outline" style="left:644px;top:465px;width:242px;height:30px"></div>
+  <div class="pp-text center" style="left:646px;top:468px;width:238px;height:26px;font-size:19px;line-height:1.25">組織7→5階層へ移行</div>
+  <div class="pp-shape f-accent" data-note="行の見出し：フェーズ名を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:64px;top:506px;width:164px;height:74px"></div>
+  <div class="pp-text t-white b center" data-note="行の見出し：フェーズ名と担当を基調色の面で左に並べ、各フェーズの期間をパネル地で示す" style="left:68px;top:514px;width:156px;height:26px;font-size:19px">フェーズ4</div>
+  <div class="pp-text t-white center" data-role="caption" style="left:68px;top:542px;width:156px;height:20px">全社展開</div>
+  <div class="pp-text t-white center" data-role="caption" style="left:68px;top:558px;width:156px;height:20px">各事業部</div>
+  <div class="pp-shape f-soft" style="left:888px;top:506px;width:328px;height:74px"></div>
+  <div class="pp-shape f-outline" data-note="棒：完了は塗り、計画は枠線のみ。四半期の列に合わせて置く" style="left:890px;top:511px;width:242px;height:30px"></div>
+  <div class="pp-text center" style="left:892px;top:514px;width:238px;height:26px;font-size:19px;line-height:1.25">車載ラインC3量産</div>
+  <div class="pp-shape f-outline" style="left:890px;top:545px;width:324px;height:30px"></div>
+  <div class="pp-text center" style="left:892px;top:548px;width:320px;height:26px;font-size:19px;line-height:1.25">Care遠隔監視の全顧客展開</div>
+  <div class="pp-text b t-emph" data-note="判断点：承認の関門を ◆（強調色・1 点）で置く" style="left:728px;top:366px;width:24px;height:26px;font-size:19px">◆</div>
+  <div class="pp-text" data-note="判断点：承認の関門を ◆（強調色・1 点）で置く" data-role="caption" style="left:752px;top:370px;width:180px;height:20px">FY27 Q2末 経営会議</div>
+  <div class="pp-line" data-note="現在線：基調色の太い縦線で全行を貫き、いまの位置を示す" style="left:477px;top:240px;width:3px;height:348px;background:var(--accent)"></div>
+  <div class="pp-text b t-accent" data-note="現在線：基調色の太い縦線で全行を貫き、いまの位置を示す" style="left:488px;top:271px;width:300px;height:30px;font-size:19px">現在：フェーズ1の出口</div>
+  <div class="pp-shape f-soft" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:84px;top:603px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　フェーズ2の2施策（▲12億円・＋6億円）をFY27上期までに確定させ、フェーズ3へ進む条件とすることの可否</div>
 </section>

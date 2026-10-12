@@ -1,26 +1,69 @@
-<!-- 用途: 手順・段階を左から右へ。各段階に番号・名前・一言。結論の帯を下に 1 つ（帯は右下まで届かせる。文は左寄せ）。
-     差し替える所: 段階の数（3〜4。3 のときは幅を 336px、x を 64/456/848 にする）・名前・説明・結論。 -->
+<!-- 用途: 手順・段階を左から右へ（各段階に期間・成果物・承認点）。段階の箱はパネル地で、番号・名前・期間・成果物・承認点（◆）を同じ位置に置く。
+     下に全体期間の横棒（長さを期間に比例。1 か月＝192px）を置き、段階の区切りに ◆ と承認日を書く。本番の関門（戻せない判断）の ◆ だけ強調色（1 枚 1 点）。注の末尾に、この進め方から言える含意を 1 文。
+     差し替える所: 段階の数（3〜4。3 のときは幅を 336px、x を 64/462/860 にする）・名前・期間・成果物・承認点・横棒の区切りと日付・注。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-note="題：進め方と判断のしかたを結論で言う" data-role="title" style="height:44px">移行は4つの段階で進め、各段階の終わりに承認を取る</div>
-  <div class="pp-shape f-light r" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:64px;top:170px;width:240px;height:290px"></div>
-  <div class="pp-text num t-dark" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:84px;top:186px;width:200px;height:56px">01</div>
-  <div class="pp-text b" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:84px;top:250px;width:200px;height:34px">現状調査</div>
-  <div class="pp-text" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:84px;top:296px;width:200px;height:150px">資産と依存関係を<br>洗い出す</div>
-  <div class="pp-line" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" data-arrow="end" style="left:308px;top:314px;width:56px;background:var(--accent)"></div>
-  <div class="pp-shape f-light r" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:368px;top:170px;width:240px;height:290px"></div>
-  <div class="pp-text num t-dark" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:388px;top:186px;width:200px;height:56px">02</div>
-  <div class="pp-text b" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:388px;top:250px;width:200px;height:34px">設計</div>
-  <div class="pp-text" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:388px;top:296px;width:200px;height:150px">移行先の構成と手順を決める</div>
-  <div class="pp-line" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" data-arrow="end" style="left:612px;top:314px;width:56px;background:var(--accent)"></div>
-  <div class="pp-shape f-light r" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:672px;top:170px;width:240px;height:290px"></div>
-  <div class="pp-text num t-dark" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:692px;top:186px;width:200px;height:56px">03</div>
-  <div class="pp-text b" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:692px;top:250px;width:200px;height:34px">移行</div>
-  <div class="pp-text" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:692px;top:296px;width:200px;height:150px">夜間に段階的に<br>切り替える</div>
-  <div class="pp-line" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" data-arrow="end" style="left:916px;top:314px;width:56px;background:var(--accent)"></div>
-  <div class="pp-shape f-light r" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:976px;top:170px;width:240px;height:290px"></div>
-  <div class="pp-text num t-dark" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:996px;top:186px;width:200px;height:56px">04</div>
-  <div class="pp-text b" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:996px;top:250px;width:200px;height:34px">定着</div>
-  <div class="pp-text" data-note="段階を左から右へ。矢印（矢じり付き）で順を示す" style="left:996px;top:296px;width:200px;height:150px">運用を引き継ぎ、旧基盤を停止する</div>
-  <div class="pp-shape f-accent r" data-note="結論の帯は 1 つだけ（基調色）。右下まで届かせる" style="left:64px;top:500px;width:1152px;height:90px"></div>
-  <div class="pp-text t-white b" data-note="結論の帯は 1 つだけ（基調色）。右下まで届かせる" style="left:88px;top:520px;width:1104px;height:50px;font-size:22px">各段階で承認を取るため、問題があれば前の段階に戻せる</div>
+  <div class="pp-text" data-role="title" style="height:44px">移行は4段階で進め、各段階の出口で承認を取るため、問題があれば前に戻せる</div>
+  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">移行の進め方（2026年11月〜2027年4月の6か月。段階ごとの期間・成果物・承認点）</div>
+  <div class="pp-shape f-soft" data-note="段階の箱：番号・名前・期間・成果物・承認点を同じ位置に置く" style="left:64px;top:190px;width:258px;height:262px"></div>
+  <div class="pp-text num t-dark" style="left:76px;top:198px;width:60px;height:44px;font-size:34px">01</div>
+  <div class="pp-text b" data-note="段階の箱：番号・名前・期間・成果物・承認点を同じ位置に置く" style="left:140px;top:206px;width:170px;height:30px;font-size:21px">現状調査</div>
+  <div class="pp-line hr" style="left:76px;top:250px;width:234px;height:1px"></div>
+  <div class="pp-text" data-role="caption" style="left:76px;top:258px;width:234px;height:20px">期間</div>
+  <div class="pp-text b" style="left:76px;top:278px;width:234px;height:28px;font-size:19px">1.0か月（11月）</div>
+  <div class="pp-text" data-role="caption" style="left:76px;top:312px;width:234px;height:20px">成果物</div>
+  <div class="pp-text" style="left:76px;top:332px;width:234px;height:52px;font-size:19px;line-height:1.35">資産台帳（120システム）<br>依存関係図</div>
+  <div class="pp-text" data-role="caption" style="left:76px;top:390px;width:234px;height:20px">承認点</div>
+  <div class="pp-text b t-dark" data-note="承認点：各段階の出口で承認。本番の関門だけ強調色" style="left:76px;top:410px;width:234px;height:28px;font-size:19px">◆ 移行対象の確定</div>
+  <div class="pp-line" data-arrow="end" style="left:328px;top:320px;width:28px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-soft" style="left:362px;top:190px;width:258px;height:262px"></div>
+  <div class="pp-text num t-dark" style="left:374px;top:198px;width:60px;height:44px;font-size:34px">02</div>
+  <div class="pp-text b" style="left:438px;top:206px;width:170px;height:30px;font-size:21px">設計</div>
+  <div class="pp-line hr" style="left:374px;top:250px;width:234px;height:1px"></div>
+  <div class="pp-text" data-role="caption" style="left:374px;top:258px;width:234px;height:20px">期間</div>
+  <div class="pp-text b" style="left:374px;top:278px;width:234px;height:28px;font-size:19px">1.5か月（12月〜1月中）</div>
+  <div class="pp-text" data-role="caption" style="left:374px;top:312px;width:234px;height:20px">成果物</div>
+  <div class="pp-text" style="left:374px;top:332px;width:234px;height:52px;font-size:19px;line-height:1.35">移行設計書・手順書<br>切替計画（夜間3回）</div>
+  <div class="pp-text" data-role="caption" style="left:374px;top:390px;width:234px;height:20px">承認点</div>
+  <div class="pp-text b t-dark" style="left:374px;top:410px;width:234px;height:28px;font-size:19px">◆ 設計と投資1.7億円</div>
+  <div class="pp-line" data-arrow="end" style="left:626px;top:320px;width:28px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-soft" style="left:660px;top:190px;width:258px;height:262px"></div>
+  <div class="pp-text num t-dark" style="left:672px;top:198px;width:60px;height:44px;font-size:34px">03</div>
+  <div class="pp-text b" style="left:736px;top:206px;width:170px;height:30px;font-size:21px">移行</div>
+  <div class="pp-line hr" style="left:672px;top:250px;width:234px;height:1px"></div>
+  <div class="pp-text" data-role="caption" style="left:672px;top:258px;width:234px;height:20px">期間</div>
+  <div class="pp-text b" style="left:672px;top:278px;width:234px;height:28px;font-size:19px">2.5か月（1月中〜3月）</div>
+  <div class="pp-text" data-role="caption" style="left:672px;top:312px;width:234px;height:20px">成果物</div>
+  <div class="pp-text" style="left:672px;top:332px;width:234px;height:52px;font-size:19px;line-height:1.35">リハーサル3回の記録<br>本番切替（並行稼働2週間）</div>
+  <div class="pp-text" data-role="caption" style="left:672px;top:390px;width:234px;height:20px">承認点</div>
+  <div class="pp-shape f-emph" data-note="承認点：各段階の出口で承認。本番の関門だけ強調色" style="left:672px;top:412px;width:234px;height:32px"></div>
+  <div class="pp-text b t-white" data-note="承認点：各段階の出口で承認。本番の関門だけ強調色" style="left:680px;top:414px;width:226px;height:28px;font-size:19px">◆ 本番切替 Go／NoGo</div>
+  <div class="pp-line" data-arrow="end" style="left:924px;top:320px;width:28px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-soft" style="left:958px;top:190px;width:258px;height:262px"></div>
+  <div class="pp-text num t-dark" style="left:970px;top:198px;width:60px;height:44px;font-size:34px">04</div>
+  <div class="pp-text b" style="left:1034px;top:206px;width:170px;height:30px;font-size:21px">定着</div>
+  <div class="pp-line hr" style="left:970px;top:250px;width:234px;height:1px"></div>
+  <div class="pp-text" data-role="caption" style="left:970px;top:258px;width:234px;height:20px">期間</div>
+  <div class="pp-text b" style="left:970px;top:278px;width:234px;height:28px;font-size:19px">1.0か月（4月）</div>
+  <div class="pp-text" data-role="caption" style="left:970px;top:312px;width:234px;height:20px">成果物</div>
+  <div class="pp-text" style="left:970px;top:332px;width:234px;height:52px;font-size:19px;line-height:1.35">運用引継ぎ（手順書32本）<br>旧基盤の停止</div>
+  <div class="pp-text" data-role="caption" style="left:970px;top:390px;width:234px;height:20px">承認点</div>
+  <div class="pp-text b t-dark" style="left:970px;top:410px;width:234px;height:28px;font-size:19px">◆ 完了報告・旧基盤の廃止</div>
+  <div class="pp-text b" data-note="全体期間の横棒：長さを期間に比例させ、区切りに承認日を書く" style="left:64px;top:470px;width:600px;height:28px;font-size:19px">全体期間｜6か月・承認4回</div>
+  <div class="pp-shape f-light" data-note="全体期間の横棒：長さを期間に比例させ、区切りに承認日を書く" style="left:64px;top:506px;width:192px;height:30px"></div>
+  <div class="pp-text center" data-role="caption" style="left:64px;top:511px;width:192px;height:20px;color:var(--text)">01 1.0か月</div>
+  <div class="pp-shape f-mid" style="left:256px;top:506px;width:288px;height:30px"></div>
+  <div class="pp-text center" data-role="caption" style="left:256px;top:511px;width:288px;height:20px;color:var(--text)">02 1.5か月</div>
+  <div class="pp-shape f-accent" data-note="全体期間の横棒：長さを期間に比例させ、区切りに承認日を書く" style="left:544px;top:506px;width:480px;height:30px"></div>
+  <div class="pp-text t-white center" data-role="caption" style="left:544px;top:511px;width:480px;height:20px">03 2.5か月</div>
+  <div class="pp-shape f-light" style="left:1024px;top:506px;width:192px;height:30px"></div>
+  <div class="pp-text center" data-role="caption" style="left:1024px;top:511px;width:192px;height:20px;color:var(--text)">04 1.0か月</div>
+  <div class="pp-text b t-dark center" style="left:216px;top:542px;width:80px;height:24px;font-size:19px">◆</div>
+  <div class="pp-text center" data-role="caption" style="left:196px;top:566px;width:120px;height:20px">11/30 経営会議</div>
+  <div class="pp-text b t-dark center" style="left:504px;top:542px;width:80px;height:24px;font-size:19px">◆</div>
+  <div class="pp-text center" data-role="caption" style="left:484px;top:566px;width:120px;height:20px">1/15 経営会議</div>
+  <div class="pp-text b t-dark center" style="left:984px;top:542px;width:80px;height:24px;font-size:19px">◆</div>
+  <div class="pp-text center" data-role="caption" style="left:964px;top:566px;width:120px;height:20px">3/31 Go／NoGo</div>
+  <div class="pp-text b t-dark center" style="left:1156px;top:542px;width:60px;height:24px;font-size:19px">◆</div>
+  <div class="pp-text center" data-role="caption" style="left:1116px;top:566px;width:100px;height:20px">4/30 完了</div>
+  <div class="pp-text" data-note="注：承認の場と、進め方から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 承認はいずれも経営会議。3/31 のGo／NoGoだけは戻せない判断（旧基盤の契約解除を伴う）<br>→ 関門ごとに前の段階へ戻せるため、失敗時の損失は最大でも1段階分（2.5か月・4,000万円）に限られる</div>
 </section>

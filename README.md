@@ -19,7 +19,6 @@
 | 推奨 | LibreOffice（`soffice`。`C:\Program Files\LibreOffice\` か PATH） | 確認用の画像（`pngs`）とテンプレートの下地画像に使う。なくても `.pptx` は出るが、画像での崩れの確認ができない |
 | 推奨 | BIZ UDPゴシック（フォント） | 未導入だと、計測が代替フォントになり、PowerPoint と折り返しがずれることがある |
 | 最終確認 | Microsoft PowerPoint | LibreOffice の画像は近似。PowerPoint で開いて最終確認する |
-| 開発のみ | `pytest>=8`（`requirements-dev.txt`） | LibreOffice がない環境では、画像化を使うテストは skip される |
 
 ## 使い方
 
@@ -39,7 +38,7 @@ Claude Code で「スライドを作って」「稟議資料を作って」と�
 
 | 場所 | 内容 |
 |---|---|
-| `skills/pptx-deck/`（スキル） | `SKILL.md`、テンプレート（`assets/components/` のレイアウト 5・図解 10・表 4・グラフ 9（軸をそろえた小グラフ 4 パネルの `small-multiples` を含む）、`assets/icons/` のアイコン 14、`assets/template/standard.potx`）、設計図と原稿の手本（`assets/sample/`）、コード |
+| `skills/pptx-deck/`（スキル） | `SKILL.md`、テンプレート（`assets/components/` のレイアウト 6・図解 10・表 5・グラフ 8。本文の部品は「見出し → 図表タイトル → 本体 → 注」の構成で、決定を求める型は最下部に論点ボックスを置く、`assets/icons/` のアイコン 14、`assets/template/standard.potx`）、設計図と原稿の手本（`assets/sample/`）、コード |
 | 実行したディレクトリ直下の `<名前>/` | `design.md`（`init` が雛形を置く）、`script.md`、`slides/`、`variants.html`、`final.html`、`final-review.html`、`<名前>.pptx` ほか |
 | OS の一時フォルダ `%TEMP%\pptx-deck\<名前>\` | 確認用の画像など一過性のもの |
 
@@ -52,17 +51,6 @@ Claude Code で「スライドを作って」「稟議資料を作って」と�
 以前に書いた原稿は、新しいヘッドの規則（判断語・1 行 41 字を目安とする長さなど）で `lint-script` に落ちることがある。直すか、正しい見出しなら `pptx_deck/script_lint.py` の `_JUDGE` に語を足す。
 
 古い作業フォルダは `base.css`・`theme.css`・`chart-preview.js` が `init` 時の写しなので、新しい部品（`f-soft2`・`dashed`・`axis`）を使うには `init --force` で更新する（`script.md` などの既存ファイルは消えない。`design.md` は既にあれば上書きしない）。
-
-## 開発
-
-```bash
-cd skills/pptx-deck
-python run.py setup --yes                       # 仮想環境の作成
-"$LOCALAPPDATA/pptx-deck/venv/Scripts/python.exe" -m pip install -r requirements-dev.txt
-"$LOCALAPPDATA/pptx-deck/venv/Scripts/python.exe" -m pytest
-```
-
-設計の経緯は `docs/specs/2026-10-12_1607_pptx-deck-rebuild.md`（現行の仕様）、`docs/specs/2026-10-12_1800_sample-and-prompt.md`（見出しの規則・描画の規準・設計図の工程。食い違う箇所はこちらが優先）と `docs/superpowers/plans/`（実装計画）。それ以前の SPEC（`docs/specs/2026-10-11_*`・`2026-10-12_0044_*`・`0051_*`・`1100_*`）は旧実装のもので、現行の仕様ではない。
 
 ## ライセンス
 

@@ -1,12 +1,13 @@
-<!-- 用途: 時間の推移（折れ線）。系列は 2〜3 本まで。注目する系列を先頭にする。 注目点は吹き出しでグラフに直接書く（グラフは全幅）。
-     差し替える所: data-chart・吹き出しの文と位置（グラフの値に合わせて手で直す）。 -->
+<!-- 用途: 時間の推移（折れ線、吹き出し版）。グラフは全幅。系列は 2〜3 本までで、注目する系列を先頭にする。注目点は枠線の吹き出しでグラフに直接書く（2 つまで）。axis の max で吹き出しの余白を取る。
+     上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。所見が長いときは -note 版（グラフ×内訳表）を使う。
+     差し替える所: 図表タイトル・data-chart・吹き出しの文と位置（グラフの値に合わせて手で直す）・注。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-note="題：結論の一文になっているか" data-role="title" style="height:44px">障害対応の時間は、導入後6か月で月40時間から8時間に下がる見込み</div>
-  <div class="pp-chart" data-note="グラフは全幅。注目する点だけ強調色" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40]}],"fmt":"#,##0"}' style="left:64px;top:160px;width:1152px;height:460px"></div>
-  <div class="pp-shape f-light r" data-note="吹き出し 1：下がり始め" data-overlap style="left:440px;top:478px;width:260px;height:60px"></div>
-  <div class="pp-text b" data-note="吹き出し 1：下がり始め" data-overlap style="left:452px;top:486px;width:236px;height:44px">3月から下がり始める</div>
-  <div class="pp-line" data-note="グラフは全幅。注目する点だけ強調色" data-arrow="end" data-dir="rev" style="left:567px;top:404px;width:2px;height:72px;background:var(--accent)"></div>
-  <div class="pp-shape f-light r" data-note="吹き出し 2：到達点" data-overlap style="left:900px;top:380px;width:300px;height:60px"></div>
-  <div class="pp-text b" data-note="吹き出し 2：到達点" data-overlap style="left:912px;top:388px;width:276px;height:44px">6月には8時間に収まる</div>
-  <div class="pp-line" data-note="グラフは全幅。注目する点だけ強調色" data-arrow="end" style="left:1103px;top:442px;width:2px;height:36px;background:var(--accent)"></div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">障害対応の時間の推移（導入後6か月の見込みと現状、月あたり・時間）</div>
+  <div class="pp-chart" data-overlap data-note="グラフは全幅。注目する系列を先頭に" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40]}],"fmt":"#,##0","axis":{"min":0,"max":50,"major":10}}' style="left:64px;top:186px;width:1152px;height:400px"></div>
+  <div class="pp-shape f-outline" data-overlap data-note="吹き出し：注目点をグラフに直接書く（2 つまで）" style="left:330px;top:440px;width:320px;height:44px"></div>
+  <div class="pp-text b center" data-overlap data-note="吹き出し：注目点をグラフに直接書く（2 つまで）" style="left:338px;top:447px;width:304px;height:30px;font-size:19px">3月から下がる（データ移行の完了）</div>
+  <div class="pp-shape f-outline" data-overlap data-note="吹き出し：注目点をグラフに直接書く（2 つまで）" style="left:780px;top:330px;width:300px;height:44px"></div>
+  <div class="pp-text b center" data-overlap data-note="吹き出し：注目点をグラフに直接書く（2 つまで）" style="left:788px;top:337px;width:284px;height:30px;font-size:19px">6か月で40→8時間（▲80%）</div>
+  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 現状は繁忙期を含む月平均（FY2025実績）。導入後は事業部の試算で、実績ではない<br>→ 低下はデータ移行の完了が前提で、移行が1か月遅れれば8時間への到達も同じだけ遅れる</div>
 </section>

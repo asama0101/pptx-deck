@@ -1,7 +1,7 @@
 <!-- 用途: 同位置の Before/After（業務の工程を減らす改革）。上段に現行、下段に改革後の工程ボックスを、同じ位置・同じ大きさで並べる（比較で要素の位置を変えない）。
      消える工程は、下段で破線の箱（pp-shape dashed）にして「廃止」と書き、代わりの手段を箱の下に注記する。止める工程は上段で基調色の枠と「▼ 止める」で示す。段の間に基調色の下向き矢印と一文。
      最下部にリードタイムの横棒 2 本（長さを日数に比例させる。1日＝90px）と、差を示す破線の枠・矢印・差の値を置く。
-     差し替える所: 工程の名前と日数（6 個まで。14pt で収まる量）・止める工程・代替の注記・段の間の一文・横棒の長さと値。 -->
+     差し替える所: 注・工程の名前と日数（6 個まで。14pt で収まる量）・止める工程・代替の注記・段の間の一文・横棒の長さと値。 -->
 <section class="slide" data-layout="diagram">
   <div class="pp-text" data-role="title" style="height:44px">止める2工程は標準仕様と価格表で代替できるため、見積は4工程に縮む</div>
   <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">見積プロセスの工程と所要日数（現行FY25実績→FY27計画、営業日）</div>
@@ -61,14 +61,15 @@
   <div class="pp-shape f-soft" style="left:1034px;top:372px;width:178px;height:60px"></div>
   <div class="pp-text b center" style="left:1038px;top:377px;width:170px;height:28px;font-size:19px">顧客提出</div>
   <div class="pp-text center" data-role="caption" style="left:1038px;top:406px;width:170px;height:20px">0.5日</div>
-  <div class="pp-text b" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:64px;top:476px;width:400px;height:28px;font-size:19px">見積リードタイム（営業日）</div>
-  <div class="pp-text" style="left:64px;top:513px;width:90px;height:26px;font-size:19px;line-height:1.25">現行</div>
-  <div class="pp-shape f-light" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:160px;top:510px;width:900px;height:32px"></div>
-  <div class="pp-text b" style="left:1070px;top:513px;width:146px;height:26px;font-size:19px;line-height:1.25">10.0日</div>
-  <div class="pp-text b t-accent center" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:565px;top:556px;width:495px;height:30px;font-size:19px">▲5.5日（▲55%）</div>
-  <div class="pp-text" style="left:64px;top:597px;width:90px;height:26px;font-size:19px;line-height:1.25">改革後</div>
-  <div class="pp-shape f-accent" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:160px;top:594px;width:405px;height:32px"></div>
-  <div class="pp-shape dashed" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:565px;top:594px;width:495px;height:32px"></div>
-  <div class="pp-text b t-accent" style="left:573px;top:597px;width:70px;height:26px;font-size:19px;line-height:1.25">4.5日</div>
-  <div class="pp-line" data-arrow="end" data-dir="rev" style="left:652px;top:609px;width:396px;height:2px;background:var(--accent)"></div>
+  <div class="pp-text b" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:64px;top:452px;width:400px;height:28px;font-size:19px">見積リードタイム（営業日）</div>
+  <div class="pp-text" style="left:64px;top:489px;width:90px;height:26px;font-size:19px;line-height:1.25">現行</div>
+  <div class="pp-shape f-light" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:160px;top:486px;width:900px;height:32px"></div>
+  <div class="pp-text b" style="left:1070px;top:489px;width:146px;height:26px;font-size:19px;line-height:1.25">10.0日</div>
+  <div class="pp-text b t-accent center" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:565px;top:532px;width:495px;height:30px;font-size:19px">▲5.5日（▲55%）</div>
+  <div class="pp-text" style="left:64px;top:573px;width:90px;height:26px;font-size:19px;line-height:1.25">改革後</div>
+  <div class="pp-shape f-accent" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:160px;top:570px;width:405px;height:32px"></div>
+  <div class="pp-shape dashed" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:565px;top:570px;width:495px;height:32px"></div>
+  <div class="pp-text b t-accent" style="left:573px;top:573px;width:70px;height:26px;font-size:19px;line-height:1.25">4.5日</div>
+  <div class="pp-line" data-arrow="end" data-dir="rev" style="left:652px;top:585px;width:396px;height:2px;background:var(--accent)"></div>
+  <div class="pp-text" data-note="注：日数の出所と、比較から言える含意" data-role="caption" style="left:64px;top:606px;width:1152px;height:22px">注: 日数はFY25の見積案件の平均（営業日）。→ 標準仕様DBと価格表が整えば、技術検討と値引き稟議なしでLTは半減する</div>
 </section>
