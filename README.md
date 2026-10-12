@@ -7,6 +7,20 @@
 - 利用者の PowerPoint テンプレート（`.potx`／`.pptx`）がある場合は、**表紙・裏表紙・ヘッダー・フッター**がそれに従う（マスター／レイアウトが残る）。フォントと配色はテンプレートにかかわらず固定。
 - 既存の PPTX の編集と、テンプレートの本文スライドの流用には使わない。
 
+## 依存関係
+
+`python run.py doctor` で、下の状態を確認できる（不足は `status` と `warnings` に出る）。
+
+| 区分 | 内容 | 備考 |
+|---|---|---|
+| 必須 | Windows、Python 3.10 以上（コードが `X \| None` の型注釈を使う。動作確認は 3.14）、Claude Code | `python` が PATH にあること |
+| 必須（初回に導入） | 仮想環境 `%LOCALAPPDATA%\pptx-deck\venv` に、`python-pptx==1.0.2`・`playwright==1.52.0`・`pymupdf==1.28.2`・`lxml>=5`、Playwright の chromium（数百 MB） | `python run.py setup --yes`。導入にはネットワークが要る。承認なしには作らない |
+| 必須（スライド案・最終 HTML の確認） | Claude Code の Playwright MCP（`browser_navigate`・`browser_evaluate`） | 案の選択と「回答をコピー」の受け取りに使う。MCP がなければ、HTML を自分で開き、コピーした回答をチャットに貼り付ける |
+| 推奨 | LibreOffice（`soffice`。`C:\Program Files\LibreOffice\` か PATH） | 確認用の画像（`pngs`）とテンプレートの下地画像に使う。なくても `.pptx` は出るが、画像での崩れの確認ができない |
+| 推奨 | BIZ UDPゴシック（フォント） | 未導入だと、計測が代替フォントになり、PowerPoint と折り返しがずれることがある |
+| 最終確認 | Microsoft PowerPoint | LibreOffice の画像は近似。PowerPoint で開いて最終確認する |
+| 開発のみ | `pytest>=8`（`requirements-dev.txt`） | LibreOffice がない環境では、画像化を使うテストは skip される |
+
 ## 使い方
 
 Claude Code で「スライドを作って」「稟議資料を作って」と頼む。入口は、テーマのみ／素材（メモ・文書・データ）／既存の Markdown 原稿のいずれか。
