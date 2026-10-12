@@ -2,14 +2,14 @@
      円は半透明（color-mix）。重なる要素には data-overlap を両方に付ける。
      差し替える所: 2 つの集合の名前・それぞれだけの特徴・重なり・右の「結論」（読み方ではなく、この図から言える結論を書く）。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="height:44px">必要な要件を満たす案は、2つの条件が重なるB案だけである</div>
+  <div class="pp-text" data-note="題：条件を満たす案を結論で言う" data-role="title" style="height:44px">必要な要件を満たす案は、2つの条件が重なるB案だけである</div>
   <div class="pp-shape" data-shape="ellipse" data-overlap style="left:80px;top:170px;width:400px;height:400px;background:color-mix(in srgb, var(--accent) 35%, transparent)"></div>
   <div class="pp-shape" data-shape="ellipse" data-overlap style="left:340px;top:170px;width:400px;height:400px;background:color-mix(in srgb, var(--accent-dark) 35%, transparent)"></div>
   <div class="pp-text b center" style="left:100px;top:230px;width:220px;height:34px">費用が低い</div>
   <div class="pp-text center" style="left:100px;top:290px;width:220px;height:100px">C案、B案</div>
   <div class="pp-text b center" style="left:500px;top:230px;width:220px;height:34px">期間が短い</div>
   <div class="pp-text center" style="left:500px;top:290px;width:220px;height:100px">A案、B案</div>
-  <div class="pp-text b center" style="left:340px;top:330px;width:140px;height:60px">B案</div>
-  <div class="pp-text b" style="left:800px;top:196px;width:416px;height:34px">結論</div>
-  <div class="pp-text" style="left:800px;top:240px;width:416px;height:280px"><ul><li>費用と期間の両方の条件を満たすのは、B案だけである</li><li>C案は費用だけ、A案は期間だけを満たす</li><li>したがって、要件を満たす案はB案である</li></ul></div>
+  <div class="pp-text b center" data-note="重なり：両方を満たす案を太字に（data-overlap）" style="left:340px;top:330px;width:140px;height:60px">B案</div>
+  <div class="pp-text b" data-note="右：「結論」。読み方ではなく、この図から言える結論を書く" style="left:800px;top:196px;width:416px;height:34px">結論</div>
+  <div class="pp-text" data-note="右：「結論」。読み方ではなく、この図から言える結論を書く" style="left:800px;top:240px;width:416px;height:280px"><ul><li>費用と期間の両方の条件を満たすのは、B案だけである</li><li>C案は費用だけ、A案は期間だけを満たす</li><li>したがって、要件を満たす案はB案である</li></ul></div>
 </section>

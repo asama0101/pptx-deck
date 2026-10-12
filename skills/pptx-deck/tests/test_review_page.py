@@ -264,3 +264,25 @@ def test_there_is_no_separate_submit_button_and_copy_does_both(tmp_path):
         b.close()
         p.stop()
     assert errors == [] and variants.parse_answers(md)["01"]["choice"] == "A"
+
+
+def test_same_note_text_is_grouped_into_one_frame(tmp_path):
+    d = tmp_path / "slides"
+    d.mkdir()
+    (tmp_path / "base.css").write_text(".slide{position:relative;width:1280px;height:720px}.pp-text{position:absolute}", encoding="utf-8")
+    (d / "01-A.html").write_text(
+        '<section class="slide" data-layout="content">'
+        '<div class="pp-text" data-note="見どころ A" style="left:64px;top:40px;width:300px;height:40px">a</div>'
+        '<div class="pp-text" data-note="見どころ A" style="left:64px;top:200px;width:300px;height:40px">b</div>'
+        '<div class="pp-text" data-note="見どころ B" style="left:500px;top:300px;width:300px;height:40px">c</div></section>', encoding="utf-8")
+    p, b, pg, errors = _open(tmp_path, variants.assemble(tmp_path))
+    try:
+        pg.wait_for_function("document.querySelector('.pane:not([hidden]) .big .slide') !== null")
+        n = pg.evaluate("document.querySelectorAll('.pane:not([hidden]) .big .co').length")
+        legend = pg.evaluate("[...document.querySelectorAll('.pane:not([hidden]) .legend li')].map(l => l.textContent)")
+        h = pg.evaluate("parseFloat(document.querySelector('.pane:not([hidden]) .big .co').style.height)")
+    finally:
+        b.close()
+        p.stop()
+    assert errors == [] and n == 2 and len(legend) == 2        # 同じ文の 2 つの要素が 1 つの枠
+    assert h >= 200                                            # 枠は 2 つの要素をまとめた大きさ（top 40〜240）

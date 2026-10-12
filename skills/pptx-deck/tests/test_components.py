@@ -91,3 +91,12 @@ def test_component_header_comment(path):
     hard = [l for l in head.splitlines() if "style=" in l
             and re.search(r"#[0-9A-Fa-f]{3,8}\b", re.sub(r"#[Ff]{6}\b", "", l))]
     assert not hard, f"色の直書きがあります（var(--…) を使う）: {hard}"
+
+
+@pytest.mark.parametrize("path", FILES, ids=lambda p: f"{p.parent.name}/{p.stem}")
+def test_component_has_review_notes(path):
+    """型庫の断片には、レビューページの見どころ（data-note）が 2 つ以上付いている。属性を壊す文字を含まない。"""
+    text = path.read_text(encoding="utf-8")
+    notes = re.findall(r'data-note="([^"]*)"', text)
+    assert len(set(notes)) >= 2, f"{path.name}: data-note が足りません"
+    assert all(n.strip() and "<" not in n and "&quot;" not in n for n in notes)

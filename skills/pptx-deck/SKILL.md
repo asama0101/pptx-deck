@@ -72,7 +72,7 @@ description: テーマ・素材・原稿から、コンサルテイストの承�
 ## 4. HTML の書き方
 
 - 1 枚 = `<section class="slide" data-layout="…">`（1280×720px）。部品は `pp-text`・`pp-shape`・`pp-line`・`pp-image`・`pp-table`・`pp-chart` だけ。**これ以外のクラスの文字や図は PPTX に出ない**。
-- 見てほしい要素（題・強調・差し替える所など、2〜4 点）には `data-note="題：結論の一文"` を付ける。レビューページが枠と番号で示す。PPTX には影響しない。
+- 見てほしい要素（題・強調・差し替える所など、2〜4 点）には `data-note="題：結論の一文"` を付ける。レビューページが枠と番号で示す。同じ文を付けた要素は 1 つの見どころとして、枠でまとまる。PPTX には影響しない。型庫（`assets/components/`）の断片には付けてある。差し替えるときは、文が内容に合うかを見直す。
 - 位置は `style="left;top;width;height"`（px）。文字には必ず幅を付ける。面と文字は兄弟要素にし、文字の中心を含む面が背景色になる。
 - 文字: `data-role` = `title|lead|body|caption|display`。表紙・裏表紙の題と副題は `data-ph="title|subtitle"`（位置はテンプレート）。箇条書きは `<div class="pp-text"><ul><li>`。
 - 色は `var(--accent)` などの変数だけ。基調色の文字は白地かつ 24px 以上のときだけ（薄い面の上の大きな数字は `num t-dark`）。**強調色（`f-emph`・`t-emph`）は 1 スライドに 1 点**（推奨・承認を求める対象）。

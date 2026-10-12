@@ -1,12 +1,12 @@
 <!-- 用途: 時間の推移（折れ線）。系列は 2〜3 本まで。注目する系列を先頭にする。 注目点は吹き出しでグラフに直接書く（グラフは全幅）。
      差し替える所: data-chart・吹き出しの文と位置（グラフの値に合わせて手で直す）。 -->
 <section class="slide" data-layout="chart">
-  <div class="pp-text" data-role="title" style="height:44px">障害対応の時間は、導入後6か月で月40時間から8時間に下がる見込み</div>
-  <div class="pp-chart" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40]}],"fmt":"#,##0"}' style="left:64px;top:160px;width:1152px;height:460px"></div>
-  <div class="pp-shape f-light r" data-overlap style="left:440px;top:478px;width:260px;height:60px"></div>
-  <div class="pp-text b" data-overlap style="left:452px;top:486px;width:236px;height:44px">3月から下がり始める</div>
-  <div class="pp-line" data-arrow="end" data-dir="rev" style="left:567px;top:404px;width:2px;height:72px;background:var(--accent)"></div>
-  <div class="pp-shape f-light r" data-overlap style="left:900px;top:380px;width:300px;height:60px"></div>
-  <div class="pp-text b" data-overlap style="left:912px;top:388px;width:276px;height:44px">6月には8時間に収まる</div>
-  <div class="pp-line" data-arrow="end" style="left:1103px;top:442px;width:2px;height:36px;background:var(--accent)"></div>
+  <div class="pp-text" data-note="題：結論の一文になっているか" data-role="title" style="height:44px">障害対応の時間は、導入後6か月で月40時間から8時間に下がる見込み</div>
+  <div class="pp-chart" data-note="グラフは全幅。注目する点だけ強調色" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40]}],"fmt":"#,##0"}' style="left:64px;top:160px;width:1152px;height:460px"></div>
+  <div class="pp-shape f-light r" data-note="吹き出し 1：下がり始め" data-overlap style="left:440px;top:478px;width:260px;height:60px"></div>
+  <div class="pp-text b" data-note="吹き出し 1：下がり始め" data-overlap style="left:452px;top:486px;width:236px;height:44px">3月から下がり始める</div>
+  <div class="pp-line" data-note="グラフは全幅。注目する点だけ強調色" data-arrow="end" data-dir="rev" style="left:567px;top:404px;width:2px;height:72px;background:var(--accent)"></div>
+  <div class="pp-shape f-light r" data-note="吹き出し 2：到達点" data-overlap style="left:900px;top:380px;width:300px;height:60px"></div>
+  <div class="pp-text b" data-note="吹き出し 2：到達点" data-overlap style="left:912px;top:388px;width:276px;height:44px">6月には8時間に収まる</div>
+  <div class="pp-line" data-note="グラフは全幅。注目する点だけ強調色" data-arrow="end" style="left:1103px;top:442px;width:2px;height:36px;background:var(--accent)"></div>
 </section>

@@ -122,15 +122,25 @@ _SCRIPT = r"""<script>
     big.appendChild(clone);
     var layer = document.createElement('div'); layer.className = 'co-layer';
     var legend = $('.legend', p); legend.innerHTML = '';
-    $$('[data-note]', clone).forEach(function (el, i) {
-      var r = rel(el, clone);
+    var groups = [], seen = {};                                          // 同じ文の data-note は、1 つの見どころとして枠でまとめる
+    $$('[data-note]', clone).forEach(function (el) {
+      var t = el.getAttribute('data-note');
+      if (!Object.prototype.hasOwnProperty.call(seen, t)) { seen[t] = { t: t, els: [] }; groups.push(seen[t]); }
+      seen[t].els.push(el);
+    });
+    groups.forEach(function (g, i) {
+      var x0 = 1e9, y0 = 1e9, x1 = 0, y1 = 0;
+      g.els.forEach(function (el) {
+        var r = rel(el, clone);
+        x0 = Math.min(x0, r.x); y0 = Math.min(y0, r.y); x1 = Math.max(x1, r.x + r.w); y1 = Math.max(y1, r.y + r.h);
+      });
       var d = document.createElement('div'); d.className = 'co';
-      d.style.cssText = 'left:' + r.x + 'px;top:' + r.y + 'px;width:' + r.w + 'px;height:' + r.h + 'px';
+      d.style.cssText = 'left:' + x0 + 'px;top:' + y0 + 'px;width:' + (x1 - x0) + 'px;height:' + (y1 - y0) + 'px';
       d.innerHTML = '<span class="co-n">' + (i + 1) + '</span>';
       layer.appendChild(d);
       var li = document.createElement('li');
       li.innerHTML = '<span class="dot">' + (i + 1) + '</span><span></span>';
-      li.lastChild.textContent = el.getAttribute('data-note');
+      li.lastChild.textContent = g.t;
       legend.appendChild(li);
     });
     big.appendChild(layer);

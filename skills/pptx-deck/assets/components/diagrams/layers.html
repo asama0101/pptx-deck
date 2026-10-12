@@ -1,21 +1,21 @@
 <!-- 用途: システム構成・責任範囲の階層。左に層の名前（色面）、右に中身。上から利用者 → 業務 → 基盤 → 設備。
      差し替える所: 層の名前・中身。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="height:44px">移行するのは基盤の層だけで、業務アプリは変更しない</div>
-  <div class="pp-shape f-soft r" style="left:64px;top:160px;width:220px;height:88px"></div>
-  <div class="pp-text b center" style="left:74px;top:190px;width:200px;height:30px">利用者</div>
-  <div class="pp-shape f-soft r" style="left:296px;top:160px;width:920px;height:88px"></div>
-  <div class="pp-text" style="left:320px;top:184px;width:872px;height:44px">社内の約800人。利用方法は変わらない</div>
-  <div class="pp-shape f-soft r" style="left:64px;top:262px;width:220px;height:88px"></div>
-  <div class="pp-text b center" style="left:74px;top:292px;width:200px;height:30px">業務アプリ</div>
-  <div class="pp-shape f-soft r" style="left:296px;top:262px;width:920px;height:88px"></div>
-  <div class="pp-text" style="left:320px;top:286px;width:872px;height:44px">販売管理・会計など12システム。変更なし</div>
-  <div class="pp-shape f-accent r" style="left:64px;top:364px;width:220px;height:88px"></div>
-  <div class="pp-text t-white b center" style="left:74px;top:394px;width:200px;height:30px">基盤</div>
-  <div class="pp-shape f-light r" style="left:296px;top:364px;width:920px;height:88px"></div>
-  <div class="pp-text b" style="left:320px;top:388px;width:872px;height:44px">サーバー・ストレージ・ネットワーク。今回の移行対象</div>
-  <div class="pp-shape f-soft r" style="left:64px;top:466px;width:220px;height:88px"></div>
-  <div class="pp-text b center" style="left:74px;top:496px;width:200px;height:30px">設備</div>
-  <div class="pp-shape f-soft r" style="left:296px;top:466px;width:920px;height:88px"></div>
-  <div class="pp-text" style="left:320px;top:490px;width:872px;height:44px">データセンター。契約を更新し、そのまま使う</div>
+  <div class="pp-text" data-note="題：範囲を結論で言う" data-role="title" style="height:44px">移行するのは基盤の層だけで、業務アプリは変更しない</div>
+  <div class="pp-shape f-soft r" data-note="左：層の名前（色面）。対象の層だけ基調色" style="left:64px;top:160px;width:220px;height:88px"></div>
+  <div class="pp-text b center" data-note="左：層の名前（色面）。対象の層だけ基調色" style="left:74px;top:190px;width:200px;height:30px">利用者</div>
+  <div class="pp-shape f-soft r" data-note="右：各層の中身。上から利用者 → 業務 → 基盤 → 設備" style="left:296px;top:160px;width:920px;height:88px"></div>
+  <div class="pp-text" data-note="右：各層の中身。上から利用者 → 業務 → 基盤 → 設備" style="left:320px;top:184px;width:872px;height:44px">社内の約800人。利用方法は変わらない</div>
+  <div class="pp-shape f-soft r" data-note="左：層の名前（色面）。対象の層だけ基調色" style="left:64px;top:262px;width:220px;height:88px"></div>
+  <div class="pp-text b center" data-note="左：層の名前（色面）。対象の層だけ基調色" style="left:74px;top:292px;width:200px;height:30px">業務アプリ</div>
+  <div class="pp-shape f-soft r" data-note="右：各層の中身。上から利用者 → 業務 → 基盤 → 設備" style="left:296px;top:262px;width:920px;height:88px"></div>
+  <div class="pp-text" data-note="右：各層の中身。上から利用者 → 業務 → 基盤 → 設備" style="left:320px;top:286px;width:872px;height:44px">販売管理・会計など12システム。変更なし</div>
+  <div class="pp-shape f-accent r" data-note="左：層の名前（色面）。対象の層だけ基調色" style="left:64px;top:364px;width:220px;height:88px"></div>
+  <div class="pp-text t-white b center" data-note="左：層の名前（色面）。対象の層だけ基調色" style="left:74px;top:394px;width:200px;height:30px">基盤</div>
+  <div class="pp-shape f-light r" data-note="右：各層の中身。上から利用者 → 業務 → 基盤 → 設備" style="left:296px;top:364px;width:920px;height:88px"></div>
+  <div class="pp-text b" data-note="右：各層の中身。上から利用者 → 業務 → 基盤 → 設備" style="left:320px;top:388px;width:872px;height:44px">サーバー・ストレージ・ネットワーク。今回の移行対象</div>
+  <div class="pp-shape f-soft r" data-note="左：層の名前（色面）。対象の層だけ基調色" style="left:64px;top:466px;width:220px;height:88px"></div>
+  <div class="pp-text b center" data-note="左：層の名前（色面）。対象の層だけ基調色" style="left:74px;top:496px;width:200px;height:30px">設備</div>
+  <div class="pp-shape f-soft r" data-note="右：各層の中身。上から利用者 → 業務 → 基盤 → 設備" style="left:296px;top:466px;width:920px;height:88px"></div>
+  <div class="pp-text" data-note="右：各層の中身。上から利用者 → 業務 → 基盤 → 設備" style="left:320px;top:490px;width:872px;height:44px">データセンター。契約を更新し、そのまま使う</div>
 </section>

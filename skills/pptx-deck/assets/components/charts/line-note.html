@@ -1,8 +1,8 @@
 <!-- 用途: 時間の推移（折れ線）。系列は 2〜3 本まで。注目する系列を先頭にする。 グラフは左の約 6 割。右の欄には、グラフから分からないこと（前提・原因・条件）だけを書く。所見が長文のときに使う（短いときは吹き出しの版）。
      差し替える所: data-chart・右の欄。 -->
 <section class="slide" data-layout="chart">
-  <div class="pp-text" data-role="title" style="height:44px">障害対応の時間は、導入後6か月で月40時間から8時間に下がる見込み</div>
-  <div class="pp-chart" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40]}],"fmt":"#,##0"}' style="left:64px;top:160px;width:720px;height:440px"></div>
-  <div class="pp-text b" style="left:830px;top:176px;width:386px;height:34px">グラフから分からないこと</div>
-  <div class="pp-text" style="left:830px;top:222px;width:386px;height:300px"><ul><li>現状は繁忙期を含む月平均</li><li>導入後は事業部の試算で、実績ではない</li><li>3月以降の低下は、データ移行の完了が前提</li></ul></div>
+  <div class="pp-text" data-note="題：結論の一文になっているか" data-role="title" style="height:44px">障害対応の時間は、導入後6か月で月40時間から8時間に下がる見込み</div>
+  <div class="pp-chart" data-note="グラフ（左の約 6 割）" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40]}],"fmt":"#,##0"}' style="left:64px;top:160px;width:720px;height:440px"></div>
+  <div class="pp-text b" data-note="右の欄：グラフから分からないこと（前提・原因・条件）だけを書く" style="left:830px;top:176px;width:386px;height:34px">グラフから分からないこと</div>
+  <div class="pp-text" data-note="右の欄：グラフから分からないこと（前提・原因・条件）だけを書く" style="left:830px;top:222px;width:386px;height:300px"><ul><li>現状は繁忙期を含む月平均</li><li>導入後は事業部の試算で、実績ではない</li><li>3月以降の低下は、データ移行の完了が前提</li></ul></div>
 </section>
