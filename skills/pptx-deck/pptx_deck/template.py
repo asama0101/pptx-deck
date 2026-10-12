@@ -9,7 +9,7 @@ from pptx import Presentation
 from pptx.enum.shapes import PP_PLACEHOLDER as T
 
 from . import paths
-from .pptxutil import PX, SLIDE_H_EMU, SLIDE_W_EMU, drop_all_slides
+from .pptxutil import PX, SLIDE_H_EMU, SLIDE_W_EMU, clone_footer_placeholders, drop_all_slides
 from .render import pptx_to_pngs
 
 _COVER = re.compile(r"(title slide|(?<!裏)表紙|cover|タイトル ?スライド)", re.I)
@@ -164,7 +164,9 @@ def render_underlays(path, info: TemplateInfo, out_dir: Path) -> str:
     if info.closing is not None:
         order.append(("closing", info.closing))
     for _, idx in order:
-        prs.slides.add_slide(prs.slide_layouts[idx])
+        layout = prs.slide_layouts[idx]
+        # PPTX にはレイアウトの日付・フッター・ページ番号が出るので、プレビューの下地にも写す
+        clone_footer_placeholders(prs.slides.add_slide(layout), layout)
     work = paths.temp_dir("underlay")
     src = work / "underlay.pptx"
     prs.save(str(src))

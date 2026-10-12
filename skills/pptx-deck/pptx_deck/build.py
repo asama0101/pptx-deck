@@ -1,5 +1,6 @@
 """モデル → PPTX。テンプレートのファイルを土台に、レイアウトの上へ書き出す。"""
 import copy
+import hashlib
 import re
 from pathlib import Path
 from urllib.parse import urlparse
@@ -13,7 +14,7 @@ from pptx.oxml.ns import qn
 from pptx.util import Pt
 
 from . import paths, template
-from .pptxutil import drop_all_slides, emu, rgb, set_run_font
+from .pptxutil import clone_footer_placeholders, drop_all_slides, emu, rgb, set_run_font
 
 ALIGN = {"left": PP_ALIGN.LEFT, "center": PP_ALIGN.CENTER, "right": PP_ALIGN.RIGHT, "justify": PP_ALIGN.JUSTIFY}
 SHAPES = {"rect": MSO_SHAPE.RECTANGLE, "round": MSO_SHAPE.ROUNDED_RECTANGLE,
@@ -71,7 +72,8 @@ def _place(shape, rect):
 
 def add_textbox(slide, el):
     b = el["box"]
-    tb = slide.shapes.add_textbox(emu(b["x"]), emu(b["y"]), emu(b["w"] + 2), emu(max(b["h"], 1)))
+    width = min(b["w"] + 2, 1280 - b["x"])      # 折り返しの誤差で +2px。ただしスライドの右端は越えない
+    tb = slide.shapes.add_textbox(emu(b["x"]), emu(b["y"]), emu(width), emu(max(b["h"], 1)))
     fill_text_frame(tb.text_frame, el["paras"])
 
 
@@ -121,7 +123,8 @@ def rasterize_svg(svg: Path, width_px: float, work_name: str) -> Path:
     import fitz
     out_dir = paths.temp_dir(work_name) / "raster"
     out_dir.mkdir(parents=True, exist_ok=True)
-    out = out_dir / (svg.stem + ".png")
+    tag = hashlib.sha1(str(svg.resolve()).encode("utf-8")).hexdigest()[:8]     # 別のフォルダの同名ファイルと衝突させない
+    out = out_dir / f"{svg.stem}-{tag}.png"
     doc = fitz.open(str(svg))
     page = doc[0]
     zoom = max(1.0, width_px * 3 / page.rect.width)
@@ -192,35 +195,6 @@ def add_table(slide, el):
 
 
 # ---- スライド ----
-def _next_id(slide) -> int:
-    ids = [int(x) for x in slide.shapes._spTree.xpath("//p:cNvPr/@id")]
-    return max(ids + [1]) + 1
-
-
-def _clone_footer_placeholders(slide, layout, footer):
-    for ph in layout.placeholders:
-        if ph.placeholder_format.type not in (T.SLIDE_NUMBER, T.FOOTER):
-            continue
-        el = copy.deepcopy(ph._element)
-        el.xpath(".//p:cNvPr")[0].set("id", str(_next_id(slide)))
-        slide.shapes._spTree.append(el)
-        if footer is not None and ph.placeholder_format.type == T.FOOTER:
-            ts = el.xpath(".//a:t")
-            if ts:
-                ts[0].text = footer
-                for extra in ts[1:]:
-                    extra.text = ""
-            else:
-                p = el.xpath(".//a:p")[0]
-                r = etree.Element(qn("a:r"))
-                etree.SubElement(r, qn("a:t")).text = footer
-                end = p.find(qn("a:endParaRPr"))
-                if end is not None:      # endParaRPr は段落の最後に置く
-                    end.addprevious(r)
-                else:
-                    p.append(r)
-
-
 def _layout_index(info, name):
     if name == "cover":
         return info.cover
@@ -264,7 +238,7 @@ def build(model, template_path, info, palette, out: Path, base_dir: Path,
                    (ph.placeholder_format.type == T.SUBTITLE and "sub" in used)
             if not keep:
                 ph._element.getparent().remove(ph._element)
-        _clone_footer_placeholders(slide, layout, footer)
+        clone_footer_placeholders(slide, layout, footer)
         for el in elements:
             if el.pop("_done", False):
                 continue

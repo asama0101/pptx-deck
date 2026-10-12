@@ -1,3 +1,6 @@
+import copy
+
+from lxml import etree
 from pptx.dml.color import RGBColor
 from pptx.oxml.ns import qn
 from pptx.util import Emu, Pt
@@ -28,6 +31,38 @@ def drop_all_slides(prs) -> None:
         ref.getparent().remove(ref)
     for show in root.findall(qn("p:custShowLst")):
         root.remove(show)
+
+
+def _next_id(slide) -> int:
+    ids = [int(x) for x in slide.shapes._spTree.xpath("//p:cNvPr/@id")]
+    return max(ids + [1]) + 1
+
+
+def clone_footer_placeholders(slide, layout, footer=None) -> None:
+    """レイアウトの日付・フッター・スライド番号のプレースホルダーをスライドに写す（python-pptx は写さない）。
+    footer を渡すと、フッターの文言をそれに差し替える。"""
+    from pptx.enum.shapes import PP_PLACEHOLDER as T
+    for ph in layout.placeholders:
+        if ph.placeholder_format.type not in (T.SLIDE_NUMBER, T.FOOTER, T.DATE):
+            continue
+        el = copy.deepcopy(ph._element)
+        el.xpath(".//p:cNvPr")[0].set("id", str(_next_id(slide)))
+        slide.shapes._spTree.append(el)
+        if footer is not None and ph.placeholder_format.type == T.FOOTER:
+            ts = el.xpath(".//a:t")
+            if ts:
+                ts[0].text = footer
+                for extra in ts[1:]:
+                    extra.text = ""
+            else:
+                p = el.xpath(".//a:p")[0]
+                r = etree.Element(qn("a:r"))
+                etree.SubElement(r, qn("a:t")).text = footer
+                end = p.find(qn("a:endParaRPr"))
+                if end is not None:      # endParaRPr は段落の最後に置く
+                    end.addprevious(r)
+                else:
+                    p.append(r)
 
 
 def set_run_font(run, size_px: float, bold: bool, italic: bool, color_hex: str) -> None:

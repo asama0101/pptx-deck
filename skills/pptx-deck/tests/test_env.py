@@ -33,6 +33,26 @@ def test_font_match_uses_registered_names_not_file_names():
     assert not cli._has_font(["BIZ UDGothic (TrueType)", "Yu Gothic (TrueType)"], "BIZ UDPGothic")
 
 
+def test_venv_health_detects_a_broken_interpreter(home, monkeypatch):
+    py = paths.venv_python()
+    py.parent.mkdir(parents=True)
+    py.write_bytes(b"not an executable")                  # python.exe はあるが動かない（基底の Python が消えた等）
+    assert env.venv_healthy() is False
+    monkeypatch.setattr(paths, "venv_python", lambda: Path(sys.executable))
+    assert env.venv_healthy() is True
+
+
+def test_missing_module_gives_guidance_not_traceback(capsys, monkeypatch):
+    from pptx_deck import cli
+
+    def boom(argv):
+        raise ModuleNotFoundError("No module named 'pptx'", name="pptx")
+    monkeypatch.setattr(cli, "main", boom)
+    assert cli.entry(["build", "x"]) == 3
+    out = capsys.readouterr().out
+    assert "setup --yes" in out and "pptx" in out
+
+
 def _run(args, home):
     e = {**os.environ, "PPTX_DECK_HOME": str(home)}
     return subprocess.run([sys.executable, str(SKILL / "run.py"), *args],

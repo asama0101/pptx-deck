@@ -19,6 +19,15 @@ def _py(code: str) -> subprocess.CompletedProcess:
                           capture_output=True, text=True, timeout=120)
 
 
+def venv_healthy() -> bool:
+    """venv の python.exe が実際に動くか（基底の Python が消えた venv は、ファイルがあっても動かない）。"""
+    try:
+        return subprocess.run([str(paths.venv_python()), "-c", "pass"],
+                              capture_output=True, timeout=60).returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        return False
+
+
 def status() -> dict:
     st = {"venv": paths.venv_python().exists(), "modules": {}, "chromium": False}
     if not st["venv"]:
@@ -47,6 +56,9 @@ def setup(yes: bool) -> int:
     target.parent.mkdir(parents=True, exist_ok=True)
     if not paths.venv_python().exists():
         venv.EnvBuilder(with_pip=True).create(target)
+    elif not venv_healthy():                 # 動かない venv は作り直す（承認済みの場所 %LOCALAPPDATA%\pptx-deck\venv だけ）
+        print(f"仮想環境が壊れています。作り直します: {target}")
+        venv.EnvBuilder(with_pip=True, clear=True).create(target)
     py = str(paths.venv_python())
     req = str(paths.SKILL_DIR / "requirements.txt")
     for cmd in ([py, "-m", "pip", "install", "-r", req],

@@ -46,4 +46,8 @@ def init(workdir, color: str = "navy", template_path=None, force: bool = False) 
     (work / "template.json").write_text(json.dumps({
         "color": base, "template": f"_template/{dst.name}", "info": info.to_dict(), "footer": None,
     }, ensure_ascii=False, indent=2), encoding="utf-8")
-    return {"workdir": str(work), "color": base, "template": str(dst), "notes": list(info.notes)}
+    notes = list(info.notes)
+    stale = [p for p in (work / "slides").iterdir()]
+    if stale:      # 消さない。古い案が variants に混ざるので、利用者に確認してもらう
+        notes.append(f"slides/ に既存のファイルが {len(stale)} 個あります。前の作業の案が混ざるので、不要なら削除してください")
+    return {"workdir": str(work), "color": base, "template": str(dst), "notes": notes}

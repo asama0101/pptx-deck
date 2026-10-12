@@ -34,6 +34,16 @@ def test_init_refuses_non_empty_dir(tmp_path):                # Review Focus 5
     assert (w / "script.md").read_text(encoding="utf-8") == "原稿"      # 触っていない
 
 
+@has_soffice
+def test_force_warns_about_existing_slides(tmp_path):
+    w = tmp_path / "demo"
+    (w / "slides").mkdir(parents=True)
+    (w / "slides" / "03-C.html").write_text("<section class='slide'></section>", encoding="utf-8")
+    r = initdir.init(w, force=True)
+    assert any("slides/" in n and "1" in n for n in r["notes"])       # 古い案が混ざることを知らせる
+    assert (w / "slides" / "03-C.html").exists()                      # 利用者の作業は消さない
+
+
 def test_init_rejects_bad_color(tmp_path):
     with pytest.raises(ValueError):
         initdir.init(tmp_path / "x", color="red")

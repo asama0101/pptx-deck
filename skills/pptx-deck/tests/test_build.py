@@ -153,6 +153,28 @@ def test_table_merge_fill_borders(tmp_path):
     assert "lnB" in t.cell(0, 1)._tc.xml
 
 
+def test_date_placeholder_of_the_layout_is_kept(tmp_path):
+    prs, _ = run([slide("content", [text_el(0, 64, 40, 900, 40, "見出し", role="title", size=28)])], tmp_path)
+    assert T.DATE in [p.placeholder_format.type for p in prs.slides[0].placeholders]
+
+
+def test_textbox_at_the_right_edge_stays_inside_the_slide(tmp_path):
+    from pptx_deck import check
+    el = text_el(1, 1000, 160, 280, 40, "右端まで", size=20)        # 右端がちょうど 1280px
+    build.build([slide("content", [text_el(0, 64, 40, 900, 40, "見出し", role="title", size=28), el])],
+                STANDARD, template.analyze(STANDARD), PAL, tmp_path / "e.pptx", base_dir=tmp_path)
+    assert [v for v in check.check_pptx(tmp_path / "e.pptx") if v["rule"] == "pptxBounds"] == []
+
+
+def test_svg_raster_names_do_not_collide(tmp_path):
+    a, b = tmp_path / "a", tmp_path / "b"
+    a.mkdir(); b.mkdir()
+    svg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>'
+    (a / "icon.svg").write_text(svg)
+    (b / "icon.svg").write_text(svg)
+    assert build.rasterize_svg(a / "icon.svg", 48, "t") != build.rasterize_svg(b / "icon.svg", 48, "t")
+
+
 def test_footer_text_override(tmp_path):
     prs, _ = run([slide("content", [text_el(0, 64, 40, 900, 40, "見出し", role="title", size=28)])],
                  tmp_path, footer="社外秘")

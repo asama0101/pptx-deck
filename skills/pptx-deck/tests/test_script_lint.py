@@ -65,6 +65,13 @@ def test_empty_script():
     assert script_lint.lint("") == ["スライド（## S01 …）がありません"]
 
 
+def test_malformed_slide_headings_are_reported():
+    for bad_heading in ("## S1 背景", "### S02 背景", "##S02 背景", "## s02 背景"):
+        md = OK + f"\n{bad_heading}\n- layout: content\n- 見出し: x\n"
+        got = "\n".join(script_lint.lint(md))
+        assert "見出しの書式" in got and bad_heading in got, bad_heading
+
+
 def test_sample_script_is_valid():
     from pptx_deck import paths
     md = (paths.ASSETS / "sample" / "script.md").read_text(encoding="utf-8")

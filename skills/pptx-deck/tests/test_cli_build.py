@@ -66,6 +66,23 @@ def test_build_stops_on_errors_and_writes_no_pptx(tmp_path, capsys):
     assert not (w / "demo.pptx").exists()
 
 
+def test_build_survives_a_libreoffice_failure(tmp_path, capsys, monkeypatch):
+    import subprocess
+    from pptx_deck import render
+    w = prepare(tmp_path)
+    ans = tmp_path / "ans.md"
+    ans.write_text("## S01\n- 選択: A\n- コメント: \n## S02\n- 選択: A\n- コメント: \n", encoding="utf-8")
+    cli.main(["finalize", str(w), "--answers", str(ans)])
+    capsys.readouterr()
+
+    def fail(*a, **k):
+        raise subprocess.CalledProcessError(1, "soffice")
+    monkeypatch.setattr(render, "pptx_to_pngs", fail)
+    assert cli.main(["build", str(w)]) == 0                         # PPTX は出ている。画像だけ作れなかった
+    out = json.loads(capsys.readouterr().out)
+    assert out["ok"] is True and out["pngs"] == [] and any("画像" in n for n in out["notes"])
+
+
 def test_finalize_reports_all_problems(tmp_path, capsys):
     w = prepare(tmp_path)
     ans = tmp_path / "ans.md"

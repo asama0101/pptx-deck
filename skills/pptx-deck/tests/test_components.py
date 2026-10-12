@@ -46,6 +46,13 @@ def test_component_is_clean_and_buildable(path, work):
     model, info, cfg, violations = check_fragment(path, work)
     assert len(model) == 1
     assert violations == [], violations
+    # 基調色の文字は白地だけ（薄い面や濃い面の上には載せない）
+    accent = theme.derive(cfg["color"]).accent.lstrip("#")
+    for e in model[0]["elements"]:
+        if e["kind"] == "text":
+            for p in e["paras"]:
+                for r in p["runs"]:
+                    assert not ("text" in r and r["color"] == accent and e["bg"] != "FFFFFF"), (e["idx"], e["bg"])
     out = work / f"_c_{path.stem}.pptx"
     build.build(model, work / cfg["template"], info, theme.derive(cfg["color"]), out,
                 base_dir=work, work_name="components")

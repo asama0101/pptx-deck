@@ -1,5 +1,6 @@
 """3 案ページ（variants.html）の生成、回答の解析、最終 HTML（final.html）の統合。"""
 import html as _html
+import json
 import re
 from pathlib import Path
 
@@ -28,7 +29,7 @@ button{font:inherit;font-weight:700;padding:8px 24px;border:0;border-radius:6px;
 
 _SCRIPT = """<script>
 document.getElementById('submit').onclick = function () {
-  var lines = ['---', 'deck: __DECK__', 'round: __ROUND__', '---'];
+  var lines = ['---', 'deck: ' + __DECK__, 'round: __ROUND__', '---'];
   document.querySelectorAll('[data-slide]').forEach(function (sec) {
     var sel = sec.querySelector('input[type=radio]:checked');
     var c = sec.querySelector('textarea').value.replace(/\\r?\\n/g, ' ');
@@ -74,7 +75,8 @@ def assemble(work: Path, round_no: int = 1) -> Path:
             parts.append("</div>")
         parts.append('</div><textarea placeholder="どうしてほしいか（任意）"></textarea></div>')
     parts.append('</div><div class="bar"><button id="submit">送信</button><span id="state"></span></div>')
-    parts.append(_SCRIPT.replace("__DECK__", _html.escape(work.name)).replace("__ROUND__", str(round_no)))
+    deck_js = json.dumps(work.name, ensure_ascii=False).replace("</", "<\\/")      # JS の文字列。</script> でも閉じない
+    parts.append(_SCRIPT.replace("__DECK__", deck_js).replace("__ROUND__", str(round_no)))
     parts.append("</body></html>")
     out = work / "variants.html"
     out.write_text("".join(parts), encoding="utf-8")
@@ -123,5 +125,5 @@ def finalize(work: Path, answers_md: "str | list[str]", allow_comments: bool = F
         raise ValueError("\n".join(problems))
     body = "\n".join(frags[nn][ans[nn]["choice"]] for nn in sorted(frags))
     out = work / "final.html"
-    out.write_text(HEAD.format(title=work.name, extra="") + body + "</body></html>", encoding="utf-8")
+    out.write_text(HEAD.format(title=_html.escape(work.name), extra="") + body + "</body></html>", encoding="utf-8")
     return out

@@ -52,6 +52,7 @@ table.pp-table { border-collapse: collapse; }
 .right  { text-align: right; }
 .b      { font-weight: 700; }
 .num    { font-size: 44px; font-weight: 700; line-height: 1.2; color: var(--accent); }
+.t-dark { color: var(--accent-dark); }          /* 基調色の文字は白地だけ。薄い面の上は濃い基調色（.num と併用） */
 
 /* 罫線（pp-line と併用） */
 .hr { background: var(--line); }

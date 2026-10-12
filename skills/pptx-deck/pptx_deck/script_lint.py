@@ -5,6 +5,7 @@ from . import theme
 
 LAYOUTS = {"cover", "section", "agenda", "content", "diagram", "table", "chart", "closing"}
 _SLIDE = re.compile(r"^## (S\d{2})\s*(.*)$")
+_NEAR_MISS = re.compile(r"^#{2,3}\s*[Ss]\d+")
 _FIELD = re.compile(r"^- ([^:：]+)[:：]\s*(.*)$")
 _ITEM = re.compile(r"^\s+- (.*)$")
 
@@ -48,6 +49,9 @@ def lint(md: str) -> list[str]:
     if not slides:
         return ["スライド（## S01 …）がありません"]
     out = []
+    for line in md.splitlines():     # 見出しの書き損じ（## S1・### S02・##S02・## s02）は、前のスライドに混ざるので先に知らせる
+        if _NEAR_MISS.match(line) and not _SLIDE.match(line):
+            out.append(f"見出しの書式が不正です: {line.strip()!r}（`## S01 名前` の形にしてください）")
     color = _header_color(md)
     if color:
         try:

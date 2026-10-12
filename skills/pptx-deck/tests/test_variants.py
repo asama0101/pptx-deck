@@ -62,6 +62,15 @@ def test_finalize_lists_every_problem(tmp_path):
     assert not (tmp_path / "final.html").exists()
 
 
+def test_work_name_is_escaped_in_html_and_js(tmp_path):
+    work = tmp_path / "a'b&c{x}"                              # Windows で作れるフォルダ名のうち、HTML・JS・format に効く文字
+    make(work, {"01-A": "a1", "01-B": "b1"})
+    page = variants.assemble(work).read_text(encoding="utf-8")
+    assert "'deck: ' + \"a'b&c{x}\"" in page                  # JS の文字列は JSON で書き出す（引用符で壊れない）
+    final = variants.finalize(work, "## S01\n- 選択: A\n- コメント: \n").read_text(encoding="utf-8")
+    assert "<title>a&#x27;b&amp;c{x}</title>" in final
+
+
 def test_merge_answers_later_choice_wins_and_blank_does_not_erase():
     r1 = "## S01\n- 選択: B\n- コメント: \n## S02\n- 選択: A\n- コメント: 色を直して\n"
     r2 = "## S01\n- 選択: \n- コメント: \n## S02\n- 選択: A\n- コメント: \n"       # 2 回目は S02 だけ答えた

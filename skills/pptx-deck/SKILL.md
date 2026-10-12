@@ -32,7 +32,7 @@ description: テーマ・素材・原稿から、コンサルテイストの承�
 - フッターの文言（社外秘など）があれば `build --footer`。
 
 ### 1.2 作業フォルダ
-`python "<skill>/run.py" init "<名前>" --color <プリセット|#RRGGBB> [--template "<パス>"]`。同名のフォルダが空でないときは止まる。**中身を利用者に見せて、上書きしてよいと言われたときだけ `--force`**。`init` の出力の `notes`（テンプレートの代替レイアウト）は利用者に伝える。
+`python "<skill>/run.py" init "<名前>" --color <プリセット|#RRGGBB> [--template "<パス>"]`。同名のフォルダが空でないときは止まる。**中身を利用者に見せて、上書きしてよいと言われたときだけ `--force`**。`init` の出力の `notes`（テンプレートの代替レイアウト、`slides/` に前の作業のファイルが残っている旨）は利用者に伝える。`--force` は既存のファイルを消さない（`theme.css` などを上書きするだけ）ので、古い案が混ざらないよう、不要な `slides/` のファイルは利用者に確認してから削除する。
 
 | 置き場所 | ファイル |
 |---|---|
@@ -73,7 +73,7 @@ description: テーマ・素材・原稿から、コンサルテイストの承�
 - 1 枚 = `<section class="slide" data-layout="…">`（1280×720px）。部品は `pp-text`・`pp-shape`・`pp-line`・`pp-image`・`pp-table`・`pp-chart` だけ。**これ以外のクラスの文字や図は PPTX に出ない**。
 - 位置は `style="left;top;width;height"`（px）。文字には必ず幅を付ける。面と文字は兄弟要素にし、文字の中心を含む面が背景色になる。
 - 文字: `data-role` = `title|lead|body|caption|display`。表紙・裏表紙の題と副題は `data-ph="title|subtitle"`（位置はテンプレート）。箇条書きは `<div class="pp-text"><ul><li>`。
-- 色は `var(--accent)` などの変数だけ。基調色の文字は白地かつ 24px 以上のときだけ。**強調色（`f-emph`・`t-emph`）は 1 スライドに 1 点**（推奨・承認を求める対象）。
+- 色は `var(--accent)` などの変数だけ。基調色の文字は白地かつ 24px 以上のときだけ（薄い面の上の大きな数字は `num t-dark`）。**強調色（`f-emph`・`t-emph`）は 1 スライドに 1 点**（推奨・承認を求める対象）。
 - 本文 14pt（約 19px）以上、注記 10pt（14px）以上。出典は `data-role="caption" data-chrome`、本文領域の下端（`top:calc(var(--area-y) + var(--area-h))`。標準は y 640〜664）。領域が標準より狭いテンプレートでは、出典が上がって本文と重なるので、`overlap` の指摘に従って本文の位置を直す。
 - 画像はアイコン（`icons/<名前>-<accent|emphasis|white|gray>.svg`、`alt` 必須）と利用者の写真だけ。
 - 重ねる図（ベン図など）は、重なる要素の両方に `data-overlap`。

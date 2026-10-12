@@ -3,6 +3,7 @@ import glob
 import json
 import os
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -102,8 +103,9 @@ def cmd_build(args) -> int:
     result["pptx"] = str(out)
     try:
         result["pngs"] = [str(p) for p in render.pptx_to_pngs(out, paths.temp_dir(name) / "render")]
-    except RuntimeError as e:
-        result["notes"].append(str(e))
+    except (RuntimeError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
+        # PPTX は出ている。確認用の画像だけ作れなかったことを知らせる（LibreOffice の失敗・タイムアウト）
+        result["notes"].append(f"確認用の画像を作れませんでした: {e}")
     result["ok"] = not check.errors(violations)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if result["ok"] else 1
@@ -132,6 +134,16 @@ def cmd_lint_script(args) -> int:
     for p in problems:
         print(p)
     return 1 if problems else 0
+
+
+def entry(argv: list[str]) -> int:
+    """python -m pptx_deck の入口。依存が足りない仮想環境では、traceback ではなく案内を出す。"""
+    try:
+        return main(argv)
+    except ModuleNotFoundError as e:
+        print(f"仮想環境に必要なモジュールがありません: {e.name}")
+        print("利用者に「環境を作り直してよいか」を確認し、承認後に `python run.py setup --yes` を実行してください。")
+        return 3
 
 
 def main(argv: list[str]) -> int:

@@ -49,15 +49,27 @@ def test_full_deck_builds(tmp_path, capsys, template_kind):
     assert len(out["pngs"]) == 10
 
 
+ICON_SLIDE = """<section class="slide" data-layout="content">
+<div class="pp-text" data-role="title" style="height:44px">セキュリティ対策は、基盤の層で一括して行う</div>
+<img class="pp-image" data-role="icon" src="icons/shield-accent.svg" alt="盾のアイコン" style="left:64px;top:170px;width:56px;height:56px">
+<div class="pp-text b" style="left:136px;top:180px;width:800px;height:40px">アクセス制御と監査ログを共通化する</div>
+</section>"""
+
+
 def test_no_picture_of_body_text(tmp_path, capsys):
-    """本文を画像にしていない: 画像はアイコン等の小さなものだけ（SPEC 受入条件 4）。"""
+    """本文を画像にしていない: 画像はアイコン等の小さなものだけ（SPEC 受入条件 4）。
+    アイコンの断片を含めて、画像が実際に出ていることも確かめる（検査が空振りしないように）。"""
     w = tmp_path / "deck"
     initdir.init(w, color="navy")
     make_deck(w, ["layouts/decision", "diagrams/compare", "charts/waterfall"])
+    (w / "slides" / "04-A.html").write_text(ICON_SLIDE, encoding="utf-8")
+    (w / "ans.md").write_text("".join(f"## S{i:02d}\n- 選択: A\n- コメント: \n" for i in range(1, 5)), encoding="utf-8")
+    assert cli.main(["finalize", str(w), "--answers", str(w / "ans.md")]) == 0
     capsys.readouterr()
     assert cli.main(["build", str(w)]) == 0
     prs = Presentation(w / "deck.pptx")
-    for s in prs.slides:
-        for sh in s.shapes:
-            if sh.shape_type == 13:
-                assert sh.width * sh.height < prs.slide_width * prs.slide_height * 0.05
+    pictures = [sh for s in prs.slides for sh in s.shapes if sh.shape_type == 13]
+    assert len(pictures) == 1                                    # アイコンが画像として出ている
+    for sh in pictures:
+        assert sh.width * sh.height < prs.slide_width * prs.slide_height * 0.05
+        assert sh._element.nvPicPr.cNvPr.get("descr") == "盾のアイコン"

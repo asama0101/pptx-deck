@@ -159,6 +159,16 @@ def test_render_underlays(tmp_path):
 
 
 @has_soffice
+def test_underlay_shows_the_page_number_like_the_pptx(tmp_path):
+    import fitz
+    info = template.analyze(STANDARD)
+    template.render_underlays(STANDARD, info, tmp_path)
+    pix = fitz.Pixmap(str(tmp_path / "bg-body.png"))
+    dark = [(x, y) for x in range(1150, 1216) for y in range(676, 704) if sum(pix.pixel(x, y)[:3]) < 600]
+    assert dark, "HTML のプレビューにもページ番号が出る（PPTX と見た目をそろえる）"
+
+
+@has_soffice
 def test_pptx_to_pngs_uses_os_temp_and_returns_files(tmp_path):
     prs = template.open_template(STANDARD)
     prs.slides.add_slide(prs.slide_layouts[1])
