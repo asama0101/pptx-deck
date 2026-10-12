@@ -1,0 +1,32 @@
+/* pptx-deck 基本 CSS。1 スライド = 1280×720px（13.33×7.5in）。1px = 0.75pt。 */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #E5E5E5; padding: 24px 0; color: var(--text);
+  font-family: 'BIZ UDPGothic', 'BIZ UDPゴシック', 'BIZ UDGothic', 'Yu Gothic', 'Meiryo', sans-serif;
+}
+.slide {
+  position: relative; width: 1280px; height: 720px; margin: 0 auto 24px; overflow: hidden;
+  background-color: var(--bg); background-size: 1280px 720px; background-repeat: no-repeat;
+}
+.pp-text, .pp-shape, .pp-line, .pp-image, .pp-table, .pp-chart { position: absolute; }
+.pp-text { line-height: 1.5; }
+.pp-text ul { list-style: none; }
+.pp-text li { margin-bottom: 6px; }
+.pp-line { height: 2px; }
+table.pp-table { border-collapse: collapse; }
+
+/* 役割ごとの文字（px。pt = px × 0.75） */
+[data-role="title"]   { font-size: 28px; font-weight: 700; line-height: 1.35; color: var(--text); }
+[data-role="lead"]    { font-size: 22px; color: var(--text); }
+[data-role="body"]    { font-size: 20px; color: var(--text); }
+[data-role="caption"] { font-size: 14px; color: var(--text-sub); }
+[data-role="display"] { font-size: 40px; font-weight: 700; color: var(--text); }
+
+/* テンプレートの位置に合わせる（theme.css の変数） */
+[data-role="title"]:not([data-ph]) { left: var(--title-x); top: var(--title-y); width: var(--title-w); }
+[data-ph="title"]    { left: var(--cover-title-x); top: var(--cover-title-y); width: var(--cover-title-w);
+                       font-size: 40px; font-weight: 700; color: var(--text); }
+.slide[data-layout="closing"] [data-ph="title"] { left: var(--closing-title-x); top: var(--closing-title-y); width: var(--closing-title-w); }
+[data-ph="subtitle"] { left: var(--cover-subtitle-x); top: var(--cover-subtitle-y); width: var(--cover-subtitle-w);
+                       font-size: 22px; color: var(--text-sub); }
+.area { position: absolute; left: var(--area-x); top: var(--area-y); width: var(--area-w); height: var(--area-h); }
