@@ -13,6 +13,17 @@ FONT_PT = 12
 SMALL_STEP = 0.06       # 軸の最大値に対する割合。これ未満の増減は、ラベルを棒の外（下）に出す
 
 
+def _check_axis(axis):
+    """axis の min・max・major は数値だけ。major は正、min は max 未満。"""
+    for k in ("min", "max", "major"):
+        if k in axis and (isinstance(axis[k], bool) or not isinstance(axis[k], (int, float))):
+            raise ValueError(f"axis の {k} は数値で指定してください（{axis[k]!r}）")
+    if "major" in axis and axis["major"] <= 0:
+        raise ValueError(f"axis の major（目盛の間隔）は 0 より大きい数にしてください（{axis['major']}）")
+    if "min" in axis and "max" in axis and axis["min"] >= axis["max"]:
+        raise ValueError(f"axis の min は max より小さくしてください（min={axis['min']}, max={axis['max']}）")
+
+
 def _plain(v: float) -> str:
     """指数表記にしない数字（数値書式の条件とラベルに使う。PowerPoint は 1.02e+07 を解釈できない）。"""
     return f"{v:.6f}".rstrip("0").rstrip(".")
@@ -93,6 +104,7 @@ def add_chart(slide, el, palette):
     value_axis.has_major_gridlines = False
     value_axis.tick_labels.font.size = Pt(FONT_PT)
     axis = spec.get("axis") or {}           # 小グラフを並べるときは、軸の最小・最大・目盛を全パネルで揃える
+    _check_axis(axis)
     if "min" in axis:
         value_axis.minimum_scale = axis["min"]
     if "max" in axis:

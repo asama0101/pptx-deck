@@ -135,3 +135,20 @@ def test_waterfall_large_values_do_not_use_scientific_notation(tmp_path):
 def test_unknown_type_is_an_error(tmp_path):
     with pytest.raises(ValueError, match="radar"):
         built({**BASE, "type": "radar"}, tmp_path)
+
+
+@pytest.mark.parametrize("axis", [
+    {"major": 0}, {"major": -50}, {"major": "150"},
+    {"min": 600, "max": 600}, {"min": 700, "max": 600},
+    {"min": "0"}, {"max": "600"}, {"min": True},
+])
+def test_axis_invalid_values_are_errors(axis, tmp_path):
+    with pytest.raises(ValueError, match="axis"):
+        built({**BASE, "type": "bar", "axis": axis}, tmp_path)
+
+
+@pytest.mark.parametrize("axis", [
+    {"min": 0, "max": 600, "major": 150}, {"min": -100, "max": 100}, {"major": 0.5}, {"max": 10},
+])
+def test_axis_valid_values_pass(axis, tmp_path):
+    built({**BASE, "type": "bar", "axis": axis}, tmp_path)
