@@ -2,12 +2,12 @@
      上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。所見が長いときは -note 版（滝グラフ×打ち手表）を使う。
      差し替える所: 図表タイトル・data-chart・吹き出しの文と位置（グラフの値に合わせて手で直す）・注。 -->
 <section class="slide" data-layout="chart">
-  <div class="pp-text" data-note="題：結論の一文になっているか" data-role="title" style="height:44px">年間の運用費は、保守費の削減で2,000万円から1,200万円に下がる</div>
-  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">運用費の増減の内訳（現状FY2025実績 → 導入後の見込み、年額・万円）</div>
-  <div class="pp-chart" data-overlap data-note="グラフは全幅。減少は濃い灰、合計は灰" data-chart='{"type":"waterfall","categories":["現状","保守費","電力費","監視費","導入後"],"series":[{"name":"運用費","values":[2000,-500,-200,-100,1200]}],"totals":[0,4],"fmt":"#,##0"}' style="left:64px;top:186px;width:1152px;height:400px"></div>
+  <div class="pp-text" data-note="題：結論の一文になっているか" data-role="title" style="height:44px">年間の運用費は、回線費の削減で2,000万円から1,200万円に下がる</div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">運用費の増減の内訳（現状MPLS FY2025実績 → SD-WAN導入後の見込み、年額・万円）</div>
+  <div class="pp-chart" data-overlap data-note="グラフは全幅。減少は濃い灰、合計は灰" data-chart='{"type":"waterfall","categories":["現状","回線費","保守費","監視費","導入後"],"series":[{"name":"運用費","values":[2000,-500,-200,-100,1200]}],"totals":[0,4],"fmt":"#,##0"}' style="left:64px;top:186px;width:1152px;height:400px"></div>
   <div class="pp-shape f-outline" data-overlap data-note="吹き出し：棒と重ならない空きに書く（2 つまで）" style="left:340px;top:400px;width:400px;height:44px"></div>
-  <div class="pp-text b center" data-overlap data-note="吹き出し：棒と重ならない空きに書く（2 つまで）" style="left:348px;top:407px;width:384px;height:30px;font-size:19px">保守費▲500万円が削減の6割</div>
+  <div class="pp-text b center" data-overlap data-note="吹き出し：棒と重ならない空きに書く（2 つまで）" style="left:348px;top:407px;width:384px;height:30px;font-size:19px">回線費▲500万円が削減の6割</div>
   <div class="pp-shape f-outline" data-overlap data-note="吹き出し：棒と重ならない空きに書く（2 つまで）" style="left:760px;top:460px;width:260px;height:44px"></div>
   <div class="pp-text b center" data-overlap data-note="吹き出し：棒と重ならない空きに書く（2 つまで）" style="left:768px;top:467px;width:244px;height:30px;font-size:19px">差額▲800万円（▲40%）</div>
-  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 現状はFY2025実績、導入後は保守契約と電力の見積り（年額・税抜）<br>→ 削減の6割は保守費で、保守契約の条件（年1,200万円の固定）が効果の大半を決める</div>
+  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 現状はFY2025実績、導入後は回線とクラウド管理の見積り（年額・税抜）<br>→ 削減の6割は回線費で、インターネット回線の契約条件（年800万円の固定）が効果の大半を決める</div>
 </section>
