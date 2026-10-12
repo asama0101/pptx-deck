@@ -210,8 +210,13 @@ def _clone_footer_placeholders(slide, layout, footer):
                     extra.text = ""
             else:
                 p = el.xpath(".//a:p")[0]
-                r = etree.SubElement(p, qn("a:r"))
+                r = etree.Element(qn("a:r"))
                 etree.SubElement(r, qn("a:t")).text = footer
+                end = p.find(qn("a:endParaRPr"))
+                if end is not None:      # endParaRPr は段落の最後に置く
+                    end.addprevious(r)
+                else:
+                    p.append(r)
 
 
 def _layout_index(info, name):

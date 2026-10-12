@@ -110,6 +110,20 @@ def _pick(prs, name_re, pred=None):
     return None
 
 
+def _fixed_shapes(layout) -> tuple[Rect, ...]:
+    """本文レイアウトとマスターにある、プレースホルダーでない図形（ロゴ・帯など）。全面の背景と面積 0 の線は除く。"""
+    out = []
+    for shapes in (layout.shapes, layout.slide_master.shapes):
+        for sh in shapes:
+            if sh.is_placeholder or None in (sh.left, sh.top, sh.width, sh.height):
+                continue
+            r = _rect(sh)
+            if r.w * r.h <= 0 or r.w * r.h > 1280 * 720 * 0.5:
+                continue
+            out.append(r)
+    return tuple(out)
+
+
 def analyze(path) -> TemplateInfo:
     prs = open_template(path)
     L = list(prs.slide_layouts)
@@ -131,7 +145,7 @@ def analyze(path) -> TemplateInfo:
     title = _rect(_phs(b, T.TITLE)[0])
     ct = _phs(c, T.CENTER_TITLE, T.TITLE)
     cs = _phs(c, T.SUBTITLE)
-    keepout = tuple(_rect(p) for p in _phs(b, T.SLIDE_NUMBER, T.FOOTER, T.DATE))
+    keepout = tuple(_rect(p) for p in _phs(b, T.SLIDE_NUMBER, T.FOOTER, T.DATE)) + _fixed_shapes(b)
     return TemplateInfo(
         cover=cover, body=body, closing=closing, area=area, title=title,
         cover_title=_rect(ct[0]) if ct else title,

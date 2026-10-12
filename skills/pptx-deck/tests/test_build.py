@@ -157,3 +157,6 @@ def test_footer_text_override(tmp_path):
                  tmp_path, footer="社外秘")
     ft = [p for p in prs.slides[0].placeholders if p.placeholder_format.type == T.FOOTER][0]
     assert ft.text_frame.text == "社外秘"
+    # a:endParaRPr は段落の最後でなければならない（run がその後ろに来ると PowerPoint が修復を求める）
+    p = ft._element.xpath(".//a:p")[0]
+    assert p[-1].tag.endswith("endParaRPr") or not p.xpath("./a:endParaRPr")

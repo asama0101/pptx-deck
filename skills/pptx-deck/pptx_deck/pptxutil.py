@@ -22,6 +22,12 @@ def drop_all_slides(prs) -> None:
     for sld in list(lst):
         prs.part.drop_rel(sld.rId)
         lst.remove(sld)
+    # セクション・目的別スライド ショーが、消したスライドの id を指したままだと PowerPoint が修復を求める
+    root = prs.part._element
+    for ref in list(root.iter("{http://schemas.microsoft.com/office/powerpoint/2010/main}sldId")):
+        ref.getparent().remove(ref)
+    for show in root.findall(qn("p:custShowLst")):
+        root.remove(show)
 
 
 def set_run_font(run, size_px: float, bold: bool, italic: bool, color_hex: str) -> None:

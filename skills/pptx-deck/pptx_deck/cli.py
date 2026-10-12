@@ -9,9 +9,28 @@ from pathlib import Path
 from . import env, paths
 
 
+def _has_font(registered: list[str], family: str) -> bool:
+    return any(family in name for name in registered)
+
+
+def _registered_fonts() -> list[str]:
+    """レジストリの登録名（全員向け・利用者向け）。TTC 内のファミリも登録名に並ぶ。"""
+    import winreg
+    names: list[str] = []
+    for root in (winreg.HKEY_LOCAL_MACHINE, winreg.HKEY_CURRENT_USER):
+        try:
+            with winreg.OpenKey(root, r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts") as k:
+                i = 0
+                while True:
+                    names.append(winreg.EnumValue(k, i)[0])
+                    i += 1
+        except OSError:
+            pass
+    return names
+
+
 def _font_installed() -> bool:
-    fonts = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts")
-    return bool(glob.glob(os.path.join(fonts, "BIZ-UDPGothic*")))
+    return _has_font(_registered_fonts(), "BIZ UDPGothic")
 
 
 def cmd_doctor(args) -> int:

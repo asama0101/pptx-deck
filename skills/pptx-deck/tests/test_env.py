@@ -26,6 +26,13 @@ def test_status_without_venv(home):
     assert st["chromium"] is False
 
 
+def test_font_match_uses_registered_names_not_file_names():
+    from pptx_deck import cli
+    # BIZ UDPGothic は BIZ-UDGothicR.ttc に同梱される。ファイル名ではなく登録名で判定する
+    assert cli._has_font(["Arial (TrueType)", "BIZ UDGothic & BIZ UDPGothic (TrueType)"], "BIZ UDPGothic")
+    assert not cli._has_font(["BIZ UDGothic (TrueType)", "Yu Gothic (TrueType)"], "BIZ UDPGothic")
+
+
 def _run(args, home):
     e = {**os.environ, "PPTX_DECK_HOME": str(home)}
     return subprocess.run([sys.executable, str(SKILL / "run.py"), *args],

@@ -77,6 +77,51 @@ def test_non_169_template_is_rejected(tmp_path):
         template.analyze(src)
 
 
+def test_keepout_includes_logo_shapes_on_layout_and_master(tmp_path):
+    from pptx.oxml import parse_xml
+    from pptx_deck.pptxutil import emu
+
+    def add_rect(shapes, sid, x, y, w, h):
+        shapes._spTree.append(parse_xml(
+            '<p:sp xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" '
+            'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'
+            f'<p:nvSpPr><p:cNvPr id="{sid}" name="logo"/><p:cNvSpPr/><p:nvPr userDrawn="1"/></p:nvSpPr>'
+            f'<p:spPr><a:xfrm><a:off x="{emu(x)}" y="{emu(y)}"/><a:ext cx="{emu(w)}" cy="{emu(h)}"/></a:xfrm>'
+            '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom></p:spPr></p:sp>'))
+
+    src = _as_pptx(STANDARD, tmp_path / "u.pptx")
+    prs = Presentation(src)
+    body = [l for l in prs.slide_layouts if l.name == "本文"][0]
+    add_rect(body.shapes, 901, 1100, 20, 120, 60)                       # ロゴ想定（レイアウト）
+    add_rect(prs.slide_master.shapes, 902, 20, 600, 100, 50)            # ロゴ想定（マスター）
+    add_rect(prs.slide_master.shapes, 903, 0, 0, 1280, 720)             # 全面の背景は除く
+    prs.save(src)
+    info = template.analyze(src)
+    got = [(r.x, r.y, r.w, r.h) for r in info.keepout]
+    assert (1100, 20, 120, 60) in got and (20, 600, 100, 50) in got
+    assert not any(r.w >= 1280 for r in info.keepout)
+
+
+def test_drop_all_slides_clears_section_and_custom_show_refs(tmp_path):
+    from lxml import etree
+    from pptx_deck.pptxutil import drop_all_slides
+    prs = template.open_template(STANDARD)
+    s = prs.slides.add_slide(prs.slide_layouts[1])
+    sid = prs.slides._sldIdLst[0].get("id")
+    P14 = "http://schemas.microsoft.com/office/powerpoint/2010/main"
+    root = prs.part._element
+    root.append(etree.fromstring(
+        '<p:extLst xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">'
+        '<p:ext uri="{521415D9-36F7-43E2-AB2F-B90AF26B5E84}">'
+        f'<p14:sectionLst xmlns:p14="{P14}"><p14:section name="A" id="{{11111111-1111-1111-1111-111111111111}}">'
+        f'<p14:sldIdLst><p14:sldId id="{sid}"/></p14:sldIdLst></p14:section></p14:sectionLst></p:ext></p:extLst>'))
+    drop_all_slides(prs)
+    assert not list(root.iter(f"{{{P14}}}sldId"))                    # 消したスライドの id を残さない
+    out = tmp_path / "x.pptx"
+    prs.save(out)
+    assert len(Presentation(out).slides) == 0
+
+
 def test_info_roundtrip():
     info = template.analyze(STANDARD)
     assert template.TemplateInfo.from_dict(info.to_dict()) == info
