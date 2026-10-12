@@ -1,37 +1,39 @@
-<!-- 用途: 3 案の比較表。項目を行、案を列にする。推奨案の列は、見出しを強調色、各行のセルを強調色の薄い面にする。罫線は行の区切りだけ。
-     差し替える所: 項目・案の名前・値・推奨の列。行数は 5〜6 まで。 -->
+<!-- 用途: 論点と求める決定の一覧表（エグゼクティブサマリ）。「論点｜求める決定｜主要根拠｜詳細参照」の 4 列で、承認を求める論点ごとに、何を決めてほしいかと、その根拠を 1 行に並べる。
+     見出しは灰の小さな文字と罫線、行の区切りは細い罫線だけ。先頭の論点（いちばん重い決定）の行だけ、パネル地の面と左端の基調色の縦線で強調する。番号①〜④は、最終ページ（判断）の決定事項と同じ番号にする。
+     差し替える所: 図表タイトル・論点（番号と名前）・求める決定（数字を入れた一文）・主要根拠（40 字まで）・詳細参照・強調する行。行は 3〜5 行まで。 -->
 <section class="slide" data-layout="table">
-  <div class="pp-text" data-note="題：どの案が良いかを結論で言う" data-role="title" style="height:44px">B案は、費用・期間・リスクの3項目で最も釣り合っている</div>
-  <table class="pp-table" data-note="推奨案の列：見出しは強調色、各行のセルは強調色の薄い面（評価表と同じ形）" style="left:64px;top:160px;width:1152px;font-size:20px">
-    <tr style="height:56px">
-      <td style="font-size:22px;width:252px;padding:12px 16px;background:var(--bg-soft);font-weight:700">項目</td>
-      <td style="font-size:22px;width:300px;padding:12px 16px;background:var(--accent-dark);color:#FFFFFF;font-weight:700">A案: 全面刷新</td>
-      <td style="font-size:22px;width:300px;padding:12px 16px;background:var(--emphasis);color:#FFFFFF;font-weight:700">B案: 段階移行（推奨）</td>
-      <td style="font-size:22px;width:300px;padding:12px 16px;background:var(--accent-dark);color:#FFFFFF;font-weight:700">C案: 現状維持</td>
+  <div class="pp-text" data-note="題：何をどう決めてほしいかを、理由とともに一文で言う" data-role="title" style="height:44px">削減で生む原資が成長投資を支えるため、4件は一括での承認が必要だ</div>
+  <div class="pp-text b" data-note="図表タイトルと見出し：何の一覧か（時点・単位）。見出しは灰の小さな文字" data-role="lead" style="left:64px;top:150px;width:1152px;height:30px;font-size:20px">論点と決定事項の一覧（金額はFY2026〜2030の累計）</div>
+  <div class="pp-text" data-note="図表タイトルと見出し：何の一覧か（時点・単位）。見出しは灰の小さな文字" data-role="caption" style="left:78px;top:192px;width:240px;height:22px">論点</div>
+  <div class="pp-text" data-note="図表タイトルと見出し：何の一覧か（時点・単位）。見出しは灰の小さな文字" data-role="caption" style="left:338px;top:192px;width:320px;height:22px">求める決定</div>
+  <div class="pp-text" data-note="図表タイトルと見出し：何の一覧か（時点・単位）。見出しは灰の小さな文字" data-role="caption" style="left:678px;top:192px;width:380px;height:22px">主要根拠</div>
+  <div class="pp-text" data-note="図表タイトルと見出し：何の一覧か（時点・単位）。見出しは灰の小さな文字" data-role="caption" style="left:1090px;top:192px;width:120px;height:22px">詳細参照</div>
+  <div class="pp-line" style="left:64px;top:217px;width:1152px;height:1px;background:var(--text-sub)"></div>
+  <table class="pp-table" data-note="4 列の表：論点ごとに、求める決定と主要根拠を 1 行に並べる。行の区切りは細い罫線" style="left:64px;top:220px;width:1152px;font-size:19px;line-height:1.4">
+    <tr style="height:98px" data-note="先頭の論点（最も重い決定）：パネル地の面と左端の基調色の縦線で強調する">
+      <td style="width:260px;padding:10px 14px;background:var(--bg-soft);border-left:4px solid var(--accent);border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent-dark)">①</span> 柱A<br>ポートフォリオ再配分</td>
+      <td style="width:340px;padding:10px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">車載・医療・Careへ<br>成長投資420億円を再配分する</td>
+      <td style="width:412px;padding:10px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line)">2030年の市場増は、車載+1.2兆円と<br>医療等+1.0兆円。FA偏重では取り逃す</td>
+      <td style="width:140px;padding:10px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);color:var(--text-sub)">第2章<br>p.8-14</td>
     </tr>
-    <tr style="height:56px">
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700">総費用（5年）</td>
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line)">2.5億円</td>
-      <td style="background:color-mix(in srgb, var(--emphasis) 12%, white);padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700">1.7億円</td>
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line)">2.2億円（保守延長を含む）</td>
+    <tr style="height:98px">
+      <td style="padding:10px 14px;border-left:4px solid #FFFFFF;border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent-dark)">②</span> 柱B<br>コスト構造改革</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--line);font-weight:700">製造原価を▲68億円圧縮し、<br>①の原資にする</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--line)">材料と間接費が製造原価の58%を占め、<br>集中購買と自動化で削れる</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--line);color:var(--text-sub)">第3章<br>p.15-21</td>
     </tr>
-    <tr style="height:56px">
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700">期間</td>
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line)">12か月</td>
-      <td style="background:color-mix(in srgb, var(--emphasis) 12%, white);padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700">6か月</td>
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line)">なし</td>
+    <tr style="height:98px">
+      <td style="padding:10px 14px;border-left:4px solid #FFFFFF;border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent-dark)">③</span> 柱C<br>サービスモデル転換</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--line);font-weight:700">Care売上を、80億円から<br>300億円へ拡大する</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--line)">Care利益率11%は全社6.2%の約1.8倍で、<br>継続収益が①の回収を支える</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--line);color:var(--text-sub)">第4章<br>p.22-28</td>
     </tr>
-    <tr style="height:56px">
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700">業務停止</td>
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line)">3回</td>
-      <td style="background:color-mix(in srgb, var(--emphasis) 12%, white);padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700">1回（夜間）</td>
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line)">保守切れで長期停止の恐れ</td>
-    </tr>
-    <tr style="height:56px">
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700">主なリスク</td>
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line)">工期の遅れ</td>
-      <td style="background:color-mix(in srgb, var(--emphasis) 12%, white);padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700">段階間の整合</td>
-      <td style="padding:12px 16px;border-bottom:1px solid var(--line)">2028年に保守が切れる</td>
+    <tr style="height:98px">
+      <td style="padding:10px 14px;border-left:4px solid #FFFFFF;border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent-dark)">④</span> 柱D<br>組織・プロセス改革</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--line);font-weight:700">階層を7から5に減らし、<br>リードタイムを21日に半減する</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--line)">リードタイム42日のうち実作業は9日。<br>滞留の主因は承認の階層だ</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--line);color:var(--text-sub)">第5章<br>p.29-35</td>
     </tr>
   </table>
+  <div class="pp-text" data-note="番号①〜④は、最終ページの決定事項と同じ番号で回収する" data-role="caption" style="left:64px;top:614px;width:1152px;height:22px">注: 番号①〜④は、最終ページの決定事項（承認対象）と対応する</div>
 </section>

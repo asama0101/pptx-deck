@@ -1,25 +1,68 @@
-<!-- 用途: 判断を求めるスライド（結論・承認依頼）。決めること・期限・推奨を上の帯に、理由を 3 列に、
-     承認いただく内容を強調色の帯 1 つに置く。理由から承認の帯へ矢印をつなぎ、視線を Z の順（左上の題 → 右上の推奨 → 理由 → 右下の承認の帯）に導く。文は左寄せ。強調色はこの帯だけ。
-     差し替える所: 帯の 3 項目・理由 3 つ（数字と一言）・承認の文言。 -->
+<!-- 用途: 判断を求める最終ページ（クロージング決定）。上に「決定事項（承認対象①〜④）」の表（決定事項｜内容・数値目標｜オーナー｜直近アクション）を、要約のページと同じ番号で並べる。
+     下の左に直近スケジュール（3 つの箱を左から右へ。承認する当日だけ強調色で塗り、その後の計画は枠線）、下の右に「投資の考え方」（審議の基準を数字カード 3 枚。白地＋罫線＋上端に基調色の細い帯）。
+     最下部の論点ボックス（パネル地の帯）に、決めてほしいことを「〜の可否」で 1 行に書く。強調色は承認の 1 点（当日の箱）だけ。
+     差し替える所: 決定事項の 4 行（1 行に収める）・スケジュールの 3 つ・数字カードの 3 枚・論点の文。 -->
 <section class="slide" data-layout="content">
-  <div class="pp-text" data-note="題：判断を結論で言う" data-role="title" style="height:44px">B案を採用すれば、現行維持より5年間で5,000万円を削減できる</div>
-  <div class="pp-shape f-light r" data-note="決めること・期限・推奨の 3 項目" style="left:64px;top:150px;width:1152px;height:96px"></div>
-  <div class="pp-text" data-note="決めること・期限・推奨の 3 項目" data-role="caption" style="left:88px;top:158px;width:340px;height:20px;color:var(--text)">決めること</div>
-  <div class="pp-text b" data-note="決めること・期限・推奨の 3 項目" style="left:88px;top:180px;width:340px;height:56px">移行先の案と予算</div>
-  <div class="pp-text" data-note="決めること・期限・推奨の 3 項目" data-role="caption" style="left:480px;top:158px;width:340px;height:20px;color:var(--text)">期限</div>
-  <div class="pp-text b" data-note="決めること・期限・推奨の 3 項目" style="left:480px;top:180px;width:340px;height:56px">11月の経営会議</div>
-  <div class="pp-text" data-note="決めること・期限・推奨の 3 項目" data-role="caption" style="left:872px;top:158px;width:320px;height:20px;color:var(--text)">推奨</div>
-  <div class="pp-text b" data-note="決めること・期限・推奨の 3 項目" style="left:872px;top:180px;width:320px;height:56px">B案（段階移行）</div>
-  <div class="pp-text b" data-note="理由 3 つ（数字と一言）。下の矢印で承認の帯へつなぐ" style="left:64px;top:266px;width:400px;height:30px">理由</div>
-  <div class="pp-text num" data-note="理由 3 つ（数字と一言）。下の矢印で承認の帯へつなぐ" style="left:64px;top:300px;width:360px;height:56px">▲5,000万円</div>
-  <div class="pp-text" data-note="理由 3 つ（数字と一言）。下の矢印で承認の帯へつなぐ" style="left:64px;top:360px;width:360px;height:100px">5年間の総費用が、現行維持（保守延長を含む）より少ない</div>
-  <div class="pp-text num" data-note="理由 3 つ（数字と一言）。下の矢印で承認の帯へつなぐ" style="left:456px;top:300px;width:360px;height:56px">6か月</div>
-  <div class="pp-text" data-note="理由 3 つ（数字と一言）。下の矢印で承認の帯へつなぐ" style="left:456px;top:360px;width:360px;height:100px">A案の12か月より短く、業務への影響が小さい</div>
-  <div class="pp-text num" data-note="理由 3 つ（数字と一言）。下の矢印で承認の帯へつなぐ" style="left:848px;top:300px;width:360px;height:56px">1回</div>
-  <div class="pp-text" data-note="理由 3 つ（数字と一言）。下の矢印で承認の帯へつなぐ" style="left:848px;top:360px;width:360px;height:100px">停止は夜間の1回だけで済む</div>
-  <div class="pp-line" data-arrow="end" style="left:244px;top:470px;width:2px;height:40px;background:var(--accent)"></div>
-  <div class="pp-line" data-arrow="end" style="left:636px;top:470px;width:2px;height:40px;background:var(--accent)"></div>
-  <div class="pp-line" data-arrow="end" style="left:1028px;top:470px;width:2px;height:40px;background:var(--accent)"></div>
-  <div class="pp-shape f-emph r" data-note="承認の文言。強調色はこの帯だけ。読む順は 理由 → 承認" style="left:64px;top:516px;width:1152px;height:100px"></div>
-  <div class="pp-text t-white b" data-note="承認の文言。強調色はこの帯だけ。読む順は 理由 → 承認" style="left:88px;top:530px;width:1104px;height:72px;font-size:22px">ご承認いただきたいこと: B案の採用と、初年度予算1.2億円の確保</div>
+  <div class="pp-text" data-role="title" style="height:44px">4件を一括で承認いただければ、中計は初年度の削減施策から始動できる</div>
+  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">決定事項・直近スケジュール・投資の考え方（FY2026〜2030）</div>
+  <div class="pp-text b t-accent" data-note="決定事項の表：承認対象①〜④を、要約のページと同じ番号で 1 行ずつ並べる" style="left:64px;top:184px;width:600px;height:26px;font-size:19px">決定事項（承認対象①〜④）</div>
+  <div class="pp-text" data-note="決定事項の表：承認対象①〜④を、要約のページと同じ番号で 1 行ずつ並べる" data-role="caption" style="left:76px;top:214px;width:240px;height:20px">決定事項</div>
+  <div class="pp-text" data-note="決定事項の表：承認対象①〜④を、要約のページと同じ番号で 1 行ずつ並べる" data-role="caption" style="left:356px;top:214px;width:380px;height:20px">内容・数値目標</div>
+  <div class="pp-text" data-note="決定事項の表：承認対象①〜④を、要約のページと同じ番号で 1 行ずつ並べる" data-role="caption" style="left:766px;top:214px;width:140px;height:20px">オーナー</div>
+  <div class="pp-text" data-note="決定事項の表：承認対象①〜④を、要約のページと同じ番号で 1 行ずつ並べる" data-role="caption" style="left:926px;top:214px;width:280px;height:20px">直近アクション</div>
+  <div class="pp-line" style="left:64px;top:236px;width:1152px;height:1px;background:var(--text-sub)"></div>
+  <table class="pp-table" data-note="決定事項の表：承認対象①〜④を、要約のページと同じ番号で 1 行ずつ並べる" style="left:64px;top:238px;width:1152px;font-size:19px;line-height:1.4">
+    <tr style="height:42px">
+      <td style="width:280px;padding:6px 12px;border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent)">①</span> ポートフォリオ再配分</td>
+      <td style="width:410px;padding:6px 12px;border-bottom:1px solid var(--line);font-weight:700">成長投資420億円を車載・医療・Careへ</td>
+      <td style="width:160px;padding:6px 12px;border-bottom:1px solid var(--line)">経営企画部</td>
+      <td style="width:302px;padding:6px 12px;border-bottom:1px solid var(--line)">9月の投資委員会で審議</td>
+    </tr>
+    <tr style="height:42px">
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent)">②</span> コスト構造改革</td>
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line);font-weight:700">製造原価▲68億円（指数100→90）</td>
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line)">生産本部</td>
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line)">10月に集中購買へ着手</td>
+    </tr>
+    <tr style="height:42px">
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent)">③</span> サービス転換</td>
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line);font-weight:700">Care売上80→300億円、専任組織の新設</td>
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line)">サービス事業部</td>
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line)">9月に専任組織を設置</td>
+    </tr>
+    <tr style="height:42px">
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent)">④</span> 組織・プロセス改革</td>
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line);font-weight:700">7→5階層、リードタイム42→21日</td>
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line)">業務改革室</td>
+      <td style="padding:6px 12px;border-bottom:1px solid var(--line)">下期に新体制へ移行</td>
+    </tr>
+  </table>
+  <div class="pp-text b t-accent" data-note="直近スケジュール：承認する当日だけ強調色で塗り、その後の計画は枠線" style="left:64px;top:418px;width:552px;height:26px;font-size:19px">直近スケジュール（承認後の進め方）</div>
+  <div class="pp-shape f-emph" data-note="直近スケジュール：承認する当日だけ強調色で塗り、その後の計画は枠線" style="left:64px;top:452px;width:168px;height:84px"></div>
+  <div class="pp-text t-white center" data-note="直近スケジュール：承認する当日だけ強調色で塗り、その後の計画は枠線" style="left:72px;top:466px;width:152px;height:56px;font-size:19px;line-height:1.4"><b>当日 経営会議</b><br>①〜④の承認</div>
+  <div class="pp-line" data-arrow="end" style="left:236px;top:493px;width:16px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-outline" data-note="直近スケジュール：承認する当日だけ強調色で塗り、その後の計画は枠線" style="left:256px;top:452px;width:168px;height:84px"></div>
+  <div class="pp-text center" data-note="直近スケジュール：承認する当日だけ強調色で塗り、その後の計画は枠線" style="left:264px;top:466px;width:152px;height:56px;font-size:19px;line-height:1.4"><b>9月 投資委員会</b><br>柱Aの案件審議</div>
+  <div class="pp-line" data-arrow="end" style="left:428px;top:493px;width:16px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-outline" data-note="直近スケジュール：承認する当日だけ強調色で塗り、その後の計画は枠線" style="left:448px;top:452px;width:168px;height:84px"></div>
+  <div class="pp-text center" data-note="直近スケジュール：承認する当日だけ強調色で塗り、その後の計画は枠線" style="left:456px;top:466px;width:152px;height:56px;font-size:19px;line-height:1.4"><b>10月 経営会議</b><br>実行計画の確定</div>
+  <div class="pp-text" data-note="直近スケジュール：承認する当日だけ強調色で塗り、その後の計画は枠線" data-role="caption" style="left:64px;top:546px;width:552px;height:44px">塗り＝承認する当日、枠線＝計画。11月以降は、四半期ごとに経営会議へ進捗を報告する</div>
+  <div class="pp-text b t-accent" data-note="投資の考え方：審議の基準を数字カード 3 枚で示す（白地＋罫線＋上端の細い帯）" style="left:648px;top:418px;width:568px;height:26px;font-size:19px">投資の考え方（投資委員会の審議基準）</div>
+  <div class="pp-shape f-white" data-note="投資の考え方：審議の基準を数字カード 3 枚で示す（白地＋罫線＋上端の細い帯）" style="left:648px;top:452px;width:176px;height:138px"></div>
+  <div class="pp-shape f-accent" style="left:648px;top:452px;width:176px;height:4px"></div>
+  <div class="pp-text" data-role="caption" style="left:660px;top:464px;width:152px;height:20px">投資総枠</div>
+  <div class="pp-text num" style="left:660px;top:486px;width:152px;height:44px;font-size:34px">600億円</div>
+  <div class="pp-text" data-role="caption" style="left:660px;top:534px;width:152px;height:44px">成長420億円と<br>基盤維持180億円</div>
+  <div class="pp-shape f-white" data-note="投資の考え方：審議の基準を数字カード 3 枚で示す（白地＋罫線＋上端の細い帯）" style="left:844px;top:452px;width:176px;height:138px"></div>
+  <div class="pp-shape f-accent" style="left:844px;top:452px;width:176px;height:4px"></div>
+  <div class="pp-text" data-role="caption" style="left:856px;top:464px;width:152px;height:20px">成長投資の比率</div>
+  <div class="pp-text num" style="left:856px;top:486px;width:152px;height:44px;font-size:34px">70%</div>
+  <div class="pp-text" data-role="caption" style="left:856px;top:534px;width:152px;height:44px">420億円を<br>車載・医療・Careへ</div>
+  <div class="pp-shape f-white" data-note="投資の考え方：審議の基準を数字カード 3 枚で示す（白地＋罫線＋上端の細い帯）" style="left:1040px;top:452px;width:176px;height:138px"></div>
+  <div class="pp-shape f-accent" style="left:1040px;top:452px;width:176px;height:4px"></div>
+  <div class="pp-text" data-role="caption" style="left:1052px;top:464px;width:152px;height:20px">回収基準</div>
+  <div class="pp-text num" style="left:1052px;top:486px;width:152px;height:44px;font-size:34px">5年以内</div>
+  <div class="pp-text" data-role="caption" style="left:1052px;top:534px;width:152px;height:44px">未達の見込みなら<br>撤退を検討する</div>
+  <div class="pp-shape f-soft" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:84px;top:603px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　4件を一括で承認し、9月の投資委員会から着手することの可否</div>
 </section>

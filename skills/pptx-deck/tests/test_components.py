@@ -104,3 +104,16 @@ def test_component_has_review_notes(path):
     notes = re.findall(r'data-note="([^"]*)"', text)
     assert len(set(notes)) >= 2, f"{path.name}: data-note が足りません"
     assert all(n.strip() and "<" not in n and "&quot;" not in n for n in notes)
+
+
+def test_sample_structure_markers():
+    """見本10本の構図を写した断片が、決めた要素を持つ（構図の消し込み）。"""
+    want = {
+        "tables/compare": ["論点", "求める決定"],
+        "layouts/decision": ["決定事項", "投資の考え方"],
+        "charts/waterfall-note": ["打ち手", "削減"],
+    }
+    for rel, words in want.items():
+        text = (COMP / f"{rel}.html").read_text(encoding="utf-8")
+        for w in words:
+            assert w in text, f"{rel}: 「{w}」がありません（見本の構図）"

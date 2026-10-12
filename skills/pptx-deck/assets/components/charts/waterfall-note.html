@@ -1,8 +1,66 @@
-<!-- 用途: 差額の内訳（ウォーターフォール）。最初と最後が合計、間が増減。totals は合計にする位置（0 始まり）。減少は濃い灰、増加は基調色、合計は灰。 グラフは左の約 6 割。右の欄には、グラフから分からないこと（前提・原因・条件）だけを書く。所見が長文のときに使う（短いときは吹き出しの版）。
-     差し替える所: data-chart・右の欄。 -->
+<!-- 用途: 内訳の滝グラフと打ち手表（滝グラフ×打ち手）。左の滝グラフで全体（100）を項目に積み下ろして、どこが大きいかを見せ、右のパネル地の打ち手表で、項目ごとの削減の方向性・現行・削減後・削減幅を並べる。
+     削減幅の棒は pp-shape の幅を値に比例させ（▲1＝20px）、打ち手を絞る項目は、左端の基調色の縦線と濃い棒で示す。表の下の基調色の帯に、合計（100→90）と金額を書く。グラフの全要素に実数ラベルが付く。totals は合計にする位置（0 始まり）。
+     差し替える所: data-chart（内訳の値）・吹き出しの文・打ち手表の 5 行（項目・方向性・現行・削減後・棒の幅と▲値）・合計の帯。 -->
 <section class="slide" data-layout="chart">
-  <div class="pp-text" data-note="題：結論の一文になっているか" data-role="title" style="height:44px">年間の運用費は、保守費の削減で2,000万円から1,200万円に下がる</div>
-  <div class="pp-chart" data-note="グラフ（左の約 6 割）" data-chart='{"type":"waterfall","categories":["現状","保守費","電力費","監視費","導入後"],"series":[{"name":"運用費","values":[2000,-500,-200,-100,1200]}],"totals":[0,4],"fmt":"#,##0"}' style="left:64px;top:160px;width:720px;height:440px"></div>
-  <div class="pp-text b" data-note="右の欄：グラフから分からないこと（前提・原因・条件）だけを書く" style="left:830px;top:176px;width:386px;height:34px">グラフから分からないこと</div>
-  <div class="pp-text" data-note="右の欄：グラフから分からないこと（前提・原因・条件）だけを書く" style="left:830px;top:222px;width:386px;height:300px"><ul><li>保守費の削減は、旧基盤の保守契約の終了による</li><li>電力費・監視費は、新基盤の省電力と自動監視による</li><li>削減は導入から6か月後に出そろう</li></ul></div>
+  <div class="pp-text" data-role="title" style="height:44px">原価の58%を占める材料と間接費に打ち手を絞れば、削減目標の7割が見込める</div>
+  <div class="pp-text b" data-note="滝グラフ：原価の内訳（指数）を積み下ろし、全要素に実数ラベルを付ける" data-role="lead" style="left:64px;top:150px;width:596px;height:28px;font-size:20px">製造原価の内訳（FY2025、原価680億円＝100）</div>
+  <div class="pp-chart" data-overlap data-note="滝グラフ：原価の内訳（指数）を積み下ろし、全要素に実数ラベルを付ける" data-chart='{"type":"waterfall","categories":["製造原価計","材料","加工","組立","物流","間接"],"series":[{"name":"製造原価（指数）","values":[100,-38,-22,-12,-8,-20]}],"totals":[0],"fmt":"0"}' style="left:64px;top:186px;width:596px;height:400px"></div>
+  <div class="pp-shape f-outline" data-overlap data-note="吹き出し：打ち手を絞る2項目の合計（原価の約6割）" style="left:330px;top:228px;width:320px;height:44px"></div>
+  <div class="pp-text b center" data-overlap data-note="吹き出し：打ち手を絞る2項目の合計（原価の約6割）" style="left:338px;top:235px;width:304px;height:30px;font-size:19px">材料＋間接で58（原価の約6割）</div>
+  <div class="pp-text" data-note="滝グラフ：原価の内訳（指数）を積み下ろし、全要素に実数ラベルを付ける" data-role="caption" style="left:64px;top:594px;width:596px;height:42px">注: 指数は、FY2025の製造原価680億円を100とする<br>▲10は、柱Bの削減目標▲68億円に相当する</div>
+  <div class="pp-text b" data-note="打ち手表：削減幅の棒は値に比例。打ち手を絞る項目は、基調色の縦線と濃い棒" data-role="lead" style="left:688px;top:150px;width:528px;height:28px;font-size:20px">打ち手と削減幅（柱B コスト構造改革）</div>
+  <div class="pp-shape f-soft" data-note="打ち手表：削減幅の棒は値に比例。打ち手を絞る項目は、基調色の縦線と濃い棒" style="left:688px;top:186px;width:528px;height:446px"></div>
+  <div class="pp-text" data-role="caption" style="left:710px;top:196px;width:36px;height:22px">項目</div>
+  <div class="pp-text" data-role="caption" style="left:766px;top:196px;width:200px;height:22px">削減の方向性</div>
+  <div class="pp-text" data-role="caption" style="left:976px;top:196px;width:40px;height:22px;text-align:right">現行</div>
+  <div class="pp-text" data-role="caption" style="left:1020px;top:196px;width:42px;height:22px;text-align:right">削減後</div>
+  <div class="pp-text" data-role="caption" style="left:1080px;top:196px;width:120px;height:22px">削減幅</div>
+  <div class="pp-line" style="left:700px;top:221px;width:504px;height:1px;background:var(--text-sub)"></div>
+  <table class="pp-table" style="left:700px;top:224px;width:368px;font-size:19px;line-height:1.4">
+    <tr style="height:54px">
+      <td style="width:60px;padding:6px 6px;border-left:4px solid var(--accent);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">材料</td>
+      <td style="width:216px;padding:6px 6px;border-bottom:1px solid var(--line)">集中購買とVA/VE</td>
+      <td style="width:46px;padding:6px 6px;border-bottom:1px solid var(--line);text-align:right">38</td>
+      <td style="width:46px;padding:6px 6px;border-bottom:1px solid var(--line);text-align:right">34</td>
+    </tr>
+    <tr style="height:54px">
+      <td style="padding:6px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">加工</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line)">段取り替え時間の半減</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line);text-align:right">22</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line);text-align:right">21</td>
+    </tr>
+    <tr style="height:54px">
+      <td style="padding:6px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">組立</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line)">セル生産方式への転換</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line);text-align:right">12</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line);text-align:right">11</td>
+    </tr>
+    <tr style="height:54px">
+      <td style="padding:6px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">物流</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line)">出荷3拠点を1拠点へ</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line);text-align:right">8</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line);text-align:right">7</td>
+    </tr>
+    <tr style="height:54px">
+      <td style="padding:6px 6px;border-left:4px solid var(--accent);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">間接</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line)">生産管理業務の自動化</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line);text-align:right">20</td>
+      <td style="padding:6px 6px;border-bottom:1px solid var(--line);text-align:right">17</td>
+    </tr>
+  </table>
+  <div class="pp-shape f-accent" data-note="打ち手表：削減幅の棒は値に比例。打ち手を絞る項目は、基調色の縦線と濃い棒" style="left:1080px;top:242px;width:80px;height:18px"></div>
+  <div class="pp-text b" style="left:1166px;top:230px;width:44px;height:30px;font-size:19px">▲4</div>
+  <div class="pp-shape f-light" style="left:1080px;top:296px;width:20px;height:18px"></div>
+  <div class="pp-text b" style="left:1106px;top:284px;width:44px;height:30px;font-size:19px">▲1</div>
+  <div class="pp-shape f-light" style="left:1080px;top:350px;width:20px;height:18px"></div>
+  <div class="pp-text b" style="left:1106px;top:338px;width:44px;height:30px;font-size:19px">▲1</div>
+  <div class="pp-shape f-light" style="left:1080px;top:404px;width:20px;height:18px"></div>
+  <div class="pp-text b" style="left:1106px;top:392px;width:44px;height:30px;font-size:19px">▲1</div>
+  <div class="pp-shape f-accent" data-note="打ち手表：削減幅の棒は値に比例。打ち手を絞る項目は、基調色の縦線と濃い棒" style="left:1080px;top:458px;width:60px;height:18px"></div>
+  <div class="pp-text b" style="left:1146px;top:446px;width:44px;height:30px;font-size:19px">▲3</div>
+  <div class="pp-shape f-accent" data-note="合計の帯：削減前後の指数と金額を、基調色の面で締める" style="left:700px;top:504px;width:504px;height:116px"></div>
+  <div class="pp-text t-white b" data-note="合計の帯：削減前後の指数と金額を、基調色の面で締める" style="left:716px;top:514px;width:240px;height:36px;font-size:24px">合計 100 → 90</div>
+  <div class="pp-text t-white b right" data-note="合計の帯：削減前後の指数と金額を、基調色の面で締める" style="left:956px;top:514px;width:232px;height:36px;font-size:24px">▲10%＝▲68億円</div>
+  <div class="pp-line" style="left:716px;top:558px;width:472px;height:1px;background:#FFFFFF"></div>
+  <div class="pp-text t-white" data-note="合計の帯：削減前後の指数と金額を、基調色の面で締める" style="left:716px;top:568px;width:472px;height:30px;font-size:19px">うち材料と間接費で▲7、削減目標の7割</div>
 </section>
