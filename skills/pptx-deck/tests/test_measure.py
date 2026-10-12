@@ -128,3 +128,17 @@ def test_last_line_chars(tmp_path):
               '</section>')
     els = measure.measure(p)[0]["elements"]
     assert els[0]["lastLineChars"] in (1, 2) and els[1]["lastLineChars"] is None
+
+
+def test_dash_is_measured(tmp_path):
+    p = write(tmp_path, """
+<section class="slide" data-layout="content">
+  <div class="pp-line" style="left:100px;top:100px;width:300px;height:0;border-top:2px dashed #1976D2"></div>
+  <div class="pp-line" style="left:100px;top:150px;width:300px;height:0;border-top:3px dotted #B85A0B"></div>
+  <div class="pp-shape" style="left:100px;top:200px;width:100px;height:100px;background:#FFFFFF;border:2px dashed #595959"></div>
+  <div class="pp-line" style="left:100px;top:350px;width:300px;height:2px;background:#595959"></div>
+</section>""")
+    [s] = measure.measure(p)
+    d, o, sh, solid = s["elements"]
+    assert (d["dash"], o["dash"], sh["dash"], solid["dash"]) == ("dash", "sysDot", "dash", None)
+    assert d["fill"]["hex"] == "1976D2" and o["fill"]["hex"] == "B85A0B" and d["w"] == 2

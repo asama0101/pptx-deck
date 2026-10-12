@@ -102,6 +102,8 @@
       return w > 0 && cs['border' + side + 'Style'] !== 'none' && c && c.a > 0 ? { hex: c.hex, w } : null;
     };
 
+    const dashOf = (cs) => cs.borderTopStyle === 'dashed' ? 'dash' : cs.borderTopStyle === 'dotted' ? 'sysDot' : null;
+
     const elements = els.map((el, idx) => {
       const cs = getComputedStyle(el);
       if (el.classList.contains('pp-text')) {
@@ -136,12 +138,17 @@
         e.shape = el.dataset.shape || (radius > 0 ? 'round' : 'rect');
         e.fill = f && f.a > 0 ? f : null;
         e.line = borderOf(cs, 'Top');
+        e.dash = e.line ? dashOf(cs) : null;
         e.radius_px = radius;
         return e;
       }
       if (el.classList.contains('pp-line')) {
         const e = base(el, 'line', idx);
         e.fill = parseColor(cs.backgroundColor) || { hex: '000000', a: 1 };
+        e.dash = dashOf(cs);
+        const bt = borderOf(cs, 'Top');
+        e.w = bt ? bt.w : null;
+        if (e.dash && bt) e.fill = { hex: bt.hex, a: 1 };   // 破線・点線は border-top の色で描かれる
         e.arrow = el.dataset.arrow === 'end';
         e.reverse = el.dataset.dir === 'rev';      // 矢印を逆向き（右→左、下→上）にする
         return e;

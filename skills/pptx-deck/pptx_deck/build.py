@@ -78,6 +78,22 @@ def add_textbox(slide, el):
 
 
 # ---- 図形・線・画像 ----
+def _set_dash(line_fmt, dash):
+    """a:prstDash を a:ln の中のスキーマ順（塗りの後ろ、round/headEnd/tailEnd の前）に置く。"""
+    if not dash:
+        return
+    ln = line_fmt._get_or_add_ln()
+    for old in ln.findall(qn("a:prstDash")):
+        ln.remove(old)
+    d = etree.Element(qn("a:prstDash"))
+    d.set("val", dash)
+    fill = ln.find(qn("a:solidFill"))
+    if fill is not None:
+        fill.addnext(d)
+    else:
+        ln.insert(0, d)
+
+
 def add_shape(slide, el):
     r = el["rect"]
     shp = slide.shapes.add_shape(SHAPES[el["shape"]], emu(r["x"]), emu(r["y"]), emu(r["w"]), emu(r["h"]))
@@ -94,6 +110,7 @@ def add_shape(slide, el):
     if el["line"]:
         shp.line.color.rgb = rgb(el["line"]["hex"])
         shp.line.width = Pt(el["line"]["w"] * 0.75)
+        _set_dash(shp.line, el.get("dash"))
     else:
         shp.line.fill.background()
     shp.shadow.inherit = False
@@ -113,6 +130,7 @@ def add_line(slide, el):
     c = slide.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, emu(x1), emu(y1), emu(x2), emu(y2))
     c.line.color.rgb = rgb(el["fill"]["hex"])
     c.line.width = Pt(max(0.75, th * 0.75))
+    _set_dash(c.line, el.get("dash"))
     if el["arrow"]:
         etree.SubElement(c.line._get_or_add_ln(), qn("a:tailEnd")).set("type", "triangle")
     for ref in c._element.xpath(".//a:effectRef"):      # テーマの効果（影）を参照しない

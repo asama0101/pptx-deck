@@ -183,3 +183,38 @@ def test_footer_text_override(tmp_path):
     # a:endParaRPr は段落の最後でなければならない（run がその後ろに来ると PowerPoint が修復を求める）
     p = ft._element.xpath(".//a:p")[0]
     assert p[-1].tag.endswith("endParaRPr") or not p.xpath("./a:endParaRPr")
+
+
+def test_dashed_line_and_shape_are_written(tmp_path):
+    ln = {"kind": "line", "idx": 1, "rect": {"x": 100, "y": 300, "w": 200, "h": 2}, "role": None, "ph": None,
+          "bg": "FFFFFF", "overlap": False, "chrome": False, "fill": {"hex": "1976D2", "a": 1}, "arrow": True,
+          "dash": "dash"}
+    sh = shape_el(2, 400, 150, 100, 100, "rect", fill="FFFFFF", line={"hex": "595959", "w": 2})
+    sh["dash"] = "sysDot"
+    prs, _ = run([slide("content", [text_el(0, 64, 40, 900, 40, "見出し", role="title", size=28), ln, sh])], tmp_path)
+    cx = [s for s in prs.slides[0].shapes if "Connector" in type(s).__name__][0]
+    ln_el = cx._element.xpath(".//a:ln")[0]
+    tags = [c.tag.split("}")[1] for c in ln_el]
+    assert tags.index("solidFill") < tags.index("prstDash") < tags.index("tailEnd")    # スキーマ順
+    assert ln_el.find("{http://schemas.openxmlformats.org/drawingml/2006/main}prstDash").get("val") == "dash"
+    rect = [s for s in prs.slides[0].shapes if not s.is_placeholder and "Connector" not in type(s).__name__][0]
+    assert 'prstDash val="sysDot"' in rect._element.xml.replace("'", '"')
+
+
+def test_dashed_line_end_to_end(tmp_path):
+    from pptx_deck import measure
+    html = tmp_path / "d.html"
+    html.write_text("""<!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0;padding:0}
+.slide{position:relative;width:1280px;height:720px;background:#FFFFFF}
+.pp-text,.pp-shape,.pp-line{position:absolute}
+.pp-line.dashed{height:0;background:none;border-top:2px dashed #1976D2}
+</style></head><body><section class="slide" data-layout="content">
+<div class="pp-text" data-role="title" style="left:64px;top:40px;width:900px;font-size:28px">見出し</div>
+<div class="pp-line dashed" style="left:100px;top:300px;width:300px"></div>
+</section></body></html>""", encoding="utf-8")
+    model = measure.measure(html)
+    prs, _ = run(model, tmp_path)
+    cx = [s for s in prs.slides[0].shapes if "Connector" in type(s).__name__][0]
+    assert 'prstDash val="dash"' in cx._element.xml.replace("'", '"')
+    assert "1976D2" in cx._element.xml
