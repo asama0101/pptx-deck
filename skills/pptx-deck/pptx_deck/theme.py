@@ -12,6 +12,7 @@ _HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
 class Palette:
     accent: str
     accent_dark: str
+    accent_soft: str
     accent_mid: str
     accent_light: str
     emphasis: str
@@ -83,18 +84,19 @@ def derive(base: str) -> Palette:
     return Palette(
         accent=accent,
         accent_dark=mix(accent, "#000000", 0.35),
-        accent_mid=mix(accent, "#FFFFFF", 0.45),
-        accent_light=mix(accent, "#FFFFFF", 0.88),
+        accent_soft=mix(accent, "#FFFFFF", 0.28),
+        accent_mid=mix(accent, "#FFFFFF", 0.52),
+        accent_light=mix(accent, "#FFFFFF", 0.75),
         emphasis=emphasis,
         text="#1A1A1A",
         text_sub="#595959",
-        line="#BFBFBF",
-        bg_soft="#F2F2F2",
+        line="#D9DEE3",
+        bg_soft="#EEF3F6",
     )
 
 
 def theme_css(p: Palette) -> str:
-    rows = [("accent", p.accent), ("accent-dark", p.accent_dark), ("accent-mid", p.accent_mid),
+    rows = [("accent", p.accent), ("accent-dark", p.accent_dark), ("accent-soft", p.accent_soft), ("accent-mid", p.accent_mid),
             ("accent-light", p.accent_light), ("emphasis", p.emphasis), ("text", p.text),
             ("text-sub", p.text_sub), ("line", p.line), ("bg-soft", p.bg_soft)]
     body = "".join(f"  --{k}: {v};\n" for k, v in rows)

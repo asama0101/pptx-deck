@@ -47,3 +47,20 @@ def test_theme_css_defines_variables():
     for var in ("--accent", "--accent-dark", "--accent-mid", "--accent-light",
                 "--emphasis", "--text", "--text-sub", "--line", "--bg-soft"):
         assert var + ":" in css
+
+
+def test_tints_follow_28_52_75_percent_white():
+    p = theme.derive("#1976D2")
+    assert p.accent == "#1976D2"
+    assert p.accent_soft == theme.mix("#1976D2", "#FFFFFF", 0.28)
+    assert p.accent_mid == theme.mix("#1976D2", "#FFFFFF", 0.52)
+    assert p.accent_light == theme.mix("#1976D2", "#FFFFFF", 0.75)
+
+
+def test_panel_and_rule_colors():
+    p = theme.derive("navy")
+    assert p.bg_soft == "#EEF3F6" and p.line == "#D9DEE3"
+
+
+def test_theme_css_has_accent_soft():
+    assert "--accent-soft:" in theme.theme_css(theme.derive("navy"))

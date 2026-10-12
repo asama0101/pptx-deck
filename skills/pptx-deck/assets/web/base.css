@@ -42,7 +42,7 @@ table.pp-table { border-collapse: collapse; color: var(--text); }
 .f-soft   { background: var(--bg-soft); }
 .f-emph   { background: var(--emphasis); }
 .f-white  { background: #FFFFFF; border: 1px solid var(--line); }
-.r { border-radius: 10px; }
+.r { border-radius: 2px; }
 /* 図形の形（PPTX では本物の楕円・三角形になる。プレビューの近似） */
 .pp-shape[data-shape="ellipse"] { border-radius: 50%; }
 .pp-shape[data-shape="triangle"] { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
@@ -67,3 +67,11 @@ table.pp-table { border-collapse: collapse; color: var(--text); }
 
 /* 罫線（pp-line と併用） */
 .hr { background: var(--line); }
+
+/* 記号文法: 塗り＝実績・自社／枠線のみ＝計画・目標／濃色＝主役・淡色＝文脈 */
+.f-soft2  { background: var(--accent-soft); }
+.f-outline { background: #FFFFFF; border: 1.5px solid var(--accent); }
+/* 実線＝実績・確定／破線＝予測・計画・消える要素／点線＝補助輪郭（pp-line と併用） */
+.pp-line.dashed { background: none; border-top: 2px dashed var(--accent); height: 0; }
+.pp-line.dotted { background: none; border-top: 2px dotted var(--text-sub); height: 0; }
+.pp-shape.dashed { border: 1.5px dashed var(--accent); background: #FFFFFF; }
