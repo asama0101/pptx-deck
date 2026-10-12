@@ -9,7 +9,7 @@ body {
   background-color: var(--bg); background-size: 1280px 720px; background-repeat: no-repeat;
 }
 .pp-text, .pp-shape, .pp-line, .pp-image, .pp-table, .pp-chart { position: absolute; }
-.pp-text { line-height: 1.5; }
+.pp-text { font-size: 20px; line-height: 1.5; color: var(--text); }
 .pp-text ul { list-style: none; }
 .pp-text li { margin-bottom: 6px; }
 .pp-line { height: 2px; }
@@ -30,3 +30,28 @@ table.pp-table { border-collapse: collapse; }
 [data-ph="subtitle"] { left: var(--cover-subtitle-x); top: var(--cover-subtitle-y); width: var(--cover-subtitle-w);
                        font-size: 22px; color: var(--text-sub); }
 .area { position: absolute; left: var(--area-x); top: var(--area-y); width: var(--area-w); height: var(--area-h); }
+
+.pp-text li::before { content: "• "; }          /* プレビューの箇条書きの印（PPTX では本物の箇条書き） */
+
+/* 面の色 */
+.f-accent { background: var(--accent); }
+.f-dark   { background: var(--accent-dark); }
+.f-mid    { background: var(--accent-mid); }
+.f-light  { background: var(--accent-light); }
+.f-soft   { background: var(--bg-soft); }
+.f-emph   { background: var(--emphasis); }
+.f-white  { background: #FFFFFF; border: 1px solid var(--line); }
+.r { border-radius: 10px; }
+
+/* 文字の色・形 */
+.t-white  { color: #FFFFFF; }
+.t-accent { color: var(--accent); }
+.t-emph   { color: var(--emphasis); }
+.t-sub    { color: var(--text-sub); }
+.center { text-align: center; }
+.right  { text-align: right; }
+.b      { font-weight: 700; }
+.num    { font-size: 44px; font-weight: 700; line-height: 1.2; color: var(--accent); }
+
+/* 罫線（pp-line と併用） */
+.hr { background: var(--line); }
