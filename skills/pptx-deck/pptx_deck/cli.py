@@ -126,6 +126,14 @@ def cmd_finalize(args) -> int:
     return 0
 
 
+def cmd_lint_script(args) -> int:
+    from . import script_lint
+    problems = script_lint.lint(Path(args.script).read_text(encoding="utf-8"))
+    for p in problems:
+        print(p)
+    return 1 if problems else 0
+
+
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser(prog="pptx-deck")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -153,5 +161,8 @@ def main(argv: list[str]) -> int:
     p.add_argument("--answers", required=True)
     p.add_argument("--allow-comments", action="store_true")
     p.set_defaults(fn=cmd_finalize)
+    p = sub.add_parser("lint-script")
+    p.add_argument("script")
+    p.set_defaults(fn=cmd_lint_script)
     args = ap.parse_args(argv)
     return args.fn(args)
