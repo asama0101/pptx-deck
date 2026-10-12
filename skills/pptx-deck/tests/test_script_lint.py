@@ -74,12 +74,11 @@ def test_malformed_slide_headings_are_reported():
         assert "見出しの書式" in got and bad_heading in got, bad_heading
 
 
-@pytest.mark.xfail(reason="Task 7 で置き換え")
 def test_sample_script_is_valid():
     from pptx_deck import paths
     md = (paths.ASSETS / "sample" / "script.md").read_text(encoding="utf-8")
     assert script_lint.lint(md) == []
-    assert len(script_lint.parse(md)) == 10
+    assert len(script_lint.parse(md)) == 11
 
 
 BODY = "\n## S02 背景\n- layout: content\n- 章名: なぜか\n- 見出し: {head}\n- 本文:\n  - 要点\n"
