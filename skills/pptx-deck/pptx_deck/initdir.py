@@ -42,6 +42,9 @@ def init(workdir, color: str = "navy", template_path=None, force: bool = False) 
     if preview.exists():
         shutil.copyfile(preview, work / "chart-preview.js")
     _write_icons(work / "icons", palette)
+    design = work / "design.md"
+    if not design.exists():        # 設計図の雛形。--force でも利用者が書いた設計図は上書きしない
+        shutil.copyfile(paths.ASSETS / "sample" / "design.md", design)
     (work / "slides").mkdir(exist_ok=True)
     (work / "template.json").write_text(json.dumps({
         "color": base, "template": f"_template/{dst.name}", "info": info.to_dict(), "footer": None,

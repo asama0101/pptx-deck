@@ -44,6 +44,23 @@ def test_force_warns_about_existing_slides(tmp_path):
     assert (w / "slides" / "03-C.html").exists()                      # 利用者の作業は消さない
 
 
+@has_soffice
+def test_init_copies_design_template(tmp_path):
+    w = tmp_path / "w"
+    initdir.init(w, color="navy")
+    assert (w / "design.md").exists()
+    assert "ガバニングメッセージ" in (w / "design.md").read_text(encoding="utf-8")
+
+
+@has_soffice
+def test_force_keeps_existing_design(tmp_path):
+    w = tmp_path / "w"
+    w.mkdir()
+    (w / "design.md").write_text("利用者の設計図", encoding="utf-8")
+    initdir.init(w, force=True)
+    assert (w / "design.md").read_text(encoding="utf-8") == "利用者の設計図"   # 利用者の作業は上書きしない
+
+
 def test_init_rejects_bad_color(tmp_path):
     with pytest.raises(ValueError):
         initdir.init(tmp_path / "x", color="red")
