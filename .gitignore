@@ -2,3 +2,7 @@ node_modules/
 deck-work/
 __pycache__/
 *.log
+.venv/
+.pytest_cache/
+.superpowers/
+.claude/worktrees/
