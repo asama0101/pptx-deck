@@ -1,4 +1,5 @@
 """体裁の検査（最小限）: はみ出し・重なり・文字サイズの下限・コントラスト・画像の使い方。"""
+import re
 from pathlib import Path
 
 from . import theme
@@ -9,6 +10,9 @@ MIN_PT_DEFAULT, MIN_PT_SMALL = 14, 10          # 本文 / 注記（role=caption|
 LARGE_PX = 24                                  # 24px(18pt) 以上は大きい文字（3:1）
 BODY_IMAGE_RATIO = 0.4
 OVERLAP_MIN_AREA = 4
+AREA_BOTTOM_GAP = 120                          # 本文の下端が領域下端よりこれ以上上なら空白帯
+SAME_WORD_MIN = 6                              # 同じ文言の重複を数える最小字数
+_DASH = re.compile("[—―─]")
 
 
 def _v(rule, slide, message, severity="error"):
@@ -43,6 +47,29 @@ def check_model(model, info: TemplateInfo):
         has_title = any(e["kind"] == "text" and (e.get("role") == "title" or e.get("ph") == "title") for e in els)
         if not has_title and s["layout"] != "closing":
             out.append(_v("titleMissing", n, "タイトル（data-role=\"title\" または data-ph=\"title\"）がありません"))
+        texts = []
+        for e in els:
+            if e["kind"] == "text":
+                t = "".join(r.get("text", "") for p in e["paras"] for r in p["runs"]).strip()
+                texts.append((e, t))
+                if _DASH.search(t):
+                    out.append(_v("dash", n, f"text#{e['idx']}: ダッシュ（—）を使わないでください", "warning"))
+                if e.get("lastLineChars") is not None and e["lastLineChars"] <= 2:
+                    out.append(_v("orphanLine", n, f"text#{e['idx']}: 最終行が {e['lastLineChars']} 字だけです。幅か文を直してください", "warning"))
+        seen = {}
+        for e, t in texts:
+            if len(t) >= SAME_WORD_MIN and not e.get("chrome"):
+                seen.setdefault(t, []).append(e["idx"])
+        for t, idxs in seen.items():
+            if len(idxs) > 1:
+                out.append(_v("sameWord", n, f"同じ文言「{t[:12]}」が 1 枚に {len(idxs)} 回あります。軸・見出しにくくり出してください", "warning"))
+        if s["layout"] in ("content", "diagram", "table", "chart"):
+            body = [e for e in els if not e.get("chrome") and not e.get("ph") and e.get("role") != "title" and e["kind"] != "line"]
+            if body:
+                bottom = max(_r(e)["y"] + _r(e)["h"] for e in body)
+                area_bottom = max((z["y"] for z in keepout), default=SLIDE_H)
+                if bottom < area_bottom - AREA_BOTTOM_GAP:
+                    out.append(_v("emptyBand", n, f"本文が下端（y {area_bottom}）の手前 {area_bottom - bottom:.0f}px で終わっています。無所属の空白帯を残さない", "warning"))
         for e in els:
             k, rect = e["kind"], _r(e)
             label = f"{k}#{e['idx']}"

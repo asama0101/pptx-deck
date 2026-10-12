@@ -16,9 +16,9 @@ COVER = """<section class="slide" data-layout="cover">
 
 CONTENT = """<section class="slide" data-layout="content">
 <div class="pp-text" data-role="title" style="height:44px">B案を採用し、年間5,800万円を削減する</div>
-<div class="pp-shape" style="left:64px;top:160px;width:540px;height:300px;background:var(--accent-light)"></div>
+<div class="pp-shape" style="left:64px;top:160px;width:540px;height:460px;background:var(--accent-light)"></div>
 <div class="pp-text" data-role="body" style="left:88px;top:184px;width:492px"><ul><li>初期費用は3案で最小</li><li>運用は既存チームで可能</li></ul></div>
-<div class="pp-chart" data-chart='{"type":"bar","categories":["現行","B案"],"series":[{"name":"費用","values":[120,62]}],"highlight":1}' style="left:660px;top:160px;width:540px;height:300px"></div>
+<div class="pp-chart" data-chart='{"type":"bar","categories":["現行","B案"],"series":[{"name":"費用","values":[120,62]}],"highlight":1}' style="left:660px;top:160px;width:540px;height:460px"></div>
 <div class="pp-text" data-role="caption" data-chrome style="left:64px;top:640px;width:700px;height:24px">出典: 社内試算（2026年9月）</div>
 </section>"""
 

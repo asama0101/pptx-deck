@@ -119,3 +119,12 @@ def test_chart_and_image(tmp_path):
     ch, im = s["elements"]
     assert ch["chart"]["type"] == "bar"
     assert im["alt"] == "アイコン" and im["src"].startswith("file:///") and im["src"].endswith("i.svg")
+
+
+def test_last_line_chars(tmp_path):
+    p = write(tmp_path, '<section class="slide" data-layout="content">'
+              '<div class="pp-text" style="left:64px;top:160px;width:200px;font-size:20px">あいうえおかきくけこさ</div>'
+              '<div class="pp-text" style="left:64px;top:300px;width:600px;font-size:20px">一行だけ</div>'
+              '</section>')
+    els = measure.measure(p)[0]["elements"]
+    assert els[0]["lastLineChars"] in (1, 2) and els[1]["lastLineChars"] is None

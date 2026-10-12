@@ -114,6 +114,19 @@
         e.box = { x: e.rect.x + padL, y: crr.y, w: e.rect.w - padL - padR, h: crr.h };
         e.overflow = crr.y + crr.h > e.rect.y + e.rect.h + 2 || crr.x + crr.w > e.rect.x + e.rect.w + 2;
         e.paras = parasOf(el);
+        const tn = []; const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        for (let n = w.nextNode(); n; n = w.nextNode()) if (n.textContent.trim()) tn.push(n);
+        e.lastLineChars = null;
+        if (tn.length) {
+          const last = tn[tn.length - 1], r2 = document.createRange();
+          const total = last.textContent.length, rows = new Map();
+          for (let i = 0; i < total; i++) {
+            r2.setStart(last, i); r2.setEnd(last, i + 1);
+            const b = r2.getBoundingClientRect();
+            if (b.width > 0) rows.set(Math.round(b.top), (rows.get(Math.round(b.top)) || 0) + 1);
+          }
+          if (rows.size > 1) e.lastLineChars = rows.get([...rows.keys()].sort((a, b) => a - b).pop());
+        }
         return e;
       }
       if (el.classList.contains('pp-shape')) {
