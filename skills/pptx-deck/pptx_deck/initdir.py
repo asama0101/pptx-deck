@@ -34,7 +34,9 @@ def init(workdir, color: str = "navy", template_path=None, force: bool = False) 
     dst = tdir / f"template{src.suffix.lower()}"
     shutil.copyfile(src, dst)
     bg = template.render_underlays(dst, info, tdir)
-    (work / "theme.css").write_text(theme.theme_css(palette) + template.layout_css(info, bg), encoding="utf-8")
+    layout_bg = template.underlay_colors(tdir, info)
+    (work / "theme.css").write_text(theme.theme_css(palette) + template.layout_css(info, bg, layout_bg),
+                                    encoding="utf-8")
     shutil.copyfile(paths.ASSETS / "web" / "base.css", work / "base.css")
     preview = paths.ASSETS / "web" / "chart-preview.js"
     if preview.exists():

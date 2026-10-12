@@ -1,5 +1,7 @@
 """グラフ指定 → PowerPoint のネイティブグラフ。色は配色（Palette）から取る。"""
+from lxml import etree
 from pptx.chart.data import CategoryChartData
+from pptx.oxml.ns import qn
 from pptx.enum.chart import XL_CHART_TYPE as C, XL_LEGEND_POSITION
 from pptx.util import Pt
 
@@ -57,6 +59,10 @@ def add_chart(slide, el, palette):
     chart = gf.chart
     chart.font.size = Pt(FONT_PT)
     chart.font.name = FONT
+    latin = chart.font._element.find(qn("a:latin"))
+    ea = etree.Element(qn("a:ea"))
+    ea.set("typeface", FONT)
+    latin.addnext(ea)             # 日本語は a:ea の書体で描かれる
     colors = _series_colors(palette)
     fmt = spec.get("fmt", "#,##0")
     plot = chart.plots[0]

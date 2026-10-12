@@ -156,8 +156,6 @@ def analyze(path) -> TemplateInfo:
 
 def render_underlays(path, info: TemplateInfo, out_dir: Path) -> str:
     """表紙・本文・裏表紙の下地（背景・ロゴ・ヘッダー・フッター）を画像にする。本文の下地色を返す。"""
-    import fitz
-
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     prs = open_template(path)
@@ -175,14 +173,28 @@ def render_underlays(path, info: TemplateInfo, out_dir: Path) -> str:
         (out_dir / f"bg-{name}.png").write_bytes(png.read_bytes())
     if info.closing is None:
         (out_dir / "bg-closing.png").write_bytes((out_dir / "bg-body.png").read_bytes())
-    pix = fitz.Pixmap(str(out_dir / "bg-body.png"))
-    px = min(int(info.area.x) + 8, pix.width - 1)
-    py = min(int(info.area.y) + 8, pix.height - 1)
+    return underlay_colors(out_dir, info)["body"]
+
+
+def _sample(png: Path, rect: Rect) -> str:
+    import fitz
+
+    pix = fitz.Pixmap(str(png))
+    px = min(int(rect.x) + 8, pix.width - 1)
+    py = min(int(rect.y) + 8, pix.height - 1)
     r, g, b = pix.pixel(px, py)[:3]
     return "#%02X%02X%02X" % (r, g, b)
 
 
-def layout_css(info: TemplateInfo, bg_hex: str) -> str:
+def underlay_colors(out_dir: Path, info: TemplateInfo) -> dict[str, str]:
+    """各レイアウトの下地色。文字を置く位置（本文の領域・表紙と裏表紙の題）の 1 点で測る。"""
+    out_dir = Path(out_dir)
+    return {"cover": _sample(out_dir / "bg-cover.png", info.cover_title),
+            "body": _sample(out_dir / "bg-body.png", info.area),
+            "closing": _sample(out_dir / "bg-closing.png", info.closing_title)}
+
+
+def layout_css(info: TemplateInfo, bg_hex: str, layout_bg: dict[str, str] | None = None) -> str:
     def v(prefix, r: Rect):
         return (f"  --{prefix}-x: {r.x:g}px;\n  --{prefix}-y: {r.y:g}px;\n"
                 f"  --{prefix}-w: {r.w:g}px;\n  --{prefix}-h: {r.h:g}px;\n")
@@ -191,6 +203,9 @@ def layout_css(info: TemplateInfo, bg_hex: str) -> str:
     if info.cover_subtitle:
         root += v("cover-subtitle", info.cover_subtitle)
     root += "}\n"
+    for name in ("cover", "closing"):       # 表紙・裏表紙の下地が本文と違う色でも、文字色の検査が合うようにする
+        if layout_bg and layout_bg.get(name) and layout_bg[name] != bg_hex:
+            root += f'.slide[data-layout="{name}"] {{ --bg: {layout_bg[name]}; }}\n'
     root += (".slide[data-layout=\"cover\"] { background-image: url(_template/bg-cover.png); }\n"
              ".slide[data-layout=\"closing\"] { background-image: url(_template/bg-closing.png); }\n"
              ".slide:not([data-layout=\"cover\"]):not([data-layout=\"closing\"]) "

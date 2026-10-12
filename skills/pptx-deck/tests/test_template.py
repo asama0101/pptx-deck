@@ -135,6 +135,20 @@ def test_layout_css_has_area_and_backgrounds():
         assert token in css
 
 
+def test_layout_css_sets_background_per_layout():
+    info = template.analyze(STANDARD)
+    css = template.layout_css(info, "#FFFFFF", {"cover": "#101820", "closing": "#202830"})
+    assert '.slide[data-layout="cover"] { --bg: #101820; }' in css
+    assert '.slide[data-layout="closing"] { --bg: #202830; }' in css
+
+
+@has_soffice
+def test_underlay_colors_are_sampled_per_layout(tmp_path):
+    info = template.analyze(STANDARD)
+    template.render_underlays(STANDARD, info, tmp_path)
+    assert template.underlay_colors(tmp_path, info) == {"cover": "#FFFFFF", "body": "#FFFFFF", "closing": "#FFFFFF"}
+
+
 @has_soffice
 def test_render_underlays(tmp_path):
     info = template.analyze(STANDARD)

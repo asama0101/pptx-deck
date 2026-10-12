@@ -57,6 +57,12 @@ def test_fonts_are_at_least_10pt_and_biz(tmp_path):
     assert ch.font.size.pt >= 10 and ch.font.name == "BIZ UDPゴシック"
 
 
+def test_chart_font_sets_east_asian_face(tmp_path):
+    ch = built({**BASE, "type": "bar"}, tmp_path)
+    # 日本語の文字は a:ea の書体で描かれる。a:latin だけだとテーマの書体に落ちる
+    assert 'a:ea typeface="BIZ UDPゴシック"' in ch._chartSpace.xml.replace("'", '"')
+
+
 def test_waterfall_series():
     d = charts.waterfall_series([100, 20, -30, 90], [0, 3])
     assert d["base"] == [0, 100, 90, 0] and d["up"] == [0, 20, 0, 0]
