@@ -117,9 +117,9 @@ def cmd_variants(args) -> int:
 
 def cmd_finalize(args) -> int:
     from . import variants
-    md = Path(args.answers).read_text(encoding="utf-8")
+    mds = [Path(p).read_text(encoding="utf-8") for p in args.answers]     # 回ごとの回答を順に重ねる
     try:
-        print(variants.finalize(Path(args.workdir), md, allow_comments=args.allow_comments))
+        print(variants.finalize(Path(args.workdir), mds, allow_comments=args.allow_comments))
     except ValueError as e:
         print(f"エラー:\n{e}", file=sys.stderr)
         return 2
@@ -158,7 +158,8 @@ def main(argv: list[str]) -> int:
     p.set_defaults(fn=cmd_variants)
     p = sub.add_parser("finalize")
     p.add_argument("workdir")
-    p.add_argument("--answers", required=True)
+    p.add_argument("--answers", required=True, action="append",
+                   help="回答の Markdown。回ごとに複数回指定できる（後の回答が前の回答を上書きする）")
     p.add_argument("--allow-comments", action="store_true")
     p.set_defaults(fn=cmd_finalize)
     p = sub.add_parser("lint-script")

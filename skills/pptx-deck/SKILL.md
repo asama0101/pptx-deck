@@ -58,8 +58,8 @@ description: テーマ・素材・原稿から、コンサルテイストの承�
    `() => new Promise(res => { const t0 = Date.now(); const id = setInterval(() => { if (window.__submitted || Date.now() - t0 > 100000) { clearInterval(id); res({ submitted: !!window.__submitted, md: window.__answersMd }); } }, 500); })`
 
 5. `submitted` が true なら、`md` を `<名前>/answers-N.md` に書く（N は何回目か）。
-6. **コメントがあるスライドだけ**、選ばれた案を直して 1 案にし（`NN-A.html` を上書き、`NN-B/C` は削除）、`variants --round N+1` で再提示する（「採用／要修正」の選択になる）。別案の希望があるときだけ 3 案に戻す。コメントが未反映のうちは `finalize` が止まる。
-7. すべて決まったら `python "<skill>/run.py" finalize "<名前>" --answers "<名前>/answers-N.md"` → `final.html`。
+6. **コメントがあるスライドだけ**、選ばれた案を直して 1 案にし（`NN-A.html` を上書き、`NN-B/C` は削除）、`variants --round N+1` で再提示する（「採用／要修正」の選択になる）。ページには全スライドが出るが、**利用者には直したスライドだけ答えてもらう**（ほかは前回の選択のまま。未回答でよい）。別案の希望があるときだけ 3 案に戻す。コメントが未反映のうちは `finalize` が止まる。
+7. すべて決まったら、これまでの回答を**回の順に全部**渡す: `python "<skill>/run.py" finalize "<名前>" --answers "<名前>/answers-1.md" --answers "<名前>/answers-2.md"` → `final.html`。後の回答が前の回答を上書きし、選択が空のスライドは前の回答を消さない。
 
 ### 型の一覧（`assets/components/`）
 - レイアウト: `cover`（表紙）・`section`（章扉）・`agenda`（目次）・`decision`（判断・承認依頼）・`closing`（裏表紙）
@@ -74,7 +74,7 @@ description: テーマ・素材・原稿から、コンサルテイストの承�
 - 位置は `style="left;top;width;height"`（px）。文字には必ず幅を付ける。面と文字は兄弟要素にし、文字の中心を含む面が背景色になる。
 - 文字: `data-role` = `title|lead|body|caption|display`。表紙・裏表紙の題と副題は `data-ph="title|subtitle"`（位置はテンプレート）。箇条書きは `<div class="pp-text"><ul><li>`。
 - 色は `var(--accent)` などの変数だけ。基調色の文字は白地かつ 24px 以上のときだけ。**強調色（`f-emph`・`t-emph`）は 1 スライドに 1 点**（推奨・承認を求める対象）。
-- 本文 14pt（約 19px）以上、注記 10pt（14px）以上。出典は `data-role="caption" data-chrome`、y 640〜664。
+- 本文 14pt（約 19px）以上、注記 10pt（14px）以上。出典は `data-role="caption" data-chrome`、本文領域の下端（`top:calc(var(--area-y) + var(--area-h))`。標準は y 640〜664）。領域が標準より狭いテンプレートでは、出典が上がって本文と重なるので、`overlap` の指摘に従って本文の位置を直す。
 - 画像はアイコン（`icons/<名前>-<accent|emphasis|white|gray>.svg`、`alt` 必須）と利用者の写真だけ。
 - 重ねる図（ベン図など）は、重なる要素の両方に `data-overlap`。
 - グラフ: `data-chart='{"type":"bar|barh|line|pie|stacked|stacked100|waterfall","categories":[…],"series":[{"name":"…","values":[…]}],"highlight":番号,"fmt":"#,##0","totals":[…]}'`。ブラウザのプレビューは近似で、実際は PowerPoint のグラフになる。

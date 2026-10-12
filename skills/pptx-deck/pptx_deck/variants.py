@@ -96,10 +96,21 @@ def parse_answers(md: str) -> dict[str, dict]:
     return out
 
 
-def finalize(work: Path, answers_md: str, allow_comments: bool = False) -> Path:
+def merge_answers(mds: list[str]) -> dict[str, dict]:
+    """複数回の回答を順に重ねる。選択が入っているスライドだけ、後の回答で置き換える。
+    2 回目以降に答えなかったスライド（選択が空）は、前の回答を消さない。"""
+    out: dict[str, dict] = {}
+    for md in mds:
+        for nn, a in parse_answers(md).items():
+            if a["choice"] or nn not in out:
+                out[nn] = a
+    return out
+
+
+def finalize(work: Path, answers_md: "str | list[str]", allow_comments: bool = False) -> Path:
     work = Path(work)
     frags = collect(work)
-    ans = parse_answers(answers_md)
+    ans = merge_answers([answers_md] if isinstance(answers_md, str) else list(answers_md))
     problems = []
     for nn in sorted(frags):
         a = ans.get(nn)

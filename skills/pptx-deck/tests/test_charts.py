@@ -110,6 +110,16 @@ def test_waterfall_small_step_label_moves_out_of_the_thin_bar(tmp_path):
     assert "[>=" in s[2].data_labels.number_format                  # 小さい値は棒の中のラベルを出さない
 
 
+def test_waterfall_large_values_do_not_use_scientific_notation(tmp_path):
+    # 円単位の大きな値でも、数値書式に 1.02e+07 のような指数表記を入れない（PowerPoint が解釈できない）
+    ch = built({"type": "waterfall", "categories": ["現状", "保守費", "電力費", "導入後"],
+                "series": [{"name": "運用費", "values": [170000000, -9000000, -1000000, 160000000]}],
+                "totals": [0, 3], "fmt": "0"}, tmp_path)
+    s = list(ch.plots[0].series)
+    assert "e+" not in s[1].data_labels.number_format
+    assert "e+" not in s[0].points[2].data_label.text_frame.text and s[0].points[2].data_label.text_frame.text == "1000000"
+
+
 def test_unknown_type_is_an_error(tmp_path):
     with pytest.raises(ValueError, match="radar"):
         built({**BASE, "type": "radar"}, tmp_path)

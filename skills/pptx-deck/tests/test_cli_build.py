@@ -75,6 +75,17 @@ def test_finalize_reports_all_problems(tmp_path, capsys):
     assert "S01" in err and "S02" in err
 
 
+def test_finalize_merges_several_answer_files(tmp_path, capsys):
+    w = prepare(tmp_path)
+    a1, a2 = tmp_path / "a1.md", tmp_path / "a2.md"
+    a1.write_text("## S01\n- 選択: A\n- コメント: \n## S02\n- 選択: B\n- コメント: 直して\n", encoding="utf-8")
+    a2.write_text("## S01\n- 選択: \n- コメント: \n## S02\n- 選択: A\n- コメント: \n", encoding="utf-8")
+    assert cli.main(["finalize", str(w), "--answers", str(a1)]) == 2          # コメント未反映で止まる
+    capsys.readouterr()
+    assert cli.main(["finalize", str(w), "--answers", str(a1), "--answers", str(a2)]) == 0
+    assert (w / "final.html").exists()
+
+
 def test_check_command(tmp_path, capsys):
     w = prepare(tmp_path)
     ans = tmp_path / "ans.md"

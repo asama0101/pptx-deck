@@ -13,6 +13,11 @@ FONT_PT = 12
 SMALL_STEP = 0.06       # 軸の最大値に対する割合。これ未満の増減は、ラベルを棒の外（下）に出す
 
 
+def _plain(v: float) -> str:
+    """指数表記にしない数字（数値書式の条件とラベルに使う。PowerPoint は 1.02e+07 を解釈できない）。"""
+    return f"{v:.6f}".rstrip("0").rstrip(".")
+
+
 def waterfall_series(values, totals):
     n = len(values)
     totals = set(totals if totals is not None else [0, n - 1])
@@ -104,7 +109,7 @@ def add_chart(slide, el, palette):
         for s in (s_up, s_down, s_tot):
             dl = s.data_labels
             dl.show_value = True
-            dl.number_format = f'[>={threshold:g}]{fmt};""'
+            dl.number_format = f'[>={_plain(threshold)}]{fmt};""'
             dl.number_format_is_linked = False
             dl.font.size = Pt(FONT_PT)
             dl.font.color.rgb = rgb("#FFFFFF")  # 棒はいずれも濃色。白でコントラスト 4.5:1 以上
@@ -112,7 +117,7 @@ def add_chart(slide, el, palette):
             step = u or d
             if 0 < step < threshold:
                 lbl = s_base.points[i].data_label
-                lbl.text_frame.text = f"{step:,.0f}" if "," in fmt else f"{step:g}"
+                lbl.text_frame.text = f"{step:,.0f}" if "," in fmt else _plain(step)
                 lbl.position = XL_LABEL_POSITION.INSIDE_END
                 for obj in (lbl.font, lbl.text_frame.paragraphs[0].runs[0].font):
                     obj.size = Pt(FONT_PT)

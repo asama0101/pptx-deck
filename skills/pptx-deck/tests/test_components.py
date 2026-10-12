@@ -52,11 +52,30 @@ def test_component_is_clean_and_buildable(path, work):
     assert check.errors(check.check_pptx(out)) == []
 
 
+def test_source_caption_follows_the_template_area(tmp_path):        # Review Focus 2
+    """出典は本文領域の下端に付く。領域が標準より狭い（フッターが高い）テンプレートでは、
+    出典が領域の内側に上がり、固定座標の本文と重なって検出される（フッターの上に黙って載らない）。"""
+    from pptx.util import Emu
+    from tests.test_template import STANDARD, _as_pptx
+    tpl = _as_pptx(STANDARD, tmp_path / "tall_footer.pptx")
+    prs = template.open_template(tpl)
+    body = [l for l in prs.slide_layouts if l.name == "本文"][0]
+    for ph in body.placeholders:
+        if ph.placeholder_format.type == 7:                          # OBJECT（本文の領域）
+            ph.height = Emu(round(450 * 9525))                      # 下端 600px
+    prs.save(tpl)
+    w = tmp_path / "w"
+    initdir.init(w, color="navy", template_path=tpl)
+    _, _, _, violations = check_fragment(COMP / "layouts" / "decision.html", w)
+    assert any(v["rule"] == "overlap" for v in violations), violations
+
+
 @pytest.mark.parametrize("path", FILES, ids=lambda p: f"{p.parent.name}/{p.stem}")
 def test_component_header_comment(path):
     head = path.read_text(encoding="utf-8").lstrip()
     assert head.startswith("<!--") and "用途:" in head.split("-->")[0]
     # 16 進の色（#RGB 〜 #RRGGBBAA）の直書きを検出する。数値の書式 "#,##0" は色ではないので対象外
-    hard = [l for l in head.splitlines() if "style=" in l and "var(" not in l and "rgba" not in l
-            and "#FFFFFF" not in l.upper() and re.search(r"#[0-9A-Fa-f]{3,8}\b", l)]
+    # 白（#FFFFFF）だけは直書きしてよい。それを除いた残りに 16 進色があれば、var(--…) と同じ行でも検出する
+    hard = [l for l in head.splitlines() if "style=" in l
+            and re.search(r"#[0-9A-Fa-f]{3,8}\b", re.sub(r"#[Ff]{6}\b", "", l))]
     assert not hard, f"色の直書きがあります（var(--…) を使う）: {hard}"
