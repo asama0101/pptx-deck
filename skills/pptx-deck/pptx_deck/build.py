@@ -113,6 +113,8 @@ def add_line(slide, el):
     c.line.width = Pt(max(0.75, th * 0.75))
     if el["arrow"]:
         etree.SubElement(c.line._get_or_add_ln(), qn("a:tailEnd")).set("type", "triangle")
+    for ref in c._element.xpath(".//a:effectRef"):      # テーマの効果（影）を参照しない
+        ref.set("idx", "0")
 
 
 def rasterize_svg(svg: Path, width_px: float, work_name: str) -> Path:

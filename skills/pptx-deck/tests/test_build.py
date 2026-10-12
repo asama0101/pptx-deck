@@ -109,6 +109,7 @@ def test_line_arrow(tmp_path):
     prs, _ = run([slide("content", [text_el(0, 64, 40, 900, 40, "見出し", role="title", size=28), ln])], tmp_path)
     cx = [s for s in prs.slides[0].shapes if s.shape_type is not None and "Connector" in type(s).__name__][0]
     assert "tailEnd" in cx._element.xml and cx.begin_x == 100 * 9525 and cx.end_x == 300 * 9525
+    assert cx._element.xpath(".//a:effectRef/@idx") == ["0"]        # 罫線・矢印に影を付けない
 
 
 def test_line_arrow_reverse_swaps_ends(tmp_path):
