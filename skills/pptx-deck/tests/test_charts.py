@@ -97,6 +97,19 @@ def test_waterfall_labels_are_readable_on_their_bars(tmp_path):
         assert theme.contrast("#" + label, fill) >= 4.5
 
 
+def test_waterfall_small_step_label_moves_out_of_the_thin_bar(tmp_path):
+    ch = built({"type": "waterfall", "categories": ["現状", "保守費", "電力費", "監視費", "導入後"],
+                "series": [{"name": "運用費", "values": [4200, -900, -300, -100, 2900]}], "totals": [0, 4]}, tmp_path)
+    s = list(ch.plots[0].series)
+    # 棒の高さが軸の 6% 未満の増減は、棒の中ではなく、基準の系列に黒字で値を出す
+    lbl = s[0].points[3].data_label
+    assert lbl.has_text_frame and lbl.text_frame.text == "100"
+    run_font = lbl.text_frame.paragraphs[0].runs[0].font           # リッチテキストの文字色は run に付く
+    assert theme.contrast("#" + str(run_font.color.rgb), "#FFFFFF") >= 4.5
+    assert not s[0].points[1].data_label.has_text_frame            # 大きな棒は棒の中のラベルのまま
+    assert "[>=" in s[2].data_labels.number_format                  # 小さい値は棒の中のラベルを出さない
+
+
 def test_unknown_type_is_an_error(tmp_path):
     with pytest.raises(ValueError, match="radar"):
         built({**BASE, "type": "radar"}, tmp_path)

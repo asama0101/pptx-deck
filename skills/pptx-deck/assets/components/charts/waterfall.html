@@ -1,0 +1,9 @@
+<!-- 用途: 差額の内訳（ウォーターフォール）。最初と最後が合計、間が増減。totals は合計にする位置（0 始まり）。
+     減少は濃い灰、増加は基調色、合計は灰。差し替える所: data-chart・右の所見・出典。 -->
+<section class="slide" data-layout="chart">
+  <div class="pp-text" data-role="title" style="height:44px">年間の運用費は、保守費の削減で4,200万円から2,900万円に下がる</div>
+  <div class="pp-chart" data-chart='{"type":"waterfall","categories":["現状","保守費","電力費","監視費","導入後"],"series":[{"name":"運用費","values":[4200,-900,-300,-100,2900]}],"totals":[0,4],"fmt":"#,##0"}' style="left:64px;top:160px;width:720px;height:440px"></div>
+  <div class="pp-text b" style="left:830px;top:176px;width:386px;height:34px">読み取れること</div>
+  <div class="pp-text" style="left:830px;top:222px;width:386px;height:300px"><ul><li>差額は▲1,300万円</li><li>保守費の削減が最大で▲900万円</li><li>電力費・監視費は小さい</li></ul></div>
+  <div class="pp-text" data-role="caption" data-chrome style="left:64px;top:640px;width:900px;height:24px">出典: 社内運用実績と見積り。単位は万円／年</div>
+</section>

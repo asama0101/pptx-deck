@@ -2,7 +2,7 @@
 from lxml import etree
 from pptx.chart.data import CategoryChartData
 from pptx.oxml.ns import qn
-from pptx.enum.chart import XL_CHART_TYPE as C, XL_LEGEND_POSITION
+from pptx.enum.chart import XL_CHART_TYPE as C, XL_LABEL_POSITION, XL_LEGEND_POSITION
 from pptx.util import Pt
 
 from .pptxutil import FONT, emu, rgb
@@ -10,6 +10,7 @@ from .pptxutil import FONT, emu, rgb
 TYPES = {"bar": C.COLUMN_CLUSTERED, "barh": C.BAR_CLUSTERED, "line": C.LINE_MARKERS, "pie": C.PIE,
          "stacked": C.COLUMN_STACKED, "stacked100": C.COLUMN_STACKED_100, "waterfall": C.COLUMN_STACKED}
 FONT_PT = 12
+SMALL_STEP = 0.06       # 軸の最大値に対する割合。これ未満の増減は、ラベルを棒の外（下）に出す
 
 
 def waterfall_series(values, totals):
@@ -97,13 +98,25 @@ def add_chart(slide, el, palette):
         _fill(s_down, "#404040")
         _fill(s_tot, "#767676")
         s_base.data_labels.show_value = False
+        # 棒の高さが軸の 6% 未満の増減は、棒の中に収まらない。棒の中のラベルは出さず、基準の系列に値を出す
+        top = max(sum(parts) for parts in zip(w["base"], w["up"], w["down"], w["total"]))
+        threshold = top * SMALL_STEP
         for s in (s_up, s_down, s_tot):
             dl = s.data_labels
             dl.show_value = True
-            dl.number_format = fmt + ";-" + fmt + ";;"
+            dl.number_format = f'[>={threshold:g}]{fmt};""'
             dl.number_format_is_linked = False
             dl.font.size = Pt(FONT_PT)
             dl.font.color.rgb = rgb("#FFFFFF")  # 棒はいずれも濃色。白でコントラスト 4.5:1 以上
+        for i, (u, d) in enumerate(zip(w["up"], w["down"])):
+            step = u or d
+            if 0 < step < threshold:
+                lbl = s_base.points[i].data_label
+                lbl.text_frame.text = f"{step:,.0f}" if "," in fmt else f"{step:g}"
+                lbl.position = XL_LABEL_POSITION.INSIDE_END
+                for obj in (lbl.font, lbl.text_frame.paragraphs[0].runs[0].font):
+                    obj.size = Pt(FONT_PT)
+                    obj.color.rgb = rgb(palette.text)
         chart.has_legend = False
         return
 

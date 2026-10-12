@@ -1,4 +1,5 @@
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -55,5 +56,7 @@ def test_component_is_clean_and_buildable(path, work):
 def test_component_header_comment(path):
     head = path.read_text(encoding="utf-8").lstrip()
     assert head.startswith("<!--") and "用途:" in head.split("-->")[0]
-    assert "#" not in "".join(l for l in head.splitlines() if "style=" in l and "var(" not in l and "rgba" not in l
-                              and "#FFFFFF" not in l.upper()), "色の直書きがあります（var(--…) を使う）"
+    # 16 進の色（#RGB 〜 #RRGGBBAA）の直書きを検出する。数値の書式 "#,##0" は色ではないので対象外
+    hard = [l for l in head.splitlines() if "style=" in l and "var(" not in l and "rgba" not in l
+            and "#FFFFFF" not in l.upper() and re.search(r"#[0-9A-Fa-f]{3,8}\b", l)]
+    assert not hard, f"色の直書きがあります（var(--…) を使う）: {hard}"
