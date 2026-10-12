@@ -12,8 +12,8 @@ FILES = sorted(COMP.rglob("*.html"))
 pytestmark = pytest.mark.skipif(shutil.which("soffice") is None and not Path(
     r"C:\Program Files\LibreOffice\program\soffice.exe").exists(), reason="LibreOffice なし")
 
-# TEMP(Task 6 で外す): 部品庫の作り直しまで emptyBand・sameWord を除外
-TEMP_SKIP_RULES = {"emptyBand", "sameWord"}
+# TEMP(Task 6 で外す): 部品庫の作り直しまで emptyBand・sameWord・orphanLine を除外（Task 6 で断片を作り直すときに外す）
+TEMP_SKIP_RULES = {"emptyBand", "sameWord", "orphanLine"}
 
 COLORS = ["navy", "#FFFF00"]            # 暗い基調色と、明るい基調色（Review Focus 1）
 
