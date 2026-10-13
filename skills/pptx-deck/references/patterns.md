@@ -45,17 +45,17 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | 循環（繰り返す） | 4 段階・指標つき | `cycle` | 四角型サイクル（予定 `cycle-box`） | `flow-h` |
 | | 2〜3 要素 | 円型サイクル（予定 `cycle-round`） | `cycle` | — |
 | 階層（上下の位置づけ） | 上位ほど少ない・小さい | `pyramid` | `layers` | `tree` |
-| | 下位ほど少ない（絞り込む） | じょうろ型（予定 `funnel`） | `venn` | — |
+| | 下位ほど少ない（絞り込む） | `funnel` | `venn` | — |
 | | 層×系列の格子で自社の範囲を示す | `layers` | `architecture` | `pyramid` |
 | 分解・因果 | 要因を寄与で分解する | `tree` | `cause` | — |
 | | 時間の連鎖で原因を追う | `cause` | `tree` | `timeline-h` |
 | 重なり・絞り込み | 2 条件の重なりで候補を絞る | `venn` | `positioning` | — |
 | 位置づけ | 2 軸で象限に置く | `positioning` | `venn` | — |
 | 規模の比較 | 数の大小を面で見せる | `scale` | `bar` | `delta` |
-| 式（足す・掛ける） | 要素の積み上げで結果を示す | 数式（予定 `formula`） | `cost` | `waterfall` |
-| 段階（積み上がる） | 段を登って到達点に至る | 階段（予定 `steps`） | `flow-h` | `pyramid` |
-| 包含・相互関係 | 含む／含まれる | 包括（予定 `enclosure`） | `layers` | `venn` |
-| | 互いに影響する | 相互関係（予定 `relation`） | `cause` | `architecture` |
+| 式（足す・掛ける） | 要素の積み上げで結果を示す | `formula` | `cost` | `waterfall` |
+| 段階（積み上がる） | 段を登って到達点に至る | `steps` | `flow-h` | `pyramid` |
+| 包含・相互関係 | 含む／含まれる | `enclosure` | `layers` | `venn` |
+| | 互いに影響する | `relation` | `cause` | `architecture` |
 | 構成（システム・拠点） | 層で見せる | `architecture` | `topology` | `layers` |
 | | 系統（左右）で見せる | `topology` | `architecture` | — |
 | 体制 | 責任者→PM→チーム | `org` | `raci` | `tree` |
