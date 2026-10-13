@@ -1,0 +1,39 @@
+<!-- 用途: 全体に占める割合の比較（円）。円と、項目ごとの件数・構成比の表を並べる。
+     デザイン1との違い: 円は左に小さめ（560px）、右に項目ごとの色見本つきの行（原因｜件数｜構成比）を置く。
+     差し替える所: 図表タイトル・data-chart・右の 5 行の原因と件数と構成比・注。   -->
+<section class="slide" data-layout="chart">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害原因の内訳</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の半数は回線断が原因で、機器故障と合わせて8割を占める</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害原因の内訳（2025年度、件数の構成比、%）</div>
+  <div class="pp-chart" data-overlap data-note="円グラフ：最大の 1 項目だけ強調色。凡例は円の直下" data-chart='{"type":"pie","categories":["回線断","機器故障","設定ミス","停電・電源","その他"],"series":[{"name":"構成比（%）","values":[52,28,12,5,3]}],"highlight":0,"fmt":"0\"%\""}' style="left:64px;top:224px;width:560px;height:364px"></div>
+  <div class="pp-text" data-note="一覧：原因ごとの件数と構成比" data-role="caption" style="left:660px;top:230px;width:300px;height:22px">原因</div>
+  <div class="pp-text" data-role="caption" style="left:960px;top:230px;width:110px;height:22px;text-align:right">件数</div>
+  <div class="pp-text" data-role="caption" style="left:1090px;top:230px;width:110px;height:22px;text-align:right">構成比</div>
+  <div class="pp-shape f-white" style="left:640px;top:256px;width:576px;height:58px"></div>
+  <div class="pp-shape f-emph" data-overlap style="left:656px;top:275px;width:20px;height:20px"></div>
+  <div class="pp-text b" data-overlap style="left:692px;top:267px;width:260px;height:36px;font-size:21px">回線断</div>
+  <div class="pp-text" data-overlap style="left:960px;top:267px;width:110px;height:36px;font-size:21px;text-align:right">79</div>
+  <div class="pp-text num" data-overlap style="left:1090px;top:265px;width:110px;height:40px;font-size:27px;text-align:right">52%</div>
+  <div class="pp-shape f-white" style="left:640px;top:322px;width:576px;height:58px"></div>
+  <div class="pp-shape f-mid" data-overlap style="left:656px;top:341px;width:20px;height:20px"></div>
+  <div class="pp-text b" data-overlap style="left:692px;top:333px;width:260px;height:36px;font-size:21px">機器故障</div>
+  <div class="pp-text" data-overlap style="left:960px;top:333px;width:110px;height:36px;font-size:21px;text-align:right">42</div>
+  <div class="pp-text num" data-overlap style="left:1090px;top:331px;width:110px;height:40px;font-size:27px;text-align:right">28%</div>
+  <div class="pp-shape f-white" style="left:640px;top:388px;width:576px;height:58px"></div>
+  <div class="pp-shape " data-overlap style="left:656px;top:407px;width:20px;height:20px;background:#8C8C8C"></div>
+  <div class="pp-text b" data-overlap style="left:692px;top:399px;width:260px;height:36px;font-size:21px">設定ミス</div>
+  <div class="pp-text" data-overlap style="left:960px;top:399px;width:110px;height:36px;font-size:21px;text-align:right">18</div>
+  <div class="pp-text num" data-overlap style="left:1090px;top:397px;width:110px;height:40px;font-size:27px;text-align:right">12%</div>
+  <div class="pp-shape f-white" style="left:640px;top:454px;width:576px;height:58px"></div>
+  <div class="pp-shape f-dark" data-overlap style="left:656px;top:473px;width:20px;height:20px"></div>
+  <div class="pp-text b" data-overlap style="left:692px;top:465px;width:260px;height:36px;font-size:21px">停電・電源</div>
+  <div class="pp-text" data-overlap style="left:960px;top:465px;width:110px;height:36px;font-size:21px;text-align:right">8</div>
+  <div class="pp-text num" data-overlap style="left:1090px;top:463px;width:110px;height:40px;font-size:27px;text-align:right">5%</div>
+  <div class="pp-shape f-white" style="left:640px;top:520px;width:576px;height:58px"></div>
+  <div class="pp-shape " data-overlap style="left:656px;top:539px;width:20px;height:20px;background:#BFBFBF"></div>
+  <div class="pp-text b" data-overlap style="left:692px;top:531px;width:260px;height:36px;font-size:21px">その他</div>
+  <div class="pp-text" data-overlap style="left:960px;top:531px;width:110px;height:36px;font-size:21px;text-align:right">5</div>
+  <div class="pp-text num" data-overlap style="left:1090px;top:529px;width:110px;height:40px;font-size:27px;text-align:right">3%</div>
+  <div class="pp-text" data-note="注：出典・前提と、含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 構成比は2025年度の障害チケット151件の原因分類（%）。四捨五入のため合計は100%<br>→ 対策は、回線の冗長化と機器の保守更新を優先する</div>
+</section>

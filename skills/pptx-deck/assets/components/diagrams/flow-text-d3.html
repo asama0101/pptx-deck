@@ -1,0 +1,42 @@
+<!-- 用途: フロー（横型）。情報量が多く、アイコンを使わず文で説明する手順を、段階ごとの列に並べる。段階ごとに「見出し→説明文→主な作業 2 つ」を同じ位置に置く。手順の数が少なく短い言葉で足りるときは flow-h（期間・成果物・承認点を持つ型）を使う。
+     デザイン1との違い: 囲みの箱を使わず、大きな番号と罫線で段階を区切る。主な作業は罫線で区切った文だけで並べる。
+     差し替える所: 題・リード文・図表タイトル・段階の名前（3 つ）・説明文・主な作業（各段階 2 つ）・注。  -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">障害対応の流れ</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応は検知・切り分け・復旧の3段階で進め、各段階の作業を決めておく</div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の流れ（段階ごとの内容と、その中の主な作業）</div>
+  <div class="pp-text num t-dark" data-note="段階の見出し：大きな番号と名前。囲みを使わず、罫線で区切る" style="left:64px;top:224px;width:70px;height:52px;font-size:40px">01</div>
+  <div class="pp-text b" style="left:140px;top:233px;width:280px;height:36px;font-size:24px">検知する</div>
+  <div class="pp-line " data-arrow="end" style="left:436px;top:249px;width:16px;height:2px;background:var(--accent)"></div>
+  <div class="pp-line " style="left:64px;top:284px;width:366px;height:2px;background:var(--accent)"></div>
+  <div class="pp-text" data-note="段階の説明：その段階で何をするかを 3〜4 行で書く" style="left:64px;top:296px;width:366px;height:112px;font-size:19px;line-height:1.45">監視装置のアラートか利用部門の連絡で、障害の発生を知る。まず影響する拠点と業務を確認し、重大度を決める。</div>
+  <div class="pp-line hr" style="left:64px;top:418px;width:366px;height:1px"></div>
+  <div class="pp-text b" data-note="主な作業：作業名（太字）と 1〜2 行の説明を、罫線で区切って並べる" style="left:64px;top:426px;width:366px;height:28px;font-size:19px">アラート受信</div>
+  <div class="pp-text" style="left:64px;top:456px;width:366px;height:32px;font-size:19px">5分以内に当番へ電話</div>
+  <div class="pp-line hr" style="left:64px;top:504px;width:366px;height:1px"></div>
+  <div class="pp-text b" style="left:64px;top:512px;width:366px;height:28px;font-size:19px">影響の確認</div>
+  <div class="pp-text" style="left:64px;top:542px;width:366px;height:32px;font-size:19px">止まった拠点を確認</div>
+  <div class="pp-text num t-dark" style="left:457px;top:224px;width:70px;height:52px;font-size:40px">02</div>
+  <div class="pp-text b" style="left:533px;top:233px;width:280px;height:36px;font-size:24px">切り分ける</div>
+  <div class="pp-line " data-arrow="end" style="left:829px;top:249px;width:16px;height:2px;background:var(--accent)"></div>
+  <div class="pp-line " style="left:457px;top:284px;width:366px;height:2px;background:var(--accent)"></div>
+  <div class="pp-text" style="left:457px;top:296px;width:366px;height:112px;font-size:19px;line-height:1.45">回線・機器・設定のどこが原因かを順に絞る。復旧を急いでも、原因の記録は省かず、切り分けの結果を残す。</div>
+  <div class="pp-line hr" style="left:457px;top:418px;width:366px;height:1px"></div>
+  <div class="pp-text b" style="left:457px;top:426px;width:366px;height:28px;font-size:19px">回線の確認</div>
+  <div class="pp-text" style="left:457px;top:456px;width:366px;height:32px;font-size:19px">キャリア障害情報の確認</div>
+  <div class="pp-line hr" style="left:457px;top:504px;width:366px;height:1px"></div>
+  <div class="pp-text b" style="left:457px;top:512px;width:366px;height:28px;font-size:19px">機器の確認</div>
+  <div class="pp-text" style="left:457px;top:542px;width:366px;height:32px;font-size:19px">ログと直近の変更の確認</div>
+  <div class="pp-text num t-dark" style="left:850px;top:224px;width:70px;height:52px;font-size:40px">03</div>
+  <div class="pp-text b" style="left:926px;top:233px;width:280px;height:36px;font-size:24px">復旧する</div>
+  <div class="pp-line " style="left:850px;top:284px;width:366px;height:2px;background:var(--accent)"></div>
+  <div class="pp-text" style="left:850px;top:296px;width:366px;height:112px;font-size:19px;line-height:1.45">暫定の復旧を先に行い、利用部門へ状況を連絡する。恒久策は、復旧したあとの別の手順で決める。</div>
+  <div class="pp-line hr" style="left:850px;top:418px;width:366px;height:1px"></div>
+  <div class="pp-text b" style="left:850px;top:426px;width:366px;height:28px;font-size:19px">切替・再起動</div>
+  <div class="pp-text" style="left:850px;top:456px;width:366px;height:32px;font-size:19px">予備回線へ切り替え</div>
+  <div class="pp-line hr" style="left:850px;top:504px;width:366px;height:1px"></div>
+  <div class="pp-text b" style="left:850px;top:512px;width:366px;height:28px;font-size:19px">利用部門への連絡</div>
+  <div class="pp-text" style="left:850px;top:542px;width:366px;height:32px;font-size:19px">30分ごとに状況連絡</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 判断者は当番のネットワーク担当。復旧後の再発防止策は別のページで扱う<br>→ 段階ごとの作業が決まっているため、夜間でも復旧の判断が遅れない</div>
+</section>

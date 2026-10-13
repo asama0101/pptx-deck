@@ -1,0 +1,53 @@
+<!-- 用途: 時系列（縦）。時刻｜事象と対応（担当）｜所要の棒 を 1 行ずつ、8 件前後を並べる。事象（太字）と対応（担当を括弧で添える）は 2 行に収める。所要の棒は長さが時間に比例し（1 時間＝100px）、塗り（f-accent）＝作業、枠線（f-outline）＝待ち。
+     記号: 最大の遅れの行だけパネル地の面、その所要の数字だけ強調色（1 枚 1 点）。所要は次の事象までの時間で、見出しに合計。情報の型（注の末尾を「→ 含意」で締める）。
+     デザイン1との違い: 左の縦線と点をやめ、所要を棒の長さで見せる。担当は列にせず、対応の括弧に入れる。
+     差し替える所: 行 8 つ（時刻・事象・対応・担当・所要。行の高さは 41px、棒の幅＝100×所要）・待ちの行の棒の種類・強調する 1 行・合計・注。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">回線断の対応記録</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">待ちの5時間は現地到着と承認の2か所に集中し、遠隔復旧と自動切替で消せる</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社MPLS回線断の対応記録（2026年7月14日、時刻と所要時間。棒の長さ＝所要）</div>
+  <div class="pp-text" data-note="見出し：灰の小さな文字と罫線。棒の長さが所要時間（1 時間＝100px）" data-role="caption" style="left:64px;top:229px;width:80px;height:22px">時刻</div>
+  <div class="pp-text" data-role="caption" style="left:150px;top:229px;width:640px;height:22px">事象と、対応（担当）</div>
+  <div class="pp-text" data-role="caption" style="left:826px;top:229px;width:380px;height:22px">所要（h）　合計 10.0</div>
+  <div class="pp-line " style="left:64px;top:252px;width:1152px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-text b" style="left:64px;top:262px;width:80px;height:26px;font-size:19px">9:05</div>
+  <div class="pp-text" data-note="行：事象と、対応（担当）を 2 行に収める" style="left:150px;top:255px;width:660px;height:38px;font-size:19px;line-height:1.0"><b>本社のWAN回線が断</b><br>業務部門が運用センターへ電話で申告（申告者）</div>
+  <div class="pp-shape f-accent" data-note="棒：塗り＝作業、枠線＝待ち。長さは所要に比例" style="left:826px;top:265px;width:50px;height:20px"></div>
+  <div class="pp-text" style="left:884px;top:261px;width:70px;height:26px;font-size:19px;line-height:1.1">0.5</div>
+  <div class="pp-line " data-overlap style="left:64px;top:294px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:303px;width:80px;height:26px;font-size:19px">9:35</div>
+  <div class="pp-text" style="left:150px;top:296px;width:660px;height:38px;font-size:19px;line-height:1.0"><b>障害を起票、一次切り分けを開始</b><br>回線事業者へ照会、ルータのログを採取（運用センター）</div>
+  <div class="pp-shape f-accent" style="left:826px;top:306px;width:200px;height:20px"></div>
+  <div class="pp-text" style="left:1034px;top:302px;width:70px;height:26px;font-size:19px;line-height:1.1">2.0</div>
+  <div class="pp-line " data-overlap style="left:64px;top:335px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-shape f-soft" data-note="最大の遅れ：行をパネル地の面にし、所要だけ強調色（1 点）" data-overlap style="left:64px;top:336px;width:1152px;height:41px"></div>
+  <div class="pp-text b" data-overlap style="left:64px;top:344px;width:80px;height:26px;font-size:19px">11:35</div>
+  <div class="pp-text" data-overlap style="left:150px;top:337px;width:660px;height:38px;font-size:19px;line-height:1.0"><b>MPLSルータの故障と特定</b><br>ベンダーへ現地出動を要請、到着を待つ（基盤グループ）</div>
+  <div class="pp-shape f-outline" data-overlap style="left:826px;top:347px;width:300px;height:20px"></div>
+  <div class="pp-text b t-emph" data-overlap style="left:1134px;top:343px;width:70px;height:26px;font-size:24px;line-height:1.1">3.0</div>
+  <div class="pp-line " data-overlap style="left:64px;top:376px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:385px;width:80px;height:26px;font-size:19px">14:35</div>
+  <div class="pp-text" style="left:150px;top:378px;width:660px;height:38px;font-size:19px;line-height:1.0"><b>ベンダーが本社に到着</b><br>予備機へ交換し、設定を復旧（ベンダー）</div>
+  <div class="pp-shape f-accent" style="left:826px;top:388px;width:200px;height:20px"></div>
+  <div class="pp-text" style="left:1034px;top:384px;width:70px;height:26px;font-size:19px;line-height:1.1">2.0</div>
+  <div class="pp-line " data-overlap style="left:64px;top:417px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:426px;width:80px;height:26px;font-size:19px">16:35</div>
+  <div class="pp-text" style="left:150px;top:419px;width:660px;height:38px;font-size:19px;line-height:1.0"><b>設定は復旧、疎通は未回復</b><br>予備回線への切替を申請、承認を待つ（基盤グループ）</div>
+  <div class="pp-shape f-outline" style="left:826px;top:429px;width:200px;height:20px"></div>
+  <div class="pp-text" style="left:1034px;top:425px;width:70px;height:26px;font-size:19px;line-height:1.1">2.0</div>
+  <div class="pp-line " data-overlap style="left:64px;top:458px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:467px;width:80px;height:26px;font-size:19px">18:35</div>
+  <div class="pp-text" style="left:150px;top:460px;width:660px;height:38px;font-size:19px;line-height:1.0"><b>切替が承認される</b><br>予備回線へ切替、疎通を確認（運用センター）</div>
+  <div class="pp-shape f-accent" style="left:826px;top:470px;width:30px;height:20px"></div>
+  <div class="pp-text" style="left:864px;top:466px;width:70px;height:26px;font-size:19px;line-height:1.1">0.3</div>
+  <div class="pp-line " data-overlap style="left:64px;top:499px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:508px;width:80px;height:26px;font-size:19px">18:53</div>
+  <div class="pp-text" style="left:150px;top:501px;width:660px;height:38px;font-size:19px;line-height:1.0"><b>本社の業務が再開</b><br>影響部門へ復旧を連絡（運用センター）</div>
+  <div class="pp-shape f-accent" style="left:826px;top:511px;width:20px;height:20px"></div>
+  <div class="pp-text" style="left:854px;top:507px;width:70px;height:26px;font-size:19px;line-height:1.1">0.2</div>
+  <div class="pp-line " data-overlap style="left:64px;top:540px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:549px;width:80px;height:26px;font-size:19px">19:05</div>
+  <div class="pp-text" style="left:150px;top:542px;width:660px;height:38px;font-size:19px;line-height:1.0"><b>復旧を報告</b><br>障害報告の一次版を経営会議へ提出（基盤グループ）</div>
+  <div class="pp-text" data-note="注：記録の出所と、時系列から言える含意" data-role="caption" style="left:64px;top:600px;width:1152px;height:40px">注: 時刻は運用センターの対応記録と電話の受付記録。所要は次の事象までの時間で、合計が復旧時間（MTTR）10.0h<br>→ 待ちの2区間（現地到着3.0h・承認2.0h）を遠隔復旧と自動切替で消せば、同じ障害でも復旧は5.0hに縮む</div>
+</section>

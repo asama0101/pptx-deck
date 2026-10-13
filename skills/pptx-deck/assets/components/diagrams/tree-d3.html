@@ -1,0 +1,71 @@
+<!-- 用途: ロジックツリー（要因分解と打ち手の一覧）。罫線で枝をつながず、ブロックの高さで階層を示す。左端に根（基調色の面）、その右に要因のブロック（含む施策の行数だけ縦に伸びる）、右に末端の施策の行を並べる。効果（時間）は棒の長さと数値で見せ、実現期間を右端の列に置く。先に着手する施策（ここでは 1 年内に効く 3 手）だけ枠線とパネル地の期間欄。最下部のまとめの行で、着手する手と残りの寄与を足し上げる。
+     デザイン1との違い: 直角の罫線ではなく、行にそろえたブロックの高さで階層を示す。効果を数値だけでなく棒の長さでも見せる（1 時間＝80px）。
+     差し替える所: 根・要因のブロック（名前と寄与）・末端の施策 6 行（施策・効果・実現期間）・まとめの行。効果の棒は「効果×80px」で幅を直す。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">復旧時間の要因</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">復旧時間短縮の過半は復旧側にあるため、1年内に効く3手から着手すべきだ</div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">復旧時間（MTTR）の要因分解と打ち手（FY25→FY28、時間）</div>
+  <div class="pp-text" data-role="caption" style="left:192px;top:222px;width:150px;height:20px">要因と寄与</div>
+  <div class="pp-text" data-role="caption" style="left:628px;top:222px;width:290px;height:20px">施策</div>
+  <div class="pp-text" data-role="caption" style="left:926px;top:222px;width:160px;height:20px">効果（時間）</div>
+  <div class="pp-text" data-role="caption" style="left:1094px;top:222px;width:122px;height:20px">実現期間</div>
+  <div class="pp-shape f-accent" data-note="根と枝：根を左端に置き、要因を右へ分ける。各ブロックの高さは、含む施策の行数と同じ" style="left:64px;top:246px;width:120px;height:302px"></div>
+  <div class="pp-text t-white b center" style="left:68px;top:355px;width:112px;height:28px;font-size:19px">復旧時間</div>
+  <div class="pp-text t-white b center" style="left:68px;top:385px;width:112px;height:40px;font-size:30px;line-height:1.3">▲3.8h</div>
+  <div class="pp-text t-white center" data-role="caption" style="left:68px;top:426px;width:112px;height:22px">4.8h→1.0h</div>
+  <div class="pp-shape f-outline" style="left:192px;top:246px;width:150px;height:149px"></div>
+  <div class="pp-text b center" style="left:200px;top:274px;width:134px;height:96px;font-size:19px;line-height:1.3">検知・切り分け<br>の短縮<br><span style="color:var(--accent-dark)">▲1.8h</span></div>
+  <div class="pp-shape f-outline" style="left:192px;top:399px;width:150px;height:149px"></div>
+  <div class="pp-text b center" style="left:200px;top:427px;width:134px;height:96px;font-size:19px;line-height:1.3">復旧・承認の<br>短縮<br><span style="color:var(--accent-dark)">▲2.0h</span></div>
+  <div class="pp-shape f-soft" style="left:350px;top:246px;width:270px;height:98px"></div>
+  <div class="pp-text b" style="left:358px;top:281px;width:184px;height:28px;font-size:19px">自動検知の導入</div>
+  <div class="pp-text b" style="left:542px;top:281px;width:74px;height:28px;font-size:19px;text-align:right;color:var(--accent-dark)">▲0.7h</div>
+  <div class="pp-shape f-soft" style="left:350px;top:348px;width:270px;height:47px"></div>
+  <div class="pp-text b" style="left:358px;top:357px;width:184px;height:28px;font-size:19px">構成の標準化</div>
+  <div class="pp-text b" style="left:542px;top:357px;width:74px;height:28px;font-size:19px;text-align:right;color:var(--accent-dark)">▲1.1h</div>
+  <div class="pp-shape f-soft" style="left:350px;top:399px;width:270px;height:98px"></div>
+  <div class="pp-text b" style="left:358px;top:434px;width:184px;height:28px;font-size:19px">自動切替と遠隔復旧</div>
+  <div class="pp-text b" style="left:542px;top:434px;width:74px;height:28px;font-size:19px;text-align:right;color:var(--accent-dark)">▲1.2h</div>
+  <div class="pp-shape f-soft" style="left:350px;top:501px;width:270px;height:47px"></div>
+  <div class="pp-text b" style="left:358px;top:510px;width:184px;height:28px;font-size:19px">承認と手順の簡素化</div>
+  <div class="pp-text b" style="left:542px;top:510px;width:74px;height:28px;font-size:19px;text-align:right;color:var(--accent-dark)">▲0.8h</div>
+  <div class="pp-shape f-outline" data-note="末端の施策：1年内に効く3手だけ枠線とパネル地の期間欄。効果は棒の長さと数値" style="left:628px;top:246px;width:290px;height:47px"></div>
+  <div class="pp-text" style="left:638px;top:256px;width:274px;height:28px;font-size:19px">監視センターでの自動検知</div>
+  <div class="pp-shape f-accent" style="left:934px;top:260px;width:24px;height:20px"></div>
+  <div class="pp-text b" style="left:964px;top:255px;width:66px;height:28px;font-size:19px">▲0.3</div>
+  <div class="pp-shape f-soft" style="left:1094px;top:246px;width:122px;height:47px"></div>
+  <div class="pp-text b t-dark center" style="left:1098px;top:256px;width:114px;height:28px;font-size:19px">〜1年</div>
+  <div class="pp-shape f-white" style="left:628px;top:297px;width:290px;height:47px"></div>
+  <div class="pp-text" style="left:638px;top:307px;width:274px;height:28px;font-size:19px">営業所26拠点の監視追加</div>
+  <div class="pp-shape f-light" style="left:934px;top:311px;width:32px;height:20px"></div>
+  <div class="pp-text b" style="left:972px;top:306px;width:66px;height:28px;font-size:19px">▲0.4</div>
+  <div class="pp-shape f-white" style="left:1094px;top:297px;width:122px;height:47px"></div>
+  <div class="pp-text center" style="left:1098px;top:307px;width:114px;height:28px;font-size:19px">1〜3年</div>
+  <div class="pp-shape f-outline" style="left:628px;top:348px;width:290px;height:47px"></div>
+  <div class="pp-text" style="left:638px;top:358px;width:274px;height:28px;font-size:19px">構成モデル12→3への統一</div>
+  <div class="pp-shape f-accent" style="left:934px;top:362px;width:88px;height:20px"></div>
+  <div class="pp-text b" style="left:1028px;top:357px;width:66px;height:28px;font-size:19px">▲1.1</div>
+  <div class="pp-shape f-soft" style="left:1094px;top:348px;width:122px;height:47px"></div>
+  <div class="pp-text b t-dark center" style="left:1098px;top:358px;width:114px;height:28px;font-size:19px">〜1年</div>
+  <div class="pp-shape f-outline" style="left:628px;top:399px;width:290px;height:47px"></div>
+  <div class="pp-text" style="left:638px;top:409px;width:274px;height:28px;font-size:19px">回線の自動切替（2回線化）</div>
+  <div class="pp-shape f-accent" style="left:934px;top:413px;width:56px;height:20px"></div>
+  <div class="pp-text b" style="left:996px;top:408px;width:66px;height:28px;font-size:19px">▲0.7</div>
+  <div class="pp-shape f-soft" style="left:1094px;top:399px;width:122px;height:47px"></div>
+  <div class="pp-text b t-dark center" style="left:1098px;top:409px;width:114px;height:28px;font-size:19px">〜1年</div>
+  <div class="pp-shape f-white" style="left:628px;top:450px;width:290px;height:47px"></div>
+  <div class="pp-text" style="left:638px;top:460px;width:274px;height:28px;font-size:19px">遠隔での設定復旧</div>
+  <div class="pp-shape f-light" style="left:934px;top:464px;width:40px;height:20px"></div>
+  <div class="pp-text b" style="left:980px;top:459px;width:66px;height:28px;font-size:19px">▲0.5</div>
+  <div class="pp-shape f-white" style="left:1094px;top:450px;width:122px;height:47px"></div>
+  <div class="pp-text center" style="left:1098px;top:460px;width:114px;height:28px;font-size:19px">1〜3年</div>
+  <div class="pp-shape f-white" style="left:628px;top:501px;width:290px;height:47px"></div>
+  <div class="pp-text" style="left:638px;top:511px;width:274px;height:28px;font-size:19px">承認階層の削減とランブック</div>
+  <div class="pp-shape f-light" style="left:934px;top:515px;width:64px;height:20px"></div>
+  <div class="pp-text b" style="left:1004px;top:510px;width:66px;height:28px;font-size:19px">▲0.8</div>
+  <div class="pp-shape f-white" style="left:1094px;top:501px;width:122px;height:47px"></div>
+  <div class="pp-text center" style="left:1098px;top:511px;width:114px;height:28px;font-size:19px">1〜3年</div>
+  <div class="pp-shape f-soft" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す" style="left:64px;top:554px;width:1152px;height:34px"></div>
+  <div class="pp-text" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す" style="left:84px;top:556px;width:1112px;height:30px;font-size:19px">→ <b style="color:var(--accent-dark)">1年内に効く3手で▲2.1h（過半）</b>、残りの3手は1〜3年で▲1.7h</div>
+</section>

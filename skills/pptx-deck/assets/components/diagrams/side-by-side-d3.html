@@ -1,0 +1,74 @@
+<!-- 用途: 左右比較（現行｜計画＋差分）。デザイン1（side-by-side）と同じ項目・同じ原稿で差し替えられる。
+     デザイン1との違い: 縦横を入れ替える。項目を 5 列の見出しにして、現行（塗り）・計画（枠線）・差分の 3 段を上から下へ読む。左端の列に 3 段の名前と時点。結果の列の差分だけ強調色の面（1 枚 1 点）。
+     差し替える所: 5 列の項目名・現行と計画の値と注記・差分と補足・強調する 1 列・論点の文。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">運用体制の比較</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">SD-WANにすれば、監視は全48拠点・復旧は遠隔になり、運用費は4割減る</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">WANの運用体制（現行FY2025 → 計画FY2027、同じ項目で比較）</div>
+  <div class="pp-shape f-soft" data-note="列見出し：現行（塗り）と計画（枠線）。同じ項目を同じ高さで並べる" style="left:64px;top:272px;width:112px;height:104px"></div>
+  <div class="pp-text b" data-overlap style="left:70px;top:278px;width:100px;height:26px;font-size:19px;line-height:1.25">現行</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:70px;top:306px;width:100px;height:66px">MPLS・拠点別<br>の運用<br>（FY2025）</div>
+  <div class="pp-shape f-accent" style="left:64px;top:382px;width:112px;height:104px"></div>
+  <div class="pp-text t-white b" data-overlap style="left:70px;top:388px;width:100px;height:26px;font-size:19px;line-height:1.25">計画</div>
+  <div class="pp-text t-white" data-role="caption" data-overlap style="left:70px;top:416px;width:100px;height:66px">SD-WAN・集中<br>運用<br>（FY2027）</div>
+  <div class="pp-shape f-light" style="left:64px;top:492px;width:112px;height:90px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:64px;top:525px;width:112px;height:24px;font-size:19px;line-height:1.25">差分</div>
+  <div class="pp-shape f-light" style="left:182px;top:228px;width:203px;height:36px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:182px;top:234px;width:203px;height:24px;font-size:19px;line-height:1.25">監視の範囲</div>
+  <div class="pp-shape f-soft" data-note="行：上段に値、下段に根拠か条件。差分は中央の列に書く" style="left:182px;top:272px;width:203px;height:104px"></div>
+  <div class="pp-text b" style="left:188px;top:278px;width:191px;height:50px;font-size:19px;line-height:1.25">22拠点<br>（本社・DC・工場）</div>
+  <div class="pp-text" data-role="caption" style="left:188px;top:330px;width:191px;height:42px">営業所26拠点は<br>利用者の申告待ち</div>
+  <div class="pp-shape f-outline" style="left:182px;top:382px;width:203px;height:104px"></div>
+  <div class="pp-text b" style="left:188px;top:388px;width:191px;height:50px;font-size:19px;line-height:1.25">全48拠点を監視<br>センターで常時監視</div>
+  <div class="pp-text" data-role="caption" style="left:188px;top:440px;width:191px;height:42px">管理コンソールで<br>構成と状態を一元化</div>
+  <div class="pp-shape f-white" style="left:182px;top:492px;width:203px;height:90px"></div>
+  <div class="pp-text t-dark b" data-overlap style="left:188px;top:500px;width:191px;height:28px;font-size:19px;line-height:1.25">＋26拠点</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:188px;top:532px;width:191px;height:44px">2.2倍に拡大</div>
+  <div class="pp-shape f-light" style="left:389px;top:228px;width:203px;height:36px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:389px;top:234px;width:203px;height:24px;font-size:19px;line-height:1.25">障害の検知</div>
+  <div class="pp-shape f-soft" style="left:389px;top:272px;width:203px;height:104px"></div>
+  <div class="pp-text b" style="left:395px;top:278px;width:191px;height:50px;font-size:19px;line-height:1.25">申告から平均60分</div>
+  <div class="pp-text" data-role="caption" style="left:395px;top:330px;width:191px;height:42px">夜間・休日は翌営業日の対応</div>
+  <div class="pp-shape f-outline" style="left:389px;top:382px;width:203px;height:104px"></div>
+  <div class="pp-text b" style="left:395px;top:388px;width:191px;height:50px;font-size:19px;line-height:1.25">自動検知で平均5分</div>
+  <div class="pp-text" data-role="caption" style="left:395px;top:440px;width:191px;height:42px">24時間365日、監視センターが一次対応</div>
+  <div class="pp-shape f-white" style="left:389px;top:492px;width:203px;height:90px"></div>
+  <div class="pp-text t-dark b" data-overlap style="left:395px;top:500px;width:191px;height:28px;font-size:19px;line-height:1.25">▲55分</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:395px;top:532px;width:191px;height:44px">▲92%、検知率92%</div>
+  <div class="pp-shape f-light" style="left:596px;top:228px;width:203px;height:36px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:596px;top:234px;width:203px;height:24px;font-size:19px;line-height:1.25">復旧の手段</div>
+  <div class="pp-shape f-soft" style="left:596px;top:272px;width:203px;height:104px"></div>
+  <div class="pp-text b" style="left:602px;top:278px;width:191px;height:50px;font-size:19px;line-height:1.25">現地出動が<br>月12回・1回3時間</div>
+  <div class="pp-text" data-role="caption" style="left:602px;top:330px;width:191px;height:42px">営業所は外部ベンダーを<br>都度手配</div>
+  <div class="pp-shape f-outline" style="left:596px;top:382px;width:203px;height:104px"></div>
+  <div class="pp-text b" style="left:602px;top:388px;width:191px;height:50px;font-size:19px;line-height:1.25">遠隔操作と<br>回線の自動切替</div>
+  <div class="pp-text" data-role="caption" style="left:602px;top:440px;width:191px;height:42px">現地出動は機器故障<br>時のみ（月2回）</div>
+  <div class="pp-shape f-white" style="left:596px;top:492px;width:203px;height:90px"></div>
+  <div class="pp-text t-dark b" data-overlap style="left:602px;top:500px;width:191px;height:28px;font-size:19px;line-height:1.25">出動▲10回</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:602px;top:532px;width:191px;height:44px">復旧4.8→1.0h</div>
+  <div class="pp-shape f-light" style="left:803px;top:228px;width:203px;height:36px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:803px;top:234px;width:203px;height:24px;font-size:19px;line-height:1.25">回線構成</div>
+  <div class="pp-shape f-soft" style="left:803px;top:272px;width:203px;height:104px"></div>
+  <div class="pp-text b" style="left:809px;top:278px;width:191px;height:50px;font-size:19px;line-height:1.25">MPLS 1回線<br>（冗長なし）</div>
+  <div class="pp-text" data-role="caption" style="left:809px;top:330px;width:191px;height:42px">回線断＝拠点の全業務が停止</div>
+  <div class="pp-shape f-outline" style="left:803px;top:382px;width:203px;height:104px"></div>
+  <div class="pp-text b" style="left:809px;top:388px;width:191px;height:50px;font-size:19px;line-height:1.25">インターネット<br>2回線＋LTE</div>
+  <div class="pp-text" data-role="caption" style="left:809px;top:440px;width:191px;height:42px">1回線が断でも業務を継続</div>
+  <div class="pp-shape f-white" style="left:803px;top:492px;width:203px;height:90px"></div>
+  <div class="pp-text t-dark b" data-overlap style="left:809px;top:500px;width:191px;height:28px;font-size:19px;line-height:1.25">冗長化48拠点</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:809px;top:532px;width:191px;height:44px">可用性99.9%</div>
+  <div class="pp-shape f-light" style="left:1010px;top:228px;width:203px;height:36px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:1010px;top:234px;width:203px;height:24px;font-size:19px;line-height:1.25">運用費（年）</div>
+  <div class="pp-shape f-soft" style="left:1010px;top:272px;width:203px;height:104px"></div>
+  <div class="pp-text b" style="left:1016px;top:278px;width:191px;height:50px;font-size:19px;line-height:1.25">2,000万円</div>
+  <div class="pp-text" data-role="caption" style="left:1016px;top:330px;width:191px;height:42px">回線1,300・<br>保守400・監視300</div>
+  <div class="pp-shape f-outline" style="left:1010px;top:382px;width:203px;height:104px"></div>
+  <div class="pp-text b" style="left:1016px;top:388px;width:191px;height:50px;font-size:19px;line-height:1.25">1,200万円</div>
+  <div class="pp-text" data-role="caption" style="left:1016px;top:440px;width:191px;height:42px">回線800・保守200・監視200</div>
+  <div class="pp-shape f-emph" data-note="結果の行の差分だけ強調色の面（1 枚 1 点）" style="left:1010px;top:492px;width:203px;height:90px"></div>
+  <div class="pp-text t-white b" data-overlap style="left:1016px;top:500px;width:191px;height:28px;font-size:19px;line-height:1.25">▲800万円</div>
+  <div class="pp-text t-white" data-role="caption" data-overlap style="left:1016px;top:532px;width:191px;height:44px">▲40%</div>
+  <div class="pp-shape f-soft" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:64px;top:598px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:84px;top:599px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　監視センターへの集約と回線の2重化を前提に、B案の運用体制へ移行することの可否</div>
+</section>

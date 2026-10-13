@@ -1,0 +1,73 @@
+<!-- 用途: システム構成図（拠点側とセンター側）。デザイン1（architecture）と同じ層・箱・記号・凡例で差し替えられる。左の枠に拠点側（利用者・拠点、WAN）、右の枠にセンター側（センター、基幹系・サービス）を置き、通信の流れを U 字（拠点→WAN→センター→基幹系）で追う。
+     デザイン1との違い: 層を 4 段の行にせず、拠点側とセンター側の 2 つの枠に分け、枠の間の矢印に WAN からセンターへの通信を書く。箱は枠の中で横 3 つ、名前は 2 行まで。
+     箱の記号: 現行のまま＝パネル地（f-soft）、変更する＝枠線（f-outline）、廃止＝破線の箱（pp-shape dashed）、新設の 1 箱だけ強調色（1 枚 1 点）。大きな面に濃い基調色は使わない。
+     差し替える所: 層の名前と補足・箱の名前と 1 行の補足（1 層に 3 箱まで）・箱の記号・矢印の脇の通信の種別・凡例・注。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">移行後の構成</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">変更はWAN層と管理コンソールに限られ、拠点と基幹系の構成は現行のまま使える</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行後のシステム構成（FY2027、層ごとの変更範囲）</div>
+  <div class="pp-shape f-soft" style="left:64px;top:227px;width:16px;height:14px"></div>
+  <div class="pp-text" data-role="caption" style="left:88px;top:224px;width:120px;height:20px">現行のまま</div>
+  <div class="pp-shape f-outline" style="left:214px;top:227px;width:16px;height:14px"></div>
+  <div class="pp-text" data-role="caption" style="left:238px;top:224px;width:120px;height:20px">変更する</div>
+  <div class="pp-shape dashed" style="left:364px;top:227px;width:16px;height:14px"></div>
+  <div class="pp-text" data-role="caption" style="left:388px;top:224px;width:120px;height:20px">廃止する</div>
+  <div class="pp-shape f-emph" style="left:514px;top:227px;width:16px;height:14px"></div>
+  <div class="pp-text" data-role="caption" style="left:538px;top:224px;width:120px;height:20px">新設（1点）</div>
+  <div class="pp-shape f-white" data-note="領域：拠点側（利用者・WAN）とセンター側（センター・基幹系）を 2 つの枠に分ける" style="left:64px;top:250px;width:556px;height:298px"></div>
+  <div class="pp-shape f-white" style="left:660px;top:250px;width:556px;height:298px"></div>
+  <div class="pp-text b" data-note="層の名前：枠の中で 1 回ずつ。箱は層ごとに横 3 つ" style="left:72px;top:258px;width:168px;height:26px;font-size:19px;line-height:1.25">利用者・拠点</div>
+  <div class="pp-text" data-role="caption" style="left:248px;top:263px;width:340px;height:20px">48拠点・3,500人</div>
+  <div class="pp-shape f-soft" style="left:72px;top:286px;width:176px;height:100px"></div>
+  <div class="pp-text b" style="left:76px;top:292px;width:168px;height:48px;font-size:19px;line-height:1.25">本社・DC<br>（2拠点）</div>
+  <div class="pp-text" data-role="caption" style="left:76px;top:342px;width:168px;height:40px;line-height:1.3">1,200人、<br>トラフィックの25%</div>
+  <div class="pp-shape f-soft" style="left:256px;top:286px;width:176px;height:100px"></div>
+  <div class="pp-text b" style="left:260px;top:292px;width:168px;height:48px;font-size:19px;line-height:1.25">工場（6拠点）</div>
+  <div class="pp-text" data-role="caption" style="left:260px;top:342px;width:168px;height:40px;line-height:1.3">800人、<br>生産ラインが直結</div>
+  <div class="pp-shape f-soft" style="left:440px;top:286px;width:176px;height:100px"></div>
+  <div class="pp-text b" style="left:444px;top:292px;width:168px;height:48px;font-size:19px;line-height:1.25">営業所<br>（40拠点）</div>
+  <div class="pp-text" data-role="caption" style="left:444px;top:342px;width:168px;height:40px;line-height:1.3">1,500人、<br>現行は未監視</div>
+  <div class="pp-text b" style="left:72px;top:412px;width:168px;height:26px;font-size:19px;line-height:1.25">WAN</div>
+  <div class="pp-text" data-role="caption" style="left:248px;top:417px;width:340px;height:20px">回線と拠点の機器</div>
+  <div class="pp-shape f-outline" data-note="箱の記号：現行のまま＝パネル地、変更＝枠線、廃止＝破線、新設＝強調色（1 点）" style="left:72px;top:440px;width:176px;height:100px"></div>
+  <div class="pp-text b" style="left:76px;top:446px;width:168px;height:48px;font-size:19px;line-height:1.25">SD-WAN機器<br>48台</div>
+  <div class="pp-text" data-role="caption" style="left:76px;top:496px;width:168px;height:40px;line-height:1.3">1拠点1台、遠隔で設定</div>
+  <div class="pp-shape f-outline" style="left:256px;top:440px;width:176px;height:100px"></div>
+  <div class="pp-text b" style="left:260px;top:446px;width:168px;height:48px;font-size:19px;line-height:1.25">回線 96本＋<br>LTE 48本</div>
+  <div class="pp-text" data-role="caption" style="left:260px;top:496px;width:168px;height:40px;line-height:1.3">2回線化と自動切替</div>
+  <div class="pp-shape dashed" data-note="箱の記号：現行のまま＝パネル地、変更＝枠線、廃止＝破線、新設＝強調色（1 点）" style="left:440px;top:440px;width:176px;height:100px"></div>
+  <div class="pp-text" data-role="caption" style="left:444px;top:446px;width:168px;height:40px;line-height:1.3">MPLSルータ 48台・<br>回線 48本</div>
+  <div class="pp-text b t-accent" style="left:444px;top:488px;width:168px;height:48px;font-size:19px;line-height:1.25">廃止<br>（FY2027に解約）</div>
+  <div class="pp-text b" style="left:668px;top:258px;width:168px;height:26px;font-size:19px;line-height:1.25">基幹系・サービス</div>
+  <div class="pp-text" data-role="caption" style="left:844px;top:263px;width:340px;height:20px">変更なし</div>
+  <div class="pp-shape f-soft" style="left:668px;top:286px;width:176px;height:100px"></div>
+  <div class="pp-text b" style="left:672px;top:292px;width:168px;height:48px;font-size:19px;line-height:1.25">基幹系（ERP・<br>生産管理）</div>
+  <div class="pp-text" data-role="caption" style="left:672px;top:342px;width:168px;height:40px;line-height:1.3">全拠点が利用、<br>DC経由のまま</div>
+  <div class="pp-shape f-soft" style="left:852px;top:286px;width:176px;height:100px"></div>
+  <div class="pp-text b" style="left:856px;top:292px;width:168px;height:48px;font-size:19px;line-height:1.25">SaaS（メール等）</div>
+  <div class="pp-text" data-role="caption" style="left:856px;top:342px;width:168px;height:40px;line-height:1.3">拠点から直接接続、<br>応答▲0.3秒</div>
+  <div class="pp-shape f-soft" style="left:1036px;top:286px;width:176px;height:100px"></div>
+  <div class="pp-text b" style="left:1040px;top:292px;width:168px;height:48px;font-size:19px;line-height:1.25">外部接続<br>（取引先EDI）</div>
+  <div class="pp-text" data-role="caption" style="left:1040px;top:342px;width:168px;height:40px;line-height:1.3">DCの専用線を継続</div>
+  <div class="pp-text b" style="left:668px;top:412px;width:168px;height:26px;font-size:19px;line-height:1.25">センター</div>
+  <div class="pp-text" data-role="caption" style="left:844px;top:417px;width:340px;height:20px">DC・監視・管理</div>
+  <div class="pp-shape f-soft" style="left:668px;top:440px;width:176px;height:100px"></div>
+  <div class="pp-text b" style="left:672px;top:446px;width:168px;height:48px;font-size:19px;line-height:1.25">データセンター</div>
+  <div class="pp-text" data-role="caption" style="left:672px;top:496px;width:168px;height:40px;line-height:1.3">基幹サーバ120台、<br>構成は変えない</div>
+  <div class="pp-shape f-outline" style="left:852px;top:440px;width:176px;height:100px"></div>
+  <div class="pp-text b" style="left:856px;top:446px;width:168px;height:48px;font-size:19px;line-height:1.25">監視センター</div>
+  <div class="pp-text" data-role="caption" style="left:856px;top:496px;width:168px;height:40px;line-height:1.3">監視を22拠点から<br>48拠点へ拡大</div>
+  <div class="pp-shape f-emph" data-note="箱の記号：現行のまま＝パネル地、変更＝枠線、廃止＝破線、新設＝強調色（1 点）" style="left:1036px;top:440px;width:176px;height:100px"></div>
+  <div class="pp-text b t-white" style="left:1040px;top:446px;width:168px;height:48px;font-size:19px;line-height:1.25">クラウド管理<br>コンソール</div>
+  <div class="pp-text t-white" data-role="caption" style="left:1040px;top:496px;width:168px;height:40px;line-height:1.3">新設：構成と<br>状態を一元化</div>
+  <div class="pp-line" data-note="層の間の矢印：矢じり付き。U 字に（拠点→WAN→センター→基幹系）" data-arrow="end" style="left:94px;top:389px;width:2px;height:20px;background:var(--accent)"></div>
+  <div class="pp-text" data-role="caption" style="left:112px;top:389px;width:480px;height:20px">インターネット2回線＋LTE（現行はMPLS 1回線）</div>
+  <div class="pp-line" data-arrow="end" data-dir="rev" style="left:690px;top:389px;width:2px;height:20px;background:var(--accent)"></div>
+  <div class="pp-text" data-role="caption" style="left:708px;top:389px;width:480px;height:20px">DC内LAN・クラウド接続（現行のまま）</div>
+  <div class="pp-line" style="left:344px;top:541px;width:2px;height:16px;background:var(--accent)"></div>
+  <div class="pp-line" data-arrow="end" style="left:344px;top:556px;width:592px;height:2px;background:var(--accent)"></div>
+  <div class="pp-line" style="left:940px;top:541px;width:2px;height:16px;background:var(--accent)"></div>
+  <div class="pp-text center" data-role="caption" style="left:400px;top:562px;width:480px;height:20px">SD-WANトンネル（暗号化）で監視センターとDCへ</div>
+  <div class="pp-text" data-note="注：台数の出所と、変更の範囲から言える含意" data-role="caption" style="left:64px;top:600px;width:1152px;height:40px">注: 台数は資産台帳（2026年9月）、トラフィックの比率はFY2025の実測<br>→ 変更はWAN層と管理コンソールに収まるため、基幹系とDCの改修費はかからず、移行の影響は回線の切替時間だけになる</div>
+</section>

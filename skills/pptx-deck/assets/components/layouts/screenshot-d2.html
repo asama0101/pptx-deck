@@ -1,28 +1,28 @@
-<!-- 用途: 画面（キャプチャの手順）。縦に 3 行、各行の左に画面の枠（440×112px）、右に「手順 n」・見出し（21px）・説明（19px）を置く。行の間は下向きの矢印。画像は利用者のキャプチャで、ここでは枠だけ置く。
-     デザイン1との違い: 画面を横 3 枚ではなく縦 3 行に並べ、説明を画面の右に置く（画面の枠は小さく、説明を長く書ける）。
-     画面の枠の中心の「（画面）」の注記は、画像に差し替えるときに消す。説明は 2 行（約 30 字）に収める。
+<!-- 用途: 画面（キャプチャの手順）。最初の画面を左に大きく（616×236px）見せ、あとの 2 つの画面を右の列に小さく（232×130px）縦に並べる。各画面に「手順 n」・見出し（21px）・説明（19px）を添える。画像は利用者のキャプチャで、ここでは枠だけ置く。
+     デザイン1との違い: 3 枚を同じ大きさで横に並べず、最初の画面を主役にして大きく見せ、続きを右に小さく置く。
+     画面の枠の中心の「（画面）」の注記は、画像に差し替えるときに消す。画像は枠と同じ大きさ・位置に置く。説明は 2 行（約 30 字）に収める。
      差し替える所: 題・リード文・図表タイトル・3 つの画面の枠（画像）・手順の見出しと説明・注。 -->
 <section class="slide" data-layout="content">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">監視画面の見え方</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">監視画面では48拠点の状態が1画面で見え、障害は検知から切替まで3つの画面で追える</div>
   <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN監視画面（画面イメージ。実際のキャプチャに差し替える）</div>
-  <div class="pp-shape f-soft" data-note="画面の枠：検知から切替までを上から順に並べる" style="left:64px;top:224px;width:440px;height:112px"></div>
-  <div class="pp-text center" data-role="caption" data-overlap style="left:64px;top:266px;width:440px;height:28px">（画面）</div>
-  <div class="pp-text t-dark b" data-note="先に読む所：最初に目に入る見出し・数字" style="left:536px;top:224px;width:400px;height:30px;font-size:19px">手順1</div>
-  <div class="pp-text b" style="left:536px;top:254px;width:680px;height:34px;font-size:21px">全拠点の状態</div>
-  <div class="pp-text" style="left:536px;top:290px;width:680px;height:40px;font-size:19px">48拠点の稼働状況を1画面で見る</div>
-  <div class="pp-line hr" data-arrow="end" style="left:283px;top:336px;width:3px;height:14px;background:var(--accent)"></div>
-  <div class="pp-shape f-soft" style="left:64px;top:350px;width:440px;height:112px"></div>
-  <div class="pp-text center" data-role="caption" data-overlap style="left:64px;top:392px;width:440px;height:28px">（画面）</div>
-  <div class="pp-text t-dark b" style="left:536px;top:350px;width:400px;height:30px;font-size:19px">手順2</div>
-  <div class="pp-text b" style="left:536px;top:380px;width:680px;height:34px;font-size:21px">障害の通知</div>
-  <div class="pp-text" style="left:536px;top:416px;width:680px;height:40px;font-size:19px">障害を検知すると担当者へ自動通知</div>
-  <div class="pp-line hr" data-arrow="end" style="left:283px;top:462px;width:3px;height:14px;background:var(--accent)"></div>
-  <div class="pp-shape f-soft" style="left:64px;top:476px;width:440px;height:112px"></div>
-  <div class="pp-text center" data-role="caption" data-overlap style="left:64px;top:518px;width:440px;height:28px">（画面）</div>
-  <div class="pp-text t-dark b" style="left:536px;top:476px;width:400px;height:30px;font-size:19px">手順3</div>
-  <div class="pp-text b" style="left:536px;top:506px;width:680px;height:34px;font-size:21px">切替の結果</div>
-  <div class="pp-text" style="left:536px;top:542px;width:680px;height:40px;font-size:19px">回線の自動切替と復旧時間を確かめる</div>
+  <div class="pp-text t-dark b" data-note="先に読む所：最初に目に入る見出し・数字" style="left:64px;top:224px;width:616px;height:30px;font-size:19px">手順1</div>
+  <div class="pp-shape f-soft" data-note="主役の画面：最初の手順を大きく見せる" style="left:64px;top:256px;width:616px;height:236px"></div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:64px;top:360px;width:616px;height:28px">（画面）</div>
+  <div class="pp-text b" style="left:64px;top:498px;width:616px;height:32px;font-size:21px">全拠点の状態</div>
+  <div class="pp-text" style="left:64px;top:532px;width:616px;height:40px;font-size:19px">48拠点の稼働状況を1画面で見る</div>
+  <div class="pp-line hr" data-arrow="end" style="left:682px;top:321px;width:32px;height:3px;background:var(--accent)"></div>
+  <div class="pp-text t-dark b" style="left:716px;top:224px;width:232px;height:30px;font-size:19px">手順2</div>
+  <div class="pp-shape f-soft" style="left:716px;top:256px;width:232px;height:130px"></div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:716px;top:307px;width:232px;height:28px">（画面）</div>
+  <div class="pp-text b" style="left:964px;top:256px;width:252px;height:34px;font-size:21px">障害の通知</div>
+  <div class="pp-text" style="left:964px;top:294px;width:252px;height:90px;font-size:19px">障害を検知すると担当者へ自動通知</div>
+  <div class="pp-text t-dark b" style="left:716px;top:404px;width:232px;height:30px;font-size:19px">手順3</div>
+  <div class="pp-shape f-soft" style="left:716px;top:436px;width:232px;height:130px"></div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:716px;top:487px;width:232px;height:28px">（画面）</div>
+  <div class="pp-text b" style="left:964px;top:436px;width:252px;height:34px;font-size:21px">切替の結果</div>
+  <div class="pp-text" style="left:964px;top:474px;width:252px;height:90px;font-size:19px">回線の自動切替と復旧時間を確かめる</div>
+  <div class="pp-line hr" data-arrow="end" style="left:832px;top:389px;width:3px;height:14px;background:var(--accent)"></div>
   <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 画面は、実際のキャプチャ（利用者の画像）に差し替える。ここでは枠だけ。画面は2026年9月時点の試験環境<br>→ 検知から切替まで3つの画面で追え、監視センターの担当者は画面の切り替えだけで状況を確かめられる</div>
 </section>

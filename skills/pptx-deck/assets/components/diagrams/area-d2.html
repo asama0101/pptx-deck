@@ -1,0 +1,56 @@
+<!-- 用途: 領域。複数の担当や要素が、どの工程・範囲を受け持つかを帯・マス・矢印で示し、説明したい範囲（今回の対象）を強調色で囲む。工程の見出しを左から右へ並べ、行ごとに担当を置く。時間の予定は gantt を使う。
+     デザイン1との違い: 帯ではなく、行×工程のマスで担当を示す。担当する工程のマスだけ塗り、強調する範囲は列を薄い面で縦に囲む。
+     差し替える所: 題・リード文・図表タイトル・工程の名前（6 つ）・担当の名前とやること・担当する工程の範囲（帯・マス・矢印の幅）・強調する範囲の枠・注。  -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">委託する範囲</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">今回の委託は構築から運用までで、要件定義と設計は自社が決め、全体はPMOが管理する</div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">工程ごとの担当（委託範囲は構築〜運用）</div>
+  <div class="pp-shape f-soft" data-note="対応している領域：説明したい範囲の列を、薄い面で縦に囲む" data-overlap style="left:652px;top:222px;width:408px;height:356px"></div>
+  <div class="pp-text b t-dark" data-overlap style="left:662px;top:226px;width:388px;height:30px;font-size:19px">今回の委託範囲（構築〜運用）</div>
+  <div class="pp-shape f-light" data-note="工程の見出し：左から右へ並べる" data-overlap style="left:382px;top:262px;width:132px;height:40px"></div>
+  <div class="pp-text center b" data-overlap style="left:382px;top:267px;width:132px;height:30px;font-size:19px">要件定義</div>
+  <div class="pp-shape f-light" data-overlap style="left:518px;top:262px;width:132px;height:40px"></div>
+  <div class="pp-text center b" data-overlap style="left:518px;top:267px;width:132px;height:30px;font-size:19px">設計</div>
+  <div class="pp-shape f-light" data-overlap style="left:654px;top:262px;width:132px;height:40px"></div>
+  <div class="pp-text center b" data-overlap style="left:654px;top:267px;width:132px;height:30px;font-size:19px">構築</div>
+  <div class="pp-shape f-light" data-overlap style="left:790px;top:262px;width:132px;height:40px"></div>
+  <div class="pp-text center b" data-overlap style="left:790px;top:267px;width:132px;height:30px;font-size:19px">移行</div>
+  <div class="pp-shape f-light" data-overlap style="left:926px;top:262px;width:132px;height:40px"></div>
+  <div class="pp-text center b" data-overlap style="left:926px;top:267px;width:132px;height:30px;font-size:19px">運用</div>
+  <div class="pp-shape f-light" data-overlap style="left:1062px;top:262px;width:132px;height:40px"></div>
+  <div class="pp-text center b" data-overlap style="left:1062px;top:267px;width:132px;height:30px;font-size:19px">改善</div>
+  <div class="pp-text b" style="left:64px;top:316px;width:306px;height:28px;font-size:19px">自社（基盤グループ）</div>
+  <div class="pp-text" style="left:64px;top:344px;width:306px;height:28px;font-size:19px">要件・設計を決める</div>
+  <div class="pp-shape f-mid" data-note="担当の印：担当する工程のマスだけ塗り、担当しない工程は白のまま" data-overlap style="left:382px;top:320px;width:132px;height:48px"></div>
+  <div class="pp-shape f-mid" data-overlap style="left:518px;top:320px;width:132px;height:48px"></div>
+  <div class="pp-shape f-white" data-overlap style="left:654px;top:320px;width:132px;height:48px"></div>
+  <div class="pp-shape f-white" data-overlap style="left:790px;top:320px;width:132px;height:48px"></div>
+  <div class="pp-shape f-white" data-overlap style="left:926px;top:320px;width:132px;height:48px"></div>
+  <div class="pp-shape f-white" data-overlap style="left:1062px;top:320px;width:132px;height:48px"></div>
+  <div class="pp-text b" style="left:64px;top:382px;width:306px;height:28px;font-size:19px">ベンダー（SIer）</div>
+  <div class="pp-text" style="left:64px;top:410px;width:306px;height:28px;font-size:19px">構築・移行を実施</div>
+  <div class="pp-shape f-white" data-overlap style="left:382px;top:386px;width:132px;height:48px"></div>
+  <div class="pp-shape f-white" data-overlap style="left:518px;top:386px;width:132px;height:48px"></div>
+  <div class="pp-shape f-accent" data-overlap style="left:654px;top:386px;width:132px;height:48px"></div>
+  <div class="pp-shape f-accent" data-overlap style="left:790px;top:386px;width:132px;height:48px"></div>
+  <div class="pp-shape f-white" data-overlap style="left:926px;top:386px;width:132px;height:48px"></div>
+  <div class="pp-shape f-white" data-overlap style="left:1062px;top:386px;width:132px;height:48px"></div>
+  <div class="pp-text b" style="left:64px;top:448px;width:306px;height:28px;font-size:19px">運用センター</div>
+  <div class="pp-text" style="left:64px;top:476px;width:306px;height:28px;font-size:19px">運用・改善を実施</div>
+  <div class="pp-shape f-white" data-overlap style="left:382px;top:452px;width:132px;height:48px"></div>
+  <div class="pp-shape f-white" data-overlap style="left:518px;top:452px;width:132px;height:48px"></div>
+  <div class="pp-shape f-white" data-overlap style="left:654px;top:452px;width:132px;height:48px"></div>
+  <div class="pp-shape f-white" data-overlap style="left:790px;top:452px;width:132px;height:48px"></div>
+  <div class="pp-shape f-mid" data-overlap style="left:926px;top:452px;width:132px;height:48px"></div>
+  <div class="pp-shape f-mid" data-overlap style="left:1062px;top:452px;width:132px;height:48px"></div>
+  <div class="pp-text b" style="left:64px;top:514px;width:306px;height:28px;font-size:19px">PMO</div>
+  <div class="pp-text" style="left:64px;top:542px;width:306px;height:28px;font-size:19px">全体の進捗・品質を管理</div>
+  <div class="pp-shape f-mid" data-overlap style="left:382px;top:518px;width:132px;height:48px"></div>
+  <div class="pp-shape f-mid" data-overlap style="left:518px;top:518px;width:132px;height:48px"></div>
+  <div class="pp-shape f-mid" data-overlap style="left:654px;top:518px;width:132px;height:48px"></div>
+  <div class="pp-shape f-mid" data-overlap style="left:790px;top:518px;width:132px;height:48px"></div>
+  <div class="pp-shape f-mid" data-overlap style="left:926px;top:518px;width:132px;height:48px"></div>
+  <div class="pp-shape f-mid" data-overlap style="left:1062px;top:518px;width:132px;height:48px"></div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 委託範囲は構築・移行・運用。要件定義と設計は自社の基盤グループが担当する<br>→ 委託する範囲を工程で区切ったため、契約の範囲と責任の所在が明確になる</div>
+</section>

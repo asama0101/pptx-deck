@@ -1,0 +1,16 @@
+<!-- 用途: 全体に占める割合の比較（円）。最大の項目の数字を大きく見せたいときに使う。
+     デザイン1との違い: 左に最大の項目の数字を大きく（96px）置き、その下に説明。円は右に置く。
+     差し替える所: 図表タイトル・data-chart・左の大きな数字と説明・注。   -->
+<section class="slide" data-layout="chart">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害原因の内訳</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の半数は回線断が原因で、機器故障と合わせて8割を占める</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害原因の内訳（2025年度、件数の構成比、%）</div>
+  <div class="pp-shape f-white" data-note="最大の項目：割合を大きな数字で書き、下に理由と打ち手を書く" style="left:64px;top:224px;width:480px;height:360px"></div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:88px;top:240px;width:432px;height:26px;font-size:19px">最も多い原因</div>
+  <div class="pp-text b" data-overlap style="left:88px;top:270px;width:432px;height:40px;font-size:32px">回線断</div>
+  <div class="pp-text num" data-overlap style="left:88px;top:318px;width:432px;height:120px;font-size:96px;color:var(--emphasis)">52%</div>
+  <div class="pp-text" data-overlap style="left:88px;top:456px;width:432px;height:112px;font-size:19px;line-height:1.4">拠点の回線が切れた障害が半数を占める。機器故障（28%）と合わせて80%で、回線の冗長化と機器の更新が効く</div>
+  <div class="pp-chart" data-overlap data-note="円グラフ：最大の 1 項目だけ強調色。凡例は円の直下" data-chart='{"type":"pie","categories":["回線断","機器故障","設定ミス","停電・電源","その他"],"series":[{"name":"構成比（%）","values":[52,28,12,5,3]}],"highlight":0,"fmt":"0\"%\""}' style="left:576px;top:224px;width:640px;height:364px"></div>
+  <div class="pp-text" data-note="注：出典・前提と、含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 構成比は2025年度の障害チケット151件の原因分類（%）。四捨五入のため合計は100%<br>→ 対策は、回線の冗長化と機器の保守更新を優先する</div>
+</section>
