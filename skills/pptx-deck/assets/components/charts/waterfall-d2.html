@@ -1,14 +1,69 @@
-<!-- 用途: 差額の内訳（ウォーターフォール、注目点つき）。グラフは左の約 3 分の 2。最初が合計、以降が内訳（最後も合計にするときは totals に位置を足す）。totals は合計にする位置（0 始まり）。減少は濃い灰、増加は基調色、合計は灰。注目点は枠線のカードまたは帯で書く（1 つ）。
-     上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。所見が長いときは -note 版（滝グラフ×打ち手表）を使う。
-     デザイン1との違い: グラフを幅 780 に絞り、右の列に注目点を枠線のカード（24px 太字）で縦に置く。グラフの上に吹き出しを重ねない。
-     差し替える所: 図表タイトル・data-chart・注目点の文・注。 -->
+<!-- 用途: 内訳の滝グラフと打ち手表（滝グラフ×打ち手）。左の滝グラフで全体（100）を項目に積み下ろして、どこが大きいかを見せ、右のパネル地の打ち手表で、項目ごとの削減の方向性・現行・削減後・削減幅を並べる。
+     削減幅の棒は pp-shape の幅を値に比例させ（▲1＝20px）、打ち手を絞る項目は、濃い棒で示す。表の下の基調色の帯に、合計（100→90）と金額を書く。グラフの全要素に実数ラベルが付く。totals は合計にする位置（0 始まり）。
+     デザイン1との違い: 右に内訳表（ノート）がつき、グラフは左半分になる。注目点を、グラフの下に枠線のカードで横に並べる（グラフは低め）。
+     差し替える所: data-chart（内訳の値）・注目点の文・打ち手表の 5 行（項目・方向性・現行・削減後・棒の幅と▲値）・合計の帯。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">通信費の削減内訳</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">通信費の58%を占める回線と運用委託に打ち手を絞れば、削減目標の7割が見込める</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">通信費の内訳（FY2025、通信費12.0億円＝100）</div>
-  <div class="pp-chart" data-note="グラフは全幅。減少は濃い灰、合計は灰" data-chart='{"type":"waterfall","categories":["通信費計","回線","クラウド接続","保守","モバイル","運用委託"],"series":[{"name":"通信費（指数）","values":[100,-38,-22,-12,-8,-20]}],"totals":[0],"fmt":"0"}' style="left:64px;top:224px;width:780px;height:360px"></div>
-  <div class="pp-shape f-outline" data-note="注目点：棒の読み方を、グラフの右に枠で書く" style="left:892px;top:296px;width:324px;height:130px"></div>
-  <div class="pp-text b center" data-note="注目点：棒の読み方を、グラフの右に枠で書く" style="left:904px;top:328px;width:300px;height:66px;font-size:24px;line-height:1.35">回線＋委託で58<br>（通信費の約6割）</div>
-  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 指数はFY2025の通信費12.0億円を100とし、▲10は柱Bの目標▲1.2億円に相当<br>→ 回線と運用委託の2項目で▲7を取れれば、残り3項目は▲1ずつでも目標に届く</div>
+  <div class="pp-text b" data-note="滝グラフ：通信費の内訳（指数）を積み下ろし、全要素に実数ラベルを付ける" data-role="body" style="left:64px;top:186px;width:596px;height:32px;font-size:21px">通信費の内訳（FY2025、通信費12.0億円＝100）</div>
+  <div class="pp-chart" data-note="滝グラフ：通信費の内訳（指数）を積み下ろし、全要素に実数ラベルを付ける" data-chart='{"type":"waterfall","categories":["通信費計","回線","クラウド接続","保守","モバイル","運用委託"],"series":[{"name":"通信費（指数）","values":[100,-38,-22,-12,-8,-20]}],"totals":[0],"fmt":"0"}' style="left:64px;top:224px;width:596px;height:250px"></div>
+  <div class="pp-shape f-outline" data-note="注目点：グラフの下に、枠のカードで並べて書く" style="left:64px;top:504px;width:596px;height:64px"></div>
+  <div class="pp-text b center" data-note="注目点：グラフの下に、枠のカードで並べて書く" style="left:76px;top:521px;width:572px;height:30px;font-size:21px;line-height:1.35">回線＋委託で58（通信費の約6割）</div>
+  <div class="pp-text" data-note="滝グラフ：通信費の内訳（指数）を積み下ろし、全要素に実数ラベルを付ける" data-role="caption" style="left:64px;top:592px;width:596px;height:38px;line-height:1.3">注: 指数はFY2025の通信費12.0億円を100とし、▲10は柱Bの目標▲1.2億円に相当<br>→ 回線と運用委託の2項目で▲7を取れれば、残り3項目は▲1ずつでも目標に届く</div>
+  <div class="pp-text b" data-note="打ち手表：削減幅の棒は値に比例。打ち手を絞る項目は、濃い棒" data-role="body" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">打ち手と削減幅（柱B 通信コスト構造改革）</div>
+  <div class="pp-shape f-soft" data-note="打ち手表：削減幅の棒は値に比例。打ち手を絞る項目は、濃い棒" style="left:688px;top:224px;width:528px;height:402px"></div>
+  <div class="pp-text" data-role="caption" style="left:710px;top:233px;width:36px;height:22px">項目</div>
+  <div class="pp-text" data-role="caption" style="left:766px;top:233px;width:200px;height:22px">削減の方向性</div>
+  <div class="pp-text" data-role="caption" style="left:976px;top:233px;width:40px;height:22px;text-align:right">現行</div>
+  <div class="pp-text" data-role="caption" style="left:1020px;top:233px;width:42px;height:22px;text-align:right">削減後</div>
+  <div class="pp-text" data-role="caption" style="left:1080px;top:233px;width:120px;height:22px">削減幅</div>
+  <div class="pp-line" style="left:700px;top:256px;width:504px;height:1px;background:var(--text-sub)"></div>
+  <table class="pp-table" style="left:700px;top:258px;width:368px;font-size:19px;line-height:1.25">
+    <tr style="height:49px">
+      <td style="width:60px;padding:4px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">回線</td>
+      <td style="width:216px;padding:4px 6px;border-bottom:1px solid var(--line)">契約集約と帯域適正化</td>
+      <td style="width:46px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">38</td>
+      <td style="width:46px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">34</td>
+    </tr>
+    <tr style="height:49px">
+      <td style="padding:4px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">接続</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line)">直結回線の共用</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">22</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">21</td>
+    </tr>
+    <tr style="height:49px">
+      <td style="padding:4px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">保守</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line)">3モデルへの集約</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">12</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">11</td>
+    </tr>
+    <tr style="height:49px">
+      <td style="padding:4px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">端末</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line)">未使用SIMの解約</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">8</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">7</td>
+    </tr>
+    <tr style="height:49px">
+      <td style="padding:4px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">委託</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line)">監視の自動化</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">20</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">17</td>
+    </tr>
+  </table>
+  <div class="pp-shape f-accent" data-note="打ち手表：削減幅の棒は値に比例。打ち手を絞る項目は、濃い棒" style="left:1080px;top:274px;width:80px;height:18px"></div>
+  <div class="pp-text b" style="left:1166px;top:264px;width:44px;height:30px;font-size:19px">▲4</div>
+  <div class="pp-shape f-light" style="left:1080px;top:323px;width:20px;height:18px"></div>
+  <div class="pp-text b" style="left:1106px;top:312px;width:44px;height:30px;font-size:19px">▲1</div>
+  <div class="pp-shape f-light" style="left:1080px;top:372px;width:20px;height:18px"></div>
+  <div class="pp-text b" style="left:1106px;top:361px;width:44px;height:30px;font-size:19px">▲1</div>
+  <div class="pp-shape f-light" style="left:1080px;top:420px;width:20px;height:18px"></div>
+  <div class="pp-text b" style="left:1106px;top:410px;width:44px;height:30px;font-size:19px">▲1</div>
+  <div class="pp-shape f-accent" data-note="打ち手表：削減幅の棒は値に比例。打ち手を絞る項目は、濃い棒" style="left:1080px;top:469px;width:60px;height:18px"></div>
+  <div class="pp-text b" style="left:1146px;top:458px;width:44px;height:30px;font-size:19px">▲3</div>
+  <div class="pp-shape f-accent" data-note="合計の帯：削減前後の指数と金額を、基調色の面で締める" style="left:700px;top:511px;width:504px;height:105px"></div>
+  <div class="pp-text t-white b" data-note="合計の帯：削減前後の指数と金額を、基調色の面で締める" style="left:716px;top:520px;width:240px;height:36px;font-size:24px">合計 100 → 90</div>
+  <div class="pp-text t-white b right" data-note="合計の帯：削減前後の指数と金額を、基調色の面で締める" style="left:956px;top:520px;width:232px;height:36px;font-size:24px">▲10%＝▲1.2億円</div>
+  <div class="pp-line" style="left:716px;top:559px;width:472px;height:1px;background:#FFFFFF"></div>
+  <div class="pp-text t-white" data-note="合計の帯：削減前後の指数と金額を、基調色の面で締める" style="left:716px;top:568px;width:472px;height:30px;font-size:19px">うち回線と運用委託で▲7、削減目標の7割</div>
 </section>
