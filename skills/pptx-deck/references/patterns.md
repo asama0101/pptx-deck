@@ -34,10 +34,10 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 工程の前後を見せる（5〜6 段は左右） | `before-after-h` | `before-after` | `side-by-side` |
 | | 案を評価軸で選ぶ | `options` | `rating` | `compare` |
 | | 前回との差 | `quote-compare` | `quote-bridge` | `delta` |
-| 手順（順に進む） | 段階が 5 以下・情報が少ない | `flow-h` | 縦型フロー（予定 `flow-v`） | `swimlane-h` |
-| | 段階が多く横に入らない | 縦型フロー（予定 `flow-v`） | `swimlane-v` | `timeline-v` |
+| 手順（順に進む） | 段階が 5 以下・情報が少ない | `flow-h` | `flow-v` | `swimlane-h` |
+| | 段階が多く横に入らない | `flow-v` | `swimlane-v` | `timeline-v` |
 | | 担当部門をまたぐ（6 段まで） | `swimlane-h` | `swimlane-v` | `flow-h` |
-| | 担当部門をまたぐ（7 段以上） | `swimlane-v` | `swimlane-h` | 縦型フロー（予定 `flow-v`） |
+| | 担当部門をまたぐ（7 段以上） | `swimlane-v` | `swimlane-h` | `flow-v` |
 | | 工程×時間の予定 | `gantt` | `roadmap` | `flow-h` |
 | | 年度ごとの設備の更改 | `roadmap` | `gantt` | `delta` |
 | 時系列（発生順の事象） | 区間の長さで待ちを見せる | `timeline-h` | `timeline-v` | `gantt` |
@@ -49,9 +49,9 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 層×系列の格子で自社の範囲を示す | `layers` | `architecture` | `pyramid` |
 | 分解・因果 | 要因を寄与で分解する | `tree` | `cause` | — |
 | | 時間の連鎖で原因を追う | `cause` | `tree` | `timeline-h` |
-| 重なり・絞り込み | 2 条件の重なりで候補を絞る | `venn` | 4 象限（予定 `positioning`） | — |
-| 位置づけ | 2 軸で象限に置く | 4 象限（予定 `positioning`） | `venn` | — |
-| 規模の比較 | 数の大小を面で見せる | 規模比較（予定 `scale`） | `bar` | `delta` |
+| 重なり・絞り込み | 2 条件の重なりで候補を絞る | `venn` | `positioning` | — |
+| 位置づけ | 2 軸で象限に置く | `positioning` | `venn` | — |
+| 規模の比較 | 数の大小を面で見せる | `scale` | `bar` | `delta` |
 | 式（足す・掛ける） | 要素の積み上げで結果を示す | 数式（予定 `formula`） | `cost` | `waterfall` |
 | 段階（積み上がる） | 段を登って到達点に至る | 階段（予定 `steps`） | `flow-h` | `pyramid` |
 | 包含・相互関係 | 含む／含まれる | 包括（予定 `enclosure`） | `layers` | `venn` |
