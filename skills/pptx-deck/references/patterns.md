@@ -79,10 +79,10 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 導入実績 | 導入実績（予定 `track-record`） | `result` | `bar` |
 | | 沿革 | `timeline-h` | `timeline-v` | — |
 | | 画面・キャプチャの解説 | キャプチャ（予定 `screenshot`） | `architecture` | — |
-| | Q&A | Q&A（予定 `qa`） | `rating` | `issues` |
-| | 名言・要旨の引用 | 引用（予定 `quote-phrase`） | `summary` | — |
-| | 料金プラン | 料金（予定 `pricing`） | `options` | `cost` |
-| | 事例 | 事例（予定 `case`） | `before-after` | `result` |
+| | Q&A | `qa` | `rating` | `issues` |
+| | 名言・要旨の引用 | `quote-phrase` | `summary` | — |
+| | 料金プラン | `pricing` | `options` | `cost` |
+| | 事例 | `case` | `before-after` | `result` |
 
 ### 表の使い分け
 
