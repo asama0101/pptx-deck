@@ -1,14 +1,14 @@
-<!-- 用途: 工数の比較と工程別の内訳（縦棒×工程別の 2 本棒）。左の縦棒（bar）で現行と計画の合計工数を比べ（計画の 1 本だけ強調色。highlight は 0 始まりの番号。axis の max で吹き出しの余白を取る）、右のパネル地で、工程ごとに現行（淡い棒）と計画（濃い棒）を値に比例した幅で並べ、右端に差を書く。下の基調色の帯に、合計（現行 → 計画）と差を書く。
-     デザイン1との違い: 合計は横棒でなく縦棒にし、内訳は表でなく工程ごとの 2 本棒（1 人日＝8px）にする。
+<!-- 用途: 工数の比較と工程別の内訳（横棒×工程別の 2 本棒）。左の横棒（barh）で現行と計画の合計工数を比べ（計画の 1 本だけ強調色。highlight は 0 始まりの番号。吹き出しはグラフの下）、右のパネル地で、工程ごとに現行（淡い棒）と計画（濃い棒）を値に比例した幅で並べ、右端に差を書く。下の基調色の帯に、合計（現行 → 計画）と差を書く。
+     デザイン1との違い: 内訳は表でなく工程ごとの 2 本棒（1 人日＝8px）にする。吹き出しはグラフの外（グラフの下）に置く。
      差し替える所: 図表タイトル（対象・期間・単位）・data-chart（現行と計画の合計）・吹き出しの文と位置・工程の 5 行（工程・内容・現行と計画の棒の幅と値・差）・合計の帯・注。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">運用工数の比較</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">監視と構成変更を遠隔化すれば、運用工数は年120人日から72人日に減る</div>
-  <div class="pp-text b" data-note="縦棒：現行と計画の合計工数を比べ、計画の 1 本だけ強調色" data-role="body" style="left:64px;top:186px;width:420px;height:32px;font-size:21px">運用工数の比較（移行後1年間、人日）</div>
-  <div class="pp-chart" data-overlap data-note="縦棒：現行と計画の合計工数を比べ、計画の 1 本だけ強調色" data-chart='{"type":"bar","categories":["現行（手作業）","計画（遠隔）"],"series":[{"name":"工数（人日）","values":[120,72]}],"highlight":1,"fmt":"#,##0","axis":{"min":0,"max":150,"major":50}}' style="left:64px;top:224px;width:420px;height:360px"></div>
-  <div class="pp-shape f-outline" data-note="吹き出し：差の人日と削減率を 1 行で書く" data-overlap style="left:262px;top:232px;width:214px;height:61px"></div>
-  <div class="pp-text b center" data-note="吹き出し：差の人日と削減率を 1 行で書く" data-overlap style="left:270px;top:238px;width:198px;height:56px;font-size:19px;line-height:1.4">計画は現行より<br>▲48人日（▲40%）</div>
+  <div class="pp-text b" data-note="横棒：現行と計画の合計工数を比べ、計画の 1 本だけ強調色" data-role="body" style="left:64px;top:186px;width:420px;height:32px;font-size:21px">運用工数の比較（移行後1年間、人日）</div>
+  <div class="pp-chart" data-overlap data-note="横棒：現行と計画の合計工数を比べ、計画の 1 本だけ強調色" data-chart='{"type":"barh","categories":["現行（手作業）","計画（遠隔）"],"series":[{"name":"工数（人日）","values":[120,72]}],"highlight":1,"fmt":"#,##0","axis":{"min":0,"max":150,"major":50}}' style="left:64px;top:224px;width:420px;height:290px"></div>
+  <div class="pp-shape f-outline" data-note="吹き出し：差の人日と削減率を 1 行で書く" style="left:64px;top:524px;width:420px;height:56px"></div>
+  <div class="pp-text b center" data-note="吹き出し：差の人日と削減率を 1 行で書く" style="left:72px;top:534px;width:404px;height:36px;font-size:19px">計画は現行より ▲48人日（▲40%）</div>
   <div class="pp-text b" data-note="工程別の 2 本棒：現行（淡い棒）と計画（濃い棒）を、値に比例して並べる" data-role="body" style="left:508px;top:186px;width:708px;height:32px;font-size:21px">工程ごとの内訳（年間、人日）</div>
   <div class="pp-shape f-soft" data-note="工程別の 2 本棒：現行（淡い棒）と計画（濃い棒）を、値に比例して並べる" style="left:508px;top:224px;width:708px;height:364px"></div>
   <div class="pp-text" data-role="caption" style="left:524px;top:232px;width:80px;height:22px">工程</div>

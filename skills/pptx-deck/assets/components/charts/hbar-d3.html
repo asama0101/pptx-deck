@@ -1,50 +1,35 @@
-<!-- 用途: 項目の大小の比較（横棒）。棒を図形で描き、順位・項目名・件数・全体に占める割合を 1 行に並べる。上位の数本をまとめて強調したいときに使う（グラフオブジェクトは 1 本しか強調できない）。
-     デザイン1との違い: グラフオブジェクトをやめ、順位つきの行（順位｜拠点｜棒｜件数｜割合）にする。上位3拠点を基調色、残りを淡い色にする。棒の長さは 1 件 = 10px（最大 48 件 = 480px）。
-     差し替える所: 題・リード文・図表タイトル・6 行の拠点名と件数と割合・棒の幅（件数×10px）・注。   -->
+<!-- 用途: 項目の大小の比較と、前年との内訳（上に横棒、下に全幅の表）。上段の横棒（barh）で今年の件数を全幅で比べ（注目する 1 本だけ強調色）、下段の全幅の表で、上位拠点の主な原因・昨年・今年・昨年比の棒を並べる。現行と計画の比較＋工程別の内訳（旧 effort-bar の用途）にも使える。
+     デザイン1との違い: 左右に分けず、横棒を上段、内訳表を下段に全幅で積む。表は上位 3 拠点と「ほか 3 拠点」の 4 行にし、合計の帯は 1 行にする。
+     差し替える所: 図表タイトル・data-chart（今年の値。categories と values は下から上の順）・表の 4 行（拠点・主な原因・昨年・今年・棒の幅と差）・合計の帯・注。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">拠点別の障害件数</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の7割は、東京・大阪・名古屋の3拠点に集中している</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">拠点別の障害件数（2025年度、件）</div>
-  <div class="pp-text" data-note="見出し行：順位｜拠点｜棒｜件数｜割合" data-role="caption" style="left:76px;top:230px;width:60px;height:22px">順位</div>
-  <div class="pp-text" data-role="caption" style="left:150px;top:230px;width:200px;height:22px">拠点</div>
-  <div class="pp-text" data-role="caption" style="left:1000px;top:230px;width:90px;height:22px;text-align:right">件数</div>
-  <div class="pp-text" data-role="caption" style="left:1110px;top:230px;width:100px;height:22px;text-align:right">割合</div>
-  <div class="pp-shape f-white" data-note="行：順位・拠点・棒・件数・割合を 1 行に並べる。上位3拠点は基調色の棒" style="left:64px;top:256px;width:1152px;height:48px"></div>
-  <div class="pp-text num" data-overlap style="left:76px;top:262px;width:60px;height:36px;font-size:27px;text-align:center">1</div>
-  <div class="pp-text b" data-overlap style="left:150px;top:262px;width:270px;height:36px;font-size:21px">東京本社</div>
-  <div class="pp-shape f-accent" data-overlap style="left:430px;top:266px;width:480px;height:28px"></div>
-  <div class="pp-text num" data-overlap style="left:1000px;top:262px;width:90px;height:36px;font-size:27px;text-align:right">48</div>
-  <div class="pp-text" data-overlap style="left:1110px;top:258px;width:100px;height:36px;font-size:21px;text-align:right">32%</div>
-  <div class="pp-shape f-white" style="left:64px;top:310px;width:1152px;height:48px"></div>
-  <div class="pp-text num" data-overlap style="left:76px;top:316px;width:60px;height:36px;font-size:27px;text-align:center">2</div>
-  <div class="pp-text b" data-overlap style="left:150px;top:316px;width:270px;height:36px;font-size:21px">大阪支社</div>
-  <div class="pp-shape f-accent" data-overlap style="left:430px;top:320px;width:360px;height:28px"></div>
-  <div class="pp-text num" data-overlap style="left:1000px;top:316px;width:90px;height:36px;font-size:27px;text-align:right">36</div>
-  <div class="pp-text" data-overlap style="left:1110px;top:312px;width:100px;height:36px;font-size:21px;text-align:right">24%</div>
-  <div class="pp-shape f-white" style="left:64px;top:364px;width:1152px;height:48px"></div>
-  <div class="pp-text num" data-overlap style="left:76px;top:370px;width:60px;height:36px;font-size:27px;text-align:center">3</div>
-  <div class="pp-text b" data-overlap style="left:150px;top:370px;width:270px;height:36px;font-size:21px">名古屋支店</div>
-  <div class="pp-shape f-accent" data-overlap style="left:430px;top:374px;width:280px;height:28px"></div>
-  <div class="pp-text num" data-overlap style="left:1000px;top:370px;width:90px;height:36px;font-size:27px;text-align:right">28</div>
-  <div class="pp-text" data-overlap style="left:1110px;top:366px;width:100px;height:36px;font-size:21px;text-align:right">19%</div>
-  <div class="pp-shape f-white" style="left:64px;top:418px;width:1152px;height:48px"></div>
-  <div class="pp-text num" data-overlap style="left:76px;top:424px;width:60px;height:36px;font-size:27px;text-align:center">4</div>
-  <div class="pp-text b" data-overlap style="left:150px;top:424px;width:270px;height:36px;font-size:21px">福岡支店</div>
-  <div class="pp-shape f-mid" data-overlap style="left:430px;top:428px;width:180px;height:28px"></div>
-  <div class="pp-text num" data-overlap style="left:1000px;top:424px;width:90px;height:36px;font-size:27px;text-align:right">18</div>
-  <div class="pp-text" data-overlap style="left:1110px;top:420px;width:100px;height:36px;font-size:21px;text-align:right">12%</div>
-  <div class="pp-shape f-white" style="left:64px;top:472px;width:1152px;height:48px"></div>
-  <div class="pp-text num" data-overlap style="left:76px;top:478px;width:60px;height:36px;font-size:27px;text-align:center">5</div>
-  <div class="pp-text b" data-overlap style="left:150px;top:478px;width:270px;height:36px;font-size:21px">札幌支店</div>
-  <div class="pp-shape f-mid" data-overlap style="left:430px;top:482px;width:120px;height:28px"></div>
-  <div class="pp-text num" data-overlap style="left:1000px;top:478px;width:90px;height:36px;font-size:27px;text-align:right">12</div>
-  <div class="pp-text" data-overlap style="left:1110px;top:474px;width:100px;height:36px;font-size:21px;text-align:right">8%</div>
-  <div class="pp-shape f-white" style="left:64px;top:526px;width:1152px;height:48px"></div>
-  <div class="pp-text num" data-overlap style="left:76px;top:532px;width:60px;height:36px;font-size:27px;text-align:center">6</div>
-  <div class="pp-text b" data-overlap style="left:150px;top:532px;width:270px;height:36px;font-size:21px">仙台支店</div>
-  <div class="pp-shape f-mid" data-overlap style="left:430px;top:536px;width:90px;height:28px"></div>
-  <div class="pp-text num" data-overlap style="left:1000px;top:532px;width:90px;height:36px;font-size:27px;text-align:right">9</div>
-  <div class="pp-text" data-overlap style="left:1110px;top:528px;width:100px;height:36px;font-size:21px;text-align:right">6%</div>
+
+  <div class="pp-text b" data-note="横棒：拠点別の件数を比べ、注目する 1 本だけ強調色" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">拠点別の障害件数（2025年度、件）</div>
+  <div class="pp-chart" data-overlap data-note="横棒：拠点別の件数を比べ、注目する 1 本だけ強調色" data-chart='{"type":"barh","categories":["仙台支店","札幌支店","福岡支店","名古屋支店","大阪支社","東京本社"],"series":[{"name":"障害件数（件）","values":[9,12,18,28,36,48]}],"highlight":5,"fmt":"#,##0","axis":{"min":0,"max":60,"major":20}}' style="left:64px;top:222px;width:1152px;height:160px"></div>
+  <div class="pp-text" data-role="caption" style="left:76px;top:384px;width:140px;height:22px">拠点</div>
+  <div class="pp-text" data-role="caption" style="left:226px;top:384px;width:220px;height:22px">主な原因</div>
+  <div class="pp-text" data-role="caption" style="left:446px;top:384px;width:90px;height:22px;text-align:right">昨年</div>
+  <div class="pp-text" data-role="caption" style="left:546px;top:384px;width:90px;height:22px;text-align:right">今年</div>
+  <div class="pp-text" data-role="caption" style="left:700px;top:384px;width:300px;height:22px">差（昨年比、件。棒は 1 件＝8px）</div>
+  <div class="pp-line" style="left:64px;top:407px;width:1152px;height:1px;background:var(--text-sub)"></div>
+  <table class="pp-table" data-note="内訳表：差の棒は値に比例。減った拠点は濃い棒、増えた拠点は淡い棒" style="left:64px;top:409px;width:620px;font-size:19px;line-height:1.25">
+    <tr style="height:34px"><td style="width:150px;padding:4px 6px;border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">東京本社</td><td style="width:220px;padding:4px 6px;border-bottom:1px solid var(--line)">回線断</td><td style="width:100px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">55</td><td style="width:100px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">48</td></tr>
+    <tr style="height:34px"><td style="width:150px;padding:4px 6px;border-bottom:1px solid var(--line);font-weight:700">大阪支社</td><td style="width:220px;padding:4px 6px;border-bottom:1px solid var(--line)">機器故障</td><td style="width:100px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">30</td><td style="width:100px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">36</td></tr>
+    <tr style="height:34px"><td style="width:150px;padding:4px 6px;border-bottom:1px solid var(--line);font-weight:700">名古屋支店</td><td style="width:220px;padding:4px 6px;border-bottom:1px solid var(--line)">設定ミス</td><td style="width:100px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">33</td><td style="width:100px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">28</td></tr>
+    <tr style="height:34px"><td style="width:150px;padding:4px 6px;border-bottom:1px solid var(--line);font-weight:700">ほか3拠点</td><td style="width:220px;padding:4px 6px;border-bottom:1px solid var(--line)">電源・空調ほか</td><td style="width:100px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">38</td><td style="width:100px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">39</td></tr>
+  </table>
+  <div class="pp-shape f-accent" style="left:700px;top:417px;width:56px;height:18px"></div>
+  <div class="pp-text b" style="left:764px;top:411px;width:120px;height:30px;font-size:19px">▲7</div>
+  <div class="pp-shape f-light" style="left:700px;top:451px;width:48px;height:18px"></div>
+  <div class="pp-text b" style="left:756px;top:445px;width:120px;height:30px;font-size:19px">＋6</div>
+  <div class="pp-shape f-accent" style="left:700px;top:485px;width:40px;height:18px"></div>
+  <div class="pp-text b" style="left:748px;top:479px;width:120px;height:30px;font-size:19px">▲5</div>
+  <div class="pp-shape f-light" style="left:700px;top:519px;width:8px;height:18px"></div>
+  <div class="pp-text b" style="left:716px;top:513px;width:120px;height:30px;font-size:19px">＋1</div>
+  <div class="pp-shape f-accent" data-note="合計の帯：昨年 → 今年の合計と差を、基調色の面で締める" style="left:64px;top:552px;width:1152px;height:36px"></div>
+  <div class="pp-text t-white b" data-note="合計の帯：昨年 → 今年の合計と差を、基調色の面で締める" style="left:80px;top:553px;width:440px;height:30px;font-size:19px">合計 156 → 151件　差 ▲5件</div>
+  <div class="pp-text t-white" style="left:560px;top:553px;width:640px;height:30px;font-size:19px">うち東京と名古屋で▲12、大阪で＋6、ほか3拠点で＋1</div>
   <div class="pp-text" data-note="注：出典・前提と、含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 件数は2025年度の障害チケットの集計（全6拠点、計151件）。上位3拠点は112件で全体の74%<br>→ 監視の強化は、上位3拠点から先に進める</div>
 </section>

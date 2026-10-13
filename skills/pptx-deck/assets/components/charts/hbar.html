@@ -1,13 +1,11 @@
-<!-- 用途: 項目の大小の比較（横棒）。項目名が長いとき、または項目が多いときに、縦棒より読みやすい。グラフは全幅で、注目する 1 本だけ強調色（highlight は categories の 0 始まりの番号。categories は下から上へ並ぶので、大きい順に上から見せるには値の小さい順で書く）。注目点は枠線の吹き出しでグラフに直接書く。
-     上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。
-     差し替える所: 図表タイトル・data-chart（categories と values は下から上の順）・吹き出しの文と位置・注。   -->
+<!-- 用途: 項目の大小の比較（横棒）。項目名が長いとき、または項目が多いときに、縦棒より読みやすい。グラフは全幅で、注目する 1 本だけ強調色（highlight は categories の 0 始まりの番号。categories は下から上へ並ぶので、大きい順に上から見せるには値の小さい順で書く）。
+     上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。現行と計画の比較＋工程別の内訳（旧 effort-bar の用途）は、このグラフのデザイン2・3（右や下に内訳つき）で見せる。
+     差し替える所: 図表タイトル・data-chart（categories と values は下から上の順）・注。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">拠点別の障害件数</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の7割は、東京・大阪・名古屋の3拠点に集中している</div>
   <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">拠点別の障害件数（2025年度、件）</div>
   <div class="pp-chart" data-overlap data-note="グラフは全幅の横棒。注目する 1 本だけ強調色" data-chart='{"type":"barh","categories":["仙台支店","札幌支店","福岡支店","名古屋支店","大阪支社","東京本社"],"series":[{"name":"障害件数（件）","values":[9,12,18,28,36,48]}],"highlight":5,"fmt":"#,##0","axis":{"min":0,"max":60,"major":20}}' style="left:64px;top:224px;width:1152px;height:360px"></div>
-  <div class="pp-shape f-outline" data-note="吹き出し：注目点をグラフに直接書く" data-overlap style="left:800px;top:330px;width:380px;height:64px"></div>
-  <div class="pp-text b center" data-note="吹き出し：注目点をグラフに直接書く" data-overlap style="left:808px;top:338px;width:364px;height:52px;font-size:19px;line-height:1.4">上位3拠点で112件<br>（全体の74%）</div>
   <div class="pp-text" data-note="注：出典・前提と、含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 件数は2025年度の障害チケットの集計（全6拠点、計151件）。上位3拠点は112件で全体の74%<br>→ 監視の強化は、上位3拠点から先に進める</div>
 </section>

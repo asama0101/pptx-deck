@@ -1,62 +1,11 @@
-<!-- 用途: 過去見積との比較（滝グラフ×差の理由表）。左の滝グラフで前回の合計から項目ごとの増減を積み上げ下ろして今回の合計に至る道筋を見せ（最初と最後が合計。totals は合計にする位置、0 始まり）、右のパネル地の表で、項目ごとの理由・前回・今回・差額を並べる。
-     差額の棒は pp-shape の幅を値に比例させ（100 万円＝5px）、最大の差の 1 行は、濃い棒で示す。差の合計を書く吹き出しだけ強調色（1 枚 1 点）。表の下の基調色の帯に、前回 → 今回の合計と差を書く。表だけで見せるときは tables/quote-compare。
-     注の末尾に、差の実質（何が変わり、何が変わっていないか）を 1 文。
-     差し替える所: 図表タイトル（前回と今回の時点・単位）・data-chart（前回の合計・項目の増減・今回の合計。合計を合わせる）・吹き出しの文と位置・表の 4 行（項目・理由・前回・今回・棒の幅と差額）・合計の帯・注。 -->
+<!-- 用途: 過去見積との比較（滝グラフのみ）。前回の合計から項目ごとの増減を積み上げ下ろして今回の合計に至る道筋を、全幅の滝グラフで見せる（最初と最後が合計。totals は合計にする位置、0 始まり。全要素に実数ラベルが付く）。
+     上に図表タイトル（前回と今回の時点・単位）、下に注（出典・前提）と「→ 含意」の 1 文。含意には、差の実質（何が変わり、何が変わっていないか）を書く。理由と前回・今回の値を並べたいときは、デザイン2・3（理由表・数字カードつき）を使う。
+     差し替える所: 図表タイトル（前回と今回の時点・単位）・data-chart（前回の合計・項目の増減・今回の合計。合計を合わせる）・注。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">見積の増減</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">今回の見積は前回より1,000万円低いが、差の実質は保守の計上先の変更にすぎない</div>
-  <div class="pp-text b" data-note="滝グラフ：前回の合計 → 項目の増減 → 今回の合計。全要素に実数ラベルが付く" data-role="body" style="left:64px;top:186px;width:596px;height:32px;font-size:21px">見積の差額の内訳（前回2026年6月 → 今回9月、万円・税抜）</div>
-  <div class="pp-chart" data-overlap data-note="滝グラフ：前回の合計 → 項目の増減 → 今回の合計。全要素に実数ラベルが付く" data-chart='{"type":"waterfall","categories":["前回 6月","機器","設計","切替作業","保守","今回 9月"],"series":[{"name":"見積（万円）","values":[12000,600,-900,300,-1000,11000]}],"totals":[0,5],"fmt":"#,##0","axis":{"min":0,"max":15000,"major":5000}}' style="left:64px;top:224px;width:596px;height:360px"></div>
-  <div class="pp-shape f-emph" data-overlap data-note="吹き出し：差の合計だけ強調色（1 点）" style="left:250px;top:399px;width:320px;height:44px"></div>
-  <div class="pp-text b t-white center" data-overlap data-note="吹き出し：差の合計だけ強調色（1 点）" style="left:258px;top:405px;width:304px;height:30px;font-size:19px">増減の合計 ▲1,000（▲8%）</div>
-  <div class="pp-text" data-note="滝グラフ：前回の合計 → 項目の増減 → 今回の合計。全要素に実数ラベルが付く" data-role="caption" style="left:64px;top:592px;width:596px;height:38px;line-height:1.3">注: 金額はベンダー見積（税抜）。前回は6月の概算、今回は9月の正式見積<br>→ 機器と切替の＋900は設計の▲900で相殺され、差額▲1,000は保守の計上先の変更分だ</div>
-  <div class="pp-text b" data-note="理由表：差額の棒は値に比例。最大の差の行は、濃い棒" data-role="body" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">項目ごとの差と理由（万円）</div>
-  <div class="pp-shape f-soft" data-note="理由表：差額の棒は値に比例。最大の差の行は、濃い棒" style="left:688px;top:224px;width:528px;height:402px"></div>
-  <div class="pp-text" data-role="caption" style="left:710px;top:233px;width:60px;height:22px">項目</div>
-  <div class="pp-text" data-role="caption" style="left:780px;top:233px;width:160px;height:22px">理由</div>
-  <div class="pp-text" data-role="caption" style="left:958px;top:233px;width:40px;height:22px;text-align:right">前回</div>
-  <div class="pp-text" data-role="caption" style="left:1022px;top:233px;width:40px;height:22px;text-align:right">今回</div>
-  <div class="pp-text" data-role="caption" style="left:1080px;top:233px;width:120px;height:22px">差額</div>
-  <div class="pp-line" style="left:700px;top:256px;width:504px;height:1px;background:var(--text-sub)"></div>
-  <table class="pp-table" style="left:700px;top:258px;width:368px;font-size:19px;line-height:1.25">
-    <tr style="height:49px">
-      <td style="width:80px;padding:4px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">機器</td>
-      <td style="width:160px;padding:4px 6px;border-bottom:1px solid var(--line)">予備機6台追加</td>
-      <td style="width:64px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">8,400</td>
-      <td style="width:64px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">9,000</td>
-    </tr>
-    <tr style="height:49px">
-      <td style="padding:4px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">設計</td>
-      <td style="padding:4px 6px;border-bottom:1px solid var(--line)">PoCで短縮</td>
-      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">2,000</td>
-      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">1,100</td>
-    </tr>
-    <tr style="height:49px">
-      <td style="padding:4px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">切替</td>
-      <td style="padding:4px 6px;border-bottom:1px solid var(--line)">並行稼働2週間</td>
-      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">600</td>
-      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">900</td>
-    </tr>
-    <tr style="height:49px">
-      <td style="padding:4px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">保守</td>
-      <td style="padding:4px 6px;border-bottom:1px solid var(--line)">運用費へ移管</td>
-      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">1,000</td>
-      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">0</td>
-    </tr>
-  </table>
-  <div class="pp-shape f-light" style="left:1080px;top:274px;width:30px;height:18px"></div>
-  <div class="pp-text b" style="left:1116px;top:264px;width:90px;height:30px;font-size:19px">＋600</div>
-  <div class="pp-shape f-light" style="left:1080px;top:323px;width:45px;height:18px"></div>
-  <div class="pp-text b" style="left:1131px;top:312px;width:85px;height:30px;font-size:19px">▲900</div>
-  <div class="pp-shape f-light" style="left:1080px;top:372px;width:15px;height:18px"></div>
-  <div class="pp-text b" style="left:1101px;top:361px;width:90px;height:30px;font-size:19px">＋300</div>
-  <div class="pp-shape f-accent" data-note="理由表：差額の棒は値に比例。最大の差の行は、濃い棒" style="left:1080px;top:420px;width:50px;height:18px"></div>
-  <div class="pp-text b" style="left:1136px;top:410px;width:80px;height:30px;font-size:19px">▲1,000</div>
-  <div class="pp-text" data-role="caption" style="left:710px;top:464px;width:484px;height:36px;line-height:1.3">注: 保守1,000万円（5年分）は運用費（年200万円）へ移管<br>機器の単価は前回と同じ（1台150万円）</div>
-  <div class="pp-shape f-accent" data-note="合計の帯：前回 → 今回の合計と差を、基調色の面で締める" style="left:700px;top:514px;width:504px;height:101px"></div>
-  <div class="pp-text t-white b" data-note="合計の帯：前回 → 今回の合計と差を、基調色の面で締める" style="left:716px;top:523px;width:304px;height:36px;font-size:24px">12,000 → 11,000万円</div>
-  <div class="pp-text t-white b right" data-note="合計の帯：前回 → 今回の合計と差を、基調色の面で締める" style="left:1020px;top:523px;width:168px;height:36px;font-size:24px">▲1,000万円</div>
-  <div class="pp-line" style="left:716px;top:563px;width:472px;height:1px;background:#FFFFFF"></div>
-  <div class="pp-text t-white" data-note="合計の帯：前回 → 今回の合計と差を、基調色の面で締める" style="left:716px;top:572px;width:472px;height:30px;font-size:19px">機器9,000・移行2,000で、費用計画の初年度と同じ</div>
+  <div class="pp-text b" data-note="滝グラフ：前回の合計 → 項目の増減 → 今回の合計。全要素に実数ラベルが付く" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">見積の差額の内訳（前回2026年6月 → 今回9月、万円・税抜）</div>
+  <div class="pp-chart" data-overlap data-note="滝グラフ：前回の合計 → 項目の増減 → 今回の合計。全要素に実数ラベルが付く" data-chart='{"type":"waterfall","categories":["前回 6月","機器","設計","切替作業","保守","今回 9月"],"series":[{"name":"見積（万円）","values":[12000,600,-900,300,-1000,11000]}],"totals":[0,5],"fmt":"#,##0","axis":{"min":0,"max":15000,"major":5000}}' style="left:64px;top:224px;width:1152px;height:364px"></div>
+  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 金額はベンダー見積（税抜）。前回は6月の概算、今回は9月の正式見積<br>→ 機器と切替の＋900は設計の▲900で相殺され、差額▲1,000は保守の計上先の変更分だ</div>
 </section>
