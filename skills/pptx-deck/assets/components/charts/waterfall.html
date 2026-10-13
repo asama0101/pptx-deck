@@ -1,15 +1,13 @@
-<!-- 用途: 差額の内訳（ウォーターフォール、吹き出し版）。グラフは全幅。最初と最後が合計、間が増減。totals は合計にする位置（0 始まり）。減少は濃い灰、増加は基調色、合計は灰。注目点は枠線の吹き出しで、棒と重ならない空きに書く（2 つまで）。
+<!-- 用途: 差額の内訳（ウォーターフォール、吹き出し版）。グラフは全幅。最初が合計、以降が内訳（最後も合計にするときは totals に位置を足す）。totals は合計にする位置（0 始まり）。減少は濃い灰、増加は基調色、合計は灰。注目点は枠線の吹き出しで、棒と重ならない空きに書く（2 つまで）。
      上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。所見が長いときは -note 版（滝グラフ×打ち手表）を使う。
      差し替える所: 図表タイトル・data-chart・吹き出しの文と位置（グラフの値に合わせて手で直す）・注。 -->
 <section class="slide" data-layout="chart">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">運用費の増減</div>
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">通信費の削減内訳</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">年間の運用費は、回線費の削減で2,000万円から1,200万円に下がる</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">運用費の増減の内訳（現状MPLS FY2025実績 → SD-WAN導入後の見込み、年額・万円）</div>
-  <div class="pp-chart" data-overlap data-note="グラフは全幅。減少は濃い灰、合計は灰" data-chart='{"type":"waterfall","categories":["現状","回線費","保守費","監視費","導入後"],"series":[{"name":"運用費","values":[2000,-500,-200,-100,1200]}],"totals":[0,4],"fmt":"#,##0"}' style="left:64px;top:224px;width:1152px;height:360px"></div>
-  <div class="pp-shape f-outline" data-overlap data-note="吹き出し：棒と重ならない空きに書く（2 つまで）" style="left:340px;top:417px;width:400px;height:44px"></div>
-  <div class="pp-text b center" data-overlap data-note="吹き出し：棒と重ならない空きに書く（2 つまで）" style="left:348px;top:423px;width:384px;height:30px;font-size:19px">回線費▲500万円が削減の6割</div>
-  <div class="pp-shape f-outline" data-overlap data-note="吹き出し：棒と重ならない空きに書く（2 つまで）" style="left:760px;top:471px;width:260px;height:44px"></div>
-  <div class="pp-text b center" data-overlap data-note="吹き出し：棒と重ならない空きに書く（2 つまで）" style="left:768px;top:477px;width:244px;height:30px;font-size:19px">差額▲800万円（▲40%）</div>
-  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 現状はFY2025実績、導入後は回線とクラウド管理の見積り（年額・税抜）<br>→ 削減の6割は回線費で、インターネット回線の契約条件（年800万円の固定）が効果の大半を決める</div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">通信費の58%を占める回線と運用委託に打ち手を絞れば、削減目標の7割が見込める</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">通信費の内訳（FY2025、通信費12.0億円＝100）</div>
+  <div class="pp-chart" data-overlap data-note="グラフは全幅。減少は濃い灰、合計は灰" data-chart='{"type":"waterfall","categories":["通信費計","回線","クラウド接続","保守","モバイル","運用委託"],"series":[{"name":"通信費（指数）","values":[100,-38,-22,-12,-8,-20]}],"totals":[0],"fmt":"0"}' style="left:64px;top:224px;width:1152px;height:360px"></div>
+  <div class="pp-shape f-outline" data-overlap data-note="吹き出し：棒と重ならない空きに書く（2 つまで）" style="left:760px;top:262px;width:400px;height:44px"></div>
+  <div class="pp-text b center" data-overlap data-note="吹き出し：棒と重ならない空きに書く（2 つまで）" style="left:768px;top:268px;width:384px;height:30px;font-size:19px">回線＋委託で58（通信費の約6割）</div>
+  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 指数はFY2025の通信費12.0億円を100とし、▲10は柱Bの目標▲1.2億円に相当<br>→ 回線と運用委託の2項目で▲7を取れれば、残り3項目は▲1ずつでも目標に届く</div>
 </section>

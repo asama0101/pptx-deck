@@ -2,14 +2,14 @@
      削減幅の棒は pp-shape の幅を値に比例させ（▲1＝5px）、効く項目は、濃い棒で示す。表の下の基調色の帯に、合計（40→8）と削減率を書く。所見が長文のとき（前提・内訳を並べたいとき）に使う（短いときは吹き出しの版）。
      差し替える所: data-chart（推移の値）・吹き出しの文と位置・内訳表の 4 行（項目・要因・現状・導入後・棒の幅と▲値）・表の下の注・合計の帯。 -->
 <section class="slide" data-layout="chart">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応の削減内訳</div>
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応時間の推移</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応の時間は、導入後6か月で月40時間から8時間に下がる見込み</div>
   <div class="pp-text b" data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-role="body" style="left:64px;top:186px;width:596px;height:32px;font-size:21px">障害対応の時間（月あたり、時間）</div>
   <div class="pp-chart" data-overlap data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40]}],"fmt":"#,##0","axis":{"min":0,"max":50,"major":10}}' style="left:64px;top:224px;width:596px;height:360px"></div>
   <div class="pp-shape f-outline" data-overlap data-note="吹き出し：到達点と削減率を 1 行で書く" style="left:356px;top:354px;width:300px;height:44px"></div>
   <div class="pp-text b center" data-overlap data-note="吹き出し：到達点と削減率を 1 行で書く" style="left:364px;top:360px;width:284px;height:30px;font-size:19px">6か月で40→8時間（▲80%）</div>
-  <div class="pp-text" data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-role="caption" style="left:64px;top:592px;width:596px;height:38px;line-height:1.3">注: 現状は繁忙期を含む月平均。導入後は基盤グループの試算で、実績ではない<br>→ 削減の7割は切り分けと復旧に集中し、集中監視と自動切替が効果を決める</div>
+  <div class="pp-text" data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-role="caption" style="left:64px;top:592px;width:596px;height:38px;line-height:1.3">注: 現状は繁忙期を含む月平均。導入後は基盤グループの試算で、実績ではない<br>→ 低下は本社・DCの切替完了が前提で、切替が遅れれば到達も遅れる</div>
   <div class="pp-text b" data-note="内訳表：削減幅の棒は値に比例。効く項目は、濃い棒" data-role="body" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">削減の内訳と要因（月あたり、時間）</div>
   <div class="pp-shape f-soft" data-note="内訳表：削減幅の棒は値に比例。効く項目は、濃い棒" style="left:688px;top:224px;width:528px;height:402px"></div>
   <div class="pp-text" data-role="caption" style="left:710px;top:233px;width:60px;height:22px">項目</div>
