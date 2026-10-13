@@ -33,7 +33,7 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 工程の前後を見せる（5〜6 段は左右） | `before-after-h` | `before-after` | `side-by-side` |
 | | 案を評価軸で選ぶ | `options` | `rating` | `compare` |
 | | 前回との差（表で見せる） | `quote-compare` | `quote-bridge` | `delta` |
-| | 前回との差（内訳を図で見せる） | `quote-bridge` | `quote-compare` | `waterfall-note` |
+| | 前回との差（内訳を図で見せる） | `quote-bridge` | `quote-compare` | `waterfall` |
 | 手順（順に進む） | 段階が 5 以下・情報が少ない | `flow-h` | `flow-v` | `swimlane-h` |
 | | 段階が多く横に入らない | `flow-v` | `swimlane-v` | `timeline-v` |
 | | 担当部門をまたぐ（6 段まで） | `swimlane-h` | `swimlane-v` | `flow-h` |
@@ -52,7 +52,6 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 時間の連鎖で原因を追う | `cause` | `tree` | `timeline-h` |
 | 重なり・絞り込み | 2 条件の重なりで候補を絞る | `venn` | `positioning` | — |
 | 位置づけ | 2 軸で象限に置く | `positioning` | `venn` | — |
-| 規模の比較 | 数の大小を面で見せる | `scale` | `bar` | `delta` |
 | 式（足す・掛ける） | 要素の積み上げで結果を示す | `formula` | `cost` | `waterfall` |
 | 段階（積み上がる） | 段を登って到達点に至る | `steps` | `flow-h` | `pyramid` |
 | 包含・相互関係 | 含む／含まれる | `enclosure` | `layers` | `venn` |
@@ -72,17 +71,11 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 時間の推移 | `line` | `bar` | `stacked` |
 | | 積み上げ・内訳 | `stacked` | `waterfall` | `data-chart` の `pie` |
 | | 増減の差し引き | `waterfall` | `quote-bridge` | `bar` |
-| | 所見が長文 | 各グラフの `-note` 版（`bar-note`・`line-note`・`stacked-note`・`waterfall-note`） | 吹き出し版の各グラフ | — |
+| | 所見・内訳の表を並べる | `bar`・`line`・`stacked`・`waterfall` のデザイン2・3（右に内訳表のノートつき） | 同じグラフのデザイン1（全幅） | — |
 | | 工数を棒で比べる | `effort-bar` | `effort` | `bar` |
-| 事例・実績・紹介 | 会社概要 | `company` | `summary` | `org` |
-| | メンバー紹介 | `members` | `org` | `raci` |
-| | 理念（MVV） | `mvv` | `pyramid` | `layers` |
-| | 導入実績 | `track-record` | `result` | `bar` |
 | | 沿革 | `timeline-h` | `timeline-v` | — |
 | | 画面・キャプチャの解説 | `screenshot` | `architecture` | — |
 | | Q&A | `qa` | `rating` | `issues` |
-| | 名言・要旨の引用 | `quote-phrase` | `summary` | — |
-| | 料金プラン | `pricing` | `options` | `cost` |
 | | 事例 | `case` | `before-after` | `result` |
 
 ### 表の使い分け
