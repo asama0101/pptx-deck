@@ -3,74 +3,76 @@
      行の右端の台数は、現行の台数に増減を足した値（合計を合わせる）。注の末尾に、台数の推移から言える含意を 1 文。工程×時間の予定は gantt、増減の表は delta。
      差し替える所: 設備（5 行まで。名前と現行台数）・年度（5 列）・各セルの印と台数と一言・パネル地の列・強調する 1 セル・右端の台数・注。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="height:44px">更改はFY2027の切替に集中し、以降は旧型スイッチの計画更改だけが残る</div>
-  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:700px;height:28px;font-size:20px">ネットワーク設備の更改ロードマップ（FY2026〜FY2030、台数・本数）</div>
-  <div class="pp-shape f-accent" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" style="left:800px;top:191px;width:16px;height:14px"></div>
-  <div class="pp-text" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" data-role="caption" style="left:822px;top:188px;width:60px;height:20px">増設</div>
-  <div class="pp-shape f-outline" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" style="left:884px;top:191px;width:16px;height:14px"></div>
-  <div class="pp-text" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" data-role="caption" style="left:906px;top:188px;width:60px;height:20px">更改</div>
-  <div class="pp-shape dashed" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" style="left:968px;top:191px;width:16px;height:14px"></div>
-  <div class="pp-text" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" data-role="caption" style="left:990px;top:188px;width:60px;height:20px">撤去</div>
-  <div class="pp-shape f-soft" data-note="切替の年度：列をパネル地で全行に通す" style="left:1052px;top:191px;width:16px;height:14px"></div>
-  <div class="pp-text" data-note="切替の年度：列をパネル地で全行に通す" data-role="caption" style="left:1074px;top:188px;width:142px;height:20px">本番切替の年度</div>
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">設備の更改計画</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">更改はFY2027の切替に集中し、以降は旧型スイッチの計画更改だけが残る</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:700px;height:32px;font-size:21px">ネットワーク設備の更改ロードマップ（FY2026〜FY2030、台数・本数）</div>
+  <div class="pp-shape f-accent" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" style="left:800px;top:229px;width:16px;height:14px"></div>
+  <div class="pp-text" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" data-role="caption" style="left:822px;top:226px;width:60px;height:20px">増設</div>
+  <div class="pp-shape f-outline" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" style="left:884px;top:229px;width:16px;height:14px"></div>
+  <div class="pp-text" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" data-role="caption" style="left:906px;top:226px;width:60px;height:20px">更改</div>
+  <div class="pp-shape dashed" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" style="left:968px;top:229px;width:16px;height:14px"></div>
+  <div class="pp-text" data-note="凡例：増設＝塗り、更改＝枠線、撤去＝破線の箱" data-role="caption" style="left:990px;top:226px;width:60px;height:20px">撤去</div>
+  <div class="pp-shape f-soft" data-note="切替の年度：列をパネル地で全行に通す" style="left:1052px;top:229px;width:16px;height:14px"></div>
+  <div class="pp-text" data-note="切替の年度：列をパネル地で全行に通す" data-role="caption" style="left:1074px;top:226px;width:142px;height:20px">本番切替の年度</div>
 
-  <div class="pp-shape f-soft" data-note="切替の年度：列をパネル地で全行に通す" style="left:404px;top:216px;width:160px;height:374px"></div>
-  <div class="pp-text" data-role="caption" style="left:64px;top:222px;width:180px;height:20px">設備（現行の台数）</div>
-  <div class="pp-text center" data-role="caption" style="left:244px;top:222px;width:160px;height:20px">FY2026</div>
-  <div class="pp-text center b" data-role="caption" style="left:404px;top:222px;width:160px;height:20px;color:var(--text)">FY2027（切替）</div>
-  <div class="pp-text center" data-role="caption" style="left:564px;top:222px;width:160px;height:20px">FY2028</div>
-  <div class="pp-text center" data-role="caption" style="left:724px;top:222px;width:160px;height:20px">FY2029</div>
-  <div class="pp-text center" data-role="caption" style="left:884px;top:222px;width:160px;height:20px">FY2030</div>
-  <div class="pp-text right" data-role="caption" style="left:1060px;top:222px;width:156px;height:20px">FY2030末の台数</div>
-  <div class="pp-line" style="left:64px;top:248px;width:1152px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" data-note="切替の年度：列をパネル地で全行に通す" style="left:404px;top:251px;width:160px;height:337px"></div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:256px;width:180px;height:20px">設備（現行の台数）</div>
+  <div class="pp-text center" data-role="caption" style="left:244px;top:256px;width:160px;height:20px">FY2026</div>
+  <div class="pp-text center b" data-role="caption" style="left:404px;top:256px;width:160px;height:20px;color:var(--text)">FY2027（切替）</div>
+  <div class="pp-text center" data-role="caption" style="left:564px;top:256px;width:160px;height:20px">FY2028</div>
+  <div class="pp-text center" data-role="caption" style="left:724px;top:256px;width:160px;height:20px">FY2029</div>
+  <div class="pp-text center" data-role="caption" style="left:884px;top:256px;width:160px;height:20px">FY2030</div>
+  <div class="pp-text right" data-role="caption" style="left:1060px;top:256px;width:156px;height:20px">FY2030末の台数</div>
+  <div class="pp-line" style="left:64px;top:280px;width:1152px;height:1px;background:var(--text-sub)"></div>
 
-  <div class="pp-text b" data-note="行の見出し：設備の名前と現行の台数。右端は計画の最終年度の台数" style="left:64px;top:262px;width:180px;height:28px;font-size:19px">MPLSルータ</div>
-  <div class="pp-text" data-role="caption" style="left:64px;top:292px;width:180px;height:20px">現行 48台</div>
-  <div class="pp-shape dashed" data-note="セルの印：増設＝塗り「＋n」、更改＝枠線「更 n」、撤去＝破線「▲n」。下に一言" style="left:424px;top:262px;width:120px;height:30px"></div>
-  <div class="pp-text b t-accent center" style="left:428px;top:264px;width:112px;height:26px;font-size:19px;line-height:1.35">▲48</div>
-  <div class="pp-text center" data-role="caption" style="left:404px;top:296px;width:160px;height:20px">切替後に撤去</div>
-  <div class="pp-text b right" data-note="行の見出し：設備の名前と現行の台数。右端は計画の最終年度の台数" style="left:1060px;top:262px;width:156px;height:28px;font-size:19px">0台</div>
-  <div class="pp-line hr" style="left:64px;top:318px;width:1152px;height:1px"></div>
+  <div class="pp-text b" data-note="行の見出し：設備の名前と現行の台数。右端は計画の最終年度の台数" style="left:64px;top:292px;width:180px;height:28px;font-size:19px">MPLSルータ</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:320px;width:180px;height:20px">現行 48台</div>
+  <div class="pp-shape dashed" data-note="セルの印：増設＝塗り「＋n」、更改＝枠線「更 n」、撤去＝破線「▲n」。下に一言" style="left:424px;top:292px;width:120px;height:30px"></div>
+  <div class="pp-text b t-accent center" style="left:428px;top:294px;width:112px;height:26px;font-size:19px;line-height:1.35">▲48</div>
+  <div class="pp-text center" data-role="caption" style="left:404px;top:323px;width:160px;height:20px">切替後に撤去</div>
+  <div class="pp-text b right" data-note="行の見出し：設備の名前と現行の台数。右端は計画の最終年度の台数" style="left:1060px;top:292px;width:156px;height:28px;font-size:19px">0台</div>
+  <div class="pp-line hr" style="left:64px;top:343px;width:1152px;height:1px"></div>
 
-  <div class="pp-text b" style="left:64px;top:330px;width:180px;height:28px;font-size:19px">SD-WAN機器</div>
-  <div class="pp-text" data-role="caption" style="left:64px;top:360px;width:180px;height:20px">現行 0台</div>
-  <div class="pp-shape f-emph" data-note="最も大きい変更の 1 セルだけ強調色（1 点）" style="left:424px;top:330px;width:120px;height:30px"></div>
-  <div class="pp-text b t-white center" data-note="最も大きい変更の 1 セルだけ強調色（1 点）" style="left:428px;top:332px;width:112px;height:26px;font-size:19px;line-height:1.35">＋48</div>
-  <div class="pp-text center" data-role="caption" style="left:404px;top:364px;width:160px;height:20px">全拠点に新設</div>
-  <div class="pp-text b right" style="left:1060px;top:330px;width:156px;height:28px;font-size:19px">48台</div>
-  <div class="pp-line hr" style="left:64px;top:386px;width:1152px;height:1px"></div>
+  <div class="pp-text b" style="left:64px;top:354px;width:180px;height:28px;font-size:19px">SD-WAN機器</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:381px;width:180px;height:20px">現行 0台</div>
+  <div class="pp-shape f-emph" data-note="最も大きい変更の 1 セルだけ強調色（1 点）" style="left:424px;top:354px;width:120px;height:30px"></div>
+  <div class="pp-text b t-white center" data-note="最も大きい変更の 1 セルだけ強調色（1 点）" style="left:428px;top:356px;width:112px;height:26px;font-size:19px;line-height:1.35">＋48</div>
+  <div class="pp-text center" data-role="caption" style="left:404px;top:384px;width:160px;height:20px">全拠点に新設</div>
+  <div class="pp-text b right" style="left:1060px;top:354px;width:156px;height:28px;font-size:19px">48台</div>
+  <div class="pp-line hr" style="left:64px;top:404px;width:1152px;height:1px"></div>
 
-  <div class="pp-text b" style="left:64px;top:398px;width:180px;height:28px;font-size:19px">スイッチ</div>
-  <div class="pp-text" data-role="caption" style="left:64px;top:428px;width:180px;height:20px">現行 43台</div>
-  <div class="pp-shape f-outline" data-note="セルの印：増設＝塗り「＋n」、更改＝枠線「更 n」、撤去＝破線「▲n」。下に一言" style="left:264px;top:398px;width:120px;height:30px"></div>
-  <div class="pp-text b center" style="left:268px;top:400px;width:112px;height:26px;font-size:19px;line-height:1.35">更 10</div>
-  <div class="pp-text center" data-role="caption" style="left:244px;top:432px;width:160px;height:20px">営業所の旧型</div>
-  <div class="pp-shape f-outline" style="left:424px;top:398px;width:120px;height:30px"></div>
-  <div class="pp-text b center" style="left:428px;top:400px;width:112px;height:26px;font-size:19px;line-height:1.35">更 15</div>
-  <div class="pp-text center" data-role="caption" style="left:404px;top:432px;width:160px;height:20px">営業所の残り</div>
-  <div class="pp-shape f-outline" style="left:584px;top:398px;width:120px;height:30px"></div>
-  <div class="pp-text b center" style="left:588px;top:400px;width:112px;height:26px;font-size:19px;line-height:1.35">更 18</div>
-  <div class="pp-text center" data-role="caption" style="left:564px;top:432px;width:160px;height:20px">工場6拠点</div>
-  <div class="pp-text b right" style="left:1060px;top:398px;width:156px;height:28px;font-size:19px">43台</div>
-  <div class="pp-line hr" style="left:64px;top:454px;width:1152px;height:1px"></div>
+  <div class="pp-text b" style="left:64px;top:415px;width:180px;height:28px;font-size:19px">スイッチ</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:442px;width:180px;height:20px">現行 43台</div>
+  <div class="pp-shape f-outline" data-note="セルの印：増設＝塗り「＋n」、更改＝枠線「更 n」、撤去＝破線「▲n」。下に一言" style="left:264px;top:415px;width:120px;height:30px"></div>
+  <div class="pp-text b center" style="left:268px;top:417px;width:112px;height:26px;font-size:19px;line-height:1.35">更 10</div>
+  <div class="pp-text center" data-role="caption" style="left:244px;top:446px;width:160px;height:20px">営業所の旧型</div>
+  <div class="pp-shape f-outline" style="left:424px;top:415px;width:120px;height:30px"></div>
+  <div class="pp-text b center" style="left:428px;top:417px;width:112px;height:26px;font-size:19px;line-height:1.35">更 15</div>
+  <div class="pp-text center" data-role="caption" style="left:404px;top:446px;width:160px;height:20px">営業所の残り</div>
+  <div class="pp-shape f-outline" style="left:584px;top:415px;width:120px;height:30px"></div>
+  <div class="pp-text b center" style="left:588px;top:417px;width:112px;height:26px;font-size:19px;line-height:1.35">更 18</div>
+  <div class="pp-text center" data-role="caption" style="left:564px;top:446px;width:160px;height:20px">工場6拠点</div>
+  <div class="pp-text b right" style="left:1060px;top:415px;width:156px;height:28px;font-size:19px">43台</div>
+  <div class="pp-line hr" style="left:64px;top:465px;width:1152px;height:1px"></div>
 
-  <div class="pp-text b" style="left:64px;top:466px;width:180px;height:28px;font-size:19px">監視装置</div>
-  <div class="pp-text" data-role="caption" style="left:64px;top:496px;width:180px;height:20px">現行 2台</div>
-  <div class="pp-shape f-accent" data-note="セルの印：増設＝塗り「＋n」、更改＝枠線「更 n」、撤去＝破線「▲n」。下に一言" style="left:264px;top:466px;width:120px;height:30px"></div>
-  <div class="pp-text b t-white center" style="left:268px;top:468px;width:112px;height:26px;font-size:19px;line-height:1.35">＋2</div>
-  <div class="pp-text center" data-role="caption" style="left:244px;top:500px;width:160px;height:20px">監視センター増強</div>
-  <div class="pp-text b right" style="left:1060px;top:466px;width:156px;height:28px;font-size:19px">4台</div>
-  <div class="pp-line hr" style="left:64px;top:522px;width:1152px;height:1px"></div>
+  <div class="pp-text b" style="left:64px;top:476px;width:180px;height:28px;font-size:19px">監視装置</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:503px;width:180px;height:20px">現行 2台</div>
+  <div class="pp-shape f-accent" data-note="セルの印：増設＝塗り「＋n」、更改＝枠線「更 n」、撤去＝破線「▲n」。下に一言" style="left:264px;top:476px;width:120px;height:30px"></div>
+  <div class="pp-text b t-white center" style="left:268px;top:478px;width:112px;height:26px;font-size:19px;line-height:1.35">＋2</div>
+  <div class="pp-text center" data-role="caption" style="left:244px;top:507px;width:160px;height:20px">監視センター増強</div>
+  <div class="pp-text b right" style="left:1060px;top:476px;width:156px;height:28px;font-size:19px">4台</div>
+  <div class="pp-line hr" style="left:64px;top:527px;width:1152px;height:1px"></div>
 
-  <div class="pp-text b" style="left:64px;top:534px;width:180px;height:28px;font-size:19px">回線</div>
-  <div class="pp-text" data-role="caption" style="left:64px;top:564px;width:180px;height:20px">現行 48本（MPLS）</div>
-  <div class="pp-shape f-accent" style="left:264px;top:534px;width:120px;height:30px"></div>
-  <div class="pp-text b t-white center" style="left:268px;top:536px;width:112px;height:26px;font-size:19px;line-height:1.35">＋144</div>
+  <div class="pp-text b" style="left:64px;top:538px;width:180px;height:28px;font-size:19px">回線</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:565px;width:180px;height:20px">現行 48本（MPLS）</div>
+  <div class="pp-shape f-accent" style="left:264px;top:538px;width:120px;height:30px"></div>
+  <div class="pp-text b t-white center" style="left:268px;top:539px;width:112px;height:26px;font-size:19px;line-height:1.35">＋144</div>
   <div class="pp-text center" data-role="caption" style="left:244px;top:568px;width:160px;height:20px">ネット96・LTE48</div>
-  <div class="pp-shape dashed" style="left:424px;top:534px;width:120px;height:30px"></div>
-  <div class="pp-text b t-accent center" style="left:428px;top:536px;width:112px;height:26px;font-size:19px;line-height:1.35">▲48</div>
+  <div class="pp-shape dashed" style="left:424px;top:538px;width:120px;height:30px"></div>
+  <div class="pp-text b t-accent center" style="left:428px;top:539px;width:112px;height:26px;font-size:19px;line-height:1.35">▲48</div>
   <div class="pp-text center" data-role="caption" style="left:404px;top:568px;width:160px;height:20px">MPLSを解約</div>
-  <div class="pp-text b right" style="left:1060px;top:534px;width:156px;height:28px;font-size:19px">144本</div>
+  <div class="pp-text b right" style="left:1060px;top:538px;width:156px;height:28px;font-size:19px">144本</div>
 
   <div class="pp-text" data-note="注：台数の出所と、推移から言える含意" data-role="caption" style="left:64px;top:600px;width:1152px;height:40px">注: 台数は資産台帳（2026年9月）。スイッチの更改は保守切れの順（旧型25台 → 工場18台）、回線は切替の前年度に先行して開通する<br>→ FY2028以降の更改は工場のスイッチ18台だけで、年度の投資は機器の償却（9,000万円を5年）と保守に収まる</div>
 </section>

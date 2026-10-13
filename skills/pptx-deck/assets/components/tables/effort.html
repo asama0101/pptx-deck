@@ -2,85 +2,87 @@
      合計の行は太字で上に太い罫線。合計の差だけ強調色（1 枚 1 点）。情報の型（論点ボックスを置かず、注の末尾を「→ 含意」で締める）。工程を横棒グラフで比べたいときは charts/effort-bar を使う。
      差し替える所: 図表タイトル・列見出し（比べる 2 つの名前）・工程 5 行（名前・2 つの値・差・棒の幅・根拠 30 字まで）・合計・凡例・注。行は 60px で、6 行にするときは行を 52px にする。 -->
 <section class="slide" data-layout="table">
-  <div class="pp-text" data-role="title" style="height:44px">設定の一括配信と遠隔切替により、移行工数は従来比▲140人日の280人日に収まる</div>
-  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">SD-WAN移行の工数比較（従来方式＝拠点別構築 vs B案＝テンプレート配信、人日、48拠点）</div>
-  <table class="pp-table" data-note="表：工程ごとに従来とB案の人日と差。右の棒と同じ行の高さにそろえる" style="left:64px;top:190px;width:470px;font-size:19px;line-height:1.4">
-    <tr style="height:40px">
-      <td style="width:200px;padding:6px 14px;background:var(--bg-soft);font-weight:700">工程</td>
-      <td style="width:90px;padding:6px 10px;background:var(--bg-soft);font-weight:700;text-align:right">従来</td>
-      <td style="width:90px;padding:6px 10px;background:var(--bg-soft);font-weight:700;text-align:right">B案</td>
-      <td style="width:90px;padding:6px 10px;background:var(--bg-soft);font-weight:700;text-align:right">差</td>
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">移行の工数</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">設定の一括配信と遠隔切替により、移行工数は従来比▲140人日の280人日に収まる</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の工数比較（従来方式＝拠点別構築 vs B案＝テンプレート配信、人日、48拠点）</div>
+  <table class="pp-table" data-note="表：工程ごとに従来とB案の人日と差。右の棒と同じ行の高さにそろえる" style="left:64px;top:228px;width:470px;font-size:19px;line-height:1.25">
+    <tr style="height:36px">
+      <td style="width:200px;padding:4px 14px;background:var(--bg-soft);font-weight:700">工程</td>
+      <td style="width:90px;padding:4px 10px;background:var(--bg-soft);font-weight:700;text-align:right">従来</td>
+      <td style="width:90px;padding:4px 10px;background:var(--bg-soft);font-weight:700;text-align:right">B案</td>
+      <td style="width:90px;padding:4px 10px;background:var(--bg-soft);font-weight:700;text-align:right">差</td>
     </tr>
-    <tr style="height:60px">
-      <td style="padding:6px 14px;border-bottom:1px solid var(--line);font-weight:700">現状調査</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right">40</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right">30</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right;color:var(--accent-dark);font-weight:700">▲10</td>
+    <tr style="height:54px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">現状調査</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right">40</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right">30</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right;color:var(--accent-dark);font-weight:700">▲10</td>
     </tr>
-    <tr style="height:60px">
-      <td style="padding:6px 14px;border-bottom:1px solid var(--line);font-weight:700">設計</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right">60</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right">45</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right;color:var(--accent-dark);font-weight:700">▲15</td>
+    <tr style="height:54px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">設計</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right">60</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right">45</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right;color:var(--accent-dark);font-weight:700">▲15</td>
     </tr>
-    <tr style="height:60px">
-      <td style="padding:6px 14px;border-bottom:1px solid var(--line);font-weight:700">構築・設定</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right">120</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right">60</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right;color:var(--accent-dark);font-weight:700">▲60</td>
+    <tr style="height:54px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">構築・設定</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right">120</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right">60</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right;color:var(--accent-dark);font-weight:700">▲60</td>
     </tr>
-    <tr style="height:60px">
-      <td style="padding:6px 14px;border-bottom:1px solid var(--line);font-weight:700">拠点切替</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right">144</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right">96</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right;color:var(--accent-dark);font-weight:700">▲48</td>
+    <tr style="height:54px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">拠点切替</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right">144</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right">96</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right;color:var(--accent-dark);font-weight:700">▲48</td>
     </tr>
-    <tr style="height:60px">
-      <td style="padding:6px 14px;border-bottom:1px solid var(--line);font-weight:700">テスト・引継ぎ</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right">56</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right">49</td>
-      <td style="padding:6px 10px;border-bottom:1px solid var(--line);text-align:right;color:var(--accent-dark);font-weight:700">▲7</td>
+    <tr style="height:54px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">テスト・引継ぎ</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right">56</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right">49</td>
+      <td style="padding:4px 10px;border-bottom:1px solid var(--line);text-align:right;color:var(--accent-dark);font-weight:700">▲7</td>
     </tr>
-    <tr style="height:46px" data-note="合計の行：差だけ強調色（1 枚 1 点）">
-      <td style="padding:6px 14px;border-top:3px solid var(--text);font-weight:700">合計</td>
-      <td style="padding:6px 10px;border-top:3px solid var(--text);text-align:right;font-weight:700">420</td>
-      <td style="padding:6px 10px;border-top:3px solid var(--text);text-align:right;font-weight:700">280</td>
-      <td style="padding:6px 10px;border-top:3px solid var(--text);text-align:right;font-weight:700;color:var(--emphasis)">▲140</td>
+    <tr style="height:41px" data-note="合計の行：差だけ強調色（1 枚 1 点）">
+      <td style="padding:4px 14px;border-top:3px solid var(--text);font-weight:700">合計</td>
+      <td style="padding:4px 10px;border-top:3px solid var(--text);text-align:right;font-weight:700">420</td>
+      <td style="padding:4px 10px;border-top:3px solid var(--text);text-align:right;font-weight:700">280</td>
+      <td style="padding:4px 10px;border-top:3px solid var(--text);text-align:right;font-weight:700;color:var(--emphasis)">▲140</td>
     </tr>
   </table>
-  <div class="pp-shape f-light" data-note="比例棒：従来は淡色、B案は基調色。長さは人日に比例（1 人日＝2px）" style="left:560px;top:200px;width:16px;height:14px"></div>
-  <div class="pp-text" data-note="比例棒：従来は淡色、B案は基調色。長さは人日に比例（1 人日＝2px）" data-role="caption" style="left:582px;top:197px;width:80px;height:20px">従来方式</div>
-  <div class="pp-shape f-accent" data-note="比例棒：従来は淡色、B案は基調色。長さは人日に比例（1 人日＝2px）" style="left:670px;top:200px;width:16px;height:14px"></div>
-  <div class="pp-text" data-note="比例棒：従来は淡色、B案は基調色。長さは人日に比例（1 人日＝2px）" data-role="caption" style="left:692px;top:197px;width:60px;height:20px">B案</div>
-  <div class="pp-text" data-role="caption" style="left:920px;top:197px;width:296px;height:20px">根拠（B案で減る理由）</div>
-  <div class="pp-line" style="left:560px;top:229px;width:656px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-light" data-note="比例棒：従来は淡色、B案は基調色。長さは人日に比例（1 人日＝2px）" style="left:560px;top:237px;width:16px;height:14px"></div>
+  <div class="pp-text" data-note="比例棒：従来は淡色、B案は基調色。長さは人日に比例（1 人日＝2px）" data-role="caption" style="left:582px;top:234px;width:80px;height:20px">従来方式</div>
+  <div class="pp-shape f-accent" data-note="比例棒：従来は淡色、B案は基調色。長さは人日に比例（1 人日＝2px）" style="left:670px;top:237px;width:16px;height:14px"></div>
+  <div class="pp-text" data-note="比例棒：従来は淡色、B案は基調色。長さは人日に比例（1 人日＝2px）" data-role="caption" style="left:692px;top:234px;width:60px;height:20px">B案</div>
+  <div class="pp-text" data-role="caption" style="left:920px;top:234px;width:296px;height:20px">根拠（B案で減る理由）</div>
+  <div class="pp-line" style="left:560px;top:263px;width:656px;height:1px;background:var(--text-sub)"></div>
 
-  <div class="pp-shape f-light" style="left:560px;top:243px;width:80px;height:14px"></div>
-  <div class="pp-shape f-accent" style="left:560px;top:263px;width:60px;height:14px"></div>
-  <div class="pp-text" style="left:920px;top:234px;width:296px;height:54px;font-size:19px">台帳をツールで自動収集し、現地調査を本社・工場に限る</div>
-  <div class="pp-line hr" style="left:560px;top:289px;width:656px;height:1px"></div>
+  <div class="pp-shape f-light" style="left:560px;top:275px;width:80px;height:14px"></div>
+  <div class="pp-shape f-accent" style="left:560px;top:293px;width:60px;height:14px"></div>
+  <div class="pp-text" style="left:920px;top:267px;width:296px;height:49px;font-size:19px;line-height:1.3">台帳をツールで自動収集し、現地調査を本社・工場に限る</div>
+  <div class="pp-line hr" style="left:560px;top:317px;width:656px;height:1px"></div>
 
-  <div class="pp-shape f-light" style="left:560px;top:303px;width:120px;height:14px"></div>
-  <div class="pp-shape f-accent" style="left:560px;top:323px;width:90px;height:14px"></div>
-  <div class="pp-text" style="left:920px;top:294px;width:296px;height:54px;font-size:19px">構成モデルを3種に標準化し、拠点別の設計書を省く</div>
-  <div class="pp-line hr" style="left:560px;top:349px;width:656px;height:1px"></div>
+  <div class="pp-shape f-light" style="left:560px;top:329px;width:120px;height:14px"></div>
+  <div class="pp-shape f-accent" style="left:560px;top:347px;width:90px;height:14px"></div>
+  <div class="pp-text" style="left:920px;top:321px;width:296px;height:49px;font-size:19px;line-height:1.3">構成モデルを3種に標準化し、拠点別の設計書を省く</div>
+  <div class="pp-line hr" style="left:560px;top:371px;width:656px;height:1px"></div>
 
-  <div class="pp-shape f-light" style="left:560px;top:363px;width:240px;height:14px"></div>
-  <div class="pp-shape f-accent" data-note="最大の差：構築・設定の棒が半分に縮む" style="left:560px;top:383px;width:120px;height:14px"></div>
-  <div class="pp-text" data-note="最大の差：構築・設定の棒が半分に縮む" style="left:920px;top:354px;width:296px;height:54px;font-size:19px">設定テンプレートを管理コンソールから一括配信する</div>
-  <div class="pp-line hr" style="left:560px;top:409px;width:656px;height:1px"></div>
+  <div class="pp-shape f-light" style="left:560px;top:383px;width:240px;height:14px"></div>
+  <div class="pp-shape f-accent" data-note="最大の差：構築・設定の棒が半分に縮む" style="left:560px;top:401px;width:120px;height:14px"></div>
+  <div class="pp-text" data-note="最大の差：構築・設定の棒が半分に縮む" style="left:920px;top:375px;width:296px;height:49px;font-size:19px;line-height:1.3">設定テンプレートを管理コンソールから一括配信する</div>
+  <div class="pp-line hr" style="left:560px;top:425px;width:656px;height:1px"></div>
 
-  <div class="pp-shape f-light" style="left:560px;top:423px;width:288px;height:14px"></div>
-  <div class="pp-shape f-accent" style="left:560px;top:443px;width:192px;height:14px"></div>
-  <div class="pp-text" style="left:920px;top:414px;width:296px;height:54px;font-size:19px">営業所26拠点を遠隔で切り替え、1拠点3→2人日にする</div>
-  <div class="pp-line hr" style="left:560px;top:469px;width:656px;height:1px"></div>
+  <div class="pp-shape f-light" style="left:560px;top:438px;width:288px;height:14px"></div>
+  <div class="pp-shape f-accent" style="left:560px;top:456px;width:192px;height:14px"></div>
+  <div class="pp-text" style="left:920px;top:429px;width:296px;height:49px;font-size:19px;line-height:1.3">営業所26拠点を遠隔で切り替え、1拠点3→2人日にする</div>
+  <div class="pp-line hr" style="left:560px;top:479px;width:656px;height:1px"></div>
 
-  <div class="pp-shape f-light" style="left:560px;top:483px;width:112px;height:14px"></div>
-  <div class="pp-shape f-accent" style="left:560px;top:503px;width:98px;height:14px"></div>
-  <div class="pp-text" style="left:920px;top:474px;width:296px;height:54px;font-size:19px">切替試験を自動化し、引継ぎは手順書の読み合わせに絞る</div>
-  <div class="pp-line hr" style="left:560px;top:529px;width:656px;height:1px"></div>
+  <div class="pp-shape f-light" style="left:560px;top:492px;width:112px;height:14px"></div>
+  <div class="pp-shape f-accent" style="left:560px;top:510px;width:98px;height:14px"></div>
+  <div class="pp-text" style="left:920px;top:483px;width:296px;height:49px;font-size:19px;line-height:1.3">切替試験を自動化し、引継ぎは手順書の読み合わせに絞る</div>
+  <div class="pp-line hr" style="left:560px;top:533px;width:656px;height:1px"></div>
 
-  <div class="pp-text b t-dark" style="left:560px;top:540px;width:340px;height:28px;font-size:19px">▲140人日（▲33%）</div>
-  <div class="pp-text" style="left:920px;top:540px;width:296px;height:28px;font-size:19px">減る工数の4割は構築・設定</div>
-  <div class="pp-text" data-note="注：人日の出所と、工数の差が費用に与える含意" data-role="caption" style="left:64px;top:590px;width:1152px;height:44px">注: 人日はベンダー見積（2026年9月）の内訳。従来方式はFY2024の拠点更改（12拠点）の実績を48拠点に換算した<br>→ ▲140人日は費用で約1,400万円に相当し、見積の値引と切替単価の見直し（前回比▲720万円）に織り込まれている</div>
+  <div class="pp-text b t-dark" style="left:560px;top:543px;width:340px;height:28px;font-size:19px">▲140人日（▲33%）</div>
+  <div class="pp-text" style="left:920px;top:543px;width:296px;height:28px;font-size:19px">減る工数の4割は構築・設定</div>
+  <div class="pp-text" data-note="注：人日の出所と、工数の差が費用に与える含意" data-role="caption" style="left:64px;top:588px;width:1152px;height:40px;line-height:1.3">注: 人日はベンダー見積（2026年9月）の内訳。従来方式はFY2024の拠点更改（12拠点）の実績を48拠点に換算した<br>→ ▲140人日は費用で約1,400万円に相当し、見積の値引と切替単価の見直し（前回比▲720万円）に織り込まれている</div>
 </section>

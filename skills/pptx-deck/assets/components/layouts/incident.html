@@ -2,64 +2,66 @@
      カードは白地＋罫線＋上端に基調色の細い帯（summary と同じ）。数値は基調色（.num）、いちばん重い 1 つ（停止時間）だけ強調色（1 枚 1 点）。表は見出しが灰の小さな文字と罫線だけ。論点ボックスは置かず、注の末尾を「→ 含意」で締める（情報の型。再発防止の判断は actions・decision で求める）。
      差し替える所: 図表タイトル（障害の名前と日付）・カード 4 枚（指標名・数値・補足・前提）・強調する 1 枚・表の 4 行（対象・影響・停止時間・復旧時刻）・現状の帯・注。 -->
 <section class="slide" data-layout="content">
-  <div class="pp-text" data-role="title" style="height:44px">本社の回線断は復旧したが、停止10時間のうち5時間は現地出動と承認待ちで失われた</div>
-  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">障害の概要（2026年7月14日 本社MPLS回線断、停止時間と影響範囲）</div>
-  <div class="pp-shape f-white" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:64px;top:190px;width:276px;height:184px"></div>
-  <div class="pp-shape f-accent" style="left:64px;top:190px;width:276px;height:4px"></div>
-  <div class="pp-text" data-role="caption" style="left:80px;top:204px;width:244px;height:22px">① 停止時間（MTTR）</div>
-  <div class="pp-text num" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:80px;top:230px;width:244px;height:52px;font-size:40px;color:var(--emphasis)">10.0時間</div>
-  <div class="pp-text b t-dark" style="left:80px;top:288px;width:244px;height:28px;font-size:19px">9:05 発生 → 19:05 復旧</div>
-  <div class="pp-text" data-role="caption" style="left:80px;top:322px;width:244px;height:44px">検知は利用者の申告（9:35）<br>MPLS 1回線、冗長なし</div>
-  <div class="pp-shape f-white" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:356px;top:190px;width:276px;height:184px"></div>
-  <div class="pp-shape f-accent" style="left:356px;top:190px;width:276px;height:4px"></div>
-  <div class="pp-text" data-role="caption" style="left:372px;top:204px;width:244px;height:22px">② 影響範囲</div>
-  <div class="pp-text num" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:372px;top:230px;width:244px;height:52px;font-size:40px">2拠点</div>
-  <div class="pp-text b t-dark" style="left:372px;top:288px;width:244px;height:28px;font-size:19px">本社・DCの1,200人</div>
-  <div class="pp-text" data-role="caption" style="left:372px;top:322px;width:244px;height:44px">基幹系・メール・ファイル共有が停止<br>工場・営業所は別経路で影響なし</div>
-  <div class="pp-shape f-white" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:648px;top:190px;width:276px;height:184px"></div>
-  <div class="pp-shape f-accent" style="left:648px;top:190px;width:276px;height:4px"></div>
-  <div class="pp-text" data-role="caption" style="left:664px;top:204px;width:244px;height:22px">③ 機会損失</div>
-  <div class="pp-text num" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:664px;top:230px;width:244px;height:52px;font-size:40px">1,500万円</div>
-  <div class="pp-text b t-dark" style="left:664px;top:288px;width:244px;height:28px;font-size:19px">停止1時間あたり150万円</div>
-  <div class="pp-text" data-role="caption" style="left:664px;top:322px;width:244px;height:44px">FY2025の出荷実績で試算<br>受注処理の遅延320件を含む</div>
-  <div class="pp-shape f-white" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:940px;top:190px;width:276px;height:184px"></div>
-  <div class="pp-shape f-accent" style="left:940px;top:190px;width:276px;height:4px"></div>
-  <div class="pp-text" data-role="caption" style="left:956px;top:204px;width:244px;height:22px">④ 復旧手段</div>
-  <div class="pp-text num" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:956px;top:230px;width:244px;height:52px;font-size:40px">現地で交換</div>
-  <div class="pp-text b t-dark" style="left:956px;top:288px;width:244px;height:28px;font-size:19px">出動3.0h・承認待ち2.0h</div>
-  <div class="pp-text" data-role="caption" style="left:956px;top:322px;width:244px;height:44px">ルータの故障、予備機なし<br>ベンダー手配は都度契約</div>
-  <div class="pp-text" data-note="影響範囲の表：対象ごとに、影響・停止時間・復旧時刻を 1 行で" data-role="caption" style="left:78px;top:392px;width:280px;height:22px">対象（システム・業務）</div>
-  <div class="pp-text" data-note="影響範囲の表：対象ごとに、影響・停止時間・復旧時刻を 1 行で" data-role="caption" style="left:378px;top:392px;width:480px;height:22px">影響</div>
-  <div class="pp-text" data-note="影響範囲の表：対象ごとに、影響・停止時間・復旧時刻を 1 行で" data-role="caption" style="left:898px;top:392px;width:140px;height:22px;text-align:right">停止時間</div>
-  <div class="pp-text" data-note="影響範囲の表：対象ごとに、影響・停止時間・復旧時刻を 1 行で" data-role="caption" style="left:1058px;top:392px;width:150px;height:22px;text-align:right">復旧時刻</div>
-  <div class="pp-line" style="left:64px;top:416px;width:1152px;height:1px;background:var(--text-sub)"></div>
-  <table class="pp-table" data-note="影響範囲の表：対象ごとに、影響・停止時間・復旧時刻を 1 行で" style="left:64px;top:419px;width:1152px;font-size:19px;line-height:1.4">
-    <tr style="height:38px">
-      <td style="width:300px;padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">基幹系（ERP・生産管理）</td>
-      <td style="width:520px;padding:5px 14px;border-bottom:1px solid var(--line)">受発注と出荷指示の入力が全面停止</td>
-      <td style="width:160px;padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">10.0h</td>
-      <td style="width:172px;padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">19:05</td>
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">障害の概要</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">本社の回線断は復旧したが、停止10時間のうち5時間は現地出動と承認待ちで失われた</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害の概要（2026年7月14日 本社MPLS回線断、停止時間と影響範囲）</div>
+  <div class="pp-shape f-white" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:64px;top:228px;width:276px;height:166px"></div>
+  <div class="pp-shape f-accent" style="left:64px;top:228px;width:276px;height:4px"></div>
+  <div class="pp-text" data-role="caption" style="left:80px;top:240px;width:244px;height:22px">① 停止時間（MTTR）</div>
+  <div class="pp-text num" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:80px;top:264px;width:244px;height:52px;font-size:40px;color:var(--emphasis)">10.0時間</div>
+  <div class="pp-text b t-dark" style="left:80px;top:316px;width:244px;height:28px;font-size:19px">9:05 発生 → 19:05 復旧</div>
+  <div class="pp-text" data-role="caption" style="left:80px;top:347px;width:244px;height:40px;line-height:1.3">検知は利用者の申告（9:35）<br>MPLS 1回線、冗長なし</div>
+  <div class="pp-shape f-white" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:356px;top:228px;width:276px;height:166px"></div>
+  <div class="pp-shape f-accent" style="left:356px;top:228px;width:276px;height:4px"></div>
+  <div class="pp-text" data-role="caption" style="left:372px;top:240px;width:244px;height:22px">② 影響範囲</div>
+  <div class="pp-text num" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:372px;top:264px;width:244px;height:52px;font-size:40px">2拠点</div>
+  <div class="pp-text b t-dark" style="left:372px;top:316px;width:244px;height:28px;font-size:19px">本社・DCの1,200人</div>
+  <div class="pp-text" data-role="caption" style="left:372px;top:347px;width:244px;height:40px;line-height:1.3">基幹系・メール・ファイル共有が停止<br>工場・営業所は別経路で影響なし</div>
+  <div class="pp-shape f-white" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:648px;top:228px;width:276px;height:166px"></div>
+  <div class="pp-shape f-accent" style="left:648px;top:228px;width:276px;height:4px"></div>
+  <div class="pp-text" data-role="caption" style="left:664px;top:240px;width:244px;height:22px">③ 機会損失</div>
+  <div class="pp-text num" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:664px;top:264px;width:244px;height:52px;font-size:40px">1,500万円</div>
+  <div class="pp-text b t-dark" style="left:664px;top:316px;width:244px;height:28px;font-size:19px">停止1時間あたり150万円</div>
+  <div class="pp-text" data-role="caption" style="left:664px;top:347px;width:244px;height:40px;line-height:1.3">FY2025の出荷実績で試算<br>受注処理の遅延320件を含む</div>
+  <div class="pp-shape f-white" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:940px;top:228px;width:276px;height:166px"></div>
+  <div class="pp-shape f-accent" style="left:940px;top:228px;width:276px;height:4px"></div>
+  <div class="pp-text" data-role="caption" style="left:956px;top:240px;width:244px;height:22px">④ 復旧手段</div>
+  <div class="pp-text num" data-note="数字カード：指標名・数値・補足・前提を 1 枚に 1 指標。いちばん重い停止時間だけ強調色" style="left:956px;top:264px;width:244px;height:52px;font-size:40px">現地で交換</div>
+  <div class="pp-text b t-dark" style="left:956px;top:316px;width:244px;height:28px;font-size:19px">出動3.0h・承認待ち2.0h</div>
+  <div class="pp-text" data-role="caption" style="left:956px;top:347px;width:244px;height:40px;line-height:1.3">ルータの故障、予備機なし<br>ベンダー手配は都度契約</div>
+  <div class="pp-text" data-note="影響範囲の表：対象ごとに、影響・停止時間・復旧時刻を 1 行で" data-role="caption" style="left:78px;top:410px;width:280px;height:22px">対象（システム・業務）</div>
+  <div class="pp-text" data-note="影響範囲の表：対象ごとに、影響・停止時間・復旧時刻を 1 行で" data-role="caption" style="left:378px;top:410px;width:480px;height:22px">影響</div>
+  <div class="pp-text" data-note="影響範囲の表：対象ごとに、影響・停止時間・復旧時刻を 1 行で" data-role="caption" style="left:898px;top:410px;width:140px;height:22px;text-align:right">停止時間</div>
+  <div class="pp-text" data-note="影響範囲の表：対象ごとに、影響・停止時間・復旧時刻を 1 行で" data-role="caption" style="left:1058px;top:410px;width:150px;height:22px;text-align:right">復旧時刻</div>
+  <div class="pp-line" style="left:64px;top:431px;width:1152px;height:1px;background:var(--text-sub)"></div>
+  <table class="pp-table" data-note="影響範囲の表：対象ごとに、影響・停止時間・復旧時刻を 1 行で" style="left:64px;top:434px;width:1152px;font-size:19px;line-height:1.25">
+    <tr style="height:34px">
+      <td style="width:300px;padding:3px 14px;border-bottom:1px solid var(--line);font-weight:700">基幹系（ERP・生産管理）</td>
+      <td style="width:520px;padding:3px 14px;border-bottom:1px solid var(--line)">受発注と出荷指示の入力が全面停止</td>
+      <td style="width:160px;padding:3px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">10.0h</td>
+      <td style="width:172px;padding:3px 14px;border-bottom:1px solid var(--line);text-align:right">19:05</td>
     </tr>
-    <tr style="height:38px">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">メール・ファイル共有</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line)">社外との送受信が停止（社内は継続）</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">10.0h</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">19:05</td>
+    <tr style="height:34px">
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line);font-weight:700">メール・ファイル共有</td>
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line)">社外との送受信が停止（社内は継続）</td>
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">10.0h</td>
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line);text-align:right">19:05</td>
     </tr>
-    <tr style="height:38px">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">拠点間の内線電話</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line)">本社とDCの間が不通。LTEの仮回線で先行復旧</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">6.5h</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">15:35</td>
+    <tr style="height:34px">
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line);font-weight:700">拠点間の内線電話</td>
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line)">本社とDCの間が不通。LTEの仮回線で先行復旧</td>
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">6.5h</td>
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line);text-align:right">15:35</td>
     </tr>
-    <tr style="height:38px">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">工場・営業所の業務</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line)">影響なし（MPLSの別経路でDCへ接続）</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">0h</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">なし</td>
+    <tr style="height:34px">
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line);font-weight:700">工場・営業所の業務</td>
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line)">影響なし（MPLSの別経路でDCへ接続）</td>
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">0h</td>
+      <td style="padding:3px 14px;border-bottom:1px solid var(--line);text-align:right">なし</td>
     </tr>
   </table>
-  <div class="pp-shape f-soft" data-note="現状の帯：復旧の状態と、暫定対策・恒久対策の扱いを 1 行で" style="left:64px;top:576px;width:1152px;height:40px"></div>
-  <div class="pp-text" data-note="現状の帯：復旧の状態と、暫定対策・恒久対策の扱いを 1 行で" style="left:84px;top:579px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">現状</b>　復旧済み。暫定対策（予備ルータの常備・申告窓口の一本化）を実施中。恒久対策（回線の2重化）は別紙の稟議で判断する</div>
+  <div class="pp-shape f-soft" data-note="現状の帯：復旧の状態と、暫定対策・恒久対策の扱いを 1 行で" style="left:64px;top:575px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="現状の帯：復旧の状態と、暫定対策・恒久対策の扱いを 1 行で" style="left:84px;top:578px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">現状</b>　復旧済み。暫定対策（予備ルータの常備・申告窓口の一本化）を実施中。恒久対策（回線の2重化）は別紙の稟議で判断する</div>
   <div class="pp-text" data-note="注：時刻の出所と、経過から言える含意" data-role="caption" style="left:64px;top:620px;width:1152px;height:20px">注: 時刻は監視センターの対応記録。→ 10.0hのうち5.0hは出動と承認待ちで、遠隔の切替があれば停止は5.0hに収まった</div>
 </section>

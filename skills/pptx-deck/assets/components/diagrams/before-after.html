@@ -3,73 +3,75 @@
      最下部に復旧時間の横棒 2 本（長さを時間に比例させる。1 時間＝90px）と、差を示す破線の枠・矢印・差の値を置く。
      差し替える所: 注・工程の名前と時間（6 個まで。14pt で収まる量）・止める工程・代替の注記・段の間の一文・横棒の長さと値。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="height:44px">止める2工程は遠隔監視と自動切替で代替できるため、障害対応は4工程に縮む</div>
-  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">障害対応の工程と所要時間（現行FY25実績→FY27計画、時間）</div>
-  <div class="pp-shape f-mid" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:64px;top:198px;width:12px;height:12px"></div>
-  <div class="pp-text b" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:84px;top:189px;width:320px;height:30px;font-size:19px">現行｜6工程・MTTR 10.0h</div>
-  <div class="pp-shape f-soft" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:64px;top:222px;width:178px;height:60px"></div>
-  <div class="pp-text b center" style="left:68px;top:227px;width:170px;height:28px;font-size:19px">検知</div>
-  <div class="pp-text center" data-role="caption" style="left:68px;top:256px;width:170px;height:20px">0.5h</div>
-  <div class="pp-line" data-arrow="end" style="left:244px;top:252px;width:12px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-shape f-soft" style="left:258px;top:222px;width:178px;height:60px"></div>
-  <div class="pp-text b center" style="left:262px;top:227px;width:170px;height:28px;font-size:19px">切り分け</div>
-  <div class="pp-text center" data-role="caption" style="left:262px;top:256px;width:170px;height:20px">2.0h</div>
-  <div class="pp-line" data-arrow="end" style="left:438px;top:252px;width:12px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-text b t-accent center" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:452px;top:192px;width:178px;height:26px;font-size:19px">▼ 止める</div>
-  <div class="pp-shape f-outline" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:452px;top:222px;width:178px;height:60px"></div>
-  <div class="pp-text b center" style="left:456px;top:227px;width:170px;height:28px;font-size:19px">現地出動</div>
-  <div class="pp-text center" data-role="caption" style="left:456px;top:256px;width:170px;height:20px">3.0h</div>
-  <div class="pp-line" data-arrow="end" style="left:632px;top:252px;width:12px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-shape f-soft" style="left:646px;top:222px;width:178px;height:60px"></div>
-  <div class="pp-text b center" style="left:650px;top:227px;width:170px;height:28px;font-size:19px">復旧作業</div>
-  <div class="pp-text center" data-role="caption" style="left:650px;top:256px;width:170px;height:20px">2.0h</div>
-  <div class="pp-line" data-arrow="end" style="left:826px;top:252px;width:12px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-text b t-accent center" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:840px;top:192px;width:178px;height:26px;font-size:19px">▼ 止める</div>
-  <div class="pp-shape f-outline" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:840px;top:222px;width:178px;height:60px"></div>
-  <div class="pp-text b center" style="left:844px;top:227px;width:170px;height:28px;font-size:19px">切替の承認</div>
-  <div class="pp-text center" data-role="caption" style="left:844px;top:256px;width:170px;height:20px">2.0h</div>
-  <div class="pp-line" data-arrow="end" style="left:1020px;top:252px;width:12px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-shape f-soft" style="left:1034px;top:222px;width:178px;height:60px"></div>
-  <div class="pp-text b center" style="left:1038px;top:227px;width:170px;height:28px;font-size:19px">報告</div>
-  <div class="pp-text center" data-role="caption" style="left:1038px;top:256px;width:170px;height:20px">0.5h</div>
-  <div class="pp-line" data-arrow="end" style="left:500px;top:290px;width:6px;height:40px;background:var(--accent)"></div>
-  <div class="pp-text" style="left:528px;top:296px;width:520px;height:30px;font-size:19px">2工程を止め、復旧作業を0.5h圧縮する</div>
-  <div class="pp-shape f-accent" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:64px;top:348px;width:12px;height:12px"></div>
-  <div class="pp-text b" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:84px;top:339px;width:320px;height:30px;font-size:19px">改革後｜4工程・MTTR 4.5h</div>
-  <div class="pp-shape f-soft" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:64px;top:372px;width:178px;height:60px"></div>
-  <div class="pp-text b center" style="left:68px;top:377px;width:170px;height:28px;font-size:19px">検知</div>
-  <div class="pp-text center" data-role="caption" style="left:68px;top:406px;width:170px;height:20px">0.5h</div>
-  <div class="pp-line" data-arrow="end" style="left:244px;top:402px;width:12px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-shape f-soft" style="left:258px;top:372px;width:178px;height:60px"></div>
-  <div class="pp-text b center" style="left:262px;top:377px;width:170px;height:28px;font-size:19px">切り分け</div>
-  <div class="pp-text center" data-role="caption" style="left:262px;top:406px;width:170px;height:20px">2.0h</div>
-  <div class="pp-line" data-arrow="end" style="left:438px;top:402px;width:12px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-shape dashed" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:452px;top:372px;width:178px;height:60px"></div>
-  <div class="pp-text center" data-role="caption" style="left:456px;top:378px;width:170px;height:20px">現地出動</div>
-  <div class="pp-text b t-accent center" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:456px;top:399px;width:170px;height:28px;font-size:19px">廃止</div>
-  <div class="pp-text center" data-role="caption" style="left:452px;top:436px;width:178px;height:20px">遠隔監視で代替</div>
-  <div class="pp-line" data-arrow="end" style="left:632px;top:402px;width:12px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-shape f-soft" style="left:646px;top:372px;width:178px;height:60px"></div>
-  <div class="pp-text b center" style="left:650px;top:377px;width:170px;height:28px;font-size:19px">復旧作業</div>
-  <div class="pp-text center" data-role="caption" style="left:650px;top:406px;width:170px;height:20px">1.5h（▲0.5）</div>
-  <div class="pp-line" data-arrow="end" style="left:826px;top:402px;width:12px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-shape dashed" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:840px;top:372px;width:178px;height:60px"></div>
-  <div class="pp-text center" data-role="caption" style="left:844px;top:378px;width:170px;height:20px">切替の承認</div>
-  <div class="pp-text b t-accent center" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:844px;top:399px;width:170px;height:28px;font-size:19px">廃止</div>
-  <div class="pp-text center" data-role="caption" style="left:840px;top:436px;width:178px;height:20px">自動切替で代替</div>
-  <div class="pp-line" data-arrow="end" style="left:1020px;top:402px;width:12px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-shape f-soft" style="left:1034px;top:372px;width:178px;height:60px"></div>
-  <div class="pp-text b center" style="left:1038px;top:377px;width:170px;height:28px;font-size:19px">報告</div>
-  <div class="pp-text center" data-role="caption" style="left:1038px;top:406px;width:170px;height:20px">0.5h</div>
-  <div class="pp-text b" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:64px;top:452px;width:400px;height:28px;font-size:19px">障害復旧時間（MTTR、時間）</div>
-  <div class="pp-text" style="left:64px;top:489px;width:90px;height:26px;font-size:19px;line-height:1.25">現行</div>
-  <div class="pp-shape f-light" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:160px;top:486px;width:900px;height:32px"></div>
-  <div class="pp-text b" style="left:1070px;top:489px;width:146px;height:26px;font-size:19px;line-height:1.25">10.0h</div>
-  <div class="pp-text b t-accent center" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:565px;top:532px;width:495px;height:30px;font-size:19px">▲5.5h（▲55%）</div>
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">障害対応の工程</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">止める2工程は遠隔監視と自動切替で代替できるため、障害対応は4工程に縮む</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の工程と所要時間（現行FY25実績→FY27計画、時間）</div>
+  <div class="pp-shape f-mid" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:64px;top:235px;width:12px;height:12px"></div>
+  <div class="pp-text b" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:84px;top:227px;width:320px;height:30px;font-size:19px">現行｜6工程・MTTR 10.0h</div>
+  <div class="pp-shape f-soft" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:64px;top:256px;width:178px;height:54px"></div>
+  <div class="pp-text b center" style="left:68px;top:261px;width:170px;height:28px;font-size:19px">検知</div>
+  <div class="pp-text center" data-role="caption" style="left:68px;top:287px;width:170px;height:20px">0.5h</div>
+  <div class="pp-line" data-arrow="end" style="left:244px;top:283px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:258px;top:256px;width:178px;height:54px"></div>
+  <div class="pp-text b center" style="left:262px;top:261px;width:170px;height:28px;font-size:19px">切り分け</div>
+  <div class="pp-text center" data-role="caption" style="left:262px;top:287px;width:170px;height:20px">2.0h</div>
+  <div class="pp-line" data-arrow="end" style="left:438px;top:283px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-text b t-accent center" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:452px;top:221px;width:178px;height:26px;font-size:19px">▼ 止める</div>
+  <div class="pp-shape f-outline" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:452px;top:256px;width:178px;height:54px"></div>
+  <div class="pp-text b center" style="left:456px;top:261px;width:170px;height:28px;font-size:19px">現地出動</div>
+  <div class="pp-text center" data-role="caption" style="left:456px;top:287px;width:170px;height:20px">3.0h</div>
+  <div class="pp-line" data-arrow="end" style="left:632px;top:283px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:646px;top:256px;width:178px;height:54px"></div>
+  <div class="pp-text b center" style="left:650px;top:261px;width:170px;height:28px;font-size:19px">復旧作業</div>
+  <div class="pp-text center" data-role="caption" style="left:650px;top:287px;width:170px;height:20px">2.0h</div>
+  <div class="pp-line" data-arrow="end" style="left:826px;top:283px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-text b t-accent center" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:840px;top:221px;width:178px;height:26px;font-size:19px">▼ 止める</div>
+  <div class="pp-shape f-outline" data-note="現行：工程ボックスの位置を改革後と揃え、止める工程は基調色の枠と▼で示す" style="left:840px;top:256px;width:178px;height:54px"></div>
+  <div class="pp-text b center" style="left:844px;top:261px;width:170px;height:28px;font-size:19px">切替の承認</div>
+  <div class="pp-text center" data-role="caption" style="left:844px;top:287px;width:170px;height:20px">2.0h</div>
+  <div class="pp-line" data-arrow="end" style="left:1020px;top:283px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:1034px;top:256px;width:178px;height:54px"></div>
+  <div class="pp-text b center" style="left:1038px;top:261px;width:170px;height:28px;font-size:19px">報告</div>
+  <div class="pp-text center" data-role="caption" style="left:1038px;top:287px;width:170px;height:20px">0.5h</div>
+  <div class="pp-line" data-arrow="end" style="left:500px;top:318px;width:6px;height:40px;background:var(--accent)"></div>
+  <div class="pp-text" style="left:528px;top:323px;width:520px;height:30px;font-size:19px">2工程を止め、復旧作業を0.5h圧縮する</div>
+  <div class="pp-shape f-accent" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:64px;top:370px;width:12px;height:12px"></div>
+  <div class="pp-text b" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:84px;top:362px;width:320px;height:30px;font-size:19px">改革後｜4工程・MTTR 4.5h</div>
+  <div class="pp-shape f-soft" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:64px;top:392px;width:178px;height:54px"></div>
+  <div class="pp-text b center" style="left:68px;top:396px;width:170px;height:28px;font-size:19px">検知</div>
+  <div class="pp-text center" data-role="caption" style="left:68px;top:422px;width:170px;height:20px">0.5h</div>
+  <div class="pp-line" data-arrow="end" style="left:244px;top:419px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:258px;top:392px;width:178px;height:54px"></div>
+  <div class="pp-text b center" style="left:262px;top:396px;width:170px;height:28px;font-size:19px">切り分け</div>
+  <div class="pp-text center" data-role="caption" style="left:262px;top:422px;width:170px;height:20px">2.0h</div>
+  <div class="pp-line" data-arrow="end" style="left:438px;top:419px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape dashed" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:452px;top:392px;width:178px;height:54px"></div>
+  <div class="pp-text center" data-role="caption" style="left:456px;top:397px;width:170px;height:20px">現地出動</div>
+  <div class="pp-text b t-accent center" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:456px;top:416px;width:170px;height:28px;font-size:19px">廃止</div>
+  <div class="pp-text center" data-role="caption" style="left:452px;top:449px;width:178px;height:20px">遠隔監視で代替</div>
+  <div class="pp-line" data-arrow="end" style="left:632px;top:419px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:646px;top:392px;width:178px;height:54px"></div>
+  <div class="pp-text b center" style="left:650px;top:396px;width:170px;height:28px;font-size:19px">復旧作業</div>
+  <div class="pp-text center" data-role="caption" style="left:650px;top:422px;width:170px;height:20px">1.5h（▲0.5）</div>
+  <div class="pp-line" data-arrow="end" style="left:826px;top:419px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape dashed" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:840px;top:392px;width:178px;height:54px"></div>
+  <div class="pp-text center" data-role="caption" style="left:844px;top:397px;width:170px;height:20px">切替の承認</div>
+  <div class="pp-text b t-accent center" data-note="改革後：工程の位置は現行と同じ。消える工程は破線の箱に廃止と書く" style="left:844px;top:416px;width:170px;height:28px;font-size:19px">廃止</div>
+  <div class="pp-text center" data-role="caption" style="left:840px;top:449px;width:178px;height:20px">自動切替で代替</div>
+  <div class="pp-line" data-arrow="end" style="left:1020px;top:419px;width:12px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:1034px;top:392px;width:178px;height:54px"></div>
+  <div class="pp-text b center" style="left:1038px;top:396px;width:170px;height:28px;font-size:19px">報告</div>
+  <div class="pp-text center" data-role="caption" style="left:1038px;top:422px;width:170px;height:20px">0.5h</div>
+  <div class="pp-text b" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:64px;top:464px;width:400px;height:28px;font-size:19px">障害復旧時間（MTTR、時間）</div>
+  <div class="pp-text" style="left:64px;top:497px;width:90px;height:26px;font-size:19px;line-height:1.25">現行</div>
+  <div class="pp-shape f-light" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:160px;top:494px;width:900px;height:32px"></div>
+  <div class="pp-text b" style="left:1070px;top:497px;width:146px;height:26px;font-size:19px;line-height:1.25">10.0h</div>
+  <div class="pp-text b t-accent center" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:565px;top:536px;width:495px;height:30px;font-size:19px">▲5.5h（▲55%）</div>
   <div class="pp-text" style="left:64px;top:573px;width:90px;height:26px;font-size:19px;line-height:1.25">改革後</div>
   <div class="pp-shape f-accent" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:160px;top:570px;width:405px;height:32px"></div>
   <div class="pp-shape dashed" data-note="リードタイム：横棒の長さを日数に比例させ、差を破線の枠と矢印で示す" style="left:565px;top:570px;width:495px;height:32px"></div>
   <div class="pp-text b t-accent" style="left:573px;top:573px;width:70px;height:26px;font-size:19px;line-height:1.25">4.5h</div>
-  <div class="pp-line" data-arrow="end" data-dir="rev" style="left:652px;top:585px;width:396px;height:2px;background:var(--accent)"></div>
+  <div class="pp-line" data-arrow="end" data-dir="rev" style="left:652px;top:583px;width:396px;height:2px;background:var(--accent)"></div>
   <div class="pp-text" data-note="注：日数の出所と、比較から言える含意" data-role="caption" style="left:64px;top:606px;width:1152px;height:22px">注: 時間はFY25の障害120件の平均。→ 遠隔監視と自動切替が整えば、現地出動と切替の承認なしで復旧時間は半減する</div>
 </section>
