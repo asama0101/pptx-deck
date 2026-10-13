@@ -1,0 +1,86 @@
+<!-- 用途: 案の評価表（評価軸×案 → 推奨）。デザイン1（options）と同じ評価軸・同じ記号と数値・同じ論点で差し替えられる。
+     デザイン1との違い: 表の罫線をやめ、案ごとの縦長のカード 3 枚を並べる。各カードは上に案の見出し、下に評価軸ごとの「記号＋数値」を縦に積み、最下段に総合を置く。推奨の案だけ見出しを強調色、カードの面をパネル地にする（1 枚 1 点）。
+     差し替える所: 図表タイトル・案の名前（3 つまで）・評価軸と要件（4〜5 行）・各セルの記号と数値（1 行に収める）・総合の行・推奨のカード・論点の文。 -->
+<section class="slide" data-layout="table">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">3案の評価</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">費用・期間・リスクの3軸で、要件を満たすのはB案（SD-WAN）だけである</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">3案の評価（評価軸×案。○＝満たす、△＝条件付き、×＝満たさない）</div>
+  <div class="pp-text b" style="left:64px;top:274px;width:204px;height:26px;font-size:19px;line-height:1.2">総費用（5年）</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:298px;width:204px;height:22px;font-size:19px;line-height:1.2;color:var(--text-sub)">上限2.0億円</div>
+  <div class="pp-line hr" style="left:64px;top:321px;width:204px;height:1px"></div>
+  <div class="pp-text b" style="left:64px;top:322px;width:204px;height:26px;font-size:19px;line-height:1.2">移行期間</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:346px;width:204px;height:22px;font-size:19px;line-height:1.2;color:var(--text-sub)">期限まで9か月</div>
+  <div class="pp-line hr" style="left:64px;top:369px;width:204px;height:1px"></div>
+  <div class="pp-text b" style="left:64px;top:370px;width:204px;height:26px;font-size:19px;line-height:1.2">拠点の通信断</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:394px;width:204px;height:22px;font-size:19px;line-height:1.2;color:var(--text-sub)">1回8時間以内</div>
+  <div class="pp-line hr" style="left:64px;top:417px;width:204px;height:1px"></div>
+  <div class="pp-text b" style="left:64px;top:418px;width:204px;height:26px;font-size:19px;line-height:1.2">リスク</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:442px;width:204px;height:22px;font-size:19px;line-height:1.2;color:var(--text-sub)">戻せること</div>
+  <div class="pp-line hr" style="left:64px;top:465px;width:204px;height:1px"></div>
+  <div class="pp-text b" style="left:64px;top:466px;width:204px;height:26px;font-size:19px;line-height:1.2">効果（運用費・年）</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:490px;width:204px;height:22px;font-size:19px;line-height:1.2;color:var(--text-sub)">年▲500万円超</div>
+  <div class="pp-line hr" style="left:64px;top:513px;width:204px;height:1px"></div>
+  <div class="pp-text b" style="left:64px;top:518px;width:204px;height:26px;font-size:19px;line-height:1.2">総合</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:540px;width:204px;height:22px;font-size:19px;line-height:1.2;color:var(--text-sub)">○の数</div>
+  <div class="pp-shape f-white" data-note="案のカード：見出しの下に評価軸ごとの記号と数値を積む。推奨の案だけ見出しが強調色" style="left:280px;top:226px;width:304px;height:336px"></div>
+  <div class="pp-shape f-accent" data-overlap style="left:280px;top:226px;width:304px;height:44px"></div>
+  <div class="pp-text b t-white center" data-overlap style="left:290px;top:230px;width:284px;height:36px;font-size:19px">A案　MPLS更新</div>
+  <div class="pp-text t-dark center" data-overlap style="left:294px;top:280px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>△</b></div>
+  <div class="pp-text" data-overlap style="left:338px;top:282px;width:238px;height:34px;font-size:19px">2.5億円</div>
+  <div class="pp-line hr" style="left:292px;top:323px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:294px;top:328px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>×</b></div>
+  <div class="pp-text" data-overlap style="left:338px;top:330px;width:238px;height:34px;font-size:19px">12か月</div>
+  <div class="pp-line hr" style="left:292px;top:371px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:294px;top:376px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>×</b></div>
+  <div class="pp-text" data-overlap style="left:338px;top:378px;width:238px;height:34px;font-size:19px">3回・計24時間</div>
+  <div class="pp-line hr" style="left:292px;top:419px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:294px;top:424px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>×</b></div>
+  <div class="pp-text" data-overlap style="left:338px;top:426px;width:238px;height:34px;font-size:19px">大（一斉切替）</div>
+  <div class="pp-line hr" style="left:292px;top:467px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:294px;top:472px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>○</b></div>
+  <div class="pp-text" data-overlap style="left:338px;top:474px;width:238px;height:34px;font-size:19px">▲800万</div>
+  <div class="pp-line" style="left:292px;top:514px;width:280px;height:2px;background:var(--text)"></div>
+  <div class="pp-text center" data-overlap style="left:294px;top:522px;width:276px;height:34px;font-size:19px"><b>○1・△1・×3</b></div>
+  <div class="pp-shape f-soft" style="left:592px;top:226px;width:304px;height:336px"></div>
+  <div class="pp-shape f-emph" data-note="推奨のカード：見出しだけ強調色（1 枚 1 点）、面はパネル地" data-overlap style="left:592px;top:226px;width:304px;height:44px"></div>
+  <div class="pp-text b t-white center" data-overlap style="left:602px;top:230px;width:284px;height:36px;font-size:19px">B案　SD-WAN（推奨）</div>
+  <div class="pp-text t-dark center" data-overlap style="left:606px;top:280px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>○</b></div>
+  <div class="pp-text" data-overlap style="left:650px;top:282px;width:238px;height:34px;font-size:19px">1.7億円</div>
+  <div class="pp-line hr" style="left:604px;top:323px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:606px;top:328px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>○</b></div>
+  <div class="pp-text" data-overlap style="left:650px;top:330px;width:238px;height:34px;font-size:19px">6か月</div>
+  <div class="pp-line hr" style="left:604px;top:371px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:606px;top:376px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>○</b></div>
+  <div class="pp-text" data-overlap style="left:650px;top:378px;width:238px;height:34px;font-size:19px">1回・2時間</div>
+  <div class="pp-line hr" style="left:604px;top:419px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:606px;top:424px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>○</b></div>
+  <div class="pp-text" data-overlap style="left:650px;top:426px;width:238px;height:34px;font-size:19px">中（拠点ごとに戻せる）</div>
+  <div class="pp-line hr" style="left:604px;top:467px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:606px;top:472px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>○</b></div>
+  <div class="pp-text" data-overlap style="left:650px;top:474px;width:238px;height:34px;font-size:19px">▲800万</div>
+  <div class="pp-line" style="left:604px;top:514px;width:280px;height:2px;background:var(--text)"></div>
+  <div class="pp-text center" data-overlap style="left:606px;top:522px;width:276px;height:34px;font-size:19px"><b>○5</b></div>
+  <div class="pp-shape f-white" style="left:904px;top:226px;width:304px;height:336px"></div>
+  <div class="pp-shape f-accent" data-overlap style="left:904px;top:226px;width:304px;height:44px"></div>
+  <div class="pp-text b t-white center" data-overlap style="left:914px;top:230px;width:284px;height:36px;font-size:19px">C案　現状維持</div>
+  <div class="pp-text t-dark center" data-overlap style="left:918px;top:280px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>△</b></div>
+  <div class="pp-text" data-overlap style="left:962px;top:282px;width:238px;height:34px;font-size:19px">2.2億円</div>
+  <div class="pp-line hr" style="left:916px;top:323px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:918px;top:328px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>○</b></div>
+  <div class="pp-text" data-overlap style="left:962px;top:330px;width:238px;height:34px;font-size:19px">なし</div>
+  <div class="pp-line hr" style="left:916px;top:371px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:918px;top:376px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>○</b></div>
+  <div class="pp-text" data-overlap style="left:962px;top:378px;width:238px;height:34px;font-size:19px">なし</div>
+  <div class="pp-line hr" style="left:916px;top:419px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:918px;top:424px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>×</b></div>
+  <div class="pp-text" data-overlap style="left:962px;top:426px;width:238px;height:34px;font-size:19px">大（保守切れ）</div>
+  <div class="pp-line hr" style="left:916px;top:467px;width:280px;height:1px"></div>
+  <div class="pp-text t-dark center" data-overlap style="left:918px;top:472px;width:36px;height:38px;font-size:28px;line-height:1.2"><b>×</b></div>
+  <div class="pp-text" data-overlap style="left:962px;top:474px;width:238px;height:34px;font-size:19px">0</div>
+  <div class="pp-line" style="left:916px;top:514px;width:280px;height:2px;background:var(--text)"></div>
+  <div class="pp-text center" data-overlap style="left:918px;top:522px;width:276px;height:34px;font-size:19px"><b>○2・△1・×2</b></div>
+  <div class="pp-shape f-soft" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:64px;top:598px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-overlap style="left:84px;top:599px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　B案（SD-WAN段階移行、総費用1.7億円・6か月）を採用し、11月に設計へ進むことの可否</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:566px;width:1152px;height:22px;line-height:1.3">注: 要件は情報システム委員会で定めたしきい値。費用は2026年9月時点の見積り（税抜）、効果は現行の運用費2,000万円との差</div>
+</section>

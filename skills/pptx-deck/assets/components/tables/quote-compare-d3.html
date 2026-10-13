@@ -1,0 +1,42 @@
+<!-- 用途: 過去見積との比較（カード）。項目ごとに 1 枚のカードを置き、前回→今回の数字、差額、差の理由を 1 枚で読ませる。合計もカードの 1 枚にする。
+     デザイン1との違い: 5 列の表をやめ、3 列×2 段のカード 6 枚に分ける。差額をカードの右上に 34px で大きく置く。最大の差のカードはパネル地、合計のカードは強調色の面に白い字（1 枚 1 点）。
+     差し替える所: 図表タイトル・カード 5 枚（項目・前回・今回・差額・理由は 2 行まで）・強調する 1 枚・合計のカード・注・論点の文。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">見積の変化</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">今回の見積は前回より720万円低く、機器単価の確定が差の3分の2を占める</div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">B案（SD-WAN）の見積の変化（2026年6月概算 → 2026年9月確定、万円・税抜）</div>
+  <div class="pp-shape f-soft" data-note="最大の差の行：パネル地の面で強調する" style="left:64px;top:228px;width:373px;height:150px"></div>
+  <div class="pp-text b" style="left:76px;top:234px;width:349px;height:27px;font-size:19px;line-height:1.4">SD-WAN機器（48台）</div>
+  <div class="pp-text" style="left:76px;top:266px;width:196px;height:28px;font-size:19px;line-height:28px">7,680 → <b>7,200</b></div>
+  <div class="pp-text t-dark b" style="left:280px;top:264px;width:145px;height:44px;font-size:34px;line-height:44px;text-align:right">▲480</div>
+  <div class="pp-text" style="left:76px;top:310px;width:349px;height:62px;font-size:19px;line-height:1.25">台数の確定で単価160→150万円（一括発注）</div>
+  <div class="pp-shape f-white" style="left:453px;top:228px;width:373px;height:150px"></div>
+  <div class="pp-text b" style="left:465px;top:234px;width:349px;height:27px;font-size:19px;line-height:1.4">設計（基本・詳細）</div>
+  <div class="pp-text" style="left:465px;top:266px;width:196px;height:28px;font-size:19px;line-height:28px">1,800 → <b>1,800</b></div>
+  <div class="pp-text t-sub b" style="left:669px;top:264px;width:145px;height:44px;font-size:34px;line-height:44px;text-align:right">0</div>
+  <div class="pp-text" style="left:465px;top:310px;width:349px;height:62px;font-size:19px;line-height:1.25">変更なし（構成モデル3種は前回どおり）</div>
+  <div class="pp-shape f-white" style="left:842px;top:228px;width:373px;height:150px"></div>
+  <div class="pp-text b" style="left:854px;top:234px;width:349px;height:27px;font-size:19px;line-height:1.4">拠点切替作業</div>
+  <div class="pp-text" style="left:854px;top:266px;width:196px;height:28px;font-size:19px;line-height:28px">1,440 → <b>1,200</b></div>
+  <div class="pp-text t-dark b" style="left:1058px;top:264px;width:145px;height:44px;font-size:34px;line-height:44px;text-align:right">▲240</div>
+  <div class="pp-text" style="left:854px;top:310px;width:349px;height:62px;font-size:19px;line-height:1.25">営業所26拠点を遠隔切替にし、単価30→25万円</div>
+  <div class="pp-shape f-white" style="left:64px;top:386px;width:373px;height:150px"></div>
+  <div class="pp-text b" style="left:76px;top:392px;width:349px;height:27px;font-size:19px;line-height:1.4">監視接続・並行稼働</div>
+  <div class="pp-text" style="left:76px;top:424px;width:196px;height:28px;font-size:19px;line-height:28px">600 → <b>800</b></div>
+  <div class="pp-text t-dark b" style="left:280px;top:422px;width:145px;height:44px;font-size:34px;line-height:44px;text-align:right">＋200</div>
+  <div class="pp-text" style="left:76px;top:468px;width:349px;height:62px;font-size:19px;line-height:1.25">並行稼働を1→2週間に延長（通信断対策）</div>
+  <div class="pp-shape f-white" style="left:453px;top:386px;width:373px;height:150px"></div>
+  <div class="pp-text b" style="left:465px;top:392px;width:349px;height:27px;font-size:19px;line-height:1.4">ライセンス・保守（初年度）</div>
+  <div class="pp-text" style="left:465px;top:424px;width:196px;height:28px;font-size:19px;line-height:28px">1,400 → <b>1,200</b></div>
+  <div class="pp-text t-dark b" style="left:669px;top:422px;width:145px;height:44px;font-size:34px;line-height:44px;text-align:right">▲200</div>
+  <div class="pp-text" style="left:465px;top:468px;width:349px;height:62px;font-size:19px;line-height:1.25">一括発注の値引200万円を<br>この項目に充当</div>
+  <div class="pp-shape f-emph" data-note="合計のカード：強調色の面に白い字（1 枚 1 点）" style="left:842px;top:386px;width:373px;height:150px"></div>
+  <div class="pp-text t-white b" style="left:854px;top:392px;width:349px;height:27px;font-size:19px;line-height:1.4">合計（税抜）</div>
+  <div class="pp-text t-white" style="left:854px;top:424px;width:196px;height:28px;font-size:19px;line-height:28px">12,920 → <b>12,200</b></div>
+  <div class="pp-text t-white b" style="left:1058px;top:422px;width:145px;height:44px;font-size:34px;line-height:44px;text-align:right">▲720</div>
+  <div class="pp-text t-white" style="left:854px;top:468px;width:349px;height:62px;font-size:19px;line-height:1.25">▲5.6%。差の3分の2（480）は<br>機器単価の確定</div>
+  <div class="pp-text" data-note="注：前回と今回の見積の性質の違いと、増えた項目の背景" data-role="caption" style="left:64px;top:552px;width:1152px;height:36px;line-height:1.3">注: 前回は台数未確定の概算、今回はベンダーの確定見積（有効期限2026年12月末）<br>並行稼働の延長＋200万円は、リスク①（切替時の通信断）の対策として追加した</div>
+  <div class="pp-shape f-soft" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:64px;top:598px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:84px;top:599px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　今回の確定見積（税抜12,200万円、前回比▲720万円）でB案の投資を承認することの可否</div>
+</section>

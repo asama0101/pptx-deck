@@ -1,0 +1,14 @@
+<!-- 用途: 差額の内訳（ウォーターフォール、注目点つき）。グラフは全幅。最初が合計、以降が内訳（最後も合計にするときは totals に位置を足す）。totals は合計にする位置（0 始まり）。減少は濃い灰、増加は基調色、合計は灰。注目点は枠線のカードまたは帯で書く（1 つ）。
+     上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。所見が長いときは -note 版（滝グラフ×打ち手表）を使う。
+     デザイン1との違い: グラフを低めの全幅にし、下に注目点をパネル地の帯で横に並べる（帯は 1 つにつき 1 本）。グラフの上に吹き出しを重ねない。
+     差し替える所: 図表タイトル・data-chart・注目点の文・注。 -->
+<section class="slide" data-layout="chart">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">通信費の削減内訳</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">通信費の58%を占める回線と運用委託に打ち手を絞れば、削減目標の7割が見込める</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">通信費の内訳（FY2025、通信費12.0億円＝100）</div>
+  <div class="pp-chart" data-note="グラフは全幅。減少は濃い灰、合計は灰" data-chart='{"type":"waterfall","categories":["通信費計","回線","クラウド接続","保守","モバイル","運用委託"],"series":[{"name":"通信費（指数）","values":[100,-38,-22,-12,-8,-20]}],"totals":[0],"fmt":"0"}' style="left:64px;top:224px;width:1152px;height:290px"></div>
+  <div class="pp-shape f-soft" data-note="注目点：棒の読み方を、グラフの下に帯で書く" style="left:64px;top:528px;width:1152px;height:56px"></div>
+  <div class="pp-text b center" data-note="注目点：棒の読み方を、グラフの下に帯で書く" style="left:76px;top:541px;width:1128px;height:30px;font-size:21px">回線＋委託で58（通信費の約6割）</div>
+  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 指数はFY2025の通信費12.0億円を100とし、▲10は柱Bの目標▲1.2億円に相当<br>→ 回線と運用委託の2項目で▲7を取れれば、残り3項目は▲1ずつでも目標に届く</div>
+</section>

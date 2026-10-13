@@ -1,0 +1,16 @@
+<!-- 用途: 内訳の推移（積み上げ棒、注目点つき）。グラフは全幅。系列は 3 本まで。合計の数字と注目点は枠線のカードまたは帯で書く（2 つまで）。
+     上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。所見が長いときは -note 版（グラフ×内訳表）を使う。
+     デザイン1との違い: グラフを低めの全幅にし、下に注目点をパネル地の帯で横に並べる（帯は 1 つにつき 1 本）。グラフの上に吹き出しを重ねない。
+     差し替える所: 図表タイトル・data-chart・注目点の文・注。 -->
+<section class="slide" data-layout="chart">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">年度別の費用</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">費用は初年度に集中し、2年目以降は運用費だけになる</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">B案（SD-WAN）の年度別の費用（万円・税抜）</div>
+  <div class="pp-chart" data-note="グラフは全幅。系列は 3 本まで" data-chart='{"type":"stacked","categories":["2027","2028","2029","2030","2031"],"series":[{"name":"機器","values":[9000,0,0,0,0]},{"name":"移行","values":[2000,0,0,0,0]},{"name":"運用","values":[1200,1200,1200,1200,1200]}],"fmt":"#,##0"}' style="left:64px;top:224px;width:1152px;height:290px"></div>
+  <div class="pp-shape f-soft" data-note="注目点：合計と注目点を、グラフの下に帯で書く（2 つまで）" style="left:64px;top:528px;width:564px;height:56px"></div>
+  <div class="pp-text b center" data-note="注目点：合計と注目点を、グラフの下に帯で書く（2 つまで）" style="left:76px;top:541px;width:540px;height:30px;font-size:21px">初年度12,200万円＝5年間の72%</div>
+  <div class="pp-shape f-soft" data-note="注目点：合計と注目点を、グラフの下に帯で書く（2 つまで）" style="left:652px;top:528px;width:564px;height:56px"></div>
+  <div class="pp-text b center" data-note="注目点：合計と注目点を、グラフの下に帯で書く（2 つまで）" style="left:664px;top:541px;width:540px;height:30px;font-size:21px">2年目以降は運用費1,200万円で一定</div>
+  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 金額は税抜。運用費は保守契約により年1,200万円で一定<br>→ 初年度の12,200万円はFY2027予算で一括計上が必要になる</div>
+</section>

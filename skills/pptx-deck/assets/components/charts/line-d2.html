@@ -1,0 +1,14 @@
+<!-- 用途: 時間の推移（折れ線）。グラフは全幅。系列は 2〜3 本までで、注目する系列を先頭にする。
+     上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。所見が長いときは -note 版（グラフ×内訳表）を使う。
+     デザイン1との違い: 吹き出しをやめ、到達点と削減率をグラフの上のパネル地の帯（1 行）に書く。グラフは帯の分だけ低くなる。
+     差し替える所: 図表タイトル・data-chart・グラフの上の帯の文・注。  -->
+<section class="slide" data-layout="chart">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応時間の推移</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応の時間は、導入後6か月で月40時間から8時間に下がる見込み</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の時間（月あたり、時間）</div>
+  <div class="pp-shape f-soft" data-note="結論の帯：到達点と削減率をグラフの上に 1 行で書く" style="left:64px;top:224px;width:1152px;height:40px"></div>
+  <div class="pp-text b" data-note="結論の帯：到達点と削減率をグラフの上に 1 行で書く" style="left:80px;top:222px;width:1120px;height:34px;font-size:21px">6か月で40→8時間（▲80%）</div>
+  <div class="pp-chart" data-overlap data-note="グラフは全幅。注目する系列を先頭に" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40]}],"fmt":"#,##0","axis":{"min":0,"max":50,"major":10}}' style="left:64px;top:272px;width:1152px;height:312px"></div>
+  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 現状は繁忙期を含む月平均。導入後は基盤グループの試算で、実績ではない<br>→ 低下は本社・DCの切替完了が前提で、切替が遅れれば到達も遅れる</div>
+</section>
