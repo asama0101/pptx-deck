@@ -1,46 +1,51 @@
 <!-- 用途: 縦型フロー（段階が多く、横に収まらない手順）。デザイン1（flow-v）と同じ 6 工程・同じ原稿で差し替えられる。
-     デザイン1との違い: 工程の箱を、1 段下がるごとに右へ 76px ずつずらした階段にする。1 行目に「番号・工程名・期間」、2 行目に「内容」、箱の右に成果物。判断点の工程の箱だけ強調色。
-     差し替える所: 6 工程の名前・内容・期間・成果物・判断点の工程・注。 -->
+     デザイン1との違い: 工程を、左の列に積んだ箱（番号・工程名）を下向きの矢印でつないだ本物のフロー図にする。各箱の右の同じ行に「期間｜内容｜成果物」をそろえて置く。判断点の工程の箱だけ強調色（1 枚 1 点）。
+     差し替える所: 6 工程の名前・期間・内容・成果物・判断点の工程・注。 -->
 <section class="slide" data-layout="diagram">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">更改の進め方</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">更改は6工程で進め、判断点は先行切替の完了後の1回に絞る</div>
   <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN更改の工程（11月〜翌10月。内容・期間・成果物）</div>
-  <div class="pp-shape f-soft" data-note="階段：工程が進むごとに右へずらす" style="left:64px;top:226px;width:640px;height:54px"></div>
-  <div class="pp-text num" data-overlap style="left:74px;top:228px;width:40px;height:30px;font-size:24px;line-height:1.2;color:var(--accent-dark)">1</div>
-  <div class="pp-text b t-dark" data-overlap style="left:116px;top:228px;width:240px;height:30px;font-size:21px;line-height:1.2">棚卸し</div>
-  <div class="pp-text b t-dark" data-overlap style="left:564px;top:228px;width:130px;height:30px;font-size:19px;text-align:right;line-height:1.2">11月</div>
-  <div class="pp-text" data-overlap style="left:116px;top:253px;width:580px;height:26px;font-size:19px;line-height:1.2">48拠点の回線・機器の台帳を作り、更改の対象を確定する</div>
-  <div class="pp-text" data-role="caption" style="left:714px;top:238px;width:502px;height:30px;line-height:1.2">現状台帳</div>
-  <div class="pp-shape f-soft" style="left:136px;top:286px;width:640px;height:54px"></div>
-  <div class="pp-text num" data-overlap style="left:146px;top:288px;width:40px;height:30px;font-size:24px;line-height:1.2;color:var(--accent-dark)">2</div>
-  <div class="pp-text b t-dark" data-overlap style="left:188px;top:288px;width:240px;height:30px;font-size:21px;line-height:1.2">設計</div>
-  <div class="pp-text b t-dark" data-overlap style="left:636px;top:288px;width:130px;height:30px;font-size:19px;text-align:right;line-height:1.2">12〜1月</div>
-  <div class="pp-text" data-overlap style="left:188px;top:313px;width:580px;height:26px;font-size:19px;line-height:1.2">SD-WAN構成と3モデルの機器を決め、切替の手順を書く</div>
-  <div class="pp-text" data-role="caption" style="left:786px;top:298px;width:430px;height:30px;line-height:1.2">設計書</div>
-  <div class="pp-shape f-soft" style="left:208px;top:346px;width:640px;height:54px"></div>
-  <div class="pp-text num" data-overlap style="left:218px;top:348px;width:40px;height:30px;font-size:24px;line-height:1.2;color:var(--accent-dark)">3</div>
-  <div class="pp-text b t-dark" data-overlap style="left:260px;top:348px;width:240px;height:30px;font-size:21px;line-height:1.2">調達</div>
-  <div class="pp-text b t-dark" data-overlap style="left:708px;top:348px;width:130px;height:30px;font-size:19px;text-align:right;line-height:1.2">2月</div>
-  <div class="pp-text" data-overlap style="left:260px;top:373px;width:580px;height:26px;font-size:19px;line-height:1.2">機器112台とインターネット回線の契約を結ぶ</div>
-  <div class="pp-text" data-role="caption" style="left:858px;top:358px;width:358px;height:30px;line-height:1.2">契約書</div>
-  <div class="pp-shape f-emph" data-note="階段：工程が進むごとに右へずらす。判断点の工程だけ強調色" style="left:280px;top:406px;width:640px;height:54px"></div>
-  <div class="pp-text num" data-overlap style="left:290px;top:408px;width:40px;height:30px;font-size:24px;line-height:1.2;color:#FFFFFF">4</div>
-  <div class="pp-text b t-white" data-overlap style="left:332px;top:408px;width:240px;height:30px;font-size:21px;line-height:1.2">先行切替◆</div>
-  <div class="pp-text b t-white" data-overlap style="left:780px;top:408px;width:130px;height:30px;font-size:19px;text-align:right;line-height:1.2">3月</div>
-  <div class="pp-text t-white" data-overlap style="left:332px;top:433px;width:580px;height:26px;font-size:19px;line-height:1.2">重要12拠点で切り替え、障害時の自動切替を実地で確かめる</div>
-  <div class="pp-text" data-role="caption" style="left:930px;top:418px;width:286px;height:30px;line-height:1.2">切替報告</div>
-  <div class="pp-shape f-soft" style="left:352px;top:466px;width:640px;height:54px"></div>
-  <div class="pp-text num" data-overlap style="left:362px;top:468px;width:40px;height:30px;font-size:24px;line-height:1.2;color:var(--accent-dark)">5</div>
-  <div class="pp-text b t-dark" data-overlap style="left:404px;top:468px;width:240px;height:30px;font-size:21px;line-height:1.2">全拠点切替</div>
-  <div class="pp-text b t-dark" data-overlap style="left:852px;top:468px;width:130px;height:30px;font-size:19px;text-align:right;line-height:1.2">4〜9月</div>
-  <div class="pp-text" data-overlap style="left:404px;top:493px;width:580px;height:26px;font-size:19px;line-height:1.2">残り36拠点を月6拠点ずつ切り替え、専用線を順次解約する</div>
-  <div class="pp-text" data-role="caption" style="left:1002px;top:478px;width:214px;height:30px;line-height:1.2">解約通知</div>
-  <div class="pp-shape f-soft" style="left:424px;top:526px;width:640px;height:54px"></div>
-  <div class="pp-text num" data-overlap style="left:434px;top:528px;width:40px;height:30px;font-size:24px;line-height:1.2;color:var(--accent-dark)">6</div>
-  <div class="pp-text b t-dark" data-overlap style="left:476px;top:528px;width:240px;height:30px;font-size:21px;line-height:1.2">運用移行</div>
-  <div class="pp-text b t-dark" data-overlap style="left:924px;top:528px;width:130px;height:30px;font-size:19px;text-align:right;line-height:1.2">10月</div>
-  <div class="pp-text" data-overlap style="left:476px;top:553px;width:580px;height:26px;font-size:19px;line-height:1.2">監視センターへ運用を移し、旧専用線の契約をすべて終える</div>
-  <div class="pp-text" data-role="caption" style="left:1074px;top:538px;width:142px;height:30px;line-height:1.2">運用手順書</div>
+  <div class="pp-shape f-soft" data-note="工程の箱：番号と工程名を縦に積み、下向きの矢印でつなぐ。判断点の工程だけ強調色" data-overlap style="left:64px;top:226px;width:300px;height:44px"></div>
+  <div class="pp-text num t-dark" data-overlap style="left:76px;top:232px;width:36px;height:32px;font-size:24px;line-height:1.2">1</div>
+  <div class="pp-text b t-dark" data-overlap style="left:120px;top:233px;width:236px;height:30px;font-size:21px;line-height:1.2">棚卸し</div>
+  <div class="pp-line" data-overlap data-arrow="end" style="left:213px;top:271px;width:2px;height:14px;background:var(--text-sub)"></div>
+  <div class="pp-text b" data-note="右の列：期間・内容・成果物を、箱と同じ行にそろえる" style="left:384px;top:233px;width:100px;height:30px;font-size:19px;line-height:1.5">11月</div>
+  <div class="pp-text" style="left:492px;top:233px;width:560px;height:30px;font-size:19px;line-height:1.5">48拠点の回線・機器の台帳を作り、更改の対象を確定する</div>
+  <div class="pp-text" data-role="caption" style="left:1064px;top:235px;width:152px;height:28px;line-height:1.3">現状台帳</div>
+  <div class="pp-shape f-soft" data-overlap style="left:64px;top:286px;width:300px;height:44px"></div>
+  <div class="pp-text num t-dark" data-overlap style="left:76px;top:292px;width:36px;height:32px;font-size:24px;line-height:1.2">2</div>
+  <div class="pp-text b t-dark" data-overlap style="left:120px;top:293px;width:236px;height:30px;font-size:21px;line-height:1.2">設計</div>
+  <div class="pp-line" data-overlap data-arrow="end" style="left:213px;top:331px;width:2px;height:14px;background:var(--text-sub)"></div>
+  <div class="pp-text b" style="left:384px;top:293px;width:100px;height:30px;font-size:19px;line-height:1.5">12〜1月</div>
+  <div class="pp-text" style="left:492px;top:293px;width:560px;height:30px;font-size:19px;line-height:1.5">SD-WAN構成と3モデルの機器を決め、切替の手順を書く</div>
+  <div class="pp-text" data-role="caption" style="left:1064px;top:295px;width:152px;height:28px;line-height:1.3">設計書</div>
+  <div class="pp-shape f-soft" data-overlap style="left:64px;top:346px;width:300px;height:44px"></div>
+  <div class="pp-text num t-dark" data-overlap style="left:76px;top:352px;width:36px;height:32px;font-size:24px;line-height:1.2">3</div>
+  <div class="pp-text b t-dark" data-overlap style="left:120px;top:353px;width:236px;height:30px;font-size:21px;line-height:1.2">調達</div>
+  <div class="pp-line" data-overlap data-arrow="end" style="left:213px;top:391px;width:2px;height:14px;background:var(--text-sub)"></div>
+  <div class="pp-text b" style="left:384px;top:353px;width:100px;height:30px;font-size:19px;line-height:1.5">2月</div>
+  <div class="pp-text" style="left:492px;top:353px;width:560px;height:30px;font-size:19px;line-height:1.5">機器112台とインターネット回線の契約を結ぶ</div>
+  <div class="pp-text" data-role="caption" style="left:1064px;top:355px;width:152px;height:28px;line-height:1.3">契約書</div>
+  <div class="pp-shape f-emph" data-note="工程の箱：番号と工程名を縦に積み、下向きの矢印でつなぐ。判断点の工程だけ強調色" data-overlap style="left:64px;top:406px;width:300px;height:44px"></div>
+  <div class="pp-text num t-white" data-overlap style="left:76px;top:412px;width:36px;height:32px;font-size:24px;line-height:1.2;color:#FFFFFF">4</div>
+  <div class="pp-text b t-white" data-overlap style="left:120px;top:413px;width:236px;height:30px;font-size:21px;line-height:1.2">先行切替◆</div>
+  <div class="pp-line" data-overlap data-arrow="end" style="left:213px;top:451px;width:2px;height:14px;background:var(--text-sub)"></div>
+  <div class="pp-text b" style="left:384px;top:413px;width:100px;height:30px;font-size:19px;line-height:1.5">3月</div>
+  <div class="pp-text" style="left:492px;top:413px;width:560px;height:30px;font-size:19px;line-height:1.5">重要12拠点で切り替え、障害時の自動切替を実地で確かめる</div>
+  <div class="pp-text" data-role="caption" style="left:1064px;top:415px;width:152px;height:28px;line-height:1.3">切替報告</div>
+  <div class="pp-shape f-soft" data-overlap style="left:64px;top:466px;width:300px;height:44px"></div>
+  <div class="pp-text num t-dark" data-overlap style="left:76px;top:472px;width:36px;height:32px;font-size:24px;line-height:1.2">5</div>
+  <div class="pp-text b t-dark" data-overlap style="left:120px;top:473px;width:236px;height:30px;font-size:21px;line-height:1.2">全拠点切替</div>
+  <div class="pp-line" data-overlap data-arrow="end" style="left:213px;top:511px;width:2px;height:14px;background:var(--text-sub)"></div>
+  <div class="pp-text b" style="left:384px;top:473px;width:100px;height:30px;font-size:19px;line-height:1.5">4〜9月</div>
+  <div class="pp-text" style="left:492px;top:473px;width:560px;height:30px;font-size:19px;line-height:1.5">残り36拠点を月6拠点ずつ切り替え、専用線を順次解約する</div>
+  <div class="pp-text" data-role="caption" style="left:1064px;top:475px;width:152px;height:28px;line-height:1.3">解約通知</div>
+  <div class="pp-shape f-soft" data-overlap style="left:64px;top:526px;width:300px;height:44px"></div>
+  <div class="pp-text num t-dark" data-overlap style="left:76px;top:532px;width:36px;height:32px;font-size:24px;line-height:1.2">6</div>
+  <div class="pp-text b t-dark" data-overlap style="left:120px;top:533px;width:236px;height:30px;font-size:21px;line-height:1.2">運用移行</div>
+  <div class="pp-text b" style="left:384px;top:533px;width:100px;height:30px;font-size:19px;line-height:1.5">10月</div>
+  <div class="pp-text" style="left:492px;top:533px;width:560px;height:30px;font-size:19px;line-height:1.5">監視センターへ運用を移し、旧専用線の契約をすべて終える</div>
+  <div class="pp-text" data-role="caption" style="left:1064px;top:535px;width:152px;height:28px;line-height:1.3">運用手順書</div>
   <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: ◆は経営会議の判断点。期間は承認日（10月）から起算し、各工程の完了を翌工程の着手条件とする<br>→ 判断点は先行切替の完了後の1回に絞り、残り36拠点は月6拠点ずつの定常作業にする</div>
 </section>

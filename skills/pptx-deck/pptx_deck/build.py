@@ -121,7 +121,11 @@ def add_shape(slide, el):
 def add_line(slide, el):
     r = el["rect"]
     horizontal = r["w"] >= r["h"]
-    if horizontal:
+    if el.get("diag"):          # 斜め線: 要素の箱の対角（down＝左上→右下、up＝左下→右上）
+        x1, x2 = r["x"], r["x"] + r["w"]
+        y1, y2 = (r["y"], r["y"] + r["h"]) if el["diag"] == "down" else (r["y"] + r["h"], r["y"])
+        th = el.get("w") or 3
+    elif horizontal:
         x1, y1, x2, y2, th = r["x"], r["y"] + r["h"] / 2, r["x"] + r["w"], r["y"] + r["h"] / 2, r["h"]
     else:
         x1, y1, x2, y2, th = r["x"] + r["w"] / 2, r["y"], r["x"] + r["w"] / 2, r["y"] + r["h"], r["w"]
