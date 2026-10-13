@@ -39,11 +39,11 @@ def _next_id(slide) -> int:
 
 
 def clone_footer_placeholders(slide, layout, footer=None) -> None:
-    """レイアウトの日付・フッター・スライド番号のプレースホルダーをスライドに写す（python-pptx は写さない）。
-    footer を渡すと、フッターの文言をそれに差し替える。"""
+    """レイアウトのフッター（コピーライト）・スライド番号のプレースホルダーをスライドに写す（python-pptx は写さない）。
+    日付は出さない（ページ枠は、左下にコピーライト、右下にページ番号）。footer を渡すと、フッターの文言をそれに差し替える。"""
     from pptx.enum.shapes import PP_PLACEHOLDER as T
     for ph in layout.placeholders:
-        if ph.placeholder_format.type not in (T.SLIDE_NUMBER, T.FOOTER, T.DATE):
+        if ph.placeholder_format.type not in (T.SLIDE_NUMBER, T.FOOTER):
             continue
         el = copy.deepcopy(ph._element)
         el.xpath(".//p:cNvPr")[0].set("id", str(_next_id(slide)))
