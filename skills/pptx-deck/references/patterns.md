@@ -32,7 +32,8 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 工程の前後を見せる（5 段以下は上下） | `before-after` | `before-after-h` | `side-by-side` |
 | | 工程の前後を見せる（5〜6 段は左右） | `before-after-h` | `before-after` | `side-by-side` |
 | | 案を評価軸で選ぶ | `options` | `rating` | `compare` |
-| | 前回との差 | `quote-compare` | `quote-bridge` | `delta` |
+| | 前回との差（表で見せる） | `quote-compare` | `quote-bridge` | `delta` |
+| | 前回との差（内訳を図で見せる） | `quote-bridge` | `quote-compare` | `waterfall-note` |
 | 手順（順に進む） | 段階が 5 以下・情報が少ない | `flow-h` | `flow-v` | `swimlane-h` |
 | | 段階が多く横に入らない | `flow-v` | `swimlane-v` | `timeline-v` |
 | | 担当部門をまたぐ（6 段まで） | `swimlane-h` | `swimlane-v` | `flow-h` |
@@ -43,6 +44,7 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 件数が多く文で読ませる | `timeline-v` | `timeline-h` | — |
 | 循環（繰り返す） | 4 段階・指標つき | `cycle` | `cycle-box` | `flow-h` |
 | | 2〜3 要素 | `cycle-round` | `cycle` | — |
+| | 5〜6 要素・指標は添えない | `cycle-box` | `cycle` | `flow-h` |
 | 階層（上下の位置づけ） | 上位ほど少ない・小さい | `pyramid` | `layers` | `tree` |
 | | 下位ほど少ない（絞り込む） | `funnel` | `venn` | — |
 | | 層×系列の格子で自社の範囲を示す | `layers` | `architecture` | `pyramid` |

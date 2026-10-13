@@ -1,31 +1,27 @@
 <!-- 用途: 数字サマリ（章の冒頭・要約）。上に数字カード 4 枚（指標名・目標の数値・現状からの差分・期間）、下に指標ごとの根拠の表（指標｜根拠（定量）｜担当｜詳細参照）、最下部に論点ボックス。
-     カードは白地＋罫線＋上端に基調色の細い帯。数値は基調色（.num）、いちばん重い指標の数値だけ強調色（1 枚 1 点）。根拠の表は見出しが灰の小さな文字と罫線だけ。
+     カードは白地＋罫線。数値は基調色（.num）、いちばん重い指標の数値だけ強調色（1 枚 1 点）。根拠の表は見出しが灰の小さな文字と罫線だけ。
      差し替える所: カード 4 枚（指標名・数値・差分・現状と期間）・根拠の 4 行（1 行に収める）・強調する 1 指標・論点の文。 -->
 <section class="slide" data-layout="content">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">数値目標</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">数値目標</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">中計の4目標は、FY2030に通信費▲1.2億円・復旧時間1.0時間へ到達する</div>
   <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">ネットワーク基盤 中期計画の数値目標（FY2025実績 → FY2030目標）</div>
   <div class="pp-shape f-white" data-note="数字カード：指標名・目標・現状からの差分を 1 枚に 1 指標。重い指標の数値だけ強調色" style="left:64px;top:228px;width:276px;height:177px"></div>
-  <div class="pp-shape f-accent" style="left:64px;top:228px;width:276px;height:4px"></div>
   <div class="pp-text" data-role="caption" style="left:80px;top:240px;width:244px;height:22px">① 拠点の標準化率</div>
   <div class="pp-text num" data-note="数字カード：指標名・目標・現状からの差分を 1 枚に 1 指標。重い指標の数値だけ強調色" style="left:80px;top:264px;width:244px;height:52px;font-size:40px">100%</div>
   <div class="pp-text b t-dark" style="left:80px;top:318px;width:244px;height:28px;font-size:19px">＋75pt（3モデルへ統一）</div>
   <div class="pp-text" data-role="caption" style="left:80px;top:348px;width:244px;height:40px;line-height:1.3">FY2025実績 25%（12拠点）<br>構成モデル12→3</div>
   <div class="pp-shape f-white" data-note="数字カード：指標名・目標・現状からの差分を 1 枚に 1 指標。重い指標の数値だけ強調色" style="left:356px;top:228px;width:276px;height:177px"></div>
-  <div class="pp-shape f-accent" style="left:356px;top:228px;width:276px;height:4px"></div>
   <div class="pp-text" data-role="caption" style="left:372px;top:240px;width:244px;height:22px">② 通信費指数</div>
   <div class="pp-text num" data-note="数字カード：指標名・目標・現状からの差分を 1 枚に 1 指標。重い指標の数値だけ強調色" style="left:372px;top:264px;width:244px;height:52px;font-size:40px;color:var(--emphasis)">90</div>
   <div class="pp-text b t-dark" style="left:372px;top:318px;width:244px;height:28px;font-size:19px">▲10（▲1.2億円）</div>
   <div class="pp-text" data-role="caption" style="left:372px;top:348px;width:244px;height:40px;line-height:1.3">FY2025実績 100（12.0億円）<br>回線と運用委託で▲7</div>
   <div class="pp-shape f-white" data-note="数字カード：指標名・目標・現状からの差分を 1 枚に 1 指標。重い指標の数値だけ強調色" style="left:648px;top:228px;width:276px;height:177px"></div>
-  <div class="pp-shape f-accent" style="left:648px;top:228px;width:276px;height:4px"></div>
   <div class="pp-text" data-role="caption" style="left:664px;top:240px;width:244px;height:22px">③ 復旧時間（MTTR）</div>
   <div class="pp-text num" data-note="数字カード：指標名・目標・現状からの差分を 1 枚に 1 指標。重い指標の数値だけ強調色" style="left:664px;top:264px;width:244px;height:52px;font-size:40px">1.0時間</div>
   <div class="pp-text b t-dark" style="left:664px;top:318px;width:244px;height:28px;font-size:19px">▲3.8時間（▲79%）</div>
   <div class="pp-text" data-role="caption" style="left:664px;top:348px;width:244px;height:40px;line-height:1.3">FY2025実績 4.8時間<br>自動検知と回線の自動切替</div>
   <div class="pp-shape f-white" data-note="数字カード：指標名・目標・現状からの差分を 1 枚に 1 指標。重い指標の数値だけ強調色" style="left:940px;top:228px;width:276px;height:177px"></div>
-  <div class="pp-shape f-accent" style="left:940px;top:228px;width:276px;height:4px"></div>
   <div class="pp-text" data-role="caption" style="left:956px;top:240px;width:244px;height:22px">④ 監視カバー率</div>
   <div class="pp-text num" data-note="数字カード：指標名・目標・現状からの差分を 1 枚に 1 指標。重い指標の数値だけ強調色" style="left:956px;top:264px;width:244px;height:52px;font-size:40px">100%</div>
   <div class="pp-text b t-dark" style="left:956px;top:318px;width:244px;height:28px;font-size:19px">＋55pt（全48拠点）</div>

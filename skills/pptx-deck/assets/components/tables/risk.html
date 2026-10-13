@@ -1,9 +1,9 @@
 <!-- 用途: リスクと対策の表。「リスク｜影響（定量）｜対策｜残存リスク｜オーナー」の 5 列で、承認前に聞かれる「何が起きたらどうするか」を 1 枚にする。影響と残存は金額・時間・件数で書き、対策は手段と費用を 1 行で。
-     見出しの行は基調色の面に白い文字。最大のリスクの行だけ、パネル地の面と左端の基調色の縦線で強調する。最下部の論点ボックスに、対策を前提にした決定を「〜の可否」で書く。
+     見出しの行は基調色の面に白い文字。最大のリスクの行だけ、パネル地の面で強調する。最下部の論点ボックスに、対策を前提にした決定を「〜の可否」で書く。
      差し替える所: 図表タイトル・行 4 つ（リスク・影響・対策・残存・オーナー。各セル 2 行まで）・強調する 1 行・注・論点の文。 -->
 <section class="slide" data-layout="table">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">主要リスク</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">主要リスク</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">最大のリスクは切替時の通信断だが、回線の並行稼働で影響は2時間以内に抑えられる</div>
   <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">B案（SD-WAN段階移行）の主要リスクと対策（影響は発生時の見積り）</div>
   <table class="pp-table" data-note="5 列の表：影響と残存は定量、対策は手段と費用を 1 行で" style="left:64px;top:228px;width:1152px;font-size:19px;line-height:1.25">
@@ -14,8 +14,8 @@
       <td style="width:200px;padding:4px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">残存リスク</td>
       <td style="width:170px;padding:4px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">オーナー</td>
     </tr>
-    <tr style="height:72px" data-note="最大のリスクの行：パネル地の面と左端の基調色の縦線で強調する">
-      <td style="padding:5px 14px;background:var(--bg-soft);border-left:4px solid var(--accent);border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent-dark)">①</span> 切替時の拠点通信断</td>
+    <tr style="height:72px" data-note="最大のリスクの行：パネル地の面で強調する">
+      <td style="padding:5px 14px;background:var(--bg-soft);border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent-dark)">①</span> 切替時の拠点通信断</td>
       <td style="padding:5px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line)">停止8時間、機会損失<br>1,200万円</td>
       <td style="padding:5px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line)">夜間切替＋MPLS並行稼働2週間（300万円）、戻し手順を承認済</td>
       <td style="padding:5px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">停止2時間以内<br>損失300万円</td>

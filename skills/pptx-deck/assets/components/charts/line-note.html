@@ -1,17 +1,17 @@
 <!-- 用途: 時間の推移と削減の内訳表（折れ線×内訳）。左の折れ線で推移を見せ（系列は 2〜3 本まで。注目する系列を先頭にする）、右のパネル地の内訳表で、項目ごとの削減の要因・現状・導入後・削減幅を並べる。
-     削減幅の棒は pp-shape の幅を値に比例させ（▲1＝5px）、効く項目は、左端の基調色の縦線と濃い棒で示す。表の下の基調色の帯に、合計（40→8）と削減率を書く。所見が長文のとき（前提・内訳を並べたいとき）に使う（短いときは吹き出しの版）。
+     削減幅の棒は pp-shape の幅を値に比例させ（▲1＝5px）、効く項目は、濃い棒で示す。表の下の基調色の帯に、合計（40→8）と削減率を書く。所見が長文のとき（前提・内訳を並べたいとき）に使う（短いときは吹き出しの版）。
      差し替える所: data-chart（推移の値）・吹き出しの文と位置・内訳表の 4 行（項目・要因・現状・導入後・棒の幅と▲値）・表の下の注・合計の帯。 -->
 <section class="slide" data-layout="chart">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">障害対応の削減内訳</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応の削減内訳</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応の時間は、導入後6か月で月40時間から8時間に下がる見込み</div>
   <div class="pp-text b" data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-role="body" style="left:64px;top:186px;width:596px;height:32px;font-size:21px">障害対応の時間（月あたり、時間）</div>
   <div class="pp-chart" data-overlap data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40]}],"fmt":"#,##0","axis":{"min":0,"max":50,"major":10}}' style="left:64px;top:224px;width:596px;height:360px"></div>
   <div class="pp-shape f-outline" data-overlap data-note="吹き出し：到達点と削減率を 1 行で書く" style="left:356px;top:354px;width:300px;height:44px"></div>
   <div class="pp-text b center" data-overlap data-note="吹き出し：到達点と削減率を 1 行で書く" style="left:364px;top:360px;width:284px;height:30px;font-size:19px">6か月で40→8時間（▲80%）</div>
   <div class="pp-text" data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-role="caption" style="left:64px;top:592px;width:596px;height:38px;line-height:1.3">注: 現状は繁忙期を含む月平均。導入後は基盤グループの試算で、実績ではない<br>→ 削減の7割は切り分けと復旧に集中し、集中監視と自動切替が効果を決める</div>
-  <div class="pp-text b" data-note="内訳表：削減幅の棒は値に比例。効く項目は、基調色の縦線と濃い棒" data-role="body" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">削減の内訳と要因（月あたり、時間）</div>
-  <div class="pp-shape f-soft" data-note="内訳表：削減幅の棒は値に比例。効く項目は、基調色の縦線と濃い棒" style="left:688px;top:224px;width:528px;height:402px"></div>
+  <div class="pp-text b" data-note="内訳表：削減幅の棒は値に比例。効く項目は、濃い棒" data-role="body" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">削減の内訳と要因（月あたり、時間）</div>
+  <div class="pp-shape f-soft" data-note="内訳表：削減幅の棒は値に比例。効く項目は、濃い棒" style="left:688px;top:224px;width:528px;height:402px"></div>
   <div class="pp-text" data-role="caption" style="left:710px;top:233px;width:60px;height:22px">項目</div>
   <div class="pp-text" data-role="caption" style="left:802px;top:233px;width:160px;height:22px">削減の要因</div>
   <div class="pp-text" data-role="caption" style="left:976px;top:233px;width:40px;height:22px;text-align:right">現状</div>
@@ -20,13 +20,13 @@
   <div class="pp-line" style="left:700px;top:256px;width:504px;height:1px;background:var(--text-sub)"></div>
   <table class="pp-table" style="left:700px;top:258px;width:368px;font-size:19px;line-height:1.25">
     <tr style="height:49px">
-      <td style="width:96px;padding:4px 6px;border-left:4px solid var(--accent);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">切り分け</td>
+      <td style="width:96px;padding:4px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">切り分け</td>
       <td style="width:180px;padding:4px 6px;border-bottom:1px solid var(--line)">集中監視で自動化</td>
       <td style="width:46px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">16</td>
       <td style="width:46px;padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">2</td>
     </tr>
     <tr style="height:49px">
-      <td style="padding:4px 6px;border-left:4px solid var(--accent);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">復旧作業</td>
+      <td style="padding:4px 6px;border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">復旧作業</td>
       <td style="padding:4px 6px;border-bottom:1px solid var(--line)">回線の自動切替</td>
       <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">12</td>
       <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">3</td>
@@ -44,9 +44,9 @@
       <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">1</td>
     </tr>
   </table>
-  <div class="pp-shape f-accent" data-note="内訳表：削減幅の棒は値に比例。効く項目は、基調色の縦線と濃い棒" style="left:1080px;top:274px;width:70px;height:18px"></div>
+  <div class="pp-shape f-accent" data-note="内訳表：削減幅の棒は値に比例。効く項目は、濃い棒" style="left:1080px;top:274px;width:70px;height:18px"></div>
   <div class="pp-text b" style="left:1156px;top:264px;width:50px;height:30px;font-size:19px">▲14</div>
-  <div class="pp-shape f-accent" data-note="内訳表：削減幅の棒は値に比例。効く項目は、基調色の縦線と濃い棒" style="left:1080px;top:323px;width:45px;height:18px"></div>
+  <div class="pp-shape f-accent" data-note="内訳表：削減幅の棒は値に比例。効く項目は、濃い棒" style="left:1080px;top:323px;width:45px;height:18px"></div>
   <div class="pp-text b" style="left:1131px;top:312px;width:44px;height:30px;font-size:19px">▲9</div>
   <div class="pp-shape f-light" style="left:1080px;top:372px;width:30px;height:18px"></div>
   <div class="pp-text b" style="left:1116px;top:361px;width:44px;height:30px;font-size:19px">▲6</div>

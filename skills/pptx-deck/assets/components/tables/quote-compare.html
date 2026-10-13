@@ -1,9 +1,9 @@
 <!-- 用途: 過去見積との比較（表）。「項目｜前回｜今回｜差額｜差の理由」の 5 列で、前回の見積から何がいくら変わり、なぜ変わったかを項目ごとに 1 行で示す。合計の行は太字で上に太い罫線。
-     最大の差の行だけ、パネル地の面と左端の基調色の縦線で強調する。合計の差額だけ強調色（1 枚 1 点）。最下部の論点ボックスに、今回の見積で承認することの可否を書く。差額の内訳をグラフで見せるときは charts/quote-bridge（滝グラフ）を使う。
+     最大の差の行だけ、パネル地の面で強調する。合計の差額だけ強調色（1 枚 1 点）。最下部の論点ボックスに、今回の見積で承認することの可否を書く。差額の内訳をグラフで見せるときは charts/quote-bridge（滝グラフ）を使う。
      差し替える所: 図表タイトル・列見出しの時点・行 4〜5（項目・前回・今回・差額・理由は 1 行 26 字まで）・強調する 1 行・合計・注・論点の文。 -->
 <section class="slide" data-layout="table">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">見積の変化</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">見積の変化</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">今回の見積は前回より720万円低く、機器単価の確定が差の3分の2を占める</div>
   <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">B案（SD-WAN）の見積の変化（2026年6月概算 → 2026年9月確定、万円・税抜）</div>
   <table class="pp-table" data-note="5 列の表：項目ごとに前回・今回・差額と、差の理由を 1 行で" style="left:64px;top:228px;width:1152px;font-size:19px;line-height:1.25">
@@ -14,8 +14,8 @@
       <td style="width:130px;padding:4px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">差額</td>
       <td style="width:472px;padding:4px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">差の理由</td>
     </tr>
-    <tr style="height:47px" data-note="最大の差の行：パネル地の面と左端の基調色の縦線で強調する">
-      <td style="padding:4px 14px;background:var(--bg-soft);border-left:4px solid var(--accent);border-bottom:1px solid var(--line);font-weight:700">SD-WAN機器（48台）</td>
+    <tr style="height:47px" data-note="最大の差の行：パネル地の面で強調する">
+      <td style="padding:4px 14px;background:var(--bg-soft);border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">SD-WAN機器（48台）</td>
       <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);text-align:right">7,680</td>
       <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);text-align:right;font-weight:700">7,200</td>
       <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);text-align:right;font-weight:700;color:var(--accent-dark)">▲480</td>
