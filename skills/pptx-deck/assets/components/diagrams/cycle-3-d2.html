@@ -1,0 +1,29 @@
+<!-- 用途: 3 要素の繰り返し。3 つの工程を回し、周期と KPI の帯で締める。要素が 2 つのときは cycle-2、4 つは cycle-4、5 つ以上は cycle-5。
+     デザイン1との違い: 三角でなく横 3 列に並べ、見出しの面と説明の面を重ねる。列の間の矢印と、下の戻りの線で回す。
+     差し替える所: 題・リード文・図表タイトル・3 つの工程の名前と説明・下の帯の周期と KPI・注。  -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">改善の回し方</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">改善は計測・分析・改善の3工程を月次で回し、毎月の定例で目標との差を詰める</div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN運用の改善サイクル（毎月1周。工程ごとの内容）</div>
+  <div class="pp-shape f-light" data-note="工程の列：見出しの面の下に説明の面を重ねる" style="left:64px;top:234px;width:352px;height:64px"></div>
+  <div class="pp-text b t-dark" data-note="先に読む所：最初に目に入る見出し" data-overlap style="left:80px;top:246px;width:320px;height:40px;font-size:24px">1 計測</div>
+  <div class="pp-shape f-white" style="left:64px;top:298px;width:352px;height:120px"></div>
+  <div class="pp-text" data-overlap style="left:84px;top:316px;width:312px;height:90px;font-size:21px;line-height:1.4">稼働率・障害件数・復旧時間を、<br>毎日自動で取る</div>
+  <div class="pp-shape f-light" style="left:464px;top:234px;width:352px;height:64px"></div>
+  <div class="pp-text b t-dark" data-overlap style="left:480px;top:246px;width:320px;height:40px;font-size:24px">2 分析</div>
+  <div class="pp-shape f-white" style="left:464px;top:298px;width:352px;height:120px"></div>
+  <div class="pp-text" data-overlap style="left:484px;top:316px;width:312px;height:90px;font-size:21px;line-height:1.4">目標との差と原因を、<br>月次の定例で突き止める</div>
+  <div class="pp-shape f-light" style="left:864px;top:234px;width:352px;height:64px"></div>
+  <div class="pp-text b t-dark" data-overlap style="left:880px;top:246px;width:320px;height:40px;font-size:24px">3 改善</div>
+  <div class="pp-shape f-white" style="left:864px;top:298px;width:352px;height:120px"></div>
+  <div class="pp-text" data-overlap style="left:884px;top:316px;width:312px;height:90px;font-size:21px;line-height:1.4">回線と設定を見直し、<br>翌月の初週に反映する</div>
+  <div class="pp-line hr" data-arrow="end" style="left:418px;top:330px;width:44px;height:3px;background:var(--accent)"></div>
+  <div class="pp-line hr" data-arrow="end" style="left:818px;top:330px;width:44px;height:3px;background:var(--accent)"></div>
+  <div class="pp-line hr" style="left:1040px;top:418px;width:3px;height:40px;background:var(--accent)"></div>
+  <div class="pp-line hr" style="left:240px;top:456px;width:803px;height:3px;background:var(--accent)"></div>
+  <div class="pp-line hr" data-arrow="end" data-dir="rev" style="left:240px;top:420px;width:3px;height:39px;background:var(--accent)"></div>
+  <div class="pp-shape f-accent" data-note="下の帯：周期と KPI（基調色の面。1 枚 1 点）" style="left:340px;top:526px;width:600px;height:58px"></div>
+  <div class="pp-text b t-white center" data-overlap style="left:340px;top:527px;width:600px;height:40px;font-size:24px">毎月1周　KPI 稼働率99.9%以上</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 指標は日次で自動取得し、分析と改善は月次の定例（第2週）で行う。FY2026の運用計画<br>→ 1周を1か月に固定するので、目標の稼働率99.9%との差は毎月の定例で確認できる</div>
+</section>
