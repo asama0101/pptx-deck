@@ -27,8 +27,8 @@ Claude Code で「スライドを作って」「稟議資料を作って」と�
 | 段階 | 内容 | 承認 |
 |---|---|---|
 | 1. 入力 | 目的・対象・枚数、配色、テンプレートの有無を確認する | |
-| 2. 設計図・原稿 | 先に設計図 `design.md`（ガバニングメッセージ・論点 3〜6 個・台帳・ページごとのヘッド・型・レイアウト記述・証拠対応表）を作り、それを `script.md`（見出し＝判断を言い切る 30〜60 字の 1 文・章名・本文・図表の型と理由・必要なときだけ出典・判断の枠）に写す。書式の手本は `assets/sample/`（架空の会社の中期経営計画。表紙＋10 枚） | 設計図と原稿を一緒にチャットで承認（内容を凍結） |
-| 3. スライド案 | 全スライドの 3 案（同じ型のまま配置・強調・密度を変える。図と表を多用する）を 1 つの HTML にまとめる。左に一覧、右に 1 枚ずつ（大きなスライドと見どころの枠、判断欄に案のサムネ・承認／要修正・コメント）で見て、「回答をコピー」を押す（待ち受けていれば自動で届き、そうでなければチャットに貼り付ける） | HTML 上で選択 |
+| 2. 設計図・原稿 | 先に設計図 `design.md`（ガバニングメッセージ・論点 3〜6 個・台帳・ページごとのヘッド・型・レイアウト記述・証拠対応表）を作り、それを `script.md`（題＝20 字以内の名詞句・見出し＝リード文として判断を言い切る 30〜60 字の 1 文・章名・本文・図表の型と理由・必要なときだけ出典・判断の枠）に写す。書式の手本は `assets/sample/`（架空の会社の中期経営計画。表紙＋10 枚） | 設計図と原稿を一緒にチャットで承認（内容を凍結） |
+| 3. スライド案 | 全スライドの 3 案（型違い。A＝第 1 候補、B・C＝次点。図と表を多用する）を 1 つの HTML にまとめる。型を選ぶと、その型のデザイン 1〜3 を選べる（2 段）。左に一覧、右に 1 枚ずつ（大きなスライドと見どころの枠、判断欄に案のサムネ・承認／要修正・コメント）で見て、「回答をコピー」を押す（待ち受けていれば自動で届き、そうでなければチャットに貼り付ける） | HTML 上で選択 |
 | 4. 最終 HTML | 選ばれた案を統合し、`final-review.html` で全体を確認する。コメントのあったスライドは、前回のコメントと今回の直しを添えて、直した 1 案だけを再提示する | HTML 上で承認／要修正（チャットでもよい） |
 | 5. PPTX | HTML の位置を測り、テンプレートを土台に PowerPoint の要素として書き出す。体裁を検査し、確認用の画像で崩れを確認する | |
 
@@ -36,96 +36,35 @@ Claude Code で「スライドを作って」「稟議資料を作って」と�
 
 ## 部品の種類と使い分け
 
-`skills/pptx-deck/assets/components/` に 51 本ある（一覧は `部品見本.html`）。各部品の先頭のコメントに「用途」と「差し替える所」がある。設計図の「型」はここから選ぶ。
+`skills/pptx-deck/assets/components/` に 51 型・147 本ある（一覧は `部品見本.html`）。1 つの型に最大 3 つのデザイン（`<型>.html`・`<型>-d2.html`・`<型>-d3.html`）があり、同じ原稿のまま形だけを選べる（`cover`・`effort`・`relation` は 1 つ）。各部品の先頭のコメントに「用途」と「差し替える所」（デザイン 2・3 は「デザイン 1 との違い」）がある。設計図の「型」はここから選び、第 1 候補・次点は `references/patterns.md`（型の選定表）で決める。
 
-**共通の構成** 見出し（判断を言い切る 1 文）→ 図表タイトル → 図表本体 → 注。**決定を求める型**は最下部に論点ボックス（「論点　〜の可否」）を置く。**情報の型**は論点ボックスを置かず、注の末尾を「→ 含意」で締める。
+**共通の構成** 題（名詞句 20 字以内）→ リード文の帯（判断を言い切る 30〜60 字）→ 図表タイトル → 図表本体 → 注。**判断を求める型**（`decision`・`summary`・`decisions`・`argument`・`options`・`raci`・`actions`・`gantt`）は最下部に論点ボックス（「論点　〜の可否」）を置く。**情報の型**は論点ボックスを置かず、注の末尾を「→ 含意」で締める。
 
-### レイアウト（7）
+問い（何を見せたいか）で 9 区分に分ける。
 
-| 型 | 使いどころ | 種別 |
-|---|---|---|
-| `cover` | 表紙 | — |
-| `section` | 章扉。章の問いと、この章で判断すること | — |
-| `agenda` | 目次。章ごとの結論 1 行とページ | — |
-| `summary` | 数字サマリ。数字カード 4 枚と根拠の表 | 決定 |
-| `decision` | クロージングの決定事項。表・スケジュール・審議基準 | 決定 |
-| `closing` | 裏表紙。要点の再掲と次のステップ（承認・報告・提案・研修に使える。問い合わせ先つきの形もある） | — |
-| `incident` | 障害の概要。停止時間・影響範囲・損失・復旧手段 | 情報 |
-
-### 図解（19）
-
-| 型 | 使いどころ | 種別 |
-|---|---|---|
-| `flow-h` | 手順。段階ごとの期間・成果物・承認点 | 情報 |
-| `tree` | ロジックツリー。要因を寄与つきで分解する | 情報 |
-| `pyramid` | 階層。層ごとの権限・件数・金額 | 情報 |
-| `cycle` | 循環。段階ごとの指標・頻度・担当 | 情報 |
-| `gantt` | フェーズごとの予定。現在線と判断点 | 決定 |
-| `venn` | 2 条件の重なりで候補を絞る | 情報 |
-| `layers` | 層×系列のマップ。自社の守備範囲 | 情報 |
-| `side-by-side` | 左右比較。現行｜計画を同じ項目で並べる | 決定 |
-| `before-after` | 現行と改革後（上下）。工程が横に流れる | 情報 |
-| `before-after-h` | 現行と改革後（左右）。工程が縦に流れる。5〜6 段のとき | 情報 |
-| `timeline-h` | 時系列（横）。区間の長さで待ちを見せる | 情報 |
-| `timeline-v` | 時系列（縦）。件数が多く、文で読ませる | 情報 |
-| `cause` | 原因の連鎖。事象から根本原因まで時間順に追う | 情報 |
-| `swimlane-h` | 業務フロー（横）。レーン＝部門。工程 6 段まで | 情報 |
-| `swimlane-v` | 業務フロー（縦）。工程 7〜8 段 | 情報 |
-| `architecture` | システム構成図（上下の層） | 情報 |
-| `topology` | 系統図（左右）。拠点とセンターを回線で結ぶ | 情報 |
-| `org` | 体制図。責任者・PM・チームと人数 | 情報 |
-| `roadmap` | 更改ロードマップ。設備×年度の増設・更改・撤去 | 情報 |
-
-### 表（15）
-
-| 型 | 使いどころ | 種別 |
-|---|---|---|
-| `compare` | エグゼクティブサマリ。論点｜求める決定｜根拠 | 決定 |
-| `rating` | 論証テーブル。事実と含意の 2 段 | 決定 |
-| `options` | 案の評価表。評価軸×A/B/C 案、推奨の列を強調 | 決定 |
-| `risk` | リスク｜影響（定量）｜対策｜残存｜オーナー | 決定 |
-| `cost` | 費用。費目×年度に 5 年計・累計 | 情報 |
-| `quote` | 見積内容。単価・数量・金額と見積合計 | 情報 |
-| `quote-compare` | 過去見積との比較。前回｜今回｜差額｜理由 | 決定 |
-| `effort` | 工数比較。工程×2 案の人日と差 | 情報 |
-| `spec` | 項目一覧。検証項目・機能・要件に共用 | 情報 |
-| `result` | 判定結果。基準と実測値、○△× | 決定 |
-| `issues` | 課題・不具合一覧。重要度・期限・状態 | 情報 |
-| `actions` | 再発防止策。恒久（■）と暫定（□） | 決定 |
-| `delta` | 設備増減表。現状・増・減・計画後 | 情報 |
-| `site-matrix` | 配置表。拠点種別×設備の台数 | 情報 |
-| `raci` | 役割分担表。工程×部門の責任・実行・支援 | 決定 |
-
-### グラフ（10）
-
-| 型 | 使いどころ |
+| 区分 | 型 |
 |---|---|
-| `bar` / `line` / `stacked` / `waterfall` | 棒・折れ線・積み上げ・滝。全幅で見せ、注目点は吹き出し 2 つまで |
-| `bar-note` / `line-note` / `stacked-note` / `waterfall-note` | 同じグラフに内訳の表を添える。所見が長文のとき |
-| `effort-bar` | 工数比較の横棒。表だけなら `effort` |
-| `quote-bridge` | 見積差額の滝グラフ。表だけなら `quote-compare` |
-
-### 同じ内容で見せ方が 2 つある型
-
-| 内容 | 横・上下 | 縦・左右 |
-|---|---|---|
-| 時系列 | `timeline-h`（区間の長さで待ちを見せる） | `timeline-v`（件数が多く文で読ませる） |
-| 業務フロー | `swimlane-h`（工程 6 段まで） | `swimlane-v`（工程 7 段以上） |
-| 構成図 | `architecture`（上下の層） | `topology`（左右の系統） |
-| 現行と改革後 | `before-after`（工程が横に流れる） | `before-after-h`（工程が縦に流れる） |
-| 工数・見積差 | 表（`effort`・`quote-compare`） | 図（`effort-bar`・`quote-bridge`） |
+| 1 ページの骨格 | `cover`（表紙）・`agenda`（目次）・`section`（章扉）・`closing`（裏表紙。要点の再掲と次のステップ） |
+| 2 判断を求める・要約する | `decision`（クロージング決定）・`summary`（数字サマリ・障害の概要）・`decisions`（論点｜決定｜根拠）・`argument`（課題→現状→打ち手の論証）・`options`（案の評価表）・`raci`（役割分担） |
+| 3 同格のものを並べる・位置づける | `parallel`（並列）・`positioning`（4 象限）・`venn`（重なり・絞り込み）・`text`（文だけ）・`screenshot`（画面） |
+| 4 前後・左右で比べる | `before-after`（工程・体制の前後）・`delta`（数値の前後） |
+| 5 順を追う | `flow-h`・`flow-v`・`flow-text`・`flow-box`・`swimlane`（担当をまたぐ手順）・`steps`（階段）・`cycle-2`（2 要素の往復）・`cycle`（3〜6 要素の循環） |
+| 6 時間で測る | `timeline`（発生順の事象）・`gantt`（工程×時間）・`roadmap`（更改計画） |
+| 7 構成・範囲を見せる | `architecture`（層）・`topology`（系統）・`org`（体制）・`enclosure`（包括）・`area`（担当領域）・`site-matrix`（配置表） |
+| 8 要因・内訳に分解する | `tree`・`cause`（原因の連鎖）・`formula`（数式）・`funnel`（じょうろ型）・`pyramid`・`relation`（相互関係） |
+| 9 数値で見せる | グラフ `bar`・`hbar`・`line`・`stacked`・`pie`・`waterfall`（デザイン 1＝グラフだけ、2＝グラフ＋内訳表、3＝グラフ＋結論カード）、表 `cost`・`quote`・`effort`・`spec`（検証の計画と結果）・`actions`（対応一覧） |
 
 ### 文書の種類と使う型
 
 | 文書 | 冒頭 | 本体でよく使う型 | 結び |
 |---|---|---|---|
-| 稟議 | `summary`・`compare` | `options`・`cost`・`quote`・`quote-compare`・`effort`・`risk`・`flow-h`・`gantt`・`org` | `decision`・`closing` |
-| 障害報告 | `incident` | `timeline-h`/`-v`・`cause`・`tree`・`actions`・`issues` | `decision`・`closing` |
+| 稟議 | `summary`・`decisions` | `options`・`cost`・`quote`・`delta`・`waterfall`・`effort`・`actions`・`flow-h`・`gantt`・`org` | `decision`・`closing` |
+| 障害報告 | `summary` | `timeline`・`cause`・`tree`・`before-after`・`actions` | `decision`・`closing` |
 | 検証計画 | `summary` | `spec`・`architecture`/`topology`・`org`・`raci`・`gantt`・`options` | `decision`・`closing` |
-| 検証結果報告 | `summary` | `result`・`bar`/`line`・`issues`・`spec` | `decision`・`closing` |
-| 業務フロー | `section` | `swimlane-h`/`-v`・`before-after`/`-h`・`raci`・`cycle` | `decision`・`closing` |
-| 設計書 | `agenda` | `architecture`/`topology`・`layers`・`spec`・`options`・`site-matrix` | `summary`・`closing` |
-| 設備増減の計画 | `summary` | `delta`・`site-matrix`・`roadmap`・`side-by-side`・`stacked`/`waterfall`・`cost` | `decision`・`closing` |
+| 検証結果報告 | `summary` | `spec`（結果）・`bar`/`line`・`actions` | `decision`・`closing` |
+| 業務フロー | `section` | `swimlane`・`before-after`・`raci`・`cycle` | `decision`・`closing` |
+| 設計書 | `agenda` | `architecture`/`topology`・`spec`・`options`・`site-matrix` | `summary`・`closing` |
+| 設備増減の計画 | `summary` | `delta`・`site-matrix`・`roadmap`・`parallel`・`stacked`/`waterfall`・`cost` | `decision`・`closing` |
 
 内容に合う型がなければ、断片の部品で組む。新しい型を作ったら `assets/components/` に足し、`check` で違反が 0 件になることを確かめる。
 
@@ -133,8 +72,8 @@ Claude Code で「スライドを作って」「稟議資料を作って」と�
 
 | 場所 | 内容 |
 |---|---|
-| `skills/pptx-deck/`（スキル） | `SKILL.md`（手順）、`references/`（SKILL.md から参照する資料。`components.md`＝型の一覧と使い分け、`html-rules.md`＝HTML の書き方と描画の規準、`head-rules.md`＝ヘッドの規則、`review-flow.md`＝スライド案と最終 HTML のレビューの細則、`check-rules.md`＝検査の rule と直し方）、テンプレート（`assets/components/` のレイアウト 7・図解 19・表 15・グラフ 10。稟議・障害報告・検証計画・検証結果報告・業務フロー・設計書・設備増減の計画を作れる型をそろえ、時系列・業務フロー・構成図・Before/After は横と縦の 2 パターンを持つ。本文の部品は「見出し → 図表タイトル → 本体 → 注」の構成で、決定を求める型は最下部に論点ボックスを置く、`assets/icons/` のアイコン 14、`assets/template/standard.potx`）、設計図と原稿の手本（`assets/sample/`）、コード |
-| `部品見本.html`（リポジトリ直下） | 部品 51 本の見本を 1 ページに並べた一覧（ブラウザで開く。画像は LibreOffice の描画）。部品を足したり直したりしたら作り直す |
+| `skills/pptx-deck/`（スキル） | `SKILL.md`（手順）、`references/`（SKILL.md から参照する資料。`components.md`＝型の一覧と使い分け、`html-rules.md`＝HTML の書き方と描画の規準、`head-rules.md`＝題とリード文（ヘッド）の規則、`review-flow.md`＝スライド案と最終 HTML のレビューの細則、`check-rules.md`＝検査の rule と直し方）、テンプレート（`assets/components/` の 51 型・147 本。1 型に最大 3 つのデザイン。稟議・障害報告・検証計画・検証結果報告・業務フロー・設計書・設備増減の計画を作れる型をそろえる。本文の部品は「題 → リード文 → 図表タイトル → 本体 → 注」の構成で、判断を求める型は最下部に論点ボックスを置く。`patterns.md` は型の選定表）、`assets/icons/` のアイコン 14、`assets/template/standard.potx`）、設計図と原稿の手本（`assets/sample/`）、コード |
+| `部品見本.html`（リポジトリ直下） | 部品 51 型・147 本の見本を 9 区分で 1 ページに並べた一覧（ブラウザで開く。画像は LibreOffice の描画）。部品を足したり直したりしたら作り直す |
 | 実行したディレクトリ直下の `<名前>/` | `design.md`（`init` が雛形を置く）、`script.md`、`slides/`、`variants.html`、`final.html`、`final-review.html`、`<名前>.pptx` ほか |
 | OS の一時フォルダ `%TEMP%\pptx-deck\<名前>\` | 確認用の画像など一過性のもの |
 
@@ -142,9 +81,9 @@ Claude Code で「スライドを作って」「稟議資料を作って」と�
 
 `build` の前後に、文字のはみ出し、図形の重なり（テンプレートのヘッダー・フッターを含む）、文字サイズの下限（本文 14pt・注記 10pt）、文字のコントラスト比（4.5:1。大きい文字は 3:1）、画像の使い方（本文を画像にしない）を検査する。あわせて、ダッシュ（—）、同じ文言の 1 枚内の重複、1〜2 字の孤立改行、本文の下の空白帯を警告する（警告では出力を止めない）。違反は JSON で返る。破線・点線は PowerPoint の線種で書き出し、グラフの軸は `data-chart` の `axis` で最小・最大・目盛を固定できる。
 
-`lint-script` は原稿の書式と見出しの規則（30〜60 字・判断語か接続語・「A。B」の二段構え・ダッシュ・「本ページ」などの自己言及・隣り合う 3 枚の文型の連続）、論点の個数（3〜6）を検査する。
+`lint-script` は原稿の書式と題（20 字以内の名詞句）、見出し〔リード文〕の規則（30〜60 字・判断語か接続語・「A。B」の二段構え・ダッシュ・「本ページ」などの自己言及・隣り合う 3 枚の文型の連続）、論点の個数（3〜6）を検査する。
 
-以前に書いた原稿は、新しいヘッドの規則（判断語・1 行 41 字を目安とする長さなど）で `lint-script` に落ちることがある。直すか、正しい見出しなら `pptx_deck/script_lint.py` の `_JUDGE` に語を足す。
+以前に書いた原稿は、本文スライドに「題」がなければ移行の案内が出る（エラーではない。見出しはそのままリード文になるので、`- 題:` を足す）。新しいヘッドの規則（判断語・1 行 41 字を目安とする長さなど）で `lint-script` に落ちることがある。直すか、正しい見出しなら `pptx_deck/script_lint.py` の `_JUDGE` に語を足す。
 
 古い作業フォルダは `base.css`・`theme.css`・`chart-preview.js` が `init` 時の写しなので、新しい部品（`f-soft2`・`dashed`・`axis`）を使うには `init --force` で更新する（`script.md` などの既存ファイルは消えない。`design.md` は既にあれば上書きしない）。
 
