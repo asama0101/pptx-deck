@@ -7,7 +7,7 @@ import json
 import re
 from pathlib import Path
 
-FRAG = re.compile(r"^(\d{2})-([A-Z])\.html$")
+FRAG = re.compile(r"^(\d{2})-([A-Z])(?:-d([23]))?\.html$")      # NN-A.html（デザイン 1）・NN-A-d2.html・NN-A-d3.html（同じ型のデザイン 2・3）
 HEAD = ('<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>{title}</title>'
         '<link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="base.css">'
         '<script src="chart-preview.js" defer></script>{extra}</head><body>')
@@ -50,10 +50,12 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .judge{display:grid;gap:10px;background:var(--panel);padding:12px 14px}
 .rv .judge .sub{color:var(--sub);font-size:13.5px}
 .rv .opts{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
-.rv .opt{display:flex;flex-direction:column;gap:6px;width:min(31%,260px)}
+.rv .opt,.rv .dopt{display:flex;flex-direction:column;gap:6px;width:min(31%,260px)}
+.rv .dgroup{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:10px}.rv .dgroup .sub{font-weight:700}
 .rv .opts.single{display:none}
-.rv .opt .thumb{cursor:pointer}.rv .opt.view .thumb{outline:3px solid #fff;outline-offset:2px}
-.rv .opt label{font-weight:700;display:flex;gap:6px;align-items:center;cursor:pointer}
+.rv .opt .thumb,.rv .dopt .thumb{cursor:pointer}.rv .opt.view .thumb,.rv .dopt.view .thumb{outline:3px solid #fff;outline-offset:2px}
+.rv .opt label,.rv .dopt label{font-weight:700;display:flex;gap:6px;align-items:center;cursor:pointer}
+.rv .opt small{color:var(--sub);font-weight:400;font-size:12.5px;line-height:1.4}
 .rv textarea{width:100%;height:64px;font:inherit;font-size:14px;padding:8px 10px;background:var(--bg);color:var(--fg);border:1px solid var(--line)}
 .rv .btns{display:flex;flex-wrap:wrap;gap:8px}
 .rv button.b1{font:inherit;font-size:14px;padding:8px 16px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;border-radius:0}
@@ -65,7 +67,7 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .act button{font:inherit;font-weight:700;padding:7px 26px;border:0;background:#fff;color:#14263E;cursor:pointer}
 .rv .copybox{width:100%;height:90px;font:12px/1.4 Consolas,monospace}
 .rv .state{color:var(--ok);font-weight:700;font-size:13px}
-@media (max-width:820px){.rv .body{grid-template-columns:1fr}.rv nav{position:static;max-height:220px}.rv .opt{width:min(100%,300px)}}
+@media (max-width:820px){.rv .body{grid-template-columns:1fr}.rv nav{position:static;max-height:220px}.rv .opt,.rv .dopt{width:min(100%,300px)}}
 </style>"""
 
 _SCRIPT = r"""<script>
@@ -79,8 +81,9 @@ _SCRIPT = r"""<script>
   function snapshot() {
     var o = {};
     panes.forEach(function (p) {
-      var r = $('input[type=radio]:checked', p);
-      o[p.dataset.slide] = { c: r ? r.value : '', t: $('textarea', p).value, v: p.dataset.verdict || '' };
+      var r = $('input[type=radio][name^="s"]:checked', p);
+      var d = {}; $$('.dgroup input[type=radio]:checked', p).forEach(function (x) { d[x.closest('.dgroup').dataset.k] = x.value; });
+      o[p.dataset.slide] = { c: r ? r.value : '', t: $('textarea', p).value, v: p.dataset.verdict || '', d: d };
     });
     return o;
   }
@@ -88,9 +91,10 @@ _SCRIPT = r"""<script>
     var o = load();
     panes.forEach(function (p) {
       var a = o[p.dataset.slide]; if (!a) return;
-      if (a.c) { var r = $('input[type=radio][value="' + a.c + '"]', p); if (r) r.checked = true; }
+      if (a.c) { var r = $('input[type=radio][name^="s"][value="' + a.c + '"]', p); if (r) r.checked = true; }
       $('textarea', p).value = a.t || '';
       p.dataset.verdict = a.v || '';
+      Object.keys(a.d || {}).forEach(function (k) { var x = $('.dgroup[data-k="' + k + '"] input[value="' + a.d[k] + '"]', p); if (x) x.checked = true; });
     });
   }
 
@@ -108,13 +112,20 @@ _SCRIPT = r"""<script>
     return { x: x, y: y, w: el.offsetWidth, h: el.offsetHeight };
   }
   function viewKey(p) {
-    var r = $('input[type=radio]:checked', p);
+    var r = $('input[type=radio][name^="s"]:checked', p);
     return p.dataset.view || (r ? r.value : $('.opt', p).dataset.k);
   }
-  function showBig(p, k) {
+  function dsel(p, k) { var r = $('.dgroup[data-k="' + k + '"] input[type=radio]:checked', p); return r ? +r.value : 1; }
+  function showBig(p, k, d) {
     p.dataset.view = k;
+    d = d || dsel(p, k);
     $$('.opt', p).forEach(function (o) { o.classList.toggle('view', o.dataset.k === k); });
-    var src = $('.opt[data-k="' + k + '"] .stage .slide', p);
+    $$('.dgroup', p).forEach(function (g) { g.hidden = g.dataset.k !== k; });      // 選んだ型のデザイン（1〜3）だけを出す
+    $$('.dopt', p).forEach(function (o) { o.classList.toggle('view', o.dataset.k === k && +o.dataset.d === d); });
+    var vr = $('.vr', p), op = $('.opt[data-k="' + k + '"]', p);
+    var vt = op ? [op.dataset.name || '', op.dataset.reason || ''].filter(Boolean).join('：') : '';
+    $('span', vr).textContent = vt; vr.hidden = !vt;
+    var src = (d > 1 ? $('.dopt[data-k="' + k + '"][data-d="' + d + '"] .stage .slide', p) : null) || $('.opt[data-k="' + k + '"] .stage .slide', p);
     var big = $('.big .stage', p);
     big.innerHTML = '';
     if (!src) return;
@@ -151,7 +162,7 @@ _SCRIPT = r"""<script>
   // 承認／要修正。1 案だけのスライド（採用／要修正・最終確認）は選択のラジオ（A / FIX）と連動し、3 案のときは案の選択とは別に持つ
   function verdictOf(p) {
     if (p.dataset.single === '1') {
-      var r = $('input[type=radio]:checked', p);
+      var r = $('input[type=radio][name^="s"]:checked', p);
       return r ? (r.value === 'FIX' ? '要修正' : '承認') : '';
     }
     return p.dataset.verdict || '';
@@ -163,11 +174,11 @@ _SCRIPT = r"""<script>
   function setVerdict(p, v) {
     if (verdictOf(p) === v) v = '';                           // 押した状態でもう一度押すと外れる
     if (p.dataset.single === '1') {
-      $$('input[type=radio]', p).forEach(function (x) { x.checked = false; x.dataset.was = '0'; });
-      if (v) { var r = $('input[type=radio][value="' + (v === '要修正' ? 'FIX' : 'A') + '"]', p); r.checked = true; r.dataset.was = '1'; }
+      $$('input[type=radio][name^="s"]', p).forEach(function (x) { x.checked = false; x.dataset.was = '0'; });
+      if (v) { var r = $('input[type=radio][name^="s"][value="' + (v === '要修正' ? 'FIX' : 'A') + '"]', p); r.checked = true; r.dataset.was = '1'; }
     } else {
       p.dataset.verdict = v;
-      if (v && !$('input[type=radio]:checked', p)) {          // 案を選んでいなければ、表示中の案を選ぶ
+      if (v === '承認' && !$('input[type=radio][name^="s"]:checked', p)) {   // 承認のとき、案を選んでいなければ表示中の案を選ぶ（要修正は、どの案でもない場合を含むので自動では選ばない）
         var rr = $('.opt[data-k="' + viewKey(p) + '"] input[type=radio]', p);
         if (rr) { rr.checked = true; rr.dataset.was = '1'; }
       }
@@ -177,11 +188,11 @@ _SCRIPT = r"""<script>
   function refresh() {
     panes.forEach(function (p, i) {
       var b = $('#nav button[data-go="' + p.dataset.slide + '"] .st');
-      var chosen = !!$('input[type=radio]:checked', p), cm = $('textarea', p).value.trim() !== '' || verdictOf(p) === '要修正';
+      var chosen = !!$('input[type=radio][name^="s"]:checked', p), cm = $('textarea', p).value.trim() !== '' || verdictOf(p) === '要修正';
       b.className = 'st' + (cm ? ' cm' : chosen ? ' ok' : '');
       syncButtons(p);
     });
-    var done = panes.filter(function (p) { return $('input[type=radio]:checked', p); }).length;
+    var done = panes.filter(function (p) { return $('input[type=radio][name^="s"]:checked', p); }).length;
     $('#prog').innerHTML = '選択済み <b>' + done + '</b> / ' + panes.length;
   }
   function go(i) {
@@ -206,9 +217,15 @@ _SCRIPT = r"""<script>
         r.onchange = function () { showBig(p, o.dataset.k); refresh(); store(snapshot()); };
         r.onclick = function () {      // 選んだラジオをもう一度押すと、選択が外れる
           if (this.dataset.was === '1') { this.checked = false; this.dataset.was = '0'; refresh(); store(snapshot()); }
-          else { $$('input[type=radio]', p).forEach(function (x) { x.dataset.was = '0'; }); this.dataset.was = '1'; }
+          else { $$('input[type=radio][name^="s"]', p).forEach(function (x) { x.dataset.was = '0'; }); this.dataset.was = '1'; }
         };
       });
+    });
+    $$('.dopt', p).forEach(function (o) {
+      var th = $('.thumb', o), pick = function () { var r = $('input[type=radio]', o); r.checked = true; showBig(p, o.dataset.k, +o.dataset.d); store(snapshot()); };
+      th.onclick = pick;
+      th.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } };
+      $('input[type=radio]', o).onchange = pick;
     });
     $('textarea', p).oninput = function () { refresh(); store(snapshot()); };
     $('.coToggle', p).onchange = function () { $('.big', p).classList.toggle('nocol', !this.checked); };
@@ -226,9 +243,13 @@ _SCRIPT = r"""<script>
   function buildMd() {
     var lines = ['---', 'deck: ' + __DECK__, 'round: __ROUND__', '---'];
     document.querySelectorAll('[data-slide]').forEach(function (sec) {
-      var sel = sec.querySelector('input[type=radio]:checked');
+      if (!verdictOf(sec)) return;                                   // 承認か要修正を選んでいないスライドは、回答に含めない
+      var sel = sec.querySelector('input[type=radio][name^="s"]:checked');
       var c = sec.querySelector('textarea').value.replace(/\r?\n/g, ' ');
-      lines.push('## S' + sec.dataset.slide, '- 選択: ' + (sel ? sel.value : ''), '- 判定: ' + verdictOf(sec), '- コメント: ' + c);
+      lines.push('## S' + sec.dataset.slide, '- 選択: ' + (sel ? sel.value : ''));
+      var dr = sel ? sec.querySelector('.dgroup[data-k="' + sel.value + '"] input[type=radio]:checked') : null;
+      if (dr) lines.push('- デザイン: ' + dr.value);           // 選んだ型にデザイン 2・3 があるときだけ（省略時は 1）
+      lines.push('- 判定: ' + verdictOf(sec), '- コメント: ' + c);
     });
     return lines.join('\n') + '\n';
   }
@@ -237,6 +258,8 @@ _SCRIPT = r"""<script>
   $$('.copyBtn').forEach(function (btn) {
     btn.onclick = function () {
       var pane = btn.closest('.pane'), md = buildMd(), st = $('.state', pane), box = $('.copybox', pane);
+      var n = (md.match(/^## S/gm) || []).length;
+      if (!n) { st.textContent = '承認か要修正を選んだスライドがありません。選んでから押してください。'; return; }
       window.__answersMd = md;
       window.__submitted = true;
       var fallback = function () {
@@ -254,7 +277,7 @@ _SCRIPT = r"""<script>
 
   function start() {
     restore();
-    $$('input[type=radio]:checked').forEach(function (x) { x.dataset.was = '1'; });
+    $$('input[type=radio][name^="s"]:checked').forEach(function (x) { x.dataset.was = '1'; });
     refresh(); go(0);
   }
   if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
@@ -262,18 +285,38 @@ _SCRIPT = r"""<script>
 </script>"""
 
 
-def collect(work: Path) -> dict[str, dict[str, str]]:
+def collect_designs(work: Path) -> dict[str, dict[str, dict[int, str]]]:
+    """スライド → 案（型）→ デザイン番号 → 断片。デザイン 1 は NN-A.html、2・3 は NN-A-d2.html・NN-A-d3.html。
+    デザイン 1 のない案（-d2 だけ）は ValueError。"""
     d = Path(work) / "slides"
     if not d.is_dir():
         raise ValueError(f"{d} がありません（slides/NN-A.html の形で案を置いてください）")
-    out: dict[str, dict[str, str]] = {}
+    out: dict[str, dict[str, dict[int, str]]] = {}
     for f in sorted(d.iterdir()):
         m = FRAG.match(f.name)
         if m:
-            out.setdefault(m.group(1), {})[m.group(2)] = f.read_text(encoding="utf-8")
+            out.setdefault(m.group(1), {}).setdefault(m.group(2), {})[int(m.group(3) or 1)] = f.read_text(encoding="utf-8")
     if not out:
         raise ValueError(f"{d} に NN-A.html の形のファイルがありません")
+    for nn, opts in out.items():
+        for k, ds in opts.items():
+            if 1 not in ds:
+                raise ValueError(f"slides/{nn}-{k}.html（デザイン 1）がありません（{nn}-{k}-d2/-d3 だけでは出せません）")
     return out
+
+
+def collect(work: Path) -> dict[str, dict[str, str]]:
+    """スライド → 案 → デザイン 1 の断片（案の選択の画面に出す基本形）。"""
+    return {nn: {k: ds[1] for k, ds in opts.items()} for nn, opts in collect_designs(work).items()}
+
+
+def _variant_info(fragment: str) -> tuple[str, str]:
+    """案の型名と選んだ理由。断片の `data-variant="型名｜理由"`（区切りは ｜ か |）から読む。無ければ空。"""
+    m = re.search(r'data-variant="([^"]*)"', fragment)
+    if not m:
+        return "", ""
+    parts = re.split(r"[｜|]", m.group(1), maxsplit=1)
+    return parts[0].strip(), (parts[1].strip() if len(parts) > 1 else "")
 
 
 def _title_of(fragment: str) -> str:
@@ -300,9 +343,10 @@ def _read(path: Path) -> str:
 
 
 def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final: bool = False,
-          prev: dict[str, dict] | None = None, notes: dict[str, str] | None = None) -> str:
+          prev: dict[str, dict] | None = None, notes: dict[str, str] | None = None,
+          designs: dict[str, dict[str, dict[int, str]]] | None = None) -> str:
     esc = _html.escape
-    prev, notes = prev or {}, notes or {}
+    prev, notes, designs = prev or {}, notes or {}, designs or {}
     title = "最終 HTML の確認" if final else "スライド案の選択"
     if final:
         lead = "選ばれた案を統合した最終版です。1 枚ずつ見て「承認」か「要修正」を選び、直したい点があればコメントに書いて、最後に判断欄の右端の「回答をコピー」を押してください。"
@@ -325,25 +369,41 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
             p.append(f'<div class="q"><h3>前回のコメント</h3>{esc(pc)}</div>')
         if fx:
             p.append(f'<div class="fix"><h3>今回の直し</h3>{esc(fx)}</div>')
+        p.append('<div class="vr" hidden><h3>型と選んだ理由</h3><span></span></div>')
         p.append('<div class="notes"><div class="nh"><h3>見どころ</h3>'
                  '<label class="showco"><input type="checkbox" class="coToggle" checked> 見どころの枠を表示</label></div>'
                  '<ol class="legend"></ol></div></div>')
         p.append('<div class="judge"><div class="sub">'
-                 + ("この内容を承認しますか。" if single else "案を選び（サムネを押すと大きく見えます）、承認か要修正を押してください。") + '</div>')
+                 + ("この内容を承認しますか。" if single else "案を選び（サムネを押すと大きく見えます）、承認か要修正を押してください。どの案でもない場合は、案を選ばずに要修正を押し、コメントに書いてください。") + '</div>')
         p.append('<div class="opts single">' if single else '<div class="opts">')     # 1 案だけのときは、案の選択（サムネとラジオ）を隠す
         for k in letters:
-            p.append(f'<div class="opt" data-k="{k}"><div class="thumb" role="button" tabindex="0" aria-label="案 {k} を大きく見る">'
+            vname, vreason = _variant_info(opts[k])
+            p.append(f'<div class="opt" data-k="{k}" data-name="{esc(vname, quote=True)}" data-reason="{esc(vreason, quote=True)}">'
+                     f'<div class="thumb" role="button" tabindex="0" aria-label="案 {k} を大きく見る">'
                      f'<div class="stage">{opts[k]}</div></div>')
             if final:
                 p.append(f'<label><input type="radio" name="s{nn}" value="A"> 承認</label>'
                          f'<label><input type="radio" name="s{nn}" value="FIX"> 要修正</label>')
             elif len(letters) > 1:
-                p.append(f'<label><input type="radio" name="s{nn}" value="{k}"> 案 {k}</label>')
+                p.append(f'<label><input type="radio" name="s{nn}" value="{k}"> 案 {k}</label>'
+                         + (f'<small>{esc(vname)}</small>' if vname else ""))
             else:
                 p.append(f'<label><input type="radio" name="s{nn}" value="A"> 採用</label>'
                          f'<label><input type="radio" name="s{nn}" value="FIX"> 要修正</label>')
             p.append("</div>")
-        p.append('</div><div class="btns verdict"><button class="b1 ok" type="button" data-v="承認" aria-pressed="false">承認</button>'
+        p.append('</div>')                                                              # 1 行目（案）を閉じる
+        if not final:                                                                  # 2 行目: 案（型）を選んだあとに、その型のデザイン 1〜3 から選ぶ
+            for k in letters:
+                ds = (designs.get(nn) or {}).get(k) or {}
+                if len(ds) < 2:
+                    continue
+                p.append(f'<div class="dgroup" data-k="{k}" hidden><div class="sub">案 {k} のデザイン（同じ内容の見せ方の違い）を選びます</div><div class="opts">')
+                for d in sorted(ds):
+                    p.append(f'<div class="dopt" data-k="{k}" data-d="{d}"><div class="thumb" role="button" tabindex="0" aria-label="案 {k} のデザイン {d} を大きく見る">'
+                             f'<div class="stage">{ds[d]}</div></div>'
+                             f'<label><input type="radio" name="d{nn}{k}" value="{d}"> デザイン {d}</label></div>')
+                p.append('</div></div>')
+        p.append('<div class="btns verdict"><button class="b1 ok" type="button" data-v="承認" aria-pressed="false">承認</button>'
                  '<button class="b1 ng" type="button" data-v="要修正" aria-pressed="false">要修正</button></div>'
                  '<textarea placeholder="どうしてほしいか（任意）" aria-label="コメント"></textarea>'
                  '<div class="nav2"><button class="b1 clear" type="button">選択を外す</button>'
@@ -368,11 +428,12 @@ def assemble(work: Path, round_no: int = 1) -> Path:
     """variants.html を作る。2 回目以降は、前回の回答（answers-(N-1).md）のコメントと、
     今回の直しのメモ（round-N-notes.md）があれば並べて出す。"""
     work = Path(work)
-    frags = collect(work)
+    designs = collect_designs(work)
+    frags = {nn: {k: ds[1] for k, ds in opts.items()} for nn, opts in designs.items()}
     prev = parse_answers(_read(work / f"answers-{round_no - 1}.md")) if round_no > 1 else {}
     notes = parse_notes(_read(work / f"round-{round_no}-notes.md")) if round_no > 1 else {}
     out = work / "variants.html"
-    out.write_text(_page(work, frags, str(round_no), prev=prev, notes=notes), encoding="utf-8")
+    out.write_text(_page(work, frags, str(round_no), prev=prev, notes=notes, designs=designs), encoding="utf-8")
     return out
 
 
@@ -386,6 +447,10 @@ def parse_answers(md: str) -> dict[str, dict]:
             out[cur] = {"choice": "", "comment": ""}
         elif cur and line.startswith("- 選択:"):
             out[cur]["choice"] = line.split(":", 1)[1].strip()
+        elif cur and line.startswith("- デザイン:"):
+            v = line.split(":", 1)[1].strip()
+            if v.isdigit():                             # 省略時は 1（デザインの行は任意）
+                out[cur]["design"] = int(v)
         elif cur and line.startswith("- 判定:"):
             v = line.split(":", 1)[1].strip()
             if v:                                       # 判定の行は任意（古い回答にはない）。空なら入れない
@@ -407,30 +472,37 @@ def merge_answers(mds: list[str]) -> dict[str, dict]:
 
 
 def _chosen(work: Path, answers_md: "str | list[str]", allow_comments: bool = False):
-    """回答から、選ばれた案を決める。決まらないスライドやコメント未反映があれば ValueError。"""
-    frags = collect(work)
+    """回答から、選ばれた案（型）とデザインを決める。決まらないスライドやコメント未反映があれば ValueError。
+    戻り値は（スライド → 選ばれた断片, 回答）。デザインの回答（- デザイン: N）が無ければデザイン 1。"""
+    designs = collect_designs(work)
     ans = merge_answers([answers_md] if isinstance(answers_md, str) else list(answers_md))
-    problems = []
-    for nn in sorted(frags):
+    problems, picked = [], {}
+    for nn in sorted(designs):
         a = ans.get(nn)
-        if not a or a["choice"] not in frags[nn]:
+        if not a or a["choice"] not in designs[nn]:
             got = a["choice"] if a and a["choice"] else "未回答"
             problems.append(f"S{nn}: 案が決まっていません（回答: {got}）")
+            continue
+        d = a.get("design", 1)
+        if d not in designs[nn][a["choice"]]:
+            problems.append(f"S{nn}: 案 {a['choice']} にデザイン {d} がありません（slides/{nn}-{a['choice']}-d{d}.html を置いてください）")
         elif a["comment"] and not allow_comments:
             problems.append(f"S{nn}: コメントが未反映です: {a['comment']}")
         elif a.get("verdict") == "要修正" and not allow_comments:
             problems.append(f"S{nn}: 要修正と判定されています（直してから再提示してください）")
+        else:
+            picked[nn] = designs[nn][a["choice"]][d]
     if problems:
         raise ValueError("\n".join(problems))
-    return frags, ans
+    return picked, ans
 
 
 def review_final(work: Path, answers_md: "str | list[str]", allow_comments: bool = False) -> Path:
     """最終 HTML の確認ページ（final-review.html）を作る。final.html は変えない（build が使う）。
     「回答をコピー」を押すと、承認は「選択: A」、要修正は「選択: FIX」で、従来と同じ形の回答が返る（answers-final.md に保存する）。"""
     work = Path(work)
-    frags, ans = _chosen(work, answers_md, allow_comments)
-    one = {nn: {"A": frags[nn][ans[nn]["choice"]]} for nn in sorted(frags)}
+    picked, _ = _chosen(work, answers_md, allow_comments)
+    one = {nn: {"A": picked[nn]} for nn in sorted(picked)}
     out = work / "final-review.html"
     out.write_text(_page(work, one, "final", final=True), encoding="utf-8")
     return out
@@ -438,8 +510,8 @@ def review_final(work: Path, answers_md: "str | list[str]", allow_comments: bool
 
 def finalize(work: Path, answers_md: "str | list[str]", allow_comments: bool = False) -> Path:
     work = Path(work)
-    frags, ans = _chosen(work, answers_md, allow_comments)
-    body = "\n".join(frags[nn][ans[nn]["choice"]] for nn in sorted(frags))
+    picked, _ = _chosen(work, answers_md, allow_comments)
+    body = "\n".join(picked[nn] for nn in sorted(picked))
     out = work / "final.html"
     out.write_text(HEAD.format(title=_html.escape(work.name), extra="") + body + "</body></html>", encoding="utf-8")
     review_final(work, answers_md, allow_comments)             # 最終の確認ページも同時に作る

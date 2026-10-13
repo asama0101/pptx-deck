@@ -141,9 +141,12 @@ def cmd_review_final(args) -> int:
 
 def cmd_lint_script(args) -> int:
     from . import script_lint
-    problems = script_lint.lint(Path(args.script).read_text(encoding="utf-8"))
+    md = Path(args.script).read_text(encoding="utf-8")
+    problems = script_lint.lint(md)
     for p in problems:
         print(p)
+    for n in script_lint.migration_notes(md):      # 旧形式の移行の案内は、エラーにしない（終了コードに影響しない）
+        print(n)
     return 1 if problems else 0
 
 
