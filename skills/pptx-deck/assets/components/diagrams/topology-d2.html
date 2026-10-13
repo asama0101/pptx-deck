@@ -1,0 +1,54 @@
+<!-- 用途: 系統図（上下）。上に拠点の箱 4 つ、中央に回線（WAN）の区間を 3 本の横線、下にセンターの箱 3 つを並べ、集線（バス）と中央の縦線で上から下へ結ぶ。廃止する回線＝破線に「解約」、新設する回線＝基調色の実線（太い線＝本線、細い線＝バックアップ）。二重化を示す 1 点（営業所の 2 回線化）だけ強調色の面。センターの箱は、変更する＝枠線、現行のまま＝パネル地。
+     デザイン1との違い: 左右ではなく上から下へ流す。拠点が上段、回線が中段の 3 本、センターが下段に並び、中央の縦線が全体を貫く。
+     差し替える所: 拠点の箱 4 つ（名前・拠点数・台数）・センターの箱 3 つ・回線の 3 本（種別・本数・記号）・強調する 1 点・帯の本数・注。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">拠点の接続系統</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">1拠点3経路になるため、回線1本の断では業務が止まらず、MPLSは解約できる</div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">拠点とセンターの接続系統（FY2027計画、回線の種別と本数）</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:226px;width:600px;height:20px">拠点（48拠点、SD-WAN機器 48台）</div>
+  <div class="pp-shape f-soft" data-note="拠点の箱：名前・拠点数・機器の台数。上の集線で束ねて回線へ" style="left:64px;top:250px;width:270px;height:58px"></div>
+  <div class="pp-text b" style="left:76px;top:255px;width:246px;height:28px;font-size:19px">本社（1拠点）</div>
+  <div class="pp-text" data-role="caption" style="left:76px;top:282px;width:246px;height:20px">1,200人、機器1台</div>
+  <div class="pp-line " style="left:198px;top:308px;width:2px;height:18px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:358px;top:250px;width:270px;height:58px"></div>
+  <div class="pp-text b" style="left:370px;top:255px;width:246px;height:28px;font-size:19px">データセンター（1拠点）</div>
+  <div class="pp-text" data-role="caption" style="left:370px;top:282px;width:246px;height:20px">基幹サーバ120台、機器1台</div>
+  <div class="pp-line " style="left:492px;top:308px;width:2px;height:18px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:652px;top:250px;width:270px;height:58px"></div>
+  <div class="pp-text b" style="left:664px;top:255px;width:246px;height:28px;font-size:19px">工場（6拠点）</div>
+  <div class="pp-text" data-role="caption" style="left:664px;top:282px;width:246px;height:20px">800人、機器6台</div>
+  <div class="pp-line " style="left:786px;top:308px;width:2px;height:18px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:946px;top:250px;width:270px;height:58px"></div>
+  <div class="pp-text b" style="left:958px;top:255px;width:246px;height:28px;font-size:19px">営業所（40拠点）</div>
+  <div class="pp-text" data-role="caption" style="left:958px;top:282px;width:246px;height:20px">1,500人、機器40台</div>
+  <div class="pp-line " style="left:1080px;top:308px;width:2px;height:18px;background:var(--text-sub)"></div>
+  <div class="pp-line " style="left:198px;top:326px;width:884px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line " style="left:639px;top:326px;width:2px;height:120px;background:var(--text-sub)"></div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:334px;width:110px;height:20px">回線（WAN）</div>
+  <div class="pp-text" data-note="回線の 3 本：廃止は破線に解約、新設は基調色の実線。本数を線の上に書く" data-role="caption" style="left:660px;top:330px;width:540px;height:20px">MPLS 48本（1拠点1回線、冗長なし）：切替完了後に解約</div>
+  <div class="pp-line dashed" data-note="回線の 3 本：廃止は破線に解約、新設は基調色の実線。本数を線の上に書く" style="left:180px;top:356px;width:920px;height:0px"></div>
+  <div class="pp-text" data-role="caption" style="left:660px;top:366px;width:540px;height:20px">インターネット 96本（1拠点2回線、本線）</div>
+  <div class="pp-line " style="left:180px;top:392px;width:920px;height:3px;background:var(--accent)"></div>
+  <div class="pp-shape f-emph" data-note="二重化の 1 点：営業所の 2 回線化だけ強調色の面" style="left:330px;top:361px;width:270px;height:29px"></div>
+  <div class="pp-text b t-white center" data-note="二重化の 1 点：営業所の 2 回線化だけ強調色の面" style="left:338px;top:362px;width:254px;height:27px;font-size:19px;line-height:1.35">営業所40拠点も2回線化</div>
+  <div class="pp-text" data-role="caption" style="left:660px;top:402px;width:540px;height:20px">LTE 48本（1拠点1回線、バックアップ・自動切替）</div>
+  <div class="pp-line " style="left:180px;top:428px;width:920px;height:2px;background:var(--accent)"></div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:436px;width:110px;height:20px">センター</div>
+  <div class="pp-line " style="left:247px;top:446px;width:786px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line " style="left:247px;top:446px;width:2px;height:14px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-outline" data-note="センターの箱：変更する＝枠線、現行のまま＝パネル地" style="left:64px;top:460px;width:368px;height:77px"></div>
+  <div class="pp-text b" style="left:76px;top:466px;width:344px;height:28px;font-size:19px">監視センター</div>
+  <div class="pp-text" data-role="caption" style="left:76px;top:495px;width:344px;height:36px;line-height:1.3">監視を22拠点から48拠点へ拡大<br>24時間365日、遠隔で復旧</div>
+  <div class="pp-line " style="left:639px;top:446px;width:2px;height:14px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:456px;top:460px;width:368px;height:77px"></div>
+  <div class="pp-text b" style="left:468px;top:466px;width:344px;height:28px;font-size:19px">DC（基幹系・外部接続）</div>
+  <div class="pp-text" data-role="caption" style="left:468px;top:495px;width:344px;height:36px;line-height:1.3">ERP・生産管理・取引先EDI<br>構成は変えない</div>
+  <div class="pp-line " style="left:1031px;top:446px;width:2px;height:14px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-outline" style="left:848px;top:460px;width:368px;height:77px"></div>
+  <div class="pp-text b" style="left:860px;top:466px;width:344px;height:28px;font-size:19px">クラウド管理コンソール</div>
+  <div class="pp-text" data-role="caption" style="left:860px;top:495px;width:344px;height:36px;line-height:1.3">新設。48台の構成と状態を一元化<br>切替の操作も遠隔で行う</div>
+  <div class="pp-shape f-soft" data-note="帯：回線の本数を現行 → 計画で書く（内訳の合計を合わせる）" style="left:64px;top:548px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="帯：回線の本数を現行 → 計画で書く（内訳の合計を合わせる）" style="left:84px;top:553px;width:1112px;height:30px;font-size:19px"><b>回線の本数</b>　現行 48本（MPLS×1） → 計画 144本（インターネット×2＋LTE×1、48拠点）。MPLSは切替後に0本</div>
+  <div class="pp-text" data-note="注：台数の出所と、系統から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 台数は資産台帳（2026年9月）。本数は契約回線の数で、切替の並行稼働中（2週間）は4本になる<br>→ 本線2本とLTEで1拠点3経路になるため、回線1本の断では業務が止まらず、現地出動は機器故障のときに限られる</div>
+</section>

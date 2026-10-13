@@ -1,0 +1,53 @@
+<!-- 用途: 時系列（発生順の事象）。障害の発生から復旧までの区間を左から右へ、長さを時間に比例させた横棒で並べる（1 時間＝104px、合計 10.0h で 64〜1104px）。各区間の上に区間名と所要、下に時刻。
+     記号: 塗り（f-accent）＝作業の区間、枠線（f-outline）＝待ちの区間。最大の待ち 1 区間の文字だけ強調色（1 枚 1 点）。棒の下に節目（◆ 時刻　誰が何をしたか）を 1 行ずつ、最下部にパネル地の帯で作業と待ちの内訳。情報の型（論点ボックスは置かず、注の末尾を「→ 含意」で締める）。
+     区間の長さを目で比べたいときはこのデザイン。件数が多く文で読ませたいときはデザイン2（表）、所要を数字と棒の両方で見せたいときはデザイン3（表＋棒）。工程×時間の予定は gantt、担当部門をまたぐ流れは swimlane。
+     差し替える所: 区間（6 つまで。名前・所要・x と幅は 1 時間＝104px）・時刻・待ちの区間・節目 6 行・帯の文・注。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">回線断の時系列</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">復旧10時間の半分は現地出動と承認の待ちで、遠隔化すれば5時間に縮められる</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社MPLS回線断の対応の時系列（2026年7月14日 9:05〜19:05、時間）</div>
+
+  <div class="pp-text b" style="left:64px;top:258px;width:100px;height:52px;font-size:19px;line-height:1.3">検知<br>0.5h</div>
+  <div class="pp-text b center" style="left:168px;top:258px;width:152px;height:52px;font-size:19px;line-height:1.3">一次切り分け<br>2.0h</div>
+  <div class="pp-text b center" style="left:324px;top:258px;width:312px;height:52px;font-size:19px;line-height:1.3">現地出動（到着待ち）<br>3.0h</div>
+  <div class="pp-text b center" style="left:636px;top:258px;width:208px;height:52px;font-size:19px;line-height:1.3">復旧作業<br>2.0h</div>
+  <div class="pp-text b center" style="left:844px;top:258px;width:208px;height:52px;font-size:19px;line-height:1.3">切替の承認（待ち）<br>2.0h</div>
+  <div class="pp-text b right" style="left:1056px;top:258px;width:160px;height:52px;font-size:19px;line-height:1.3">報告<br>0.5h</div>
+
+  <div class="pp-shape f-accent" data-note="区間の棒：長さを時間に比例（1 時間＝104px）。塗り＝作業、枠線＝待ち" style="left:64px;top:312px;width:52px;height:40px"></div>
+  <div class="pp-shape f-accent" data-note="区間の棒：長さを時間に比例（1 時間＝104px）。塗り＝作業、枠線＝待ち" style="left:116px;top:312px;width:208px;height:40px"></div>
+  <div class="pp-shape f-outline" data-note="区間の棒：長さを時間に比例（1 時間＝104px）。塗り＝作業、枠線＝待ち" style="left:324px;top:312px;width:312px;height:40px"></div>
+  <div class="pp-text b t-emph center" data-note="最大の待ち：1 区間の文字だけ強調色（1 点）" style="left:332px;top:318px;width:296px;height:28px;font-size:19px">待ち 3.0h（最大）</div>
+  <div class="pp-shape f-accent" data-note="区間の棒：長さを時間に比例（1 時間＝104px）。塗り＝作業、枠線＝待ち" style="left:636px;top:312px;width:208px;height:40px"></div>
+  <div class="pp-shape f-outline" data-note="区間の棒：長さを時間に比例（1 時間＝104px）。塗り＝作業、枠線＝待ち" style="left:844px;top:312px;width:208px;height:40px"></div>
+  <div class="pp-text b t-dark center" style="left:852px;top:318px;width:192px;height:28px;font-size:19px">待ち 2.0h</div>
+  <div class="pp-shape f-accent" data-note="区間の棒：長さを時間に比例（1 時間＝104px）。塗り＝作業、枠線＝待ち" style="left:1052px;top:312px;width:52px;height:40px"></div>
+  <div class="pp-text b" style="left:1112px;top:318px;width:104px;height:28px;font-size:19px">10.0h</div>
+
+  <div class="pp-line" style="left:64px;top:348px;width:1px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:116px;top:348px;width:1px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:324px;top:348px;width:1px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:636px;top:348px;width:1px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:844px;top:348px;width:1px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:1052px;top:348px;width:1px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:1104px;top:348px;width:1px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:357px;width:46px;height:20px">9:05</div>
+  <div class="pp-text" data-role="caption" style="left:118px;top:357px;width:48px;height:20px">9:35</div>
+  <div class="pp-text center" data-role="caption" style="left:299px;top:357px;width:50px;height:20px">11:35</div>
+  <div class="pp-text center" data-role="caption" style="left:611px;top:357px;width:50px;height:20px">14:35</div>
+  <div class="pp-text center" data-role="caption" style="left:819px;top:357px;width:50px;height:20px">16:35</div>
+  <div class="pp-text center" data-role="caption" style="left:1027px;top:357px;width:50px;height:20px">18:35</div>
+  <div class="pp-text center" data-role="caption" style="left:1080px;top:357px;width:50px;height:20px">19:05</div>
+
+  <div class="pp-text" data-note="節目：◆ 時刻と、誰が何をしたかを 1 行ずつ" style="left:64px;top:383px;width:1152px;height:26px;font-size:19px;line-height:1.3"><span style="color:var(--accent-dark)">◆ 9:05</span>　業務部門が運用センターへ電話で申告（検知0.5h）</div>
+  <div class="pp-text" style="left:64px;top:408px;width:1152px;height:26px;font-size:19px;line-height:1.3"><span style="color:var(--accent-dark)">◆ 9:35</span>　運用センターが一次切り分け、MPLSルータの故障と特定（2.0h）</div>
+  <div class="pp-text" style="left:64px;top:433px;width:1152px;height:26px;font-size:19px;line-height:1.3"><span style="color:var(--accent-dark)">◆ 11:35</span>　基盤グループがベンダーへ出動を要請、到着まで待ち（3.0h）</div>
+  <div class="pp-text" style="left:64px;top:458px;width:1152px;height:26px;font-size:19px;line-height:1.3"><span style="color:var(--accent-dark)">◆ 14:35</span>　ベンダーが予備機へ交換し、設定を復旧（2.0h）</div>
+  <div class="pp-text" style="left:64px;top:483px;width:1152px;height:26px;font-size:19px;line-height:1.3"><span style="color:var(--accent-dark)">◆ 16:35</span>　予備回線への切替を申請、部長承認まで待ち（2.0h）</div>
+  <div class="pp-text" style="left:64px;top:509px;width:1152px;height:26px;font-size:19px;line-height:1.3"><span style="color:var(--accent-dark)">◆ 18:35</span>　予備回線へ切替、疎通を確認して19:05に復旧報告（0.5h）</div>
+
+  <div class="pp-shape f-soft" data-note="内訳の帯：作業と待ちの合計を数字で示す" style="left:64px;top:543px;width:1152px;height:44px"></div>
+  <div class="pp-text" data-note="内訳の帯：作業と待ちの合計を数字で示す" style="left:84px;top:550px;width:1112px;height:28px;font-size:19px"><b>作業 5.0h／待ち 5.0h。</b>待ちは現地到着と切替の承認の2区間で、復旧時間の半分を占める</div>
+  <div class="pp-text" data-note="注：時刻の出所と、時系列から言える含意" data-role="caption" style="left:64px;top:590px;width:1152px;height:40px;line-height:1.3">注: 時刻は運用センターの対応記録（2026年7月14日）。機会損失は停止1時間あたり150万円で1,500万円<br>→ 遠隔復旧と自動切替で待ちの2区間を消せば、同じ障害でも復旧は5.0hに縮む</div>
+</section>

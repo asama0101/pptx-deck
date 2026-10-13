@@ -1,0 +1,30 @@
+<!-- 用途: 数式（結果を、内訳の足し算で説明する）。デザイン1（formula）と同じ結果・同じ内訳・同じ根拠で差し替えられる。
+     デザイン1との違い: 内訳を行にして、足すたびに横棒の始まりを前の棒の終わりへずらす（1 億円＝376px）。最下行に「＝ 総費用」の全幅の棒を置く。左の列に「＋ 名前」と根拠、強調色は機器の名前 1 か所。濃淡も強調と合わせ、機器の棒を最も濃く、移行の棒を最も淡くする。
+     差し替える所: 題・リード文・図表タイトル・行の名前・金額・根拠・棒の始まりと長さ（金額×376px）・注。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">総費用の内訳</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">5年間の総費用1.7億円は、機器0.9億円・移行0.2億円・運用0.6億円の足し算で、機器が過半を占める</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">B案（SD-WAN）の5年間の総費用（FY2027〜2031、税抜）</div>
+  <div class="pp-text b t-dark" data-note="強調色：いちばん大きい内訳の名前だけ（1 枚 1 点）" style="left:64px;top:234px;width:350px;height:34px;font-size:24px;line-height:1.2;color:var(--emphasis)">機器</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:268px;width:350px;height:24px;line-height:1.2">ルータ112台とクラウド管理</div>
+  <div class="pp-shape f-soft2" data-note="横棒：足すたびに前の棒の終わりから始める（1 億円＝376px）。いちばん大きい内訳を最も濃く" style="left:440px;top:240px;width:338px;height:46px"></div>
+  <div class="pp-text b t-white" data-overlap style="left:448px;top:246px;width:322px;height:34px;font-size:19px;line-height:1.2">0.9億円（53%）</div>
+  <div class="pp-line hr" style="left:64px;top:302px;width:1152px;height:1px"></div>
+  <div class="pp-text b t-dark" style="left:64px;top:316px;width:350px;height:34px;font-size:24px;line-height:1.2">＋ 移行</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:350px;width:350px;height:24px;line-height:1.2">48拠点の切替作業と設計</div>
+  <div class="pp-shape f-light" style="left:778px;top:322px;width:75px;height:46px"></div>
+  <div class="pp-text b t-dark" style="left:863px;top:328px;width:200px;height:34px;font-size:19px;line-height:1.2">0.2億円</div>
+  <div class="pp-line hr" style="left:64px;top:384px;width:1152px;height:1px"></div>
+  <div class="pp-text b t-dark" style="left:64px;top:398px;width:350px;height:34px;font-size:24px;line-height:1.2">＋ 運用</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:432px;width:350px;height:24px;line-height:1.2">年0.12億円 × 5年</div>
+  <div class="pp-shape f-mid" style="left:853px;top:404px;width:225px;height:46px"></div>
+  <div class="pp-text b t-dark" style="left:633px;top:410px;width:210px;height:34px;font-size:19px;text-align:right;line-height:1.2">0.6億円（35%）</div>
+  <div class="pp-line hr" style="left:64px;top:466px;width:1152px;height:1px"></div>
+  <div class="pp-line" style="left:64px;top:472px;width:1152px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-text b t-dark" style="left:64px;top:486px;width:350px;height:34px;font-size:24px;line-height:1.2">＝ 総費用</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:520px;width:350px;height:24px;line-height:1.2">5年間・税抜（FY2027〜2031）</div>
+  <div class="pp-shape f-accent" data-note="総額の棒：内訳 3 本の合計が、全幅の棒になる" style="left:440px;top:486px;width:639px;height:46px"></div>
+  <div class="pp-text b t-white" data-overlap style="left:448px;top:492px;width:300px;height:34px;font-size:24px;line-height:1.2">1.7億円</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 機器・移行はベンダー見積（2026年9月、税抜）。運用は年0.12億円×5年（FY2027〜2031）<br>→ 総費用の53%（0.9億円）は初年度の機器で、FY2027予算で一括計上が必要になる</div>
+</section>

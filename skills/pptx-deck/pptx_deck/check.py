@@ -13,6 +13,9 @@ OVERLAP_MIN_AREA = 4
 AREA_BOTTOM_GAP = 120                          # 本文の下端が領域下端よりこれ以上上なら空白帯
 SAME_WORD_MIN = 6                              # 同じ文言の重複を数える最小字数
 _DASH = re.compile("[—―─]")
+SHAPE_KINDS = {"rect", "round", "ellipse", "triangle"}        # build.py の SHAPES と同じ。これ以外は build が止まる
+TITLE_MAX, LEAD_MIN, LEAD_MAX = 20, 30, 60                   # 題（短い名詞句）の字数の上限、リード文（判断を言い切る 1 文）の字数
+
 
 
 def _v(rule, slide, message, severity="error"):
@@ -47,6 +50,22 @@ def check_model(model, info: TemplateInfo):
         has_title = any(e["kind"] == "text" and (e.get("role") == "title" or e.get("ph") == "title") for e in els)
         if not has_title and s["layout"] != "closing":
             out.append(_v("titleMissing", n, "タイトル（data-role=\"title\" または data-ph=\"title\"）がありません"))
+        for e in els:
+            if e["kind"] == "shape" and e.get("shape") not in SHAPE_KINDS:
+                out.append(_v("shapeKind", n, f"shape#{e['idx']}: data-shape=\"{e.get('shape')}\" は使えません（{' / '.join(sorted(SHAPE_KINDS))}）"))
+        if s["layout"] in ("content", "diagram", "table", "chart"):
+            leads = [e for e in els if e["kind"] == "text" and e.get("role") == "lead"]
+            if not leads:
+                out.append(_v("leadMissing", n, "リード文（data-role=\"lead\"。判断を言い切る 1 文、30〜60 字）がありません", "warning"))
+            else:
+                lt = "".join(r.get("text", "") for pa in leads[0]["paras"] for r in pa["runs"]).strip()
+                if not LEAD_MIN <= len(lt) <= LEAD_MAX:
+                    out.append(_v("leadLength", n, f"リード文が {len(lt)} 字です（{LEAD_MIN}〜{LEAD_MAX} 字。2 行までに収める）", "warning"))
+            ttl = [e for e in els if e["kind"] == "text" and (e.get("role") == "title" or e.get("ph") == "title")]
+            if ttl:
+                tt = "".join(r.get("text", "") for pa in ttl[0]["paras"] for r in pa["runs"]).strip()
+                if len(tt) > TITLE_MAX:
+                    out.append(_v("titleLength", n, f"題が {len(tt)} 字です（{TITLE_MAX} 字以内の短い名詞句。判断はリード文に書く）", "warning"))
         texts = []
         for e in els:
             if e["kind"] == "text":

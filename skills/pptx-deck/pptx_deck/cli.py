@@ -56,7 +56,7 @@ def cmd_doctor(args) -> int:
 def cmd_init(args) -> int:
     from . import initdir
     try:
-        r = initdir.init(Path(args.workdir), color=args.color, template_path=args.template, force=args.force)
+        r = initdir.init(Path(args.workdir), color=args.color, template_path=args.template, force=args.force, footer=args.footer)
     except (FileExistsError, ValueError) as e:
         print(f"エラー: {e}", file=sys.stderr)
         return 2
@@ -141,9 +141,12 @@ def cmd_review_final(args) -> int:
 
 def cmd_lint_script(args) -> int:
     from . import script_lint
-    problems = script_lint.lint(Path(args.script).read_text(encoding="utf-8"))
+    md = Path(args.script).read_text(encoding="utf-8")
+    problems = script_lint.lint(md)
     for p in problems:
         print(p)
+    for n in script_lint.migration_notes(md):      # 旧形式の移行の案内は、エラーにしない（終了コードに影響しない）
+        print(n)
     return 1 if problems else 0
 
 
@@ -165,6 +168,7 @@ def main(argv: list[str]) -> int:
     p.add_argument("workdir")
     p.add_argument("--color", default="navy", help="プリセット名（navy|green|gray）または #RRGGBB")
     p.add_argument("--template", default=None, help="利用者の .potx / .pptx")
+    p.add_argument("--footer", default=None, help="左下に出すコピーライトの文字列（例: \"© 2026 〇〇\"）。省略すると空欄")
     p.add_argument("--force", action="store_true")
     p.set_defaults(fn=cmd_init)
     p = sub.add_parser("check")

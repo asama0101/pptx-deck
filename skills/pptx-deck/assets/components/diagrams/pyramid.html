@@ -2,34 +2,36 @@
      右に各層の説明（対応の範囲と件数・影響時間・復旧時間）。各層と説明を横線で結び、説明どうしは細い線で区切る。注の末尾に、分布から言える含意を 1 文。
      差し替える所: 層の名前（短く）・右の説明 3 行（範囲｜件数・影響・復旧｜注記）・注。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="height:44px">障害の4階層のうち、件数の8割はL1で閉じ、設計チームの対応は年40件に絞れている</div>
-  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">障害対応のエスカレーション階層（FY2025実績。年間の件数・影響時間・平均の復旧時間）</div>
-  <div class="pp-shape f-light" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど影響が大きく、件数は少ない" data-shape="triangle" style="left:80px;top:186px;width:640px;height:404px"></div>
-  <div class="pp-line" data-overlap style="left:60px;top:287px;width:680px;height:6px;background:#FFFFFF"></div>
-  <div class="pp-line" data-overlap style="left:60px;top:388px;width:680px;height:6px;background:#FFFFFF"></div>
-  <div class="pp-line" data-overlap style="left:60px;top:489px;width:680px;height:6px;background:#FFFFFF"></div>
-  <div class="pp-text t-dark b center" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど影響が大きく、件数は少ない" style="left:340px;top:250px;width:120px;height:26px;font-size:19px">重大障害</div>
-  <div class="pp-text t-dark b center" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど影響が大きく、件数は少ない" style="left:300px;top:326px;width:200px;height:26px;font-size:19px">L3 設計チーム</div>
-  <div class="pp-text t-dark b center" style="left:240px;top:426px;width:320px;height:26px;font-size:19px">L2 運用センター</div>
-  <div class="pp-text t-dark b center" style="left:200px;top:528px;width:400px;height:26px;font-size:19px">L1 ヘルプデスク</div>
-  <div class="pp-line" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" data-overlap style="left:470px;top:236px;width:276px;background:var(--accent-mid)"></div>
-  <div class="pp-line" data-overlap style="left:530px;top:337px;width:216px;background:var(--accent-mid)"></div>
-  <div class="pp-line" data-overlap style="left:610px;top:438px;width:136px;background:var(--accent-mid)"></div>
-  <div class="pp-line" data-overlap style="left:690px;top:539px;width:56px;background:var(--accent-mid)"></div>
-  <div class="pp-line hr" style="left:760px;top:289px;width:456px"></div>
-  <div class="pp-line hr" style="left:760px;top:390px;width:456px"></div>
-  <div class="pp-line hr" style="left:760px;top:491px;width:456px"></div>
-  <div class="pp-text b" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" style="left:760px;top:194px;width:456px;height:28px;font-size:19px">全社停止・DC障害、経営へ即時報告</div>
-  <div class="pp-text" style="left:760px;top:224px;width:456px;height:28px;font-size:19px">12件・影響180時間（38%）・復旧4.5h</div>
-  <div class="pp-text" data-role="caption" style="left:760px;top:254px;width:456px;height:20px">経営会議へ報告。ベンダーと合同で対応する</div>
-  <div class="pp-text b" style="left:760px;top:295px;width:456px;height:28px;font-size:19px">拠点全停止・設計変更を伴う障害</div>
-  <div class="pp-text" style="left:760px;top:325px;width:456px;height:28px;font-size:19px">40件・影響150時間（31%）・復旧2.0h</div>
-  <div class="pp-text" data-role="caption" style="left:760px;top:355px;width:456px;height:20px">設計チーム4名。構成変更は変更管理委員会へ報告</div>
-  <div class="pp-text b" style="left:760px;top:396px;width:456px;height:28px;font-size:19px">回線断・機器故障、遠隔で復旧</div>
-  <div class="pp-text" style="left:760px;top:426px;width:456px;height:28px;font-size:19px">180件・影響90時間（19%）・復旧0.7h</div>
-  <div class="pp-text" data-role="caption" style="left:760px;top:456px;width:456px;height:20px">運用センター18名が24時間で対応</div>
-  <div class="pp-text b" style="left:760px;top:497px;width:456px;height:28px;font-size:19px">設定変更・利用者の問い合わせ</div>
-  <div class="pp-text" style="left:760px;top:527px;width:456px;height:28px;font-size:19px">900件・影響60時間（12%）・復旧0.2h</div>
-  <div class="pp-text" data-role="caption" style="left:760px;top:557px;width:456px;height:20px">ヘルプデスクで完結。件数の80%（900/1,132件）</div>
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応の階層</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の4階層のうち、件数の8割はL1で閉じ、設計チームの対応は年40件に絞れている</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応のエスカレーション階層（FY2025実績。年間の件数・影響時間・平均の復旧時間）</div>
+  <div class="pp-shape f-light" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど影響が大きく、件数は少ない" data-shape="triangle" style="left:80px;top:224px;width:640px;height:364px"></div>
+  <div class="pp-line" data-overlap style="left:60px;top:315px;width:680px;height:6px;background:#FFFFFF"></div>
+  <div class="pp-line" data-overlap style="left:60px;top:406px;width:680px;height:6px;background:#FFFFFF"></div>
+  <div class="pp-line" data-overlap style="left:60px;top:497px;width:680px;height:6px;background:#FFFFFF"></div>
+  <div class="pp-text t-dark b center" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど影響が大きく、件数は少ない" style="left:340px;top:282px;width:120px;height:26px;font-size:19px">重大障害</div>
+  <div class="pp-text t-dark b center" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど影響が大きく、件数は少ない" style="left:300px;top:350px;width:200px;height:26px;font-size:19px">L3 設計チーム</div>
+  <div class="pp-text t-dark b center" style="left:240px;top:440px;width:320px;height:26px;font-size:19px">L2 運用センター</div>
+  <div class="pp-text t-dark b center" style="left:200px;top:532px;width:400px;height:26px;font-size:19px">L1 ヘルプデスク</div>
+  <div class="pp-line" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" data-overlap style="left:470px;top:269px;width:276px;background:var(--accent-mid)"></div>
+  <div class="pp-line" data-overlap style="left:530px;top:360px;width:216px;background:var(--accent-mid)"></div>
+  <div class="pp-line" data-overlap style="left:610px;top:451px;width:136px;background:var(--accent-mid)"></div>
+  <div class="pp-line" data-overlap style="left:690px;top:542px;width:56px;background:var(--accent-mid)"></div>
+  <div class="pp-line hr" style="left:760px;top:317px;width:456px"></div>
+  <div class="pp-line hr" style="left:760px;top:408px;width:456px"></div>
+  <div class="pp-line hr" style="left:760px;top:499px;width:456px"></div>
+  <div class="pp-text b" data-note="各層と右の説明を横線で結び、説明どうしを細い線で区切る" style="left:760px;top:231px;width:456px;height:28px;font-size:19px">全社停止・DC障害、経営へ即時報告</div>
+  <div class="pp-text" style="left:760px;top:258px;width:456px;height:28px;font-size:19px">12件・影響180時間（38%）・復旧4.5h</div>
+  <div class="pp-text" data-role="caption" style="left:760px;top:285px;width:456px;height:20px">経営会議へ報告。ベンダーと合同で対応する</div>
+  <div class="pp-text b" style="left:760px;top:322px;width:456px;height:28px;font-size:19px">拠点全停止・設計変更を伴う障害</div>
+  <div class="pp-text" style="left:760px;top:349px;width:456px;height:28px;font-size:19px">40件・影響150時間（31%）・復旧2.0h</div>
+  <div class="pp-text" data-role="caption" style="left:760px;top:376px;width:456px;height:20px">設計チーム4名。構成変更は変更管理委員会へ報告</div>
+  <div class="pp-text b" style="left:760px;top:413px;width:456px;height:28px;font-size:19px">回線断・機器故障、遠隔で復旧</div>
+  <div class="pp-text" style="left:760px;top:440px;width:456px;height:28px;font-size:19px">180件・影響90時間（19%）・復旧0.7h</div>
+  <div class="pp-text" data-role="caption" style="left:760px;top:467px;width:456px;height:20px">運用センター18名が24時間で対応</div>
+  <div class="pp-text b" style="left:760px;top:504px;width:456px;height:28px;font-size:19px">設定変更・利用者の問い合わせ</div>
+  <div class="pp-text" style="left:760px;top:531px;width:456px;height:28px;font-size:19px">900件・影響60時間（12%）・復旧0.2h</div>
+  <div class="pp-text" data-role="caption" style="left:760px;top:558px;width:456px;height:20px">ヘルプデスクで完結。件数の80%（900/1,132件）</div>
   <div class="pp-text" data-note="注：数値の出所と、分布から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 件数・影響時間はFY2025の障害記録（計1,132件・480時間）。復旧は検知から復旧までの平均<br>→ 影響時間の7割（330時間）は重大障害とL3の52件で生じており、対策の投資はこの52件に集中させればよい</div>
 </section>

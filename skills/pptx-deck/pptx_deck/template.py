@@ -154,7 +154,7 @@ def analyze(path) -> TemplateInfo:
         keepout=keepout, notes=tuple(notes))
 
 
-def render_underlays(path, info: TemplateInfo, out_dir: Path) -> str:
+def render_underlays(path, info: TemplateInfo, out_dir: Path, footer: str | None = None) -> str:
     """表紙・本文・裏表紙の下地（背景・ロゴ・ヘッダー・フッター）を画像にする。本文の下地色を返す。"""
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -165,8 +165,8 @@ def render_underlays(path, info: TemplateInfo, out_dir: Path) -> str:
         order.append(("closing", info.closing))
     for _, idx in order:
         layout = prs.slide_layouts[idx]
-        # PPTX にはレイアウトの日付・フッター・ページ番号が出るので、プレビューの下地にも写す
-        clone_footer_placeholders(prs.slides.add_slide(layout), layout)
+        # PPTX にはレイアウトのフッター（コピーライト）・ページ番号が出るので、プレビューの下地にも写す
+        clone_footer_placeholders(prs.slides.add_slide(layout), layout, footer)
     work = paths.temp_dir("underlay")
     src = work / "underlay.pptx"
     prs.save(str(src))

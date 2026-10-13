@@ -1,0 +1,26 @@
+<!-- 用途: 相互関係（3 者が互いに渡し合う関係）。デザインは 1 つ。窓口の基盤グループを左に縦長の大きな箱で置き、右に事業部門とベンダーを上下に並べる。
+     窓口と 2 者の間は横向きの両向き矢印（渡すものを矢印の上に書く）、2 者の間は縦向きの両向き矢印で結ぶ。渡すものは 19px の短い語で書く。中央に置く者は、窓口・調整役にする。
+     関係者が 4 つ以上のときは、tables/raci（工程×部門）か org（体制）を検討する。
+     差し替える所: 題・リード文・図表タイトル・3 つの箱の名前・矢印の上の「渡すもの」3 つ・注。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">更改の関係者</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">更改は事業部門・基盤グループ・ベンダーの3者が互いに依存し、基盤グループが窓口を担う</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN更改の関係者と依存関係（渡すものと受け取るもの）</div>
+  <div class="pp-shape f-light" data-note="窓口（基盤グループ）と、窓口に依存する 2 者を箱で置く" style="left:64px;top:232px;width:320px;height:354px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:64px;top:391px;width:320px;height:35px;font-size:28px;line-height:1.25">基盤グループ</div>
+  <div class="pp-shape f-white" style="left:896px;top:232px;width:320px;height:120px"></div>
+  <div class="pp-text b center" data-overlap style="left:896px;top:277px;width:320px;height:30px;font-size:24px;line-height:1.25">事業部門</div>
+  <div class="pp-shape f-white" style="left:896px;top:466px;width:320px;height:120px"></div>
+  <div class="pp-text b center" data-overlap style="left:896px;top:511px;width:320px;height:30px;font-size:24px;line-height:1.25">ベンダー</div>
+  <div class="pp-text t-dark b center" data-note="箱どうしを結ぶ矢印の上に、渡すものを短い語で書く" style="left:400px;top:238px;width:480px;height:30px;font-size:19px;line-height:1.25">切替日の調整</div>
+  <div class="pp-line hr" data-note="矢印は両向き。受け渡しを一目で読めるようにする" data-arrow="end" style="left:400px;top:282px;width:480px;height:3px;background:var(--accent)"></div>
+  <div class="pp-line hr" data-arrow="end" data-dir="rev" style="left:400px;top:308px;width:480px;height:3px;background:var(--accent)"></div>
+  <div class="pp-text t-dark b center" style="left:400px;top:472px;width:480px;height:30px;font-size:19px;line-height:1.25">発注・納品</div>
+  <div class="pp-line hr" data-arrow="end" style="left:400px;top:516px;width:480px;height:3px;background:var(--accent)"></div>
+  <div class="pp-line hr" data-arrow="end" data-dir="rev" style="left:400px;top:542px;width:480px;height:3px;background:var(--accent)"></div>
+  <div class="pp-text t-dark b right" style="left:700px;top:394px;width:320px;height:30px;font-size:19px;line-height:1.25">仕様の確認・出荷の調整</div>
+  <div class="pp-line hr" data-arrow="end" style="left:1040px;top:364px;width:3px;height:90px;background:var(--accent)"></div>
+  <div class="pp-line hr" data-arrow="end" data-dir="rev" style="left:1074px;top:364px;width:3px;height:90px;background:var(--accent)"></div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 矢印の向きは、要求や成果物を渡す側から受け取る側へ。矢印の上の語は代表的な受け渡し<br>→ 3者は互いに依存し、基盤グループが調整の窓口を担うので、窓口の体制の確保が前提になる</div>
+</section>

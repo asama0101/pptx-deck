@@ -1,0 +1,47 @@
+<!-- 用途: 体制図（プロジェクト・検証・移行の組織）。デザイン1（org）と同じ責任者・PM・チーム 4 つ・要員の帯・注で差し替えられる。
+     デザイン1との違い: 上から下へ 3 段に積まず、左上に責任者→PM を縦に並べ、PM の箱から右へ幹線を引いて、チーム 4 つを 1 行ずつの横長の帯にする（名前｜人数｜役割を横に読む）。幹線は PM の高さから下へだけ伸びるので、チームが PM 配下だと読める。専任の 1 チームだけ強調色の印、外部は破線の箱。
+     差し替える所: 責任者・PM の名前（役職）・チーム 4 つ（名前・母体・人数・役割・専任／兼任）・外部の箱・帯の合計・注。チームは 4 つまで（3 つのときは行を 3 本にして行間を広げる）。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">移行の体制</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">基盤グループを専任にすれば社内要員は12名で足り、不足はベンダー6名で埋められる</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行プロジェクトの体制（2026年11月〜2027年4月。人数は兼任を含む）</div>
+  <div class="pp-shape f-accent" data-note="責任者と PM：左に縦に積む。幹線は PM の箱から右へ出し、チームの行へ分ける" style="left:64px;top:224px;width:300px;height:56px"></div>
+  <div class="pp-text t-white b center" style="left:72px;top:228px;width:284px;height:28px;font-size:19px">プロジェクトオーナー</div>
+  <div class="pp-text t-white center" data-role="caption" style="left:72px;top:254px;width:284px;height:22px">情報システム部長</div>
+  <div class="pp-line" style="left:213px;top:280px;width:1px;height:16px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-light" style="left:64px;top:296px;width:300px;height:56px"></div>
+  <div class="pp-text b center" style="left:72px;top:300px;width:284px;height:28px;font-size:19px">プロジェクトマネージャ（1名）</div>
+  <div class="pp-text center" data-role="caption" style="left:72px;top:326px;width:284px;height:22px;color:var(--text)">情報システム部 課長・専任</div>
+  <div class="pp-line" style="left:364px;top:330px;width:28px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:392px;top:330px;width:1px;height:193px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:392px;top:330px;width:28px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" data-note="チームの箱：名前・母体・人数・役割・専任／兼任を 1 行に置く。専任の 1 チームだけ強調色の印" style="left:420px;top:302px;width:796px;height:56px"></div>
+  <div class="pp-text b" style="left:432px;top:306px;width:112px;height:28px;font-size:19px">基盤チーム</div>
+  <div class="pp-shape f-emph" data-note="専任の印：1 チームだけ強調色（1 枚 1 点）" style="left:550px;top:308px;width:60px;height:24px"></div>
+  <div class="pp-text t-white b center" data-role="caption" style="left:550px;top:309px;width:60px;height:22px">専任</div>
+  <div class="pp-text" data-role="caption" style="left:432px;top:333px;width:290px;height:22px">情報システム部 基盤グループ</div>
+  <div class="pp-text num t-dark center" style="left:724px;top:308px;width:90px;height:44px;font-size:30px">3名</div>
+  <div class="pp-text" data-role="caption" style="left:826px;top:316px;width:380px;height:28px">設計・切替手順・拠点切替の統括</div>
+  <div class="pp-line" style="left:392px;top:394px;width:28px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:420px;top:366px;width:796px;height:56px"></div>
+  <div class="pp-text b" style="left:432px;top:370px;width:250px;height:28px;font-size:19px">運用チーム</div>
+  <div class="pp-text" data-role="caption" style="left:432px;top:397px;width:290px;height:22px">運用センター（兼任、稼働50%）</div>
+  <div class="pp-text num t-dark center" style="left:724px;top:372px;width:90px;height:44px;font-size:30px">4名</div>
+  <div class="pp-text" data-role="caption" style="left:826px;top:380px;width:380px;height:28px">監視設計・手順書48本・運用引継ぎ</div>
+  <div class="pp-line" style="left:392px;top:458px;width:28px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:420px;top:430px;width:796px;height:56px"></div>
+  <div class="pp-text b" style="left:432px;top:434px;width:250px;height:28px;font-size:19px">調達・拠点チーム</div>
+  <div class="pp-text" data-role="caption" style="left:432px;top:461px;width:290px;height:22px">調達部・各拠点（兼任、稼働30%）</div>
+  <div class="pp-text num t-dark center" style="left:724px;top:436px;width:90px;height:44px;font-size:30px">4名</div>
+  <div class="pp-text" data-role="caption" style="left:826px;top:444px;width:380px;height:28px">契約・回線手配・現地の立会い</div>
+  <div class="pp-line" style="left:392px;top:522px;width:28px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-shape dashed" data-note="外部のチーム：破線の箱。人数と契約の形を書く" style="left:420px;top:494px;width:796px;height:56px"></div>
+  <div class="pp-text b" style="left:432px;top:498px;width:250px;height:28px;font-size:19px">ベンダーチーム（外部）</div>
+  <div class="pp-text" data-role="caption" style="left:432px;top:525px;width:290px;height:22px">SD-WAN技術者・準委任6か月</div>
+  <div class="pp-text num t-dark center" style="left:724px;top:500px;width:90px;height:44px;font-size:30px">6名</div>
+  <div class="pp-text" data-role="caption" style="left:826px;top:508px;width:380px;height:28px">機器構築・切替作業・技術支援</div>
+  <div class="pp-shape f-soft" data-note="要員の帯：社内・外部・専任の合計を数字で書く" style="left:64px;top:554px;width:1152px;height:36px"></div>
+  <div class="pp-text" style="left:84px;top:557px;width:1112px;height:30px;font-size:19px"><b>要員の合計 18名｜社内12名（PM 1・基盤3・運用4・調達と拠点4）、外部6名。</b>専任は PM と基盤チームの4名、残り8名は兼任</div>
+  <div class="pp-text" data-note="注：数字の出所と、図から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 人数は2026年10月の計画。ベンダー6名は準委任契約（6か月・1,800万円、総費用1.7億円に含む）<br>→ 基盤チームの専任3名を11月までに確保できなければ、設計と切替の工程が2か月延びる</div>
+</section>

@@ -1,0 +1,38 @@
+<!-- 用途: 画面（キャプチャ）を見せるページ。3 デザインは同じ原稿（画面 3 つ＋見出し・説明）で差し替えられる: デザイン1＝並べる、デザイン2＝手順（矢印でつなぐ）、デザイン3＝拡大（画面の注目する部分を大きく見せる）。
+     デザイン1との違い: 小さな画面全体（320×180px）の中の注目する部分に強調色の枠（128×72px）を付け、枠の右の 2 つの角から、拡大した画面（512×288px）の左の 2 つの角へ斜めの線（基調色 3px）を引き、注目枠から拡大へ広がる楔の形で「ズームイン」を見せる。楔の中ほどに倍率の札（×4 拡大）を置く。拡大の画面は全体と同じ縦横比（16:9）で、枠は強調色（注目枠と同じ色。この 2 つで強調色の 1 点）。下に番号つきの見出しと説明を 3 列、拡大の画面の丸い番号（1〜3）と対応させる。
+     全体の枠と拡大の枠には、同じ画面のキャプチャ（全体と、注目する部分を大きく写したもの）を入れる。注目枠は画面と重なるので、画像を入れたら枠を線だけにする。倍率の札の数字は（拡大の幅÷注目枠の幅）から直す。斜めの線は pp-line に data-dir="diag"（左上→右下）・"diag-up"（左下→右上）を付け、線の箱は両端の外接矩形にする。枠の中心の注記は画像に差し替えるときに消す。説明は 1 行（約 16 字）に収める。
+     差し替える所: 題・リード文・図表タイトル・全体と拡大の画面の枠（画像）・注目枠の位置・斜めの線の端点・倍率の札・番号の位置・見出しと説明・注。 -->
+<section class="slide" data-layout="content">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">監視画面の見え方</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">監視画面では48拠点の状態が1画面で見え、障害は検知から切替まで3つの画面で追える</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN監視画面（画面イメージ。実際のキャプチャに差し替える）</div>
+  <div class="pp-shape f-soft" data-overlap data-note="全体の画面：小さく置き、注目する部分を強調色の枠で示す" style="left:64px;top:290px;width:320px;height:180px;border:3px solid var(--accent)"></div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:70px;top:308px;width:150px;height:28px">（画面全体）</div>
+  <div class="pp-shape f-outline" data-overlap data-note="注目枠：拡大する部分に合わせる。拡大の画面と同じ縦横比" style="left:244px;top:335px;width:128px;height:72px;background:none;border:3px solid var(--emphasis)"></div>
+  <div class="pp-line" data-overlap data-dir="diag-up" data-note="楔の線：注目枠の右の角から拡大の画面の左の角へ斜めに引き、拡大の関係を示す" style="left:372px;top:236px;width:332px;height:99px;background:var(--accent);border-top:3px solid var(--accent)"></div>
+  <div class="pp-line" data-overlap data-dir="diag" data-note="楔の線：注目枠の右の角から拡大の画面の左の角へ斜めに引き、拡大の関係を示す" style="left:372px;top:407px;width:332px;height:117px;background:var(--accent);border-top:3px solid var(--accent)"></div>
+  <div class="pp-shape f-white" data-overlap data-note="倍率の札：拡大の幅÷注目枠の幅" style="left:480px;top:361px;width:140px;height:38px;border:2px solid var(--accent)"></div>
+  <div class="pp-text b center" data-overlap style="left:480px;top:363px;width:140px;height:34px;font-size:21px">×4 拡大</div>
+  <div class="pp-shape f-white" data-overlap data-note="拡大の画面：注目した部分を大きく見せる（全体と同じ縦横比）" style="left:704px;top:236px;width:512px;height:288px;border:3px solid var(--emphasis)"></div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:844px;top:366px;width:340px;height:28px">（拡大した画面）</div>
+  <div class="pp-shape f-accent" data-shape="ellipse" data-overlap style="left:724px;top:256px;width:40px;height:40px"></div>
+  <div class="pp-text t-white b center" data-overlap style="left:724px;top:258px;width:40px;height:32px;font-size:21px">1</div>
+  <div class="pp-shape f-accent" data-shape="ellipse" data-overlap style="left:724px;top:360px;width:40px;height:40px"></div>
+  <div class="pp-text t-white b center" data-overlap style="left:724px;top:362px;width:40px;height:32px;font-size:21px">2</div>
+  <div class="pp-shape f-accent" data-shape="ellipse" data-overlap style="left:724px;top:464px;width:40px;height:40px"></div>
+  <div class="pp-text t-white b center" data-overlap style="left:724px;top:466px;width:40px;height:32px;font-size:21px">3</div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:64px;top:540px;width:36px;height:36px"></div>
+  <div class="pp-text t-white b center" data-overlap style="left:64px;top:541px;width:36px;height:30px;font-size:19px">1</div>
+  <div class="pp-text b" style="left:110px;top:536px;width:330px;height:30px;font-size:21px">全拠点の状態</div>
+  <div class="pp-text" style="left:110px;top:564px;width:330px;height:28px;font-size:19px">48拠点の稼働状況を1画面で見る</div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:448px;top:540px;width:36px;height:36px"></div>
+  <div class="pp-text t-white b center" data-overlap style="left:448px;top:541px;width:36px;height:30px;font-size:19px">2</div>
+  <div class="pp-text b" style="left:494px;top:536px;width:330px;height:30px;font-size:21px">障害の通知</div>
+  <div class="pp-text" style="left:494px;top:564px;width:330px;height:28px;font-size:19px">障害を検知すると担当者へ自動通知</div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:832px;top:540px;width:36px;height:36px"></div>
+  <div class="pp-text t-white b center" data-overlap style="left:832px;top:541px;width:36px;height:30px;font-size:19px">3</div>
+  <div class="pp-text b" style="left:878px;top:536px;width:330px;height:30px;font-size:21px">切替の結果</div>
+  <div class="pp-text" style="left:878px;top:564px;width:330px;height:28px;font-size:19px">回線の自動切替と復旧を見る</div>
+  <div class="pp-text" data-note="注：出典・前提と、→ 含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 画面は、実際のキャプチャ（利用者の画像）に差し替える。ここでは枠だけ。画面は2026年9月時点の試験環境<br>→ 検知から切替まで3つの画面で追え、監視センターの担当者は画面の切り替えだけで状況を確かめられる</div>
+</section>

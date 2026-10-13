@@ -10,7 +10,7 @@ from .pptxutil import FONT, emu, rgb
 TYPES = {"bar": C.COLUMN_CLUSTERED, "barh": C.BAR_CLUSTERED, "line": C.LINE_MARKERS, "pie": C.PIE,
          "stacked": C.COLUMN_STACKED, "stacked100": C.COLUMN_STACKED_100, "waterfall": C.COLUMN_STACKED}
 FONT_PT = 12
-SMALL_STEP = 0.06       # 軸の最大値に対する割合。これ未満の増減は、ラベルを棒の外（下）に出す
+SMALL_STEP = 0.08       # 軸の最大値（axis.max がなければデータの最大）に対する割合。これ未満の増減は、ラベルを棒の外（下）に出す
 
 
 def _check_axis(axis):
@@ -27,6 +27,22 @@ def _check_axis(axis):
 def _plain(v: float) -> str:
     """指数表記にしない数字（数値書式の条件とラベルに使う。PowerPoint は 1.02e+07 を解釈できない）。"""
     return f"{v:.6f}".rstrip("0").rstrip(".")
+
+
+def _axis_fmt(fmt: str) -> str:
+    """軸の目盛の書式。ラベルの fmt から条件（[>=2000] など）と 2 区画目以降（負・ゼロの書式）を外し、正の数の書式だけ使う。"""
+    first = fmt.split(";")[0]
+    while "[" in first and "]" in first:
+        first = first[:first.index("[")] + first[first.index("]") + 1:]
+    return first or "#,##0"
+
+
+def _highlights(spec) -> set:
+    """highlight は 0 始まりの番号か、その配列。"""
+    h = spec.get("highlight")
+    if h is None:
+        return set()
+    return set(h) if isinstance(h, (list, tuple)) else {h}
 
 
 def waterfall_series(values, totals):
@@ -88,10 +104,11 @@ def add_chart(slide, el, palette):
     if t == "pie":
         ser = plot.series[0]
         cycle = [palette.accent, palette.accent_mid, "#8C8C8C", palette.accent_dark, "#BFBFBF"]
+        hl = _highlights(spec)
         for i in range(len(spec["categories"])):
             pt = ser.points[i]
             pt.format.fill.solid()
-            pt.format.fill.fore_color.rgb = rgb(palette.emphasis if spec.get("highlight") == i else cycle[i % 5])
+            pt.format.fill.fore_color.rgb = rgb(palette.emphasis if i in hl else cycle[i % 5])
         plot.has_data_labels = True
         plot.data_labels.number_format = fmt
         plot.data_labels.number_format_is_linked = False
@@ -103,6 +120,8 @@ def add_chart(slide, el, palette):
     value_axis = chart.value_axis
     value_axis.has_major_gridlines = False
     value_axis.tick_labels.font.size = Pt(FONT_PT)
+    value_axis.tick_labels.number_format = _axis_fmt(fmt)      # 目盛の桁区切りをラベルと揃える（30000 → 30,000）
+    value_axis.tick_labels.number_format_is_linked = False
     axis = spec.get("axis") or {}           # 小グラフを並べるときは、軸の最小・最大・目盛を全パネルで揃える
     _check_axis(axis)
     if "min" in axis:
@@ -112,26 +131,35 @@ def add_chart(slide, el, palette):
     if "major" in axis:
         value_axis.major_unit = axis["major"]
     chart.category_axis.tick_labels.font.size = Pt(FONT_PT)
-    plot.gap_width = 60
+    plot.gap_width = spec.get("gap", 60)     # 棒の間隔（%）。幅の狭いグラフで棒を太くするとき小さくする
 
     if t == "waterfall":
         plot.overlap = 100
         s_base, s_up, s_down, s_tot = plot.series
         s_base.format.fill.background()
-        _fill(s_up, palette.accent)
+        # 増減はどちらも灰（増加＝淡い灰、減少＝濃い灰）、合計は中間の灰。増加を基調色にすると「良い変化」に見えるので使わない
+        _fill(s_up, "#BFBFBF")
         _fill(s_down, "#404040")
         _fill(s_tot, "#767676")
         s_base.data_labels.show_value = False
         # 棒の高さが軸の 6% 未満の増減は、棒の中に収まらない。棒の中のラベルは出さず、基準の系列に値を出す
         top = max(sum(parts) for parts in zip(w["base"], w["up"], w["down"], w["total"]))
-        threshold = top * SMALL_STEP
-        for s in (s_up, s_down, s_tot):
+        threshold = (axis.get("max") or top) * SMALL_STEP
+        for s, color in ((s_up, palette.text), (s_down, "#FFFFFF"), (s_tot, "#FFFFFF")):
             dl = s.data_labels
             dl.show_value = True
             dl.number_format = f'[>={_plain(threshold)}]{fmt};""'
             dl.number_format_is_linked = False
             dl.font.size = Pt(FONT_PT)
-            dl.font.color.rgb = rgb("#FFFFFF")  # 棒はいずれも濃色。白でコントラスト 4.5:1 以上
+            dl.font.color.rgb = rgb(color)      # 濃い棒は白、淡い棒は本文色でコントラスト 4.5:1 以上
+        # 注目する項目（highlight）だけ強調色。増減のどちらの系列にあるかで塗る点を選ぶ
+        for i in _highlights(spec):
+            s = s_up if w["up"][i] else s_down if w["down"][i] else s_tot
+            pt = s.points[i]
+            pt.format.fill.solid()
+            pt.format.fill.fore_color.rgb = rgb(palette.emphasis)
+            pt.data_label.font.size = Pt(FONT_PT)
+            pt.data_label.font.color.rgb = rgb("#FFFFFF")
         for i, (u, d) in enumerate(zip(w["up"], w["down"])):
             step = u or d
             if 0 < step < threshold:
@@ -151,16 +179,20 @@ def add_chart(slide, el, palette):
             ser.smooth = False
         else:
             _fill(ser, colors[i % 5])
-    if t in ("bar", "barh") and spec.get("highlight") is not None:
-        pt = plot.series[0].points[spec["highlight"]]
-        pt.format.fill.solid()
-        pt.format.fill.fore_color.rgb = rgb(palette.emphasis)
+    if t in ("bar", "barh"):
+        for i in _highlights(spec):            # 注目する棒（1 本か、主張に合わせた数本）だけ強調色
+            pt = plot.series[0].points[i]
+            pt.format.fill.solid()
+            pt.format.fill.fore_color.rgb = rgb(palette.emphasis)
     if t.startswith("stacked"):
         plot.overlap = 100
     plot.has_data_labels = True
     plot.data_labels.number_format = fmt
     plot.data_labels.number_format_is_linked = False
     plot.data_labels.font.size = Pt(FONT_PT)
+    for ser, s in zip(plot.series, spec["series"]):
+        if s.get("labels") is False:           # 系列ごとにラベルを消す（折れ線で値が重なるとき、注目する系列だけ残す）
+            ser.data_labels.show_value = False
     multi = len(plot.series) > 1
     chart.has_legend = multi
     if multi:

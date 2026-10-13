@@ -3,67 +3,69 @@
      要因を寄与つきで分解するときは tree（ロジックツリー）、原因を時間の連鎖で追うときはこの型を使う。
      差し替える所: 事象（名前・日時・停止時間・損失）・直接原因 2 つ・背景要因 2 つ・根本原因・対策 3 つ（番号・名前・効果）・左端の試算・注。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="height:44px">回線断10時間の根は冗長化と遠隔運用への未投資にあり、SD-WAN化で同時に解ける</div>
-  <div class="pp-text b" data-role="lead" style="left:64px;top:150px;width:1152px;height:28px;font-size:20px">本社MPLS回線断（2026年7月14日）の原因の連鎖と対策（時間）</div>
-  <div class="pp-text" data-note="4 列：事象から根本原因へ、矢印で左から右へたどる" data-role="caption" style="left:64px;top:192px;width:228px;height:22px">事象</div>
-  <div class="pp-text" data-note="4 列：事象から根本原因へ、矢印で左から右へたどる" data-role="caption" style="left:340px;top:192px;width:228px;height:22px">直接原因</div>
-  <div class="pp-text" data-note="4 列：事象から根本原因へ、矢印で左から右へたどる" data-role="caption" style="left:616px;top:192px;width:228px;height:22px">背景要因</div>
-  <div class="pp-text" data-note="4 列：事象から根本原因へ、矢印で左から右へたどる" data-role="caption" style="left:892px;top:192px;width:324px;height:22px">根本原因</div>
-  <div class="pp-line" style="left:64px;top:214px;width:1152px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">回線断の原因</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">回線断10時間の根は冗長化と遠隔運用への未投資にあり、SD-WAN化で同時に解ける</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社MPLS回線断（2026年7月14日）の原因の連鎖と対策（時間）</div>
+  <div class="pp-text" data-note="4 列：事象から根本原因へ、矢印で左から右へたどる" data-role="caption" style="left:64px;top:229px;width:228px;height:22px">事象</div>
+  <div class="pp-text" data-note="4 列：事象から根本原因へ、矢印で左から右へたどる" data-role="caption" style="left:340px;top:229px;width:228px;height:22px">直接原因</div>
+  <div class="pp-text" data-note="4 列：事象から根本原因へ、矢印で左から右へたどる" data-role="caption" style="left:616px;top:229px;width:228px;height:22px">背景要因</div>
+  <div class="pp-text" data-note="4 列：事象から根本原因へ、矢印で左から右へたどる" data-role="caption" style="left:892px;top:229px;width:324px;height:22px">根本原因</div>
+  <div class="pp-line" style="left:64px;top:249px;width:1152px;height:1px;background:var(--text-sub)"></div>
 
-  <div class="pp-shape f-accent" data-note="事象：基調色の面に、日時・停止時間・損失を数字で" style="left:64px;top:222px;width:228px;height:228px"></div>
-  <div class="pp-text t-white" data-role="caption" style="left:76px;top:232px;width:204px;height:20px">7月14日 9:05〜19:05</div>
-  <div class="pp-text t-white b" data-note="事象：基調色の面に、日時・停止時間・損失を数字で" style="left:76px;top:258px;width:204px;height:30px;font-size:21px">本社WAN回線断</div>
-  <div class="pp-text t-white b" style="left:76px;top:300px;width:204px;height:48px;font-size:36px;line-height:1.2">10.0h</div>
-  <div class="pp-text t-white" data-role="caption" style="left:76px;top:352px;width:204px;height:20px">業務停止（復旧時間 MTTR）</div>
-  <div class="pp-text t-white" data-role="caption" style="left:76px;top:380px;width:204px;height:44px">機会損失 1,500万円<br>（停止1時間あたり150万円）</div>
+  <div class="pp-shape f-accent" data-note="事象：基調色の面に、日時・停止時間・損失を数字で" style="left:64px;top:256px;width:228px;height:205px"></div>
+  <div class="pp-text t-white" data-role="caption" style="left:76px;top:265px;width:204px;height:20px">7月14日 9:05〜19:05</div>
+  <div class="pp-text t-white b" data-note="事象：基調色の面に、日時・停止時間・損失を数字で" style="left:76px;top:289px;width:204px;height:30px;font-size:21px">本社WAN回線断</div>
+  <div class="pp-text t-white b" style="left:76px;top:327px;width:204px;height:48px;font-size:36px;line-height:1.2">10.0h</div>
+  <div class="pp-text t-white" data-role="caption" style="left:76px;top:374px;width:204px;height:20px">業務停止（復旧時間 MTTR）</div>
+  <div class="pp-text t-white" data-role="caption" style="left:76px;top:399px;width:204px;height:40px;line-height:1.3">機会損失 1,500万円<br>（停止1時間あたり150万円）</div>
 
-  <div class="pp-line" style="left:292px;top:335px;width:24px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-line" style="left:316px;top:274px;width:2px;height:126px;background:var(--text-sub)"></div>
-  <div class="pp-line" data-arrow="end" style="left:316px;top:273px;width:24px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-line" data-arrow="end" style="left:316px;top:397px;width:24px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:292px;top:358px;width:24px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:316px;top:303px;width:2px;height:114px;background:var(--text-sub)"></div>
+  <div class="pp-line" data-arrow="end" style="left:316px;top:302px;width:24px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line" data-arrow="end" style="left:316px;top:414px;width:24px;height:2px;background:var(--text-sub)"></div>
 
-  <div class="pp-shape f-soft" data-note="原因の箱：番号・名前・事実（数値 1 つ）。直接と背景は 2 本に分岐" style="left:340px;top:222px;width:228px;height:104px"></div>
-  <div class="pp-text b" data-note="原因の箱：番号・名前・事実（数値 1 つ）。直接と背景は 2 本に分岐" style="left:352px;top:228px;width:204px;height:52px;font-size:19px;line-height:1.35"><span style="color:var(--accent-dark)">①</span> MPLS回線が1本で冗長なし</div>
-  <div class="pp-text" data-role="caption" style="left:352px;top:282px;width:204px;height:40px">回線断で本社の全業務が停止。予備回線は手動切替</div>
-  <div class="pp-shape f-soft" style="left:340px;top:346px;width:228px;height:104px"></div>
-  <div class="pp-text b" style="left:352px;top:352px;width:204px;height:52px;font-size:19px;line-height:1.35"><span style="color:var(--accent-dark)">②</span> 検知が申告に依存</div>
-  <div class="pp-text" data-role="caption" style="left:352px;top:406px;width:204px;height:40px">本社ルータの死活は未監視。申告から特定まで2.5h</div>
+  <div class="pp-shape f-soft" data-note="原因の箱：番号・名前・事実（数値 1 つ）。直接と背景は 2 本に分岐" style="left:340px;top:256px;width:228px;height:94px"></div>
+  <div class="pp-text b" data-note="原因の箱：番号・名前・事実（数値 1 つ）。直接と背景は 2 本に分岐" style="left:352px;top:262px;width:204px;height:52px;font-size:19px;line-height:1.35"><span style="color:var(--accent-dark)">①</span> MPLS回線が1本で冗長なし</div>
+  <div class="pp-text" data-role="caption" style="left:352px;top:310px;width:204px;height:36px;line-height:1.3">回線断で本社の全業務が停止。予備回線は手動切替</div>
+  <div class="pp-shape f-soft" style="left:340px;top:368px;width:228px;height:94px"></div>
+  <div class="pp-text b" style="left:352px;top:374px;width:204px;height:52px;font-size:19px;line-height:1.35"><span style="color:var(--accent-dark)">②</span> 検知が申告に依存</div>
+  <div class="pp-text" data-role="caption" style="left:352px;top:422px;width:204px;height:36px;line-height:1.3">本社ルータの死活は未監視。申告から特定まで2.5h</div>
 
-  <div class="pp-line" data-arrow="end" style="left:568px;top:273px;width:48px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-line" data-arrow="end" style="left:568px;top:397px;width:48px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line" data-arrow="end" style="left:568px;top:302px;width:48px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line" data-arrow="end" style="left:568px;top:414px;width:48px;height:2px;background:var(--text-sub)"></div>
 
-  <div class="pp-shape f-soft" style="left:616px;top:222px;width:228px;height:104px"></div>
-  <div class="pp-text b" style="left:628px;top:228px;width:204px;height:52px;font-size:19px;line-height:1.35"><span style="color:var(--accent-dark)">③</span> 予備回線への切替に承認が要る</div>
-  <div class="pp-text" data-role="caption" style="left:628px;top:282px;width:204px;height:40px">切替基準がなく、部長承認まで待ち2.0h</div>
-  <div class="pp-shape f-soft" style="left:616px;top:346px;width:228px;height:104px"></div>
-  <div class="pp-text b" style="left:628px;top:352px;width:204px;height:52px;font-size:19px;line-height:1.35"><span style="color:var(--accent-dark)">④</span> 遠隔で復旧できない</div>
-  <div class="pp-text" data-role="caption" style="left:628px;top:406px;width:204px;height:40px">遠隔で設定を戻せず、ベンダー到着まで待ち3.0h</div>
+  <div class="pp-shape f-soft" style="left:616px;top:256px;width:228px;height:94px"></div>
+  <div class="pp-text b" style="left:628px;top:262px;width:204px;height:52px;font-size:19px;line-height:1.35"><span style="color:var(--accent-dark)">③</span> 予備回線への切替に承認が要る</div>
+  <div class="pp-text" data-role="caption" style="left:628px;top:310px;width:204px;height:36px;line-height:1.3">切替基準がなく、部長承認まで待ち2.0h</div>
+  <div class="pp-shape f-soft" style="left:616px;top:368px;width:228px;height:94px"></div>
+  <div class="pp-text b" style="left:628px;top:374px;width:204px;height:52px;font-size:19px;line-height:1.35"><span style="color:var(--accent-dark)">④</span> 遠隔で復旧できない</div>
+  <div class="pp-text" data-role="caption" style="left:628px;top:422px;width:204px;height:36px;line-height:1.3">遠隔で設定を戻せず、ベンダー到着まで待ち3.0h</div>
 
-  <div class="pp-line" style="left:844px;top:273px;width:24px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-line" style="left:844px;top:397px;width:24px;height:2px;background:var(--text-sub)"></div>
-  <div class="pp-line" style="left:868px;top:274px;width:2px;height:126px;background:var(--text-sub)"></div>
-  <div class="pp-line" data-arrow="end" style="left:868px;top:335px;width:24px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:844px;top:302px;width:24px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:844px;top:414px;width:24px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:868px;top:303px;width:2px;height:114px;background:var(--text-sub)"></div>
+  <div class="pp-line" data-arrow="end" style="left:868px;top:358px;width:24px;height:2px;background:var(--text-sub)"></div>
 
-  <div class="pp-shape f-soft" data-note="根本原因：①〜④がすべてここから生じることを、下の 1 文で結ぶ" style="left:892px;top:222px;width:324px;height:228px"></div>
-  <div class="pp-text b t-dark" data-note="根本原因：①〜④がすべてここから生じることを、下の 1 文で結ぶ" style="left:904px;top:236px;width:300px;height:60px;font-size:21px;line-height:1.35">⑤ 回線の冗長化と遠隔運用に投資してこなかった</div>
-  <div class="pp-text" data-role="caption" style="left:904px;top:304px;width:300px;height:66px">FY2021〜25はMPLSの保守延長のみ（年2,000万円）。更改投資はゼロで、48拠点の構成は12モデルが混在したまま</div>
-  <div class="pp-text" style="left:904px;top:396px;width:300px;height:30px;font-size:19px">→ ①〜④の源はここにある</div>
+  <div class="pp-shape f-soft" data-note="根本原因：①〜④がすべてここから生じることを、下の 1 文で結ぶ" style="left:892px;top:256px;width:324px;height:205px"></div>
+  <div class="pp-text b t-dark" data-note="根本原因：①〜④がすべてここから生じることを、下の 1 文で結ぶ" style="left:904px;top:269px;width:300px;height:60px;font-size:21px;line-height:1.35">⑤ 回線の冗長化と遠隔運用に投資してこなかった</div>
+  <div class="pp-text" data-role="caption" style="left:904px;top:330px;width:300px;height:59px;line-height:1.3">FY2021〜25はMPLSの保守延長のみ（年2,000万円）。更改投資はゼロで、48拠点の構成は12モデルが混在したまま</div>
+  <div class="pp-text" style="left:904px;top:413px;width:300px;height:30px;font-size:19px">→ ①〜④の源はここにある</div>
 
-  <div class="pp-text" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" data-role="caption" style="left:64px;top:470px;width:1152px;height:22px">対策（枠線＝計画。「対②」は原因②に効く対策）</div>
-  <div class="pp-shape f-soft" style="left:64px;top:494px;width:228px;height:98px"></div>
-  <div class="pp-text" data-role="caption" style="left:76px;top:502px;width:204px;height:20px">対策後の復旧時間（試算）</div>
-  <div class="pp-text b t-dark" style="left:76px;top:524px;width:204px;height:40px;font-size:32px;line-height:1.2">1.0h</div>
+  <div class="pp-text" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" data-role="caption" style="left:64px;top:480px;width:1152px;height:22px">対策（枠線＝計画。「対②」は原因②に効く対策）</div>
+  <div class="pp-shape f-soft" style="left:64px;top:502px;width:228px;height:88px"></div>
+  <div class="pp-text" data-role="caption" style="left:76px;top:509px;width:204px;height:20px">対策後の復旧時間（試算）</div>
+  <div class="pp-text b t-dark" style="left:76px;top:529px;width:204px;height:40px;font-size:32px;line-height:1.2">1.0h</div>
   <div class="pp-text" data-role="caption" style="left:76px;top:566px;width:204px;height:20px">現行の10.0hから▲90%</div>
-  <div class="pp-shape f-outline" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" style="left:340px;top:494px;width:228px;height:98px"></div>
-  <div class="pp-text b" style="left:352px;top:500px;width:204px;height:52px;font-size:19px;line-height:1.35">対② 監視センターへ全48拠点を集約</div>
-  <div class="pp-text" data-role="caption" style="left:352px;top:556px;width:204px;height:20px">検知5分・特定0.5h</div>
-  <div class="pp-shape f-outline" style="left:616px;top:494px;width:228px;height:98px"></div>
-  <div class="pp-text b" style="left:628px;top:500px;width:204px;height:52px;font-size:19px;line-height:1.35">対③ 切替基準を定め、自動切替に</div>
-  <div class="pp-text" data-role="caption" style="left:628px;top:556px;width:204px;height:20px">承認待ち0h</div>
-  <div class="pp-line" data-arrow="end" style="left:1052px;top:450px;width:2px;height:44px;background:var(--accent)"></div>
-  <div class="pp-shape f-outline" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" style="left:892px;top:494px;width:324px;height:98px"></div>
-  <div class="pp-text b t-emph" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" style="left:904px;top:500px;width:300px;height:52px;font-size:19px;line-height:1.35">対①④⑤ SD-WAN化：2回線＋LTEの自動切替と遠隔復旧</div>
-  <div class="pp-text" data-role="caption" style="left:904px;top:556px;width:300px;height:20px">1回線断でも継続。現地出動なし（B案）</div>
+  <div class="pp-shape f-outline" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" style="left:340px;top:502px;width:228px;height:88px"></div>
+  <div class="pp-text b" style="left:352px;top:507px;width:204px;height:52px;font-size:19px;line-height:1.35">対② 監視センターへ全48拠点を集約</div>
+  <div class="pp-text" data-role="caption" style="left:352px;top:557px;width:204px;height:20px">検知5分・特定0.5h</div>
+  <div class="pp-shape f-outline" style="left:616px;top:502px;width:228px;height:88px"></div>
+  <div class="pp-text b" style="left:628px;top:507px;width:204px;height:52px;font-size:19px;line-height:1.35">対③ 切替基準を定め、自動切替に</div>
+  <div class="pp-text" data-role="caption" style="left:628px;top:557px;width:204px;height:20px">承認待ち0h</div>
+  <div class="pp-line" data-arrow="end" style="left:1052px;top:462px;width:2px;height:44px;background:var(--accent)"></div>
+  <div class="pp-shape f-outline" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" style="left:892px;top:502px;width:324px;height:88px"></div>
+  <div class="pp-text b t-emph" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" style="left:904px;top:507px;width:300px;height:52px;font-size:19px;line-height:1.35">対①④⑤ SD-WAN化：2回線＋LTEの自動切替と遠隔復旧</div>
+  <div class="pp-text" data-role="caption" style="left:904px;top:557px;width:300px;height:20px">1回線断でも継続。現地出動なし（B案）</div>
   <div class="pp-text" data-note="注：時間の出所と、連鎖から言える含意" data-role="caption" style="left:64px;top:600px;width:1152px;height:40px">注: 時間は2026年7月14日の対応記録、未投資の期間はFY2021〜25の予算実績。試算の1.0hは検知5分・自動切替・遠隔復旧の積み上げ<br>→ 根本原因⑤に手を打つB案が通れば①③④は同時に消え、②は監視の集約で解ける</div>
 </section>

@@ -1,0 +1,38 @@
+<!-- 用途: 階段（段階的に到達する過程）。段階ごとの行を、段階が進むほど右上へずらして重ねる（Level 1 が左下、到達点が右上）。各行に「Level・時期 → 段階名 → 説明 → 指標の数字」を置く。
+     到達点の行だけ強調色の太い枠（1 枚 1 点）。行の幅は、右へずれた分だけ狭くする（ずれ 96px）。段階は 4 つまで（本体の高さに収まる範囲）。
+     差し替える所: 題・リード文・図表タイトル・4 行の Level・時期・段階名・説明・指標の数字・注。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">運用の到達段階</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">運用は4段階で成熟させ、自動切替の段階で復旧時間を4.8時間から1.0時間へ縮める</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN運用の4段階（FY2026〜FY2030。到達の時期と復旧時間）</div>
+  <div class="pp-shape f-white" data-note="右へずらした行：段階が進むほど右へずれる" style="left:64px;top:504px;width:960px;height:80px"></div>
+  <div class="pp-shape f-light" data-overlap style="left:64px;top:504px;width:124px;height:80px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:64px;top:514px;width:124px;height:28px;font-size:19px">Level 1</div>
+  <div class="pp-text t-dark center" data-role="caption" data-overlap style="left:64px;top:546px;width:124px;height:28px">FY2026</div>
+  <div class="pp-text t-dark b" style="left:204px;top:512px;width:240px;height:32px;font-size:24px">手作業の運用</div>
+  <div class="pp-text" style="left:204px;top:548px;width:660px;height:30px;font-size:19px">22拠点を目視で確認</div>
+  <div class="pp-text num t-dark" style="left:874px;top:524px;width:140px;height:40px;font-size:28px">4.8時間</div>
+  <div class="pp-shape f-white" style="left:160px;top:412px;width:864px;height:80px"></div>
+  <div class="pp-shape f-light" data-overlap style="left:160px;top:412px;width:124px;height:80px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:160px;top:422px;width:124px;height:28px;font-size:19px">Level 2</div>
+  <div class="pp-text t-dark center" data-role="caption" data-overlap style="left:160px;top:454px;width:124px;height:28px">FY2027</div>
+  <div class="pp-text t-dark b" style="left:300px;top:420px;width:240px;height:32px;font-size:24px">集中監視</div>
+  <div class="pp-text" style="left:300px;top:456px;width:564px;height:30px;font-size:19px">48拠点を一括で監視</div>
+  <div class="pp-text num t-dark" style="left:874px;top:432px;width:140px;height:40px;font-size:28px">3.0時間</div>
+  <div class="pp-shape f-white" style="left:256px;top:320px;width:768px;height:80px"></div>
+  <div class="pp-shape f-light" data-overlap style="left:256px;top:320px;width:124px;height:80px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:256px;top:330px;width:124px;height:28px;font-size:19px">Level 3</div>
+  <div class="pp-text t-dark center" data-role="caption" data-overlap style="left:256px;top:362px;width:124px;height:28px">FY2028</div>
+  <div class="pp-text t-dark b" style="left:396px;top:328px;width:240px;height:32px;font-size:24px">自動検知</div>
+  <div class="pp-text" style="left:396px;top:364px;width:468px;height:30px;font-size:19px">障害を自動で検知</div>
+  <div class="pp-text num t-dark" style="left:874px;top:340px;width:140px;height:40px;font-size:28px">2.0時間</div>
+  <div class="pp-shape f-white" data-note="強調色：承認を求める 1 点だけ（1 枚 1 点）" style="left:352px;top:228px;width:672px;height:80px;border:2px solid var(--emphasis)"></div>
+  <div class="pp-shape f-light" data-overlap style="left:352px;top:228px;width:124px;height:80px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:352px;top:238px;width:124px;height:28px;font-size:19px">Level 4</div>
+  <div class="pp-text t-dark center" data-role="caption" data-overlap style="left:352px;top:270px;width:124px;height:28px">FY2030</div>
+  <div class="pp-text t-dark b" style="left:492px;top:236px;width:240px;height:32px;font-size:24px">自動切替</div>
+  <div class="pp-text" style="left:492px;top:272px;width:372px;height:30px;font-size:19px">回線を自動で切替</div>
+  <div class="pp-text num t-dark" style="left:874px;top:248px;width:140px;height:40px;font-size:28px">1.0時間</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 復旧時間は障害発生から復旧までの平均（MTTR）。到達の時期は計画値<br>→ 短縮3.8時間のうち2.0時間は、自動検知と自動切替の第3〜4段階で生まれる</div>
+</section>

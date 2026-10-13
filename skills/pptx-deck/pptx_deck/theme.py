@@ -73,7 +73,8 @@ def resolve(arg: str) -> str:
 
 def derive(base: str) -> Palette:
     accent = resolve(base)
-    while contrast(accent, "#FFFFFF") < 4.5:
+    # 基調色の文字は白地とパネル地（bg_soft）の両方で読めること
+    while contrast(accent, "#FFFFFF") < 4.5 or contrast(accent, "#EEF3F6") < 4.5:
         accent = mix(accent, "#000000", 0.1)
     if is_gray(accent):
         emphasis = _EMPHASIS[0]
@@ -81,11 +82,18 @@ def derive(base: str) -> Palette:
         emphasis = next((c for c in _EMPHASIS
                          if hue_distance(c, accent) >= 60 and contrast(c, "#FFFFFF") >= 4.5),
                         "#404040")
+    accent_mid = mix(accent, "#FFFFFF", 0.52)
+    dark_ratio = 0.35
+    while contrast(mix(accent, "#000000", dark_ratio), accent_mid) < 4.5 and dark_ratio < 0.8:
+        dark_ratio += 0.05   # 濃い基調色の文字が、中間の面（accent_mid）の上でも読めること
+    soft_ratio = 0.28
+    while contrast("#FFFFFF", mix(accent, "#FFFFFF", soft_ratio)) < 4.5 and soft_ratio > 0:
+        soft_ratio = max(0.0, soft_ratio - 0.04)   # 白い文字が、淡い基調色の面（accent_soft）の上でも読めること
     return Palette(
         accent=accent,
-        accent_dark=mix(accent, "#000000", 0.35),
-        accent_soft=mix(accent, "#FFFFFF", 0.28),
-        accent_mid=mix(accent, "#FFFFFF", 0.52),
+        accent_dark=mix(accent, "#000000", dark_ratio),
+        accent_soft=mix(accent, "#FFFFFF", soft_ratio),
+        accent_mid=accent_mid,
         accent_light=mix(accent, "#FFFFFF", 0.75),
         emphasis=emphasis,
         text="#1A1A1A",

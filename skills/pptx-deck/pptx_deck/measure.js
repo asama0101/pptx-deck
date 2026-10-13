@@ -151,6 +151,7 @@
         if (e.dash && bt) e.fill = { hex: bt.hex, a: 1 };   // 破線・点線は border-top の色で描かれる
         e.arrow = el.dataset.arrow === 'end';
         e.reverse = el.dataset.dir === 'rev';      // 矢印を逆向き（右→左、下→上）にする
+        e.diag = el.dataset.dir === 'diag' ? 'down' : el.dataset.dir === 'diag-up' ? 'up' : null;   // 斜め線（左上→右下、左下→右上）。太さは border-top か 3px
         return e;
       }
       if (el.classList.contains('pp-image')) {

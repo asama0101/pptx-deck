@@ -20,7 +20,7 @@ def _write_icons(dst: Path, p: theme.Palette):
             (dst / f"{svg.stem}-{tone}.svg").write_text(text.replace("currentColor", colors[tone]), encoding="utf-8")
 
 
-def init(workdir, color: str = "navy", template_path=None, force: bool = False) -> dict:
+def init(workdir, color: str = "navy", template_path=None, force: bool = False, footer: str | None = None) -> dict:
     work = Path(workdir)
     base = theme.resolve(color)                                   # 不正なら何も作らずに失敗
     palette = theme.derive(base)
@@ -33,7 +33,7 @@ def init(workdir, color: str = "navy", template_path=None, force: bool = False) 
     tdir.mkdir(exist_ok=True)
     dst = tdir / f"template{src.suffix.lower()}"
     shutil.copyfile(src, dst)
-    bg = template.render_underlays(dst, info, tdir)
+    bg = template.render_underlays(dst, info, tdir, footer)
     layout_bg = template.underlay_colors(tdir, info)
     (work / "theme.css").write_text(theme.theme_css(palette) + template.layout_css(info, bg, layout_bg),
                                     encoding="utf-8")
@@ -47,7 +47,7 @@ def init(workdir, color: str = "navy", template_path=None, force: bool = False) 
         shutil.copyfile(paths.ASSETS / "sample" / "design.md", design)
     (work / "slides").mkdir(exist_ok=True)
     (work / "template.json").write_text(json.dumps({
-        "color": base, "template": f"_template/{dst.name}", "info": info.to_dict(), "footer": None,
+        "color": base, "template": f"_template/{dst.name}", "info": info.to_dict(), "footer": footer,
     }, ensure_ascii=False, indent=2), encoding="utf-8")
     notes = list(info.notes)
     stale = [p for p in (work / "slides").iterdir()]

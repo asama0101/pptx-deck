@@ -15,6 +15,7 @@ _CONNECT = ["ため", "だが", "ことで", "ば、", "が、", "ので"]
 _BODY_LAYOUTS = {"content", "diagram", "table", "chart"}
 _DASH = re.compile("[—―─]")
 _SELF = re.compile(r"本ページ|この1枚|この１枚|本スライド")
+_TITLE_END = re.compile(r"(する|した|される|できる|だ|である|です|ます|ある|ない|べき|れる|なる|か|よう|減る|増える|縮む)$")
 _TYPES = [("提言", re.compile(r"べきだ|必要がある|が必要だ")), ("逆接", re.compile(r"だが|が、")),
           ("条件", re.compile(r"ば、")), ("起因", re.compile(r"ではなく")),
           ("評価", re.compile(r"を左右しない|の範囲にあり")), ("因果", re.compile(r"ため、|ことで"))]
@@ -40,6 +41,29 @@ def _issues(md: str):
         if it and cur:
             items.append(it.group(1).strip())
     return items
+
+
+def _title_problems(sid, title):
+    """題（短い名詞句・20 字以内）。判断は書かない（判断はリード文＝見出しに）。"""
+    out = []
+    if len(title) > 20:
+        out.append(f"{sid}: 題の字数が {len(title)} です（20 字以内の短い名詞句）")
+    if re.search(r"[。！？、]", title):
+        out.append(f"{sid}: 題に句読点・文末記号は使えません（短い名詞句にする。判断は見出し〔リード文〕に書く）")
+    elif _TITLE_END.search(title):
+        out.append(f"{sid}: 題が文の形です（名詞句にする。判断はリード文に書く）: {title}")
+    return out
+
+
+def migration_notes(md: str) -> list[str]:
+    """旧形式の原稿（本文スライドに「題」がない）への移行の案内。エラーではない（見出しはそのままリード文になる）。"""
+    slides = parse(md)
+    missing = [s["id"] for s in slides if s["fields"].get("layout") in _BODY_LAYOUTS and not s["fields"].get("題")]
+    if not missing:
+        return []
+    return [f"移行の案内: 本文スライド {len(missing)} 枚（{', '.join(missing[:6])}{' ほか' if len(missing) > 6 else ''}）に「題」がありません。"
+            "ページ枠が 題（20 字以内の短い名詞句）＋リード文（見出し。判断を言い切る 30〜60 字）の 2 段になりました。"
+            "「- 題: …」を足してください（見出しは今のままリード文として使えます）。"]
 
 
 def _head_problems(sid, head):
@@ -120,6 +144,8 @@ def lint(md: str) -> list[str]:
             out.append(f"{sid}: 見出しがありません")
         elif layout in _BODY_LAYOUTS:
             out.extend(_head_problems(sid, f["見出し"]))
+            if isinstance(f.get("題"), str) and f["題"]:
+                out.extend(_title_problems(sid, f["題"]))
         if layout not in ("cover", "closing") and not f.get("章名"):
             out.append(f"{sid}: 章名（そのスライドが答える問い）がありません")
         if layout not in ("cover", "closing", "agenda") and not (f.get("本文") or f.get("図表")):

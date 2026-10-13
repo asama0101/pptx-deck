@@ -1,0 +1,57 @@
+<!-- 用途: ロジックツリー（要因分解と打ち手の一覧）。上に根（基調色の面）を置き、2 段の枝を下へ広げ、各枝の下に末端の施策をカードで積む。カードの 2 行目に効果（時間）と実現期間を書く。枝の接続は直角の罫線。先に着手する施策（ここでは 1 年内に効く 3 手）だけ枠線、残りは白地。最下部のまとめの行で、着手する手と残りの寄与を足し上げる。
+     デザイン1との違い: 左から右ではなく上から下へ展開する。評価の列（効果・実現期間）を持たず、末端の各カードに 2 行目として添える。
+     強調色はまとめの行の 1 点（白地）。注に数値の出所を書く。
+     差し替える所: 根・枝（名前と寄与）・末端のカード 6 枚（施策・効果・実現期間）・まとめの行。末端は 1 枝に 2 枚まで。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">復旧時間の要因</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">復旧時間短縮の過半は復旧側にあるため、1年内に効く3手から着手すべきだ</div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">復旧時間（MTTR）の要因分解と打ち手（FY25→FY28、時間）</div>
+  <div class="pp-shape f-accent" data-note="根と枝：根に復旧時間の短縮、枝に要因と寄与（足すと根に戻る）。罫線は直角" style="left:430px;top:228px;width:420px;height:40px"></div>
+  <div class="pp-text t-white b center" data-note="根と枝：根に復旧時間の短縮、枝に要因と寄与（足すと根に戻る）。罫線は直角" style="left:438px;top:232px;width:404px;height:32px;font-size:19px;line-height:1.35">復旧時間　▲3.8h（4.8h→1.0h）</div>
+  <div class="pp-line " style="left:639px;top:268px;width:2px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-line " style="left:347px;top:276px;width:586px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line " style="left:347px;top:276px;width:2px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-outline" data-note="枝（上段）：要因ごとの寄与を足すと根の値に戻る" style="left:64px;top:284px;width:568px;height:42px"></div>
+  <div class="pp-text b center" style="left:72px;top:287px;width:552px;height:34px;font-size:19px;line-height:1.35">検知・切り分けの短縮　<span style="color:var(--accent-dark)">▲1.8h</span></div>
+  <div class="pp-line " style="left:201px;top:334px;width:292px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line " style="left:347px;top:326px;width:2px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-line " style="left:931px;top:276px;width:2px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-outline" style="left:648px;top:284px;width:568px;height:42px"></div>
+  <div class="pp-text b center" style="left:656px;top:287px;width:552px;height:34px;font-size:19px;line-height:1.35">復旧・承認の短縮　<span style="color:var(--accent-dark)">▲2.0h</span></div>
+  <div class="pp-line " style="left:785px;top:334px;width:292px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line " style="left:931px;top:326px;width:2px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-line " style="left:201px;top:334px;width:2px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:64px;top:342px;width:276px;height:58px"></div>
+  <div class="pp-text b center" style="left:68px;top:345px;width:268px;height:52px;font-size:19px;line-height:1.35">自動検知の導入<br><span style="color:var(--accent-dark)">▲0.7h</span></div>
+  <div class="pp-shape f-outline" data-note="末端の施策：1年内に効く3手だけ枠線。効果（時間）と実現期間を 2 行目に書く" style="left:64px;top:410px;width:276px;height:58px"></div>
+  <div class="pp-text" style="left:72px;top:413px;width:260px;height:28px;font-size:19px">監視センターでの自動検知</div>
+  <div class="pp-text" data-role="caption" style="left:72px;top:442px;width:260px;height:20px">効果 ▲0.3h　実現 〜1年</div>
+  <div class="pp-shape f-white" style="left:64px;top:476px;width:276px;height:58px"></div>
+  <div class="pp-text" style="left:72px;top:479px;width:260px;height:28px;font-size:19px">営業所26拠点の監視追加</div>
+  <div class="pp-text" data-role="caption" style="left:72px;top:508px;width:260px;height:20px">効果 ▲0.4h　実現 1〜3年</div>
+  <div class="pp-line " style="left:493px;top:334px;width:2px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:356px;top:342px;width:276px;height:58px"></div>
+  <div class="pp-text b center" style="left:360px;top:345px;width:268px;height:52px;font-size:19px;line-height:1.35">構成の標準化<br><span style="color:var(--accent-dark)">▲1.1h</span></div>
+  <div class="pp-shape f-outline" style="left:356px;top:410px;width:276px;height:58px"></div>
+  <div class="pp-text" style="left:364px;top:413px;width:260px;height:28px;font-size:19px">構成モデル12→3への統一</div>
+  <div class="pp-text" data-role="caption" style="left:364px;top:442px;width:260px;height:20px">効果 ▲1.1h　実現 〜1年</div>
+  <div class="pp-line " style="left:785px;top:334px;width:2px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:648px;top:342px;width:276px;height:58px"></div>
+  <div class="pp-text b center" style="left:652px;top:345px;width:268px;height:52px;font-size:19px;line-height:1.35">自動切替と遠隔復旧<br><span style="color:var(--accent-dark)">▲1.2h</span></div>
+  <div class="pp-shape f-outline" style="left:648px;top:410px;width:276px;height:58px"></div>
+  <div class="pp-text" style="left:656px;top:413px;width:260px;height:28px;font-size:19px">回線の自動切替（2回線化）</div>
+  <div class="pp-text" data-role="caption" style="left:656px;top:442px;width:260px;height:20px">効果 ▲0.7h　実現 〜1年</div>
+  <div class="pp-shape f-white" style="left:648px;top:476px;width:276px;height:58px"></div>
+  <div class="pp-text" style="left:656px;top:479px;width:260px;height:28px;font-size:19px">遠隔での設定復旧</div>
+  <div class="pp-text" data-role="caption" style="left:656px;top:508px;width:260px;height:20px">効果 ▲0.5h　実現 1〜3年</div>
+  <div class="pp-line " style="left:1077px;top:334px;width:2px;height:8px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-soft" style="left:940px;top:342px;width:276px;height:58px"></div>
+  <div class="pp-text b center" style="left:944px;top:345px;width:268px;height:52px;font-size:19px;line-height:1.35">承認と手順の簡素化<br><span style="color:var(--accent-dark)">▲0.8h</span></div>
+  <div class="pp-shape f-white" style="left:940px;top:410px;width:276px;height:58px"></div>
+  <div class="pp-text" style="left:948px;top:413px;width:260px;height:28px;font-size:19px">承認階層の削減とランブック</div>
+  <div class="pp-text" data-role="caption" style="left:948px;top:442px;width:260px;height:20px">効果 ▲0.8h　実現 1〜3年</div>
+  <div class="pp-shape f-white" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す。強調色はここの 1 点（白地に置く）" style="left:64px;top:544px;width:1152px;height:44px"></div>
+  <div class="pp-text" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す" style="left:84px;top:551px;width:1112px;height:30px;font-size:19px">→ <b class="t-emph">1年内に効く3手で▲2.1h（過半）</b>、残りの3手は1〜3年で▲1.7h</div>
+  <div class="pp-text" data-role="caption" data-note="注：数値の出所と前提" style="left:64px;top:598px;width:1152px;height:40px">注: 効果はFY2025の障害記録（計1,132件）からの試算で、寄与は足すと根の▲3.8hに戻る。実現期間は着手から効果が出るまでの目安</div>
+</section>
