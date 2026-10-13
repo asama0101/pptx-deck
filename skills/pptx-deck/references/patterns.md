@@ -66,13 +66,13 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | 内容 | 条件 | 第 1 候補 | 次点 1 | 次点 2 |
 |---|---|---|---|---|
 | グラフ | 伸び・増減を比べる | `bar` | `waterfall` | `line` |
-| | 項目の大小を比べる | `data-chart` の横棒 | `bar` | `effort-bar` |
-| | 割合 | `data-chart` の `pie` | `stacked` | `bar` |
+| | 項目の大小を比べる | `hbar` | `bar` | — |
+| | 割合 | `pie` | `stacked` | `bar` |
 | | 時間の推移 | `line` | `bar` | `stacked` |
-| | 積み上げ・内訳 | `stacked` | `waterfall` | `data-chart` の `pie` |
+| | 積み上げ・内訳 | `stacked` | `waterfall` | `pie` |
 | | 増減の差し引き | `waterfall` | `quote-bridge` | `bar` |
 | | 所見・内訳の表を並べる | `bar`・`line`・`stacked`・`waterfall` のデザイン2・3（右に内訳表のノートつき） | 同じグラフのデザイン1（全幅） | — |
-| | 工数を棒で比べる | `effort-bar` | `effort` | `bar` |
+| | 工数を棒で比べる | `hbar`（デザイン2・3。現行と計画＋内訳） | `effort` | `bar` |
 | | 沿革 | `timeline-h` | `timeline-v` | — |
 | | 画面・キャプチャの解説 | `screenshot` | `architecture` | — |
 | | Q&A | `qa` | `rating` | `issues` |
@@ -90,7 +90,7 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | 費用（費目×年度） | `cost` | `quote` | `delta` |
 | 見積 | `quote` | `quote-compare` | `cost` |
 | 前回との比較 | `quote-compare` | `quote-bridge` | `delta` |
-| 工数 | `effort` | `effort-bar` | `delta` |
+| 工数 | `effort` | `hbar` | `delta` |
 | 検証項目・機能・要件 | `spec` | `result` | `raci` |
 | 判定結果 | `result` | `spec` | `issues` |
 | 課題・不具合 | `issues` | `actions` | `risk` |
