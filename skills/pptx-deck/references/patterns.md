@@ -18,7 +18,6 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 
 ## 表の見方
 
-- 「予定」を付けた型名は、フェーズ 2 で追加する新規部品の仮の名前。実装が終わるまで、設計図の「型」に書かない（今ある型で代用する）。
 - 条件が複数当てはまるときは、上の行の条件を優先する。迷ったら、要素の**関係**（並列・比較・手順…）を先に決め、次に数と文の量で型を絞る。
 - 「—」は、その位置に置ける型がないこと。
 
@@ -75,10 +74,10 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 工数を棒で比べる | `effort-bar` | `effort` | `bar` |
 | 事例・実績・紹介 | 会社概要 | `company` | `summary` | `org` |
 | | メンバー紹介 | `members` | `org` | `raci` |
-| | 理念（MVV） | 理念（予定 `mvv`） | `pyramid` | `layers` |
-| | 導入実績 | 導入実績（予定 `track-record`） | `result` | `bar` |
+| | 理念（MVV） | `mvv` | `pyramid` | `layers` |
+| | 導入実績 | `track-record` | `result` | `bar` |
 | | 沿革 | `timeline-h` | `timeline-v` | — |
-| | 画面・キャプチャの解説 | キャプチャ（予定 `screenshot`） | `architecture` | — |
+| | 画面・キャプチャの解説 | `screenshot` | `architecture` | — |
 | | Q&A | `qa` | `rating` | `issues` |
 | | 名言・要旨の引用 | `quote-phrase` | `summary` | — |
 | | 料金プラン | `pricing` | `options` | `cost` |
