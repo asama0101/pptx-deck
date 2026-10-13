@@ -1,5 +1,5 @@
 <!-- 用途: じょうろ型（段階を経て数が絞り込まれる過程）。デザイン1（funnel）と同じ段・同じ数・同じ基準で差し替えられる。
-     デザイン1との違い: 横棒をやめ、4 段を縦棒（高さを数に比例。1 方式＝26px）で左から右へ並べる。棒の上に数、下に段の名前・外した方式・「前の段の○%」を置く。最後の棒だけ強調色の枠。
+     デザイン1との違い: 横棒をやめ、4 段を縦棒（高さを数に比例。1 方式＝26px）で左から右へ並べる。棒の上に数、下に段の名前・外した方式・「前の段の○%」を置く。最後の棒は基調色で塗り、数と棒をまとめて強調色の枠で囲む（棒が低くても見える）。
      差し替える所: 題・リード文・図表タイトル・各段の名前・数・棒の高さ（数×26px）・外した方式と基準・割合・注。 -->
 <section class="slide" data-layout="diagram">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">方式の絞り込み</div>
@@ -20,8 +20,9 @@
   <div class="pp-text b t-dark center" style="left:644px;top:478px;width:250px;height:32px;font-size:21px;line-height:1.2">費用が上限内</div>
   <div class="pp-text center" data-role="caption" style="left:644px;top:512px;width:250px;height:28px;line-height:1.2">▲2方式（総費用が2.5億円超）</div>
   <div class="pp-text b t-dark center" style="left:644px;top:542px;width:250px;height:30px;font-size:19px;line-height:1.2">前の段の60%</div>
-  <div class="pp-shape f-white" data-note="強調色：承認を求める 1 点だけ（1 枚 1 点）" style="left:974px;top:444px;width:170px;height:26px;border:3px solid var(--emphasis)"></div>
-  <div class="pp-text num t-dark center" style="left:954px;top:406px;width:210px;height:36px;font-size:24px;line-height:1.2">1方式</div>
+  <div class="pp-shape f-accent" style="left:974px;top:444px;width:170px;height:26px"></div>
+  <div class="pp-shape" data-note="強調色：承認を求める 1 点だけ（1 枚 1 点）。棒が低いので、数と棒をまとめて枠で囲む" data-overlap style="left:956px;top:400px;width:206px;height:78px;background:none;border:3px solid var(--emphasis)"></div>
+  <div class="pp-text num t-dark center" data-overlap style="left:954px;top:406px;width:210px;height:36px;font-size:24px;line-height:1.2">1方式</div>
   <div class="pp-text b t-dark center" style="left:934px;top:478px;width:250px;height:32px;font-size:21px;line-height:1.2">国内で実績あり</div>
   <div class="pp-text center" data-role="caption" style="left:934px;top:512px;width:250px;height:28px;line-height:1.2">▲2方式（導入が5社未満）</div>
   <div class="pp-text b t-dark center" style="left:934px;top:542px;width:250px;height:30px;font-size:19px;line-height:1.2">前の段の33%</div>

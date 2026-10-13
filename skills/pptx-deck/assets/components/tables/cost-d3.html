@@ -1,5 +1,5 @@
 <!-- 用途: 費用の内訳（費目×年度、5 年計と構成比つき）。デザイン1（cost）と同じ数字・同じ原稿で差し替えられる。数字は右寄せで桁をそろえ、単位は図表タイトルに書く。下のパネル地の帯に、総額と初年度の集中を数字で書く。
-     デザイン1との違い: 表の罫線をなくし、年度ごとに 1 本の列カード（上に年度の面、下へ費目・合計・累計）を横に並べ、右端に 5 年計と構成比のカードを置く。
+     デザイン1との違い: 表の罫線をなくし、年度ごとに 1 本の列カード（上に年度の面、下へ費目・合計・累計）を横に並べ、右端に 5 年計と構成比（括弧書き）のカードを置く。初年度の累計は合計と同じ値なので「合計に同じ」と書く。
      差し替える所: 図表タイトル・費目（3 件）・年度・金額・5 年計と構成比・合計と累計・帯の文・注。 -->
 <section class="slide" data-layout="table">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">費用計画</div>
@@ -20,7 +20,7 @@
   <div class="pp-text right" data-overlap style="left:408px;top:362px;width:100px;height:36px;font-size:19px">1,200</div>
   <div class="pp-line" data-overlap style="left:410px;top:402px;width:96px;height:3px;background:var(--text)"></div>
   <div class="pp-text b right" data-overlap style="left:408px;top:408px;width:100px;height:36px;font-size:19px">12,200</div>
-  <div class="pp-text right t-sub" data-overlap style="left:408px;top:452px;width:100px;height:36px;font-size:19px">＝合計</div>
+  <div class="pp-text right t-sub" data-overlap style="left:408px;top:452px;width:100px;height:36px;font-size:19px">合計に同じ</div>
   <div class="pp-shape f-white" style="left:520px;top:224px;width:112px;height:268px"></div>
   <div class="pp-shape f-accent" style="left:520px;top:224px;width:112px;height:40px"></div>
   <div class="pp-text b t-white center" data-overlap style="left:520px;top:228px;width:112px;height:34px;font-size:19px">FY2028</div>
@@ -60,11 +60,11 @@
   <div class="pp-shape f-soft" data-note="5年計のカード：費目ごとの 5 年計と構成比" style="left:1000px;top:224px;width:216px;height:268px"></div>
   <div class="pp-shape f-dark" style="left:1000px;top:224px;width:216px;height:40px"></div>
   <div class="pp-text b t-white center" data-overlap style="left:1000px;top:228px;width:216px;height:34px;font-size:19px">5年計（構成比）</div>
-  <div class="pp-text right b" data-overlap style="left:1008px;top:274px;width:200px;height:36px;font-size:19px">9,000　53%</div>
-  <div class="pp-text right" data-overlap style="left:1008px;top:318px;width:200px;height:36px;font-size:19px">2,000　12%</div>
-  <div class="pp-text right" data-overlap style="left:1008px;top:362px;width:200px;height:36px;font-size:19px">6,000　35%</div>
+  <div class="pp-text right b" data-overlap style="left:1008px;top:274px;width:200px;height:36px;font-size:19px">9,000（53%）</div>
+  <div class="pp-text right" data-overlap style="left:1008px;top:318px;width:200px;height:36px;font-size:19px">2,000（12%）</div>
+  <div class="pp-text right" data-overlap style="left:1008px;top:362px;width:200px;height:36px;font-size:19px">6,000（35%）</div>
   <div class="pp-line" data-overlap style="left:1008px;top:402px;width:200px;height:3px;background:var(--text)"></div>
-  <div class="pp-text b right" data-overlap style="left:1008px;top:408px;width:200px;height:36px;font-size:19px">17,000　100%</div>
+  <div class="pp-text b right" data-overlap style="left:1008px;top:408px;width:200px;height:36px;font-size:19px">17,000（100%）</div>
   <div class="pp-text t-sub right" data-overlap style="left:1008px;top:452px;width:200px;height:36px;font-size:19px">72%が初年度</div>
   <div class="pp-shape f-soft" data-note="総額の帯：5 年間の総額と、初年度に集中する比率を数字で示す" style="left:64px;top:507px;width:1152px;height:76px"></div>
   <div class="pp-text" data-overlap style="left:88px;top:514px;width:1104px;height:62px;font-size:19px;line-height:1.3"><b>5年間の総額は17,000万円。</b>うち初年度が12,200万円（72%）で、機器と移行を一括で計上する。<br>FY2028以降は運用費の年1,200万円だけになり、現行の運用費2,000万円より年800万円低い</div>

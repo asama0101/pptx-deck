@@ -1,70 +1,98 @@
-<!-- 用途: 配置表（対象×区分の件数。ここでは設備×拠点種別の台数）。デザイン1（site-matrix）と同じ数・同じ原稿で差し替えられる。計画で変わるセルだけパネル地にして「現状→計画後」で書き、変わらないセルは現状の数だけ。
-     デザイン1との違い: 行と列を入れ替え、行に設備、列に拠点種別を置く。設備の種類が多く拠点種別が少ないときは、設備が縦に並ぶこちらが読みやすい。表の下の帯と注は同じ。
-     差し替える所: 図表タイトル・行（設備 5 行まで）・列（拠点種別 4 列まで）・各セルの数（行と列の合計が合うように）・強調するセル・帯の文・注。 -->
+<!-- 用途: 配置表（対象×区分の件数。ここでは拠点種別×設備の台数）。デザイン1（site-matrix）と同じ数・同じ原稿で差し替えられる。
+     デザイン1との違い: 表ではなく、設備ごとに現状と計画後の横棒 2 本を置き、拠点種別ごとの数を色分けの区切りで積み上げる（1 台＝5.5px。1〜2 台の区切りは細く、数字は入らない）。右端に設備の合計。最大の増設の区切りだけ強調色。どの設備が、どの拠点種別で増えるかを面で見せたいときに使う。
+     差し替える所: 図表タイトル・凡例（拠点種別 4 つまで）・設備 5 行・各数（棒の幅は数×5.5px。最大の合計が 144 を超えるなら係数を下げる）・強調する区切り・帯の文・注。 -->
 <section class="slide" data-layout="table">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">設備の配置</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">機器は全拠点で入れ替わるが、純増するのは営業所の監視装置26台と回線本数だけだ</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">拠点種別×設備の配置（現状FY2025 → 計画後FY2027、台・本。パネル地のセルが計画で変わる）</div>
-  <table class="pp-table" data-note="配置表（行列を入れ替え）：行＝設備、列＝拠点種別。変わるセルだけパネル地に現状→計画後" style="left:64px;top:228px;width:1152px;font-size:19px;line-height:1.25">
-    <tr style="height:40px">
-      <td style="width:210px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">設備</td>
-      <td style="width:196px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">本社（1拠点）</td>
-      <td style="width:196px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">DC（1拠点）</td>
-      <td style="width:196px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">工場（6拠点）</td>
-      <td style="width:196px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">営業所（40拠点）</td>
-      <td style="width:158px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">設備計</td>
-    </tr>
-    <tr style="height:42px">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">ルータ（MPLS）</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">1→0</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">1→0</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">6→0</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">40→0</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">48→0</td>
-    </tr>
-    <tr style="height:42px">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">SD-WAN機器</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">0→1</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">0→1</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">0→6</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">0→40</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">0→48</td>
-    </tr>
-    <tr style="height:42px">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">L3スイッチ</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">8</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">8</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">24</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">56</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">96</td>
-    </tr>
-    <tr style="height:42px">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">監視装置</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">1</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">1</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">6</td>
-      <td data-note="最大の増設になる 1 セルだけ強調色の面に白い文字（1 枚 1 点）" style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--emphasis);color:#FFFFFF;font-weight:700">14→40</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">22→48</td>
-    </tr>
-    <tr style="height:42px">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">回線（本）</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">1→3</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">1→3</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">6→18</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;background:var(--bg-soft)">40→120</td>
-      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">48→144</td>
-    </tr>
-    <tr style="height:42px" data-note="合計の行：拠点種別ごとの現状→計画後。行の合計と列の合計を一致させる">
-      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700">拠点計（48拠点）</td>
-      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">11→13</td>
-      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">11→13</td>
-      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">42→54</td>
-      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">150→256</td>
-      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">214→336</td>
-    </tr>
-  </table>
-  <div class="pp-shape f-soft" data-note="増減の帯：増設の中身と、入れ替えの台数を数字で書く" style="left:64px;top:526px;width:1152px;height:62px"></div>
-  <div class="pp-text" data-note="増減の帯：増設の中身と、入れ替えの台数を数字で書く" style="left:88px;top:530px;width:1104px;height:54px;font-size:19px;line-height:1.4"><b>増設は監視装置＋26台（営業所14→40）と回線＋96本。</b><br>ルータ48台はSD-WAN機器48台に置き換わり、L3スイッチ96台は現行のまま使う</div>
-  <div class="pp-text" data-note="注：台数の出所と、配置から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 台数は2026年9月の機器台帳、計画後はFY2027の切替完了時。回線は1拠点3本（インターネット2回線＋LTE）<br>→ 保守契約の追加は監視装置と回線の2件で、本社・DC・工場は機器の入れ替えだけで済む</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">設備ごとの配置（拠点種別の積み上げ。現状FY2025 → 計画後FY2027、台・本）</div>
+  <div class="pp-shape f-accent" data-note="凡例：拠点種別の色。棒の区切りが拠点種別ごとの数" style="left:262px;top:232px;width:18px;height:18px"></div>
+  <div class="pp-text" style="left:286px;top:229px;width:150px;height:26px;font-size:19px;line-height:1.3">本社（1拠点）</div>
+  <div class="pp-shape f-dark" style="left:452px;top:232px;width:18px;height:18px"></div>
+  <div class="pp-text" style="left:476px;top:229px;width:150px;height:26px;font-size:19px;line-height:1.3">DC（1拠点）</div>
+  <div class="pp-shape f-light" style="left:642px;top:232px;width:18px;height:18px"></div>
+  <div class="pp-text" style="left:666px;top:229px;width:150px;height:26px;font-size:19px;line-height:1.3">工場（6拠点）</div>
+  <div class="pp-shape f-soft" style="left:832px;top:232px;width:18px;height:18px"></div>
+  <div class="pp-text" style="left:856px;top:229px;width:150px;height:26px;font-size:19px;line-height:1.3">営業所（40拠点）</div>
+  <div class="pp-text" data-role="caption" style="left:1030px;top:229px;width:186px;height:24px;text-align:right">右端の数字は設備の合計</div>
+  <div class="pp-text b" data-note="設備ごとの 2 本の棒：上が現状、下が計画後。長さは数に比例（1 台＝5.5px）、拠点種別ごとに色を分ける" style="left:64px;top:274px;width:142px;height:28px;font-size:19px;line-height:1.3">ルータ（MPLS）</div>
+  <div class="pp-text" data-role="caption" style="left:208px;top:263px;width:52px;height:22px">現状</div>
+  <div class="pp-shape f-accent" style="left:262px;top:261px;width:4px;height:24px"></div>
+  <div class="pp-shape f-dark" style="left:267px;top:261px;width:4px;height:24px"></div>
+  <div class="pp-shape f-light" style="left:272px;top:261px;width:32px;height:24px"></div>
+  <div class="pp-shape f-soft" style="left:305px;top:261px;width:219px;height:24px"></div>
+  <div class="pp-text center" style="left:305px;top:261px;width:219px;height:26px;font-size:19px;line-height:1.25">40</div>
+  <div class="pp-text" style="left:534px;top:260px;width:70px;height:26px;font-size:19px;line-height:1.3">48</div>
+  <div class="pp-text" data-role="caption" style="left:208px;top:291px;width:52px;height:22px">計画後</div>
+  <div class="pp-text b" style="left:270px;top:288px;width:70px;height:26px;font-size:19px;line-height:1.3">0</div>
+  <div class="pp-line" style="left:64px;top:314px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:328px;width:142px;height:28px;font-size:19px;line-height:1.3">SD-WAN機器</div>
+  <div class="pp-text" data-role="caption" style="left:208px;top:317px;width:52px;height:22px">現状</div>
+  <div class="pp-text" style="left:270px;top:314px;width:70px;height:26px;font-size:19px;line-height:1.3">0</div>
+  <div class="pp-text" data-role="caption" style="left:208px;top:345px;width:52px;height:22px">計画後</div>
+  <div class="pp-shape f-accent" style="left:262px;top:343px;width:4px;height:24px"></div>
+  <div class="pp-shape f-dark" style="left:267px;top:343px;width:4px;height:24px"></div>
+  <div class="pp-shape f-light" style="left:272px;top:343px;width:32px;height:24px"></div>
+  <div class="pp-shape f-soft" style="left:305px;top:343px;width:219px;height:24px"></div>
+  <div class="pp-text center" style="left:305px;top:343px;width:219px;height:26px;font-size:19px;line-height:1.25">40</div>
+  <div class="pp-text b" style="left:534px;top:342px;width:70px;height:26px;font-size:19px;line-height:1.3">48</div>
+  <div class="pp-line" style="left:64px;top:368px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:382px;width:142px;height:28px;font-size:19px;line-height:1.3">L3スイッチ</div>
+  <div class="pp-text" data-role="caption" style="left:208px;top:371px;width:52px;height:22px">現状</div>
+  <div class="pp-shape f-accent" style="left:262px;top:369px;width:43px;height:24px"></div>
+  <div class="pp-text center t-white" style="left:262px;top:369px;width:43px;height:26px;font-size:19px;line-height:1.25">8</div>
+  <div class="pp-shape f-dark" style="left:306px;top:369px;width:43px;height:24px"></div>
+  <div class="pp-text center t-white" style="left:306px;top:369px;width:43px;height:26px;font-size:19px;line-height:1.25">8</div>
+  <div class="pp-shape f-light" style="left:350px;top:369px;width:131px;height:24px"></div>
+  <div class="pp-text center" style="left:350px;top:369px;width:131px;height:26px;font-size:19px;line-height:1.25">24</div>
+  <div class="pp-shape f-soft" style="left:482px;top:369px;width:307px;height:24px"></div>
+  <div class="pp-text center" style="left:482px;top:369px;width:307px;height:26px;font-size:19px;line-height:1.25">56</div>
+  <div class="pp-text" style="left:798px;top:368px;width:70px;height:26px;font-size:19px;line-height:1.3">96</div>
+  <div class="pp-text" data-role="caption" style="left:208px;top:399px;width:52px;height:22px">計画後</div>
+  <div class="pp-shape f-accent" style="left:262px;top:397px;width:43px;height:24px"></div>
+  <div class="pp-text center t-white" style="left:262px;top:397px;width:43px;height:26px;font-size:19px;line-height:1.25">8</div>
+  <div class="pp-shape f-dark" style="left:306px;top:397px;width:43px;height:24px"></div>
+  <div class="pp-text center t-white" style="left:306px;top:397px;width:43px;height:26px;font-size:19px;line-height:1.25">8</div>
+  <div class="pp-shape f-light" style="left:350px;top:397px;width:131px;height:24px"></div>
+  <div class="pp-text center" style="left:350px;top:397px;width:131px;height:26px;font-size:19px;line-height:1.25">24</div>
+  <div class="pp-shape f-soft" style="left:482px;top:397px;width:307px;height:24px"></div>
+  <div class="pp-text center" style="left:482px;top:397px;width:307px;height:26px;font-size:19px;line-height:1.25">56</div>
+  <div class="pp-text b" style="left:798px;top:396px;width:70px;height:26px;font-size:19px;line-height:1.3">96</div>
+  <div class="pp-line" style="left:64px;top:422px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:436px;width:142px;height:28px;font-size:19px;line-height:1.3">監視装置</div>
+  <div class="pp-text" data-role="caption" style="left:208px;top:425px;width:52px;height:22px">現状</div>
+  <div class="pp-shape f-accent" style="left:262px;top:423px;width:4px;height:24px"></div>
+  <div class="pp-shape f-dark" style="left:267px;top:423px;width:4px;height:24px"></div>
+  <div class="pp-shape f-light" style="left:272px;top:423px;width:32px;height:24px"></div>
+  <div class="pp-shape f-soft" style="left:305px;top:423px;width:76px;height:24px"></div>
+  <div class="pp-text center" style="left:305px;top:423px;width:76px;height:26px;font-size:19px;line-height:1.25">14</div>
+  <div class="pp-text" style="left:391px;top:422px;width:70px;height:26px;font-size:19px;line-height:1.3">22</div>
+  <div class="pp-text" data-role="caption" style="left:208px;top:453px;width:52px;height:22px">計画後</div>
+  <div class="pp-shape f-accent" style="left:262px;top:451px;width:4px;height:24px"></div>
+  <div class="pp-shape f-dark" style="left:267px;top:451px;width:4px;height:24px"></div>
+  <div class="pp-shape f-light" style="left:272px;top:451px;width:32px;height:24px"></div>
+  <div class="pp-shape f-emph" data-note="最大の増設になる 1 区切りだけ強調色の面に白い文字（1 枚 1 点）" style="left:305px;top:451px;width:219px;height:24px"></div>
+  <div class="pp-text center t-white" style="left:305px;top:451px;width:219px;height:26px;font-size:19px;line-height:1.25">40</div>
+  <div class="pp-text b" style="left:534px;top:450px;width:70px;height:26px;font-size:19px;line-height:1.3">48</div>
+  <div class="pp-line" style="left:64px;top:476px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:490px;width:142px;height:28px;font-size:19px;line-height:1.3">回線（本）</div>
+  <div class="pp-text" data-role="caption" style="left:208px;top:479px;width:52px;height:22px">現状</div>
+  <div class="pp-shape f-accent" style="left:262px;top:477px;width:4px;height:24px"></div>
+  <div class="pp-shape f-dark" style="left:267px;top:477px;width:4px;height:24px"></div>
+  <div class="pp-shape f-light" style="left:272px;top:477px;width:32px;height:24px"></div>
+  <div class="pp-shape f-soft" style="left:305px;top:477px;width:219px;height:24px"></div>
+  <div class="pp-text center" style="left:305px;top:477px;width:219px;height:26px;font-size:19px;line-height:1.25">40</div>
+  <div class="pp-text" style="left:534px;top:476px;width:70px;height:26px;font-size:19px;line-height:1.3">48</div>
+  <div class="pp-text" data-role="caption" style="left:208px;top:507px;width:52px;height:22px">計画後</div>
+  <div class="pp-shape f-accent" style="left:262px;top:505px;width:15px;height:24px"></div>
+  <div class="pp-shape f-dark" style="left:278px;top:505px;width:15px;height:24px"></div>
+  <div class="pp-shape f-light" style="left:294px;top:505px;width:98px;height:24px"></div>
+  <div class="pp-text center" style="left:294px;top:505px;width:98px;height:26px;font-size:19px;line-height:1.25">18</div>
+  <div class="pp-shape f-soft" style="left:393px;top:505px;width:659px;height:24px"></div>
+  <div class="pp-text center" style="left:393px;top:505px;width:659px;height:26px;font-size:19px;line-height:1.25">120</div>
+  <div class="pp-text b" style="left:1062px;top:504px;width:70px;height:26px;font-size:19px;line-height:1.3">144</div>
+  <div class="pp-line" style="left:64px;top:530px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-shape f-soft" data-note="増減の帯：増設の中身と、入れ替えの台数を数字で書く" style="left:64px;top:536px;width:1152px;height:52px"></div>
+  <div class="pp-text" data-note="増減の帯：増設の中身と、入れ替えの台数を数字で書く" style="left:88px;top:537px;width:1104px;height:50px;font-size:19px;line-height:1.35"><b>増設は監視装置＋26台（営業所14→40）と回線＋96本。</b><br>ルータ48台はSD-WAN機器48台に置き換わり、L3スイッチ96台は現行のまま使う</div>
+  <div class="pp-text" data-note="注：台数の出所と、配置から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:42px">注: 台数は2026年9月の機器台帳、計画後はFY2027の切替完了時。回線は1拠点3本（インターネット2回線＋LTE）<br>→ 保守契約の追加は監視装置と回線の2件で、本社・DC・工場は機器の入れ替えだけで済む</div>
 </section>

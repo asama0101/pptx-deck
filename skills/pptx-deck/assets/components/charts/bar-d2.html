@@ -1,27 +1,51 @@
-<!-- 用途: 案どうしの量の比較と案ごとの内訳（案カード×縦棒）。上段の案カード 3 枚で、案ごとの前提・構築・運用・総費用を並べ（推す案のカードだけパネル地）、下段の全幅の縦棒で総費用を比べる（注目する 1 本だけ強調色。highlight は 0 始まりの番号）。
-     推す案のカードに、他案との差額を書く。所見や内訳を並べたいときに使う（短いときは全幅のデザイン1）。
-     デザイン1との違い: 左右に分けず、案カードを上段、全幅の低い縦棒を下段に積む。内訳は表でなく、案ごとのカード（総費用の大きな数字つき）にする。
-     差し替える所: 案カードの 3 枚（案名・前提・構築・運用・総費用）・推す案のカードの差額・data-chart（案の値）・注。 -->
+<!-- 用途: 案どうし・期間どうしの量の比較（縦棒）。注目する棒だけ強調色（highlight は 0 始まりの番号。配列なら複数本）。上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。
+     デザイン1との違い: 右に内訳表（案ごとの前提・構築・運用・総費用の棒）と基調色の帯がつき、グラフは左半分になる。表で前提まで読ませたいときに使う。
+     差し替える所: 図表タイトル・data-chart・表の 3 行（案・前提・構築・運用・棒の幅と値）・表の下の注・合計の帯・注。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">案ごとの総費用</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">B案の総費用は1.7億円で、A案より8,000万円低い</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">3案の総費用の比較（5年間の機器＋運用、万円・税抜）</div>
-  <div class="pp-shape f-white" data-note="案カード：案ごとの前提・内訳・総費用。推す案のカードだけパネル地" style="left:64px;top:224px;width:368px;height:132px"></div>
-  <div class="pp-text b" style="left:80px;top:230px;width:150px;height:34px;font-size:24px;line-height:1.15">C案</div>
-  <div class="pp-text b right" style="left:234px;top:228px;width:182px;height:40px;font-size:34px;line-height:1.15">2.2億円</div>
-  <div class="pp-text" style="left:80px;top:272px;width:336px;height:48px;font-size:19px;line-height:1.25">保守延長5年の費用</div>
-  <div class="pp-text" style="left:80px;top:324px;width:336px;height:24px;font-size:19px;line-height:1.15">構築0・運用2.2（億円）</div>
-  <div class="pp-shape f-white" data-note="案カード：案ごとの前提・内訳・総費用。推す案のカードだけパネル地" style="left:456px;top:224px;width:368px;height:132px"></div>
-  <div class="pp-text b" style="left:472px;top:230px;width:150px;height:34px;font-size:24px;line-height:1.15">A案</div>
-  <div class="pp-text b right" style="left:626px;top:228px;width:182px;height:40px;font-size:34px;line-height:1.15">2.5億円</div>
-  <div class="pp-text" style="left:472px;top:272px;width:336px;height:48px;font-size:19px;line-height:1.25">回線増強と機器更改<br>（構築費に切替・並行稼働を含む）</div>
-  <div class="pp-text" style="left:472px;top:324px;width:336px;height:24px;font-size:19px;line-height:1.15">構築1.5・運用1.0（億円）</div>
-  <div class="pp-shape f-soft" data-note="案カード：案ごとの前提・内訳・総費用。推す案のカードだけパネル地" style="left:848px;top:224px;width:368px;height:132px"></div>
-  <div class="pp-text b" style="left:864px;top:230px;width:150px;height:34px;font-size:24px;line-height:1.15">B案</div>
-  <div class="pp-text b right" style="left:1018px;top:228px;width:182px;height:40px;font-size:34px;line-height:1.15">1.7億円</div>
-  <div class="pp-text" style="left:864px;top:272px;width:336px;height:48px;font-size:19px;line-height:1.25">既存回線を段階で置換<br><b>A案比 ▲0.8億円</b></div>
-  <div class="pp-text" style="left:864px;top:324px;width:336px;height:24px;font-size:19px;line-height:1.15">構築0.9・運用0.8（億円）</div>
-  <div class="pp-chart" data-overlap data-note="縦棒：案ごとの総費用を比べ、推す案だけ強調色" data-chart='{"type":"bar","categories":["現状維持（C案）","A案 MPLS更新","B案 SD-WAN"],"series":[{"name":"総費用（万円）","values":[22000,25000,17000]}],"highlight":2,"fmt":"#,##0","axis":{"min":0,"max":30000,"major":10000}}' style="left:64px;top:364px;width:1152px;height:225px"></div>
-  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 金額は2026年9月時点の見積り（税抜）。C案はMPLSルータの保守延長5年の費用<br>→ A案との差0.8億円は、B案の運用費（年0.12億円）の6.7年分に相当する</div>
+  <div class="pp-text b" data-note="縦棒：案ごとの総費用を比べ、推す案だけ強調色" data-role="body" style="left:64px;top:186px;width:596px;height:32px;font-size:21px">3案の総費用の比較（5年間の機器＋運用、万円・税抜）</div>
+  <div class="pp-chart" data-overlap data-note="縦棒：案ごとの総費用を比べ、推す案だけ強調色" data-chart='{"type":"bar","categories":["現状維持（C案）","A案 MPLS更新","B案 SD-WAN"],"series":[{"name":"総費用（万円）","values":[22000,25000,17000]}],"highlight":2,"fmt":"#,##0","axis":{"min":0,"max":30000,"major":10000}}' style="left:64px;top:224px;width:596px;height:360px"></div>
+  <div class="pp-text b" data-note="内訳表：総費用の棒は値に比例。推す案だけ濃い棒" data-role="body" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">案ごとの内訳と前提（5年間、億円）</div>
+  <div class="pp-shape f-soft" data-note="内訳表：総費用の棒は値に比例。推す案だけ濃い棒" style="left:688px;top:224px;width:528px;height:360px"></div>
+  <div class="pp-text" data-role="caption" style="left:710px;top:233px;width:36px;height:22px">案</div>
+  <div class="pp-text" data-role="caption" style="left:766px;top:233px;width:200px;height:22px">前提・内訳</div>
+  <div class="pp-text" data-role="caption" style="left:976px;top:233px;width:40px;height:22px;text-align:right">構築</div>
+  <div class="pp-text" data-role="caption" style="left:1020px;top:233px;width:42px;height:22px;text-align:right">運用</div>
+  <div class="pp-text" data-role="caption" style="left:1080px;top:233px;width:120px;height:22px">総費用</div>
+  <div class="pp-line" style="left:700px;top:256px;width:504px;height:1px;background:var(--text-sub)"></div>
+  <table class="pp-table" style="left:700px;top:258px;width:368px;font-size:19px;line-height:1.25">
+    <tr style="height:49px">
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);width:60px;font-weight:700">C案</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);width:216px">保守延長5年の費用</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);width:46px;text-align:right">0</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);width:46px;text-align:right">2.2</td>
+    </tr>
+    <tr style="height:49px">
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);font-weight:700">A案</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);">回線増強と機器更改</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">1.5</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">1.0</td>
+    </tr>
+    <tr style="height:49px">
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">B案</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);">既存回線を段階で置換</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">0.9</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">0.8</td>
+    </tr>
+  </table>
+  <div class="pp-shape f-light" style="left:1080px;top:273px;width:70px;height:18px"></div>
+  <div class="pp-text b" style="left:1156px;top:267px;width:60px;height:30px;font-size:19px">2.2</div>
+  <div class="pp-shape f-light" style="left:1080px;top:322px;width:80px;height:18px"></div>
+  <div class="pp-text b" style="left:1166px;top:316px;width:50px;height:30px;font-size:19px">2.5</div>
+  <div class="pp-shape f-accent" style="left:1080px;top:371px;width:54px;height:18px"></div>
+  <div class="pp-text b" style="left:1140px;top:365px;width:76px;height:30px;font-size:19px">1.7</div>
+  <div class="pp-text" data-role="caption" style="left:710px;top:411px;width:484px;height:40px;line-height:1.3">注: 運用は回線・クラウド管理の5年分。A案の構築費には、回線の切替と並行稼働を含む</div>
+  <div class="pp-shape f-accent" data-note="合計の帯：結論の数字を、基調色の面で締める" style="left:700px;top:463px;width:504px;height:117px"></div>
+  <div class="pp-text t-white b" style="left:716px;top:472px;width:290px;height:36px;font-size:22px">B案 1.7億円</div>
+  <div class="pp-text t-white b right" style="left:1010px;top:472px;width:178px;height:36px;font-size:22px">A案比 ▲0.8億円</div>
+  <div class="pp-line" style="left:716px;top:512px;width:472px;height:1px;background:#FFFFFF"></div>
+  <div class="pp-text t-white" style="left:716px;top:519px;width:472px;height:30px;font-size:19px">構築0.9・運用0.8。保守延長のC案より0.5億円低い</div>
+  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 金額は2026年9月時点の見積り（税抜）。C案はMPLSルータの保守延長5年の費用<br>→ A案との差0.8億円は、B案の運用費（年0.16億円）の5年分に相当する</div>
 </section>

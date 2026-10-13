@@ -1,45 +1,46 @@
 <!-- 用途: 手順・段階を上から下へ（各段階に期間・成果物・承認点）。デザイン1（flow-h）と同じ段階・同じ項目・同じ原稿で差し替えられる。
-     デザイン1との違い: 段階を 1 行ずつ縦に積み、右の 6 か月の目盛りに、その段階の期間を棒で置く（1 か月＝72px）。承認点は名前の右に承認日つきで書く。本番の関門の棒だけ強調色。
-     差し替える所: 段階の行（名前・成果物・承認点・承認日・棒の始まりと長さ）・月の目盛り・注。 -->
+     デザイン1との違い: 段階を 1 行ずつ縦に積み、期間を固定の列（右そろえ）に書いたうえで、右の 6 か月の目盛りに期間の棒を置く（1 か月＝60px、x＝856＋60×開始の月）。承認点は名前の右に承認日つきで書く。本番の関門の棒だけ強調色。
+     差し替える所: 段階の行（名前・成果物・承認点・承認日・期間・棒の始まりと長さ）・月の目盛り・注。 -->
 <section class="slide" data-layout="diagram">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">移行の進め方</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">移行は4段階で進め、各段階の出口で承認を取るため、問題があれば前に戻せる</div>
   <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の進め方（2026年11月〜2027年4月の6か月。段階ごとの期間・成果物・承認点）</div>
-  <div class="pp-text center" data-note="月の目盛り：1 か月＝72px。段階の棒を期間に比例させる" data-role="caption" style="left:780px;top:226px;width:72px;height:24px;line-height:1.2">11月</div>
-  <div class="pp-text center" data-role="caption" style="left:852px;top:226px;width:72px;height:24px;line-height:1.2">12月</div>
-  <div class="pp-text center" data-role="caption" style="left:924px;top:226px;width:72px;height:24px;line-height:1.2">1月</div>
-  <div class="pp-text center" data-role="caption" style="left:996px;top:226px;width:72px;height:24px;line-height:1.2">2月</div>
-  <div class="pp-text center" data-role="caption" style="left:1068px;top:226px;width:72px;height:24px;line-height:1.2">3月</div>
-  <div class="pp-text center" data-role="caption" style="left:1140px;top:226px;width:72px;height:24px;line-height:1.2">4月</div>
+  <div class="pp-text right" data-role="caption" style="left:752px;top:226px;width:96px;height:24px;line-height:1.2">期間</div>
+  <div class="pp-text center" data-note="月の目盛り：1 か月＝60px。段階の棒を期間に比例させる" data-role="caption" style="left:856px;top:226px;width:60px;height:24px;line-height:1.2">11月</div>
+  <div class="pp-text center" data-role="caption" style="left:916px;top:226px;width:60px;height:24px;line-height:1.2">12月</div>
+  <div class="pp-text center" data-role="caption" style="left:976px;top:226px;width:60px;height:24px;line-height:1.2">1月</div>
+  <div class="pp-text center" data-role="caption" style="left:1036px;top:226px;width:60px;height:24px;line-height:1.2">2月</div>
+  <div class="pp-text center" data-role="caption" style="left:1096px;top:226px;width:60px;height:24px;line-height:1.2">3月</div>
+  <div class="pp-text center" data-role="caption" style="left:1156px;top:226px;width:60px;height:24px;line-height:1.2">4月</div>
   <div class="pp-line" style="left:64px;top:254px;width:1152px;height:1px;background:var(--text-sub)"></div>
   <div class="pp-text num t-dark" style="left:64px;top:266px;width:52px;height:40px;font-size:34px;line-height:1.1">01</div>
   <div class="pp-text b" style="left:120px;top:268px;width:140px;height:34px;font-size:21px">現状調査</div>
-  <div class="pp-text" style="left:264px;top:262px;width:250px;height:60px;font-size:19px;line-height:1.35">回線・機器台帳（48拠点）<br>トラフィックの実測</div>
-  <div class="pp-text" style="left:524px;top:262px;width:250px;height:60px;font-size:19px;line-height:1.35"><b>◆ 移行対象の確定</b><br>11/30 経営会議</div>
-  <div class="pp-shape f-mid" style="left:780px;top:272px;width:72px;height:30px"></div>
-  <div class="pp-text b" style="left:860px;top:274px;width:100px;height:26px;font-size:19px;line-height:1.2">1.0か月</div>
+  <div class="pp-text" style="left:264px;top:262px;width:236px;height:60px;font-size:19px;line-height:1.35">回線・機器台帳（48拠点）<br>トラフィックの実測</div>
+  <div class="pp-text" style="left:508px;top:262px;width:236px;height:60px;font-size:19px;line-height:1.35"><b>◆ 移行対象の確定</b><br>11/30 経営会議</div>
+  <div class="pp-text b right" data-note="期間：固定の列に右そろえで書き、棒は月の目盛りの上に置く" style="left:752px;top:274px;width:96px;height:26px;font-size:19px;line-height:1.2">1.0か月</div>
+  <div class="pp-shape f-mid" style="left:856px;top:272px;width:60px;height:30px"></div>
   <div class="pp-line hr" style="left:64px;top:332px;width:1152px;height:1px"></div>
   <div class="pp-text num t-dark" style="left:64px;top:346px;width:52px;height:40px;font-size:34px;line-height:1.1">02</div>
   <div class="pp-text b" style="left:120px;top:348px;width:140px;height:34px;font-size:21px">設計</div>
-  <div class="pp-text" style="left:264px;top:342px;width:250px;height:60px;font-size:19px;line-height:1.35">SD-WAN設計書・手順書<br>PoC（2拠点）の結果報告</div>
-  <div class="pp-text" style="left:524px;top:342px;width:250px;height:60px;font-size:19px;line-height:1.35"><b>◆ 設計と投資1.7億円</b><br>1/15 経営会議</div>
-  <div class="pp-shape f-mid" style="left:852px;top:352px;width:108px;height:30px"></div>
-  <div class="pp-text b" style="left:968px;top:354px;width:100px;height:26px;font-size:19px;line-height:1.2">1.5か月</div>
+  <div class="pp-text" style="left:264px;top:342px;width:236px;height:60px;font-size:19px;line-height:1.35">SD-WAN設計書・手順書<br>PoC（2拠点）の結果報告</div>
+  <div class="pp-text" style="left:508px;top:342px;width:236px;height:60px;font-size:19px;line-height:1.35"><b>◆ 設計と投資1.7億円</b><br>1/15 経営会議</div>
+  <div class="pp-text b right" style="left:752px;top:354px;width:96px;height:26px;font-size:19px;line-height:1.2">1.5か月</div>
+  <div class="pp-shape f-mid" style="left:916px;top:352px;width:90px;height:30px"></div>
   <div class="pp-line hr" style="left:64px;top:412px;width:1152px;height:1px"></div>
   <div class="pp-text num t-dark" style="left:64px;top:426px;width:52px;height:40px;font-size:34px;line-height:1.1">03</div>
   <div class="pp-text b" style="left:120px;top:428px;width:140px;height:34px;font-size:21px">移行</div>
-  <div class="pp-text" style="left:264px;top:422px;width:250px;height:60px;font-size:19px;line-height:1.35">リハーサル3回の記録<br>拠点切替（並行稼働2週間）</div>
-  <div class="pp-text" style="left:524px;top:422px;width:250px;height:60px;font-size:19px;line-height:1.35"><b>◆ 本社切替 Go／NoGo</b><br>3/31 Go／NoGo</div>
-  <div class="pp-shape f-emph" data-note="期間の棒：段階ごとに月の目盛りの上へ置く。本番の関門だけ強調色" style="left:960px;top:432px;width:180px;height:30px"></div>
-  <div class="pp-text b" style="left:852px;top:434px;width:100px;height:26px;font-size:19px;text-align:right;line-height:1.2">2.5か月</div>
+  <div class="pp-text" style="left:264px;top:422px;width:236px;height:60px;font-size:19px;line-height:1.35">リハーサル3回の記録<br>拠点切替（並行稼働2週間）</div>
+  <div class="pp-text" style="left:508px;top:422px;width:236px;height:60px;font-size:19px;line-height:1.35"><b>◆ 本社切替 Go／NoGo</b><br>3/31 Go／NoGo</div>
+  <div class="pp-text b right" style="left:752px;top:434px;width:96px;height:26px;font-size:19px;line-height:1.2">2.5か月</div>
+  <div class="pp-shape f-emph" data-note="期間の棒：段階ごとに月の目盛りの上へ置く。本番の関門だけ強調色" style="left:1006px;top:432px;width:150px;height:30px"></div>
   <div class="pp-line hr" style="left:64px;top:492px;width:1152px;height:1px"></div>
   <div class="pp-text num t-dark" style="left:64px;top:506px;width:52px;height:40px;font-size:34px;line-height:1.1">04</div>
   <div class="pp-text b" style="left:120px;top:508px;width:140px;height:34px;font-size:21px">定着</div>
-  <div class="pp-text" style="left:264px;top:502px;width:250px;height:60px;font-size:19px;line-height:1.35">運用引継ぎ（手順書48本）<br>MPLS回線の解約</div>
-  <div class="pp-text" style="left:524px;top:502px;width:250px;height:60px;font-size:19px;line-height:1.35"><b>◆ 完了報告・MPLSの解約</b><br>4/30 完了</div>
-  <div class="pp-shape f-mid" style="left:1140px;top:512px;width:72px;height:30px"></div>
-  <div class="pp-text b" style="left:1032px;top:514px;width:100px;height:26px;font-size:19px;text-align:right;line-height:1.2">1.0か月</div>
+  <div class="pp-text" style="left:264px;top:502px;width:236px;height:60px;font-size:19px;line-height:1.35">運用引継ぎ（手順書48本）<br>MPLS回線の解約</div>
+  <div class="pp-text" style="left:508px;top:502px;width:236px;height:60px;font-size:19px;line-height:1.35"><b>◆ 完了報告・MPLSの解約</b><br>4/30 完了</div>
+  <div class="pp-text b right" style="left:752px;top:514px;width:96px;height:26px;font-size:19px;line-height:1.2">1.0か月</div>
+  <div class="pp-shape f-mid" style="left:1156px;top:512px;width:60px;height:30px"></div>
   <div class="pp-line hr" style="left:64px;top:572px;width:1152px;height:1px"></div>
   <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 承認はいずれも経営会議。3/31 のGo／NoGoだけは戻せない判断（MPLS回線の解約を伴う）<br>→ 関門ごとに前の段階へ戻せるため、失敗時の損失は最大でも1段階分（2.5か月・4,000万円）に限られる</div>
 </section>

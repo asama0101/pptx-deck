@@ -1,79 +1,30 @@
-<!-- 用途: 設備の増減表（設備増減の計画）。「区分｜現状｜増｜減｜計画後｜差分」の 6 列で、何が何台増えて何台減るかを区分ごとに並べ、合計で純増を示す。増は「＋n」、減は「▲n」。数字は右寄せで桁をそろえ、単位は図表タイトルに書く。
-     見出しの行はパネル地。合計の行は太字で上に太い罫線。差分の合計だけ強調色の文字（1 枚 1 点）。表の下に、現状→計画後の総数を横棒 2 本で添える（長さを台数に比例。1 台＝1.8px。淡い棒＝現状、濃い棒＝計画後）。
-     情報の型なので論点ボックスは置かず、注の末尾を「→ 含意」の 1 文で締める。
-     差し替える所: 図表タイトル・区分（4〜5 行）・台数（1 行の中で 現状＋増−減＝計画後 が合うように）・合計・横棒の長さと値・注。 -->
+<!-- 用途: 前後の数値表（現状→増・減→計画後と、その理由）。ここでは設備の台数。何が何台増えて何台減るかを区分ごとに 1 行で並べる。増は「＋n」、減は「▲n」。数字は右寄せで桁をそろえ、単位は図表タイトルに書く。見積の前回比（前回→差額→今回・差の理由。旧 quote-compare）もこの型で、列の単位を金額に差し替える。
+     デザイン1（数値表）: 「区分｜現状｜増｜減｜計画後｜差分｜理由」の 7 列。機器の計は太字で上に太い罫線、回線はその下に別の行。表の下に、現状→計画後の総数を横棒 2 本で添える（1 台＝1.8px）。
+     強調色は主張に効く 1 行の差分だけ（1 枚 1 点）。単位の違う区分（台と本）は合計せず、機器の計と回線を分けて示す。情報の型なので論点ボックスは置かず、注の末尾を「→ 含意」の 1 文で締める。
+     差し替える所: 図表タイトル・区分（4〜5 行）・数（1 行の中で 現状＋増−減＝計画後 が合うように）・理由（1 行 12 字まで）・計の行・横棒の長さと値・注。 -->
 <section class="slide" data-layout="table">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">設備の増減</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">設備の増減は機器の入れ替えが主で、純増は監視装置26台と回線96本に限られる</div>
   <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行に伴う設備の増減（現状FY2025 → 計画後FY2027、台・本）</div>
-  <table class="pp-table" data-note="6 列の表：区分ごとに 現状＋増−減＝計画後。数字は右寄せで桁をそろえる" style="left:64px;top:228px;width:1152px;font-size:19px;line-height:1.25">
-    <tr style="height:40px">
-      <td style="width:292px;padding:5px 14px;background:var(--bg-soft);font-weight:700">区分</td>
-      <td style="width:160px;padding:5px 14px;background:var(--bg-soft);font-weight:700;text-align:right">現状</td>
-      <td style="width:160px;padding:5px 14px;background:var(--bg-soft);font-weight:700;text-align:right">増</td>
-      <td style="width:160px;padding:5px 14px;background:var(--bg-soft);font-weight:700;text-align:right">減</td>
-      <td style="width:180px;padding:5px 14px;background:var(--bg-soft);font-weight:700;text-align:right">計画後</td>
-      <td style="width:200px;padding:5px 14px;background:var(--bg-soft);font-weight:700;text-align:right">差分</td>
-    </tr>
-    <tr style="height:43px">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line)">ルータ（MPLS）</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">48</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">▲48</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">▲48</td>
-    </tr>
-    <tr style="height:43px">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line)">SD-WAN機器</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">＋48</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">48</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">＋48</td>
-    </tr>
-    <tr style="height:43px">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line)">L3スイッチ</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">96</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">96</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td>
-    </tr>
-    <tr style="height:43px" data-note="純増の行：監視装置と回線だけが増える。差分の数字を太字に">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line)">監視装置</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">22</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">＋26</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">48</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">＋26</td>
-    </tr>
-    <tr style="height:43px" data-note="純増の行：監視装置と回線だけが増える。差分の数字を太字に">
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line)">回線（本）</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">48</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">＋144</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">▲48</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">144</td>
-      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">＋96</td>
-    </tr>
-    <tr style="height:45px">
-      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700">合計</td>
-      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">214</td>
-      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">＋218</td>
-      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">▲96</td>
-      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">336</td>
-      <td data-note="差分の合計だけ強調色の文字（1 枚 1 点）" style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right;color:var(--emphasis)">＋122</td>
-    </tr>
+  <table class="pp-table" data-note="6 列の表：区分ごとに 現状＋増−減＝計画後 と理由。機器の計と回線は分けて締める" style="left:64px;top:228px;width:1152px;font-size:19px;line-height:1.25">
+    <tr style="height:40px"><td style="width:200px;padding:5px 14px;background:var(--bg-soft);font-weight:700">区分</td><td style="width:120px;padding:5px 14px;background:var(--bg-soft);font-weight:700;text-align:right">現状</td><td style="width:120px;padding:5px 14px;background:var(--bg-soft);font-weight:700;text-align:right">増</td><td style="width:120px;padding:5px 14px;background:var(--bg-soft);font-weight:700;text-align:right">減</td><td style="width:130px;padding:5px 14px;background:var(--bg-soft);font-weight:700;text-align:right">計画後</td><td style="width:130px;padding:5px 14px;background:var(--bg-soft);font-weight:700;text-align:right">差分</td><td style="width:332px;padding:5px 14px;background:var(--bg-soft);font-weight:700">理由</td></tr>
+    <tr style="height:43px"><td style="padding:5px 14px;border-bottom:1px solid var(--line)">ルータ（MPLS）</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">48</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">▲48</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">▲48</td><td style="padding:5px 14px;border-bottom:1px solid var(--line)">SD-WANに置き換え</td></tr>
+    <tr style="height:43px"><td style="padding:5px 14px;border-bottom:1px solid var(--line)">SD-WAN機器</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">＋48</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">48</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">＋48</td><td style="padding:5px 14px;border-bottom:1px solid var(--line)">全48拠点に新設</td></tr>
+    <tr style="height:43px"><td style="padding:5px 14px;border-bottom:1px solid var(--line)">L3スイッチ</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">96</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">96</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">0</td><td style="padding:5px 14px;border-bottom:1px solid var(--line)">現行のまま使う</td></tr>
+    <tr style="height:43px" data-note="純増の行：差分の 1 点だけ強調色（1 枚 1 点）"><td style="padding:5px 14px;border-bottom:1px solid var(--line)">監視装置</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">22</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">＋26</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">0</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">48</td><td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700;color:var(--emphasis)">＋26</td><td style="padding:5px 14px;border-bottom:1px solid var(--line)">営業所の未監視を解消</td></tr>
+    <tr style="height:45px" data-note="機器の計：台数だけを足す（回線は本数なので足さない）"><td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700">機器 計（台）</td><td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">166</td><td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">＋74</td><td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">▲48</td><td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">192</td><td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">＋26</td><td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700">入れ替え48・増設26</td></tr>
+    <tr style="height:43px"><td style="padding:5px 14px;border-top:1px solid var(--line)">回線（本）</td><td style="padding:5px 14px;border-top:1px solid var(--line);text-align:right">48</td><td style="padding:5px 14px;border-top:1px solid var(--line);text-align:right">＋144</td><td style="padding:5px 14px;border-top:1px solid var(--line);text-align:right">▲48</td><td style="padding:5px 14px;border-top:1px solid var(--line);text-align:right">144</td><td style="padding:5px 14px;border-top:1px solid var(--line);text-align:right;font-weight:700">＋96</td><td style="padding:5px 14px;border-top:1px solid var(--line)">1拠点3本に多重化</td></tr>
   </table>
-  <div class="pp-text b" style="left:64px;top:545px;width:120px;height:28px;font-size:19px">機器（台）</div>
+  <div class="pp-text b" style="left:64px;top:545px;width:120px;height:28px;font-size:19px;line-height:1.3">機器（台）</div>
   <div class="pp-shape f-light" data-note="横棒：現状（淡）→計画後（濃）の総数。長さは台数に比例（1 台＝1.8px）" style="left:190px;top:547px;width:299px;height:20px"></div>
-  <div class="pp-text" style="left:497px;top:539px;width:60px;height:28px;font-size:19px">166</div>
+  <div class="pp-text" style="left:497px;top:539px;width:60px;height:28px;font-size:19px;line-height:1.3">166</div>
   <div class="pp-shape f-accent" data-note="横棒：現状（淡）→計画後（濃）の総数。長さは台数に比例（1 台＝1.8px）" style="left:190px;top:570px;width:346px;height:20px"></div>
-  <div class="pp-text b" style="left:544px;top:568px;width:110px;height:28px;font-size:19px">192（＋26）</div>
-  <div class="pp-text b" style="left:660px;top:545px;width:120px;height:28px;font-size:19px">回線（本）</div>
+  <div class="pp-text b" style="left:544px;top:568px;width:110px;height:28px;font-size:19px;line-height:1.3">192（＋26）</div>
+  <div class="pp-text b" style="left:660px;top:545px;width:120px;height:28px;font-size:19px;line-height:1.3">回線（本）</div>
   <div class="pp-shape f-light" style="left:786px;top:547px;width:86px;height:20px"></div>
-  <div class="pp-text" style="left:880px;top:539px;width:60px;height:28px;font-size:19px">48</div>
+  <div class="pp-text" style="left:880px;top:539px;width:60px;height:28px;font-size:19px;line-height:1.3">48</div>
   <div class="pp-shape f-accent" style="left:786px;top:570px;width:259px;height:20px"></div>
-  <div class="pp-text b" style="left:1053px;top:568px;width:160px;height:28px;font-size:19px">144（＋96）</div>
-  <div class="pp-text" data-note="注：台数の出所と、増減から言える含意" data-role="caption" style="left:64px;top:602px;width:1152px;height:40px">注: 台数は2026年9月の機器台帳。回線はMPLS 1回線をインターネット2回線＋LTEに置き換える（1拠点3本）。棒の淡い色が現状、濃い色が計画後<br>→ 機器はルータ48台がSD-WAN機器48台に置き換わるだけで、保守契約の追加は監視装置26台と回線96本の2件に絞られる</div>
+  <div class="pp-text b" style="left:1053px;top:568px;width:160px;height:28px;font-size:19px;line-height:1.3">144（＋96）</div>
+  <div class="pp-text" data-note="注：台数の出所と、増減から言える含意" data-role="caption" style="left:64px;top:602px;width:1152px;height:40px">注: 台数は2026年9月の機器台帳。回線はMPLS 1回線をインターネット2回線＋LTEに置き換える（1拠点3本）<br>→ 機器はルータ48台がSD-WAN機器48台に置き換わるだけで、保守契約の追加は監視装置26台と回線96本の2件に絞られる</div>
 </section>

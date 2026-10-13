@@ -1,37 +1,57 @@
-<!-- 用途: 時間の推移と削減の内訳（全幅の折れ線×内訳カード）。上段の全幅の折れ線で推移を見せ（系列は 2〜3 本まで。注目する系列を先頭にする）、下段のカード 5 枚で、項目ごとの削減の要因・現状→導入後・削減幅と、合計（基調色の面）を並べる。
-     所見や内訳を並べたいときに使う（短いときは全幅のデザイン1）。
-     デザイン1との違い: 左右に分けず、全幅の折れ線を上段、内訳カードを下段に横 5 枚で積む。内訳は表でなく、項目ごとのカードと合計のカードにする。
-     差し替える所: data-chart（推移の値）・カードの 4 枚（項目・要因・現状→導入後・削減幅）・合計のカード・注。 -->
+<!-- 用途: 時間の推移（折れ線）。増加・横ばい・減少のどれにも使う。系列は 2〜3 本までで、注目する系列を先頭にする。値が重なる系列は "labels": false でラベルを消し、注目する系列のラベルだけ残す。上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。
+     デザイン1との違い: 右に内訳表（項目ごとの要因・前後の値・変化幅の棒）と基調色の帯がつき、グラフは左半分になる。要因を表で読ませたいときに使う。
+     差し替える所: 図表タイトル・data-chart・表の 4 行（項目・要因・前後の値・棒の幅と変化幅）・表の下の注・合計の帯・注。 -->
 <section class="slide" data-layout="chart">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応時間の推移</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応の時間は、導入後6か月で月40時間から8時間に下がる見込み</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の時間（月あたり、時間）</div>
-  <div class="pp-chart" data-overlap data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40]}],"fmt":"#,##0","axis":{"min":0,"max":50,"major":10}}' style="left:64px;top:224px;width:1152px;height:200px"></div>
-  <div class="pp-shape f-white" data-note="内訳カード：項目ごとの削減の要因・現状→導入後・削減幅。合計だけ基調色の面" style="left:64px;top:436px;width:216px;height:154px"></div>
-  <div class="pp-text b" style="left:78px;top:442px;width:188px;height:30px;font-size:21px;line-height:1.15">切り分け</div>
-  <div class="pp-text" style="left:78px;top:472px;width:188px;height:24px;font-size:19px;line-height:1.15">集中監視で自動化</div>
-  <div class="pp-text" style="left:78px;top:500px;width:188px;height:24px;font-size:19px;line-height:1.15">16→2時間</div>
-  <div class="pp-text b" style="left:78px;top:530px;width:188px;height:44px;font-size:34px;line-height:1.15">▲14</div>
-  <div class="pp-shape f-white" data-note="内訳カード：項目ごとの削減の要因・現状→導入後・削減幅。合計だけ基調色の面" style="left:298px;top:436px;width:216px;height:154px"></div>
-  <div class="pp-text b" style="left:312px;top:442px;width:188px;height:30px;font-size:21px;line-height:1.15">復旧作業</div>
-  <div class="pp-text" style="left:312px;top:472px;width:188px;height:24px;font-size:19px;line-height:1.15">回線の自動切替</div>
-  <div class="pp-text" style="left:312px;top:500px;width:188px;height:24px;font-size:19px;line-height:1.15">12→3時間</div>
-  <div class="pp-text b" style="left:312px;top:530px;width:188px;height:44px;font-size:34px;line-height:1.15">▲9</div>
-  <div class="pp-shape f-white" data-note="内訳カード：項目ごとの削減の要因・現状→導入後・削減幅。合計だけ基調色の面" style="left:532px;top:436px;width:216px;height:154px"></div>
-  <div class="pp-text b" style="left:546px;top:442px;width:188px;height:30px;font-size:21px;line-height:1.15">記録作成</div>
-  <div class="pp-text" style="left:546px;top:472px;width:188px;height:24px;font-size:19px;line-height:1.15">ログの自動記録</div>
-  <div class="pp-text" style="left:546px;top:500px;width:188px;height:24px;font-size:19px;line-height:1.15">8→2時間</div>
-  <div class="pp-text b" style="left:546px;top:530px;width:188px;height:44px;font-size:34px;line-height:1.15">▲6</div>
-  <div class="pp-shape f-white" data-note="内訳カード：項目ごとの削減の要因・現状→導入後・削減幅。合計だけ基調色の面" style="left:766px;top:436px;width:216px;height:154px"></div>
-  <div class="pp-text b" style="left:780px;top:442px;width:188px;height:30px;font-size:21px;line-height:1.15">再発防止</div>
-  <div class="pp-text" style="left:780px;top:472px;width:188px;height:24px;font-size:19px;line-height:1.15">月次会議に集約</div>
-  <div class="pp-text" style="left:780px;top:500px;width:188px;height:24px;font-size:19px;line-height:1.15">4→1時間</div>
-  <div class="pp-text b" style="left:780px;top:530px;width:188px;height:44px;font-size:34px;line-height:1.15">▲3</div>
-  <div class="pp-shape f-accent" data-note="内訳カード：項目ごとの削減の要因・現状→導入後・削減幅。合計だけ基調色の面" style="left:1000px;top:436px;width:216px;height:154px"></div>
-  <div class="pp-text t-white b" style="left:1014px;top:442px;width:188px;height:30px;font-size:21px;line-height:1.15">合計</div>
-  <div class="pp-text t-white" style="left:1014px;top:472px;width:188px;height:24px;font-size:19px;line-height:1.15">40→8時間</div>
-  <div class="pp-text t-white" style="left:1014px;top:500px;width:188px;height:24px;font-size:19px;line-height:1.15">▲32時間</div>
-  <div class="pp-text t-white b" style="left:1014px;top:530px;width:188px;height:44px;font-size:34px;line-height:1.15">▲80%</div>
+  <div class="pp-text b" data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-role="body" style="left:64px;top:186px;width:596px;height:32px;font-size:21px">障害対応の時間（月あたり、時間）</div>
+  <div class="pp-chart" data-overlap data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40],"labels":false}],"fmt":"#,##0","axis":{"min":0,"max":50,"major":10}}' style="left:64px;top:224px;width:596px;height:360px"></div>
+  <div class="pp-text b" data-note="内訳表：変化幅の棒は値に比例。効く項目だけ濃い棒" data-role="body" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">変化の内訳と要因（月あたり、時間）</div>
+  <div class="pp-shape f-soft" data-note="内訳表：変化幅の棒は値に比例。効く項目だけ濃い棒" style="left:688px;top:224px;width:528px;height:360px"></div>
+  <div class="pp-text" data-role="caption" style="left:710px;top:233px;width:60px;height:22px">項目</div>
+  <div class="pp-text" data-role="caption" style="left:802px;top:233px;width:160px;height:22px">変化の要因</div>
+  <div class="pp-text" data-role="caption" style="left:976px;top:233px;width:40px;height:22px;text-align:right">現状</div>
+  <div class="pp-text" data-role="caption" style="left:1020px;top:233px;width:42px;height:22px;text-align:right">導入後</div>
+  <div class="pp-text" data-role="caption" style="left:1080px;top:233px;width:120px;height:22px">変化幅</div>
+  <div class="pp-line" style="left:700px;top:256px;width:504px;height:1px;background:var(--text-sub)"></div>
+  <table class="pp-table" style="left:700px;top:258px;width:368px;font-size:19px;line-height:1.25">
+    <tr style="height:44px">
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);width:96px;font-weight:700;color:var(--accent-dark)">切り分け</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);width:180px">集中監視で自動化</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);width:46px;text-align:right">16</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);width:46px;text-align:right">2</td>
+    </tr>
+    <tr style="height:44px">
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);font-weight:700;color:var(--accent-dark)">復旧作業</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);">回線の自動切替</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">12</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">3</td>
+    </tr>
+    <tr style="height:44px">
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);font-weight:700">記録作成</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);">ログの自動記録</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">8</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">2</td>
+    </tr>
+    <tr style="height:44px">
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);font-weight:700">再発防止</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);">月次会議に集約</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">4</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line);text-align:right">1</td>
+    </tr>
+  </table>
+  <div class="pp-shape f-accent" style="left:1080px;top:271px;width:70px;height:18px"></div>
+  <div class="pp-text b" style="left:1156px;top:265px;width:60px;height:30px;font-size:19px">▲14</div>
+  <div class="pp-shape f-accent" style="left:1080px;top:315px;width:45px;height:18px"></div>
+  <div class="pp-text b" style="left:1131px;top:309px;width:85px;height:30px;font-size:19px">▲9</div>
+  <div class="pp-shape f-light" style="left:1080px;top:359px;width:30px;height:18px"></div>
+  <div class="pp-text b" style="left:1116px;top:353px;width:100px;height:30px;font-size:19px">▲6</div>
+  <div class="pp-shape f-light" style="left:1080px;top:403px;width:15px;height:18px"></div>
+  <div class="pp-text b" style="left:1101px;top:397px;width:115px;height:30px;font-size:19px">▲3</div>
+  <div class="pp-text" data-role="caption" style="left:710px;top:440px;width:484px;height:40px;line-height:1.3">注: 3月以降の低下は、本社・DCの切替完了を前提とする</div>
+  <div class="pp-shape f-accent" data-note="合計の帯：結論の数字を、基調色の面で締める" style="left:700px;top:492px;width:504px;height:88px"></div>
+  <div class="pp-text t-white b" style="left:716px;top:501px;width:290px;height:36px;font-size:22px">合計 40→8時間（▲32）</div>
+  <div class="pp-text t-white b right" style="left:1010px;top:501px;width:178px;height:36px;font-size:22px">▲80%</div>
   <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 現状は繁忙期を含む月平均。導入後は基盤グループの試算で、実績ではない<br>→ 低下は本社・DCの切替完了が前提で、切替が遅れれば到達も遅れる</div>
 </section>

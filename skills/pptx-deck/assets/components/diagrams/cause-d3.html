@@ -1,5 +1,5 @@
 <!-- 用途: 原因の連鎖（階段）。デザイン1（cause）と同じ事象・原因 5 つ・対策・試算で差し替えられる。上に事象の帯、その下に原因を 1 行 1 つの横長の帯で並べ、深い原因ほど右に字下げして階段にする（直接原因 → 背景要因 → 根本原因）。下の横 1 行に試算と対策 3 つを置く。
-     デザイン1との違い: 箱と矢印の分岐ではなく、字下げした帯の一覧で深さを示す。原因の名前（太字）と事実を 1 行に並べ、矢印は使わない。
+     デザイン1との違い: 箱と矢印の分岐ではなく、字下げした帯の一覧で深さを示す。原因の名前（太字）と事実を 1 行に並べ（事実は全行とも同じ位置 x=724 から書き始める）、矢印は使わない。
      事象は基調色の面、原因はパネル地。恒久対策の 1 点だけ強調色（1 枚 1 点）。対策は「対②」のように、どの原因に効くかを番号で示す。
      差し替える所: 事象（名前・日時・停止時間・損失）・直接原因 2 つ・背景要因 2 つ・根本原因・対策 3 つ・試算・注。 -->
 <section class="slide" data-layout="diagram">
@@ -16,24 +16,24 @@
   <div class="pp-text" data-note="行の見出し：直接原因→背景要因→根本原因。下へ行くほど字下げ（深い原因）" data-role="caption" style="left:64px;top:290px;width:96px;height:20px">直接原因</div>
   <div class="pp-shape f-soft" data-note="原因の箱：番号・名前・事実（数値 1 つ）。直接→背景→根本の順に、矢印で上から下へたどる" style="left:168px;top:284px;width:1048px;height:32px"></div>
   <div class="pp-text b" style="left:180px;top:287px;width:420px;height:26px;font-size:19px;line-height:1.25"><span style="color:var(--accent-dark)">①</span> MPLS回線が1本で冗長なし</div>
-  <div class="pp-text" data-role="caption" style="left:610px;top:290px;width:590px;height:20px">回線断で本社の全業務が停止。予備回線は手動切替</div>
+  <div class="pp-text" data-role="caption" style="left:724px;top:290px;width:480px;height:20px">回線断で本社の全業務が停止。予備回線は手動切替</div>
   <div class="pp-text" data-role="caption" style="left:64px;top:326px;width:96px;height:20px">直接原因</div>
   <div class="pp-shape f-soft" style="left:168px;top:320px;width:1048px;height:32px"></div>
   <div class="pp-text b" style="left:180px;top:323px;width:420px;height:26px;font-size:19px;line-height:1.25"><span style="color:var(--accent-dark)">②</span> 検知が申告に依存</div>
-  <div class="pp-text" data-role="caption" style="left:610px;top:326px;width:590px;height:20px">本社ルータの死活は未監視。申告から特定まで2.5h</div>
+  <div class="pp-text" data-role="caption" style="left:724px;top:326px;width:480px;height:20px">本社ルータの死活は未監視。申告から特定まで2.5h</div>
   <div class="pp-text" data-role="caption" style="left:64px;top:362px;width:96px;height:20px">背景要因</div>
   <div class="pp-shape f-soft" style="left:196px;top:356px;width:1020px;height:32px"></div>
   <div class="pp-text b" style="left:208px;top:359px;width:420px;height:26px;font-size:19px;line-height:1.25"><span style="color:var(--accent-dark)">③</span> 予備回線への切替に承認が要る</div>
-  <div class="pp-text" data-role="caption" style="left:638px;top:362px;width:562px;height:20px">切替基準がなく、部長承認まで待ち2.0h</div>
+  <div class="pp-text" data-role="caption" style="left:724px;top:362px;width:480px;height:20px">切替基準がなく、部長承認まで待ち2.0h</div>
   <div class="pp-text" data-role="caption" style="left:64px;top:398px;width:96px;height:20px">背景要因</div>
   <div class="pp-shape f-soft" style="left:196px;top:392px;width:1020px;height:32px"></div>
   <div class="pp-text b" style="left:208px;top:395px;width:420px;height:26px;font-size:19px;line-height:1.25"><span style="color:var(--accent-dark)">④</span> 遠隔で復旧できない</div>
-  <div class="pp-text" data-role="caption" style="left:638px;top:398px;width:562px;height:20px">遠隔で設定を戻せず、ベンダー到着まで待ち3.0h</div>
+  <div class="pp-text" data-role="caption" style="left:724px;top:398px;width:480px;height:20px">遠隔で設定を戻せず、ベンダー到着まで待ち3.0h</div>
   <div class="pp-text" data-role="caption" style="left:64px;top:434px;width:96px;height:20px">根本原因</div>
   <div class="pp-shape f-soft" data-note="根本原因：①〜④がすべてここから生じることを、下の 1 文で結ぶ" style="left:224px;top:428px;width:992px;height:52px"></div>
   <div class="pp-text b t-dark" style="left:236px;top:431px;width:480px;height:28px;font-size:19px;line-height:1.25"><span style="color:var(--accent-dark)">⑤</span> 回線の冗長化と遠隔運用に投資してこなかった</div>
   <div class="pp-text" data-role="caption" style="left:236px;top:458px;width:470px;height:20px">→ ①〜④の源はここにある</div>
-  <div class="pp-text" data-role="caption" style="left:724px;top:431px;width:444px;height:46px;line-height:1.3">FY2021〜25はMPLSの保守延長のみ（年2,000万円）。更改投資はゼロで、48拠点の構成は12モデルが混在したまま</div>
+  <div class="pp-text" data-role="caption" style="left:724px;top:431px;width:480px;height:46px;line-height:1.3">FY2021〜25はMPLSの保守延長のみ（年2,000万円）。更改投資はゼロで、48拠点の構成は12モデルが混在したまま</div>
   <div class="pp-text" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" data-role="caption" style="left:64px;top:480px;width:1152px;height:20px">対策（枠線＝計画。「対②」は原因②に効く対策）</div>
   <div class="pp-shape f-soft" style="left:64px;top:508px;width:228px;height:78px"></div>
   <div class="pp-text" data-role="caption" style="left:76px;top:511px;width:204px;height:20px">対策後の復旧時間（試算）</div>

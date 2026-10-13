@@ -1,0 +1,70 @@
+<!-- 用途: 時系列（発生順の事象）。左の縦線と点に沿って、時刻｜区間｜誰が何をしたか｜担当｜所要 を 1 行ずつ表で並べる。件数が多く、文で読ませたいときに使う（デザイン1 と同じ 6 区間・同じ原稿）。
+     記号: 発生と復旧の点は基調色の塗り（f-accent）、途中の点は淡い塗り（f-mid）、待ちの区間の点は枠線（f-outline）。最大の待ちの行だけパネル地の帯、その所要だけ強調色（1 枚 1 点）。最下部にパネル地の帯で作業と待ちの内訳。
+     デザイン1との違い: 比例の横棒をやめ、区間を行にして文で読ませる（6〜8 行まで）。
+     差し替える所: 行 6 つ（時刻・区間・誰が何をしたか・担当・所要。各セル 1 行。行の高さ 44px、点の y は行の上端＋15）・点の種類・強調する 1 行・帯の文・注。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">回線断の時系列</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">復旧10時間の半分は現地出動と承認の待ちで、遠隔化すれば5時間に縮められる</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社MPLS回線断の対応の時系列（2026年7月14日 9:05〜19:05、時間）</div>
+  <div class="pp-text" data-note="見出し：灰の小さな文字と罫線。所要は次の区間までの時間" data-role="caption" style="left:134px;top:229px;width:60px;height:22px">時刻</div>
+  <div class="pp-text" data-note="見出し：灰の小さな文字と罫線。所要は次の区間までの時間" data-role="caption" style="left:214px;top:229px;width:240px;height:22px">区間</div>
+  <div class="pp-text" data-note="見出し：灰の小さな文字と罫線。所要は次の区間までの時間" data-role="caption" style="left:464px;top:229px;width:400px;height:22px">誰が何をしたか</div>
+  <div class="pp-text" data-note="見出し：灰の小さな文字と罫線。所要は次の区間までの時間" data-role="caption" style="left:904px;top:229px;width:150px;height:22px">担当</div>
+  <div class="pp-text right" data-note="見出し：灰の小さな文字と罫線。所要は次の区間までの時間" data-role="caption" style="left:1094px;top:229px;width:106px;height:22px">所要（h）</div>
+  <div class="pp-line" style="left:120px;top:250px;width:1096px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:89px;top:275px;width:2px;height:220px;background:var(--line)"></div>
+  <div class="pp-shape f-accent" data-note="点：発生と復旧は基調色の塗り、途中は淡い塗り、待ちの区間は枠線" data-shape="ellipse" style="left:83px;top:268px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:83px;top:312px;width:14px;height:14px"></div>
+  <div class="pp-shape f-outline" data-note="点：発生と復旧は基調色の塗り、途中は淡い塗り、待ちの区間は枠線" data-shape="ellipse" style="left:83px;top:356px;width:14px;height:14px"></div>
+  <div class="pp-shape f-mid" data-shape="ellipse" style="left:83px;top:400px;width:14px;height:14px"></div>
+  <div class="pp-shape f-outline" data-shape="ellipse" style="left:83px;top:444px;width:14px;height:14px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:83px;top:488px;width:14px;height:14px"></div>
+  <table class="pp-table" data-note="行：時刻・区間・誰が何をしたか・担当を 1 行に収め、最大の待ちの行だけパネル地の面" style="left:120px;top:253px;width:1096px;font-size:19px;line-height:1.25">
+    <tr style="height:44px">
+      <td style="width:80px;padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">9:05</td>
+      <td style="width:250px;padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">検知</td>
+      <td style="width:440px;padding:4px 14px;border-bottom:1px solid var(--line)">業務部門が運用センターへ電話で申告</td>
+      <td style="width:150px;padding:4px 14px;border-bottom:1px solid var(--line)">業務部門</td>
+      <td style="width:176px;padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">0.5</td>
+    </tr>
+    <tr style="height:44px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">9:35</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">一次切り分け</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">MPLSルータの故障と特定</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">運用センター</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">2.0</td>
+    </tr>
+    <tr style="height:44px" data-note="最大の待ち：行をパネル地にし、所要だけ強調色（1 点）">
+      <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">11:35</td>
+      <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">現地出動（到着待ち）</td>
+      <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line)">ベンダーへ出動を要請、到着まで待つ</td>
+      <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line)">基盤グループ</td>
+      <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);text-align:right;font-weight:700;font-size:24px;color:var(--emphasis)">3.0</td>
+    </tr>
+    <tr style="height:44px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">14:35</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">復旧作業</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">予備機へ交換し、設定を復旧</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">ベンダー</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">2.0</td>
+    </tr>
+    <tr style="height:44px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">16:35</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">切替の承認（待ち）</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">予備回線への切替を申請、部長承認まで待つ</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">基盤グループ</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">2.0</td>
+    </tr>
+    <tr style="height:44px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">18:35</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">報告</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">予備回線へ切替、疎通を確認して復旧を報告</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">運用センター</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:right">0.5</td>
+    </tr>
+  </table>
+  <div class="pp-shape f-soft" data-note="内訳の帯：作業と待ちの合計を数字で示す" style="left:64px;top:530px;width:1152px;height:44px"></div>
+  <div class="pp-text" data-note="内訳の帯：作業と待ちの合計を数字で示す" style="left:84px;top:537px;width:1112px;height:28px;font-size:19px"><b>作業 5.0h／待ち 5.0h。</b>待ちは現地到着と切替の承認の2区間で、復旧時間の半分を占める</div>
+  <div class="pp-text" data-note="注：時刻の出所と、時系列から言える含意" data-role="caption" style="left:64px;top:590px;width:1152px;height:40px;line-height:1.3">注: 時刻は運用センターの対応記録（2026年7月14日）。機会損失は停止1時間あたり150万円で1,500万円<br>→ 遠隔復旧と自動切替で待ちの2区間を消せば、同じ障害でも復旧は5.0hに縮む</div>
+</section>

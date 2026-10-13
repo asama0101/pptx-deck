@@ -1,5 +1,5 @@
 <!-- 用途: 数式（結果を、内訳の足し算・掛け算で説明する）。上に結果と内訳を 1 行の式で書き、その下に、内訳の金額に比例させた横長の帯（全幅を結果の値に対応させる）、最下部に内訳ごとの根拠の 3 列。
-     帯の長さは金額に比例させる（ここでは 1.7億円＝1152px）。強調色は、いちばん大きい内訳の見出し 1 か所（1 枚 1 点）。式は 36px、帯の中の文字は 19px。内訳が 3 つを超えるときは、別の型（waterfall・stacked）を検討する。
+     帯の長さは金額に比例させ、濃淡は強調と合わせる（いちばん大きい内訳の機器を最も濃く）。ここでは 1.7億円＝1152px）。強調色は、いちばん大きい内訳の見出し 1 か所（1 枚 1 点）。式は 36px、帯の中の文字は 19px。内訳が 3 つを超えるときは、別の型（waterfall・stacked）を検討する。
      差し替える所: 題・リード文・図表タイトル・式の数字・帯の 3 区間の長さと文字・根拠の 3 列の見出しと説明・注。 -->
 <section class="slide" data-layout="diagram">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">総費用の内訳</div>
@@ -7,20 +7,20 @@
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">5年間の総費用1.7億円は、機器0.9億円・移行0.2億円・運用0.6億円の足し算で、機器が過半を占める</div>
   <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">B案（SD-WAN）の5年間の総費用（FY2027〜2031、税抜）</div>
   <div class="pp-text num t-dark center" data-note="数式：結果を先に、内訳を足し算で 1 行にする" style="left:64px;top:232px;width:1152px;height:56px;font-size:36px">1.7億円 ＝ 機器 0.9 ＋ 移行 0.2 ＋ 運用 0.6</div>
-  <div class="pp-shape f-mid" data-note="比例の帯：長さを金額に比例させる（1.7億円＝1152px）" style="left:64px;top:306px;width:610px;height:64px;border-right:2px solid #FFFFFF"></div>
-  <div class="pp-text t-dark b center" data-overlap style="left:72px;top:322px;width:594px;height:32px;font-size:19px">機器　0.9億円（53%）</div>
-  <div class="pp-shape f-light" style="left:674px;top:306px;width:136px;height:64px;border-right:2px solid #FFFFFF"></div>
-  <div class="pp-text t-dark b center" data-overlap style="left:682px;top:322px;width:120px;height:32px;font-size:19px">0.2億円</div>
-  <div class="pp-shape f-soft2" style="left:810px;top:306px;width:406px;height:64px;border-right:2px solid #FFFFFF"></div>
-  <div class="pp-text t-white b center" data-overlap style="left:818px;top:322px;width:390px;height:32px;font-size:19px">運用　0.6億円（35%）</div>
-  <div class="pp-line hr" style="left:64px;top:396px;width:352px;height:1px"></div>
-  <div class="pp-text t-dark b" style="left:64px;top:408px;width:352px;height:36px;font-size:24px;color:var(--emphasis)">機器　0.9億円</div>
-  <div class="pp-text" style="left:64px;top:452px;width:352px;height:88px;font-size:19px">ルータ112台とクラウド管理</div>
-  <div class="pp-line hr" style="left:448px;top:396px;width:352px;height:1px"></div>
-  <div class="pp-text t-dark b" style="left:448px;top:408px;width:352px;height:36px;font-size:24px">移行　0.2億円</div>
-  <div class="pp-text" style="left:448px;top:452px;width:352px;height:88px;font-size:19px">48拠点の切替作業と設計</div>
-  <div class="pp-line hr" style="left:832px;top:396px;width:352px;height:1px"></div>
-  <div class="pp-text t-dark b" style="left:832px;top:408px;width:352px;height:36px;font-size:24px">運用　0.6億円</div>
-  <div class="pp-text" style="left:832px;top:452px;width:352px;height:88px;font-size:19px">年0.12億円 × 5年</div>
+  <div class="pp-shape f-soft2" data-note="比例の帯：長さを金額に比例させる（1.7億円＝1152px）。いちばん大きい内訳を最も濃く" style="left:64px;top:306px;width:610px;height:96px;border-right:2px solid #FFFFFF"></div>
+  <div class="pp-text t-white b center" data-overlap style="left:72px;top:338px;width:594px;height:32px;font-size:19px">機器　0.9億円（53%）</div>
+  <div class="pp-shape f-light" style="left:674px;top:306px;width:136px;height:96px;border-right:2px solid #FFFFFF"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:682px;top:338px;width:120px;height:32px;font-size:19px">0.2億円</div>
+  <div class="pp-shape f-mid" style="left:810px;top:306px;width:406px;height:96px;border-right:2px solid #FFFFFF"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:818px;top:338px;width:390px;height:32px;font-size:19px">運用　0.6億円（35%）</div>
+  <div class="pp-line hr" style="left:64px;top:430px;width:352px;height:1px"></div>
+  <div class="pp-text t-dark b" style="left:64px;top:442px;width:352px;height:36px;font-size:24px;color:var(--emphasis)">機器　0.9億円</div>
+  <div class="pp-text" style="left:64px;top:488px;width:352px;height:88px;font-size:24px">ルータ112台とクラウド管理</div>
+  <div class="pp-line hr" style="left:448px;top:430px;width:352px;height:1px"></div>
+  <div class="pp-text t-dark b" style="left:448px;top:442px;width:352px;height:36px;font-size:24px">移行　0.2億円</div>
+  <div class="pp-text" style="left:448px;top:488px;width:352px;height:88px;font-size:24px">48拠点の切替作業と設計</div>
+  <div class="pp-line hr" style="left:832px;top:430px;width:352px;height:1px"></div>
+  <div class="pp-text t-dark b" style="left:832px;top:442px;width:352px;height:36px;font-size:24px">運用　0.6億円</div>
+  <div class="pp-text" style="left:832px;top:488px;width:352px;height:88px;font-size:24px">年0.12億円 × 5年</div>
   <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 機器・移行はベンダー見積（2026年9月、税抜）。運用は年0.12億円×5年（FY2027〜2031）<br>→ 総費用の53%（0.9億円）は初年度の機器で、FY2027予算で一括計上が必要になる</div>
 </section>

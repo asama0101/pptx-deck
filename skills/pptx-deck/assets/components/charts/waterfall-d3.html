@@ -1,47 +1,36 @@
-<!-- 用途: 内訳の滝グラフと打ち手（滝グラフ×打ち手カード）。上段の全幅の滝グラフで全体（100）を項目に積み下ろして、どこが大きいかを見せ、下段の打ち手カードで、項目ごとの削減の方向性・現行・削減後・削減幅を並べる。
-     削減幅の棒は pp-shape の幅を値に比例させ（▲1＝20px）、打ち手を絞る項目は、濃い棒で示す。右端の基調色のカードに、合計（100→90）と金額を書く。グラフの全要素に実数ラベルが付く。totals は合計にする位置（0 始まり）。
-     デザイン1との違い: グラフを左右に分けず、全幅の低い滝グラフを上段、打ち手の縦長カード 5 枚と基調色の合計カードを下段に横一列で置く。注目点（回線＋委託の割合）は図表タイトルの右に 1 行で書く。
-     差し替える所: data-chart（内訳の値）・注目点の文・打ち手カードの 5 枚（項目・方向性・現行→削減後・棒の幅と▲値）・合計のカード・注。 -->
+<!-- 用途: 増減の道筋（ウォーターフォール）。使い方は 2 つ。(1) 差額の道筋: 前回の合計 → 項目ごとの増減 → 今回の合計（両端が合計。totals に最初と最後の位置を書く。見積の前回比・計画と実績の差など）。(2) 全体の分解: 合計 → 項目ごとの内訳（先頭だけ合計。totals は [0]。費用の内訳など）。totals は 0 始まりの位置。増減はどちらも灰（増加＝淡い灰、減少＝濃い灰）、合計は中間の灰で、主役の項目（highlight）だけ強調色。小さい増減のラベルは棒の外に出る。
+     デザイン1との違い: 全幅の低い滝グラフを上段、項目ごとのカード（差額の大きな数字つき）と基調色の合計カードを下段に横一列で置く。前回・今回・差を大きく見せたいときに使う。
+     差し替える所: 図表タイトル・data-chart・項目カードの 4 枚（項目・差額・理由・前後の値）・合計のカード・注。 -->
 <section class="slide" data-layout="chart">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">通信費の削減内訳</div>
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">見積の増減</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">通信費の58%を占める回線と運用委託に打ち手を絞れば、削減目標の7割が見込める</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:596px;height:32px;font-size:21px">通信費の内訳（FY2025、通信費12.0億円＝100）</div>
-  <div class="pp-text b right" data-note="注目点：図表タイトルの右に 1 行で書く" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">回線＋委託で58（通信費の約6割）</div>
-  <div class="pp-chart" data-overlap data-note="滝グラフ：通信費の内訳（指数）を積み下ろし、全要素に実数ラベルを付ける" data-chart='{"type":"waterfall","categories":["通信費計","回線","クラウド接続","保守","モバイル","運用委託"],"series":[{"name":"通信費（指数）","values":[100,-38,-22,-12,-8,-20]}],"totals":[0],"fmt":"0"}' style="left:64px;top:224px;width:1152px;height:190px"></div>
-  <div class="pp-shape f-white" data-note="打ち手カード：項目ごとの削減の方向性・現行と削減後・削減幅の棒（値に比例）を 1 枚に収める" style="left:64px;top:422px;width:168px;height:164px"></div>
-  <div class="pp-text b" style="left:76px;top:428px;width:144px;height:30px;font-size:21px">回線</div>
-  <div class="pp-text" style="left:76px;top:462px;width:144px;height:56px;font-size:19px;line-height:1.3">契約集約と帯域<br>適正化</div>
-  <div class="pp-text" style="left:76px;top:522px;width:144px;height:26px;font-size:19px">38 → 34</div>
-  <div class="pp-shape f-accent" style="left:76px;top:562px;width:80px;height:16px"></div>
-  <div class="pp-text b" style="left:164px;top:554px;width:60px;height:28px;font-size:19px">▲4</div>
-  <div class="pp-shape f-white" style="left:242px;top:422px;width:168px;height:164px"></div>
-  <div class="pp-text b" style="left:254px;top:428px;width:144px;height:30px;font-size:21px">接続</div>
-  <div class="pp-text" style="left:254px;top:462px;width:144px;height:56px;font-size:19px;line-height:1.3">直結回線の共用</div>
-  <div class="pp-text" style="left:254px;top:522px;width:144px;height:26px;font-size:19px">22 → 21</div>
-  <div class="pp-shape f-light" style="left:254px;top:562px;width:20px;height:16px"></div>
-  <div class="pp-text b" style="left:282px;top:554px;width:60px;height:28px;font-size:19px">▲1</div>
-  <div class="pp-shape f-white" style="left:420px;top:422px;width:168px;height:164px"></div>
-  <div class="pp-text b" style="left:432px;top:428px;width:144px;height:30px;font-size:21px">保守</div>
-  <div class="pp-text" style="left:432px;top:462px;width:144px;height:56px;font-size:19px;line-height:1.3">3モデルへの<br>集約</div>
-  <div class="pp-text" style="left:432px;top:522px;width:144px;height:26px;font-size:19px">12 → 11</div>
-  <div class="pp-shape f-light" style="left:432px;top:562px;width:20px;height:16px"></div>
-  <div class="pp-text b" style="left:460px;top:554px;width:60px;height:28px;font-size:19px">▲1</div>
-  <div class="pp-shape f-white" style="left:598px;top:422px;width:168px;height:164px"></div>
-  <div class="pp-text b" style="left:610px;top:428px;width:144px;height:30px;font-size:21px">端末</div>
-  <div class="pp-text" style="left:610px;top:462px;width:144px;height:56px;font-size:19px;line-height:1.3">未使用SIMの<br>解約</div>
-  <div class="pp-text" style="left:610px;top:522px;width:144px;height:26px;font-size:19px">8 → 7</div>
-  <div class="pp-shape f-light" style="left:610px;top:562px;width:20px;height:16px"></div>
-  <div class="pp-text b" style="left:638px;top:554px;width:60px;height:28px;font-size:19px">▲1</div>
-  <div class="pp-shape f-white" style="left:776px;top:422px;width:168px;height:164px"></div>
-  <div class="pp-text b" style="left:788px;top:428px;width:144px;height:30px;font-size:21px">委託</div>
-  <div class="pp-text" style="left:788px;top:462px;width:144px;height:56px;font-size:19px;line-height:1.3">監視の自動化</div>
-  <div class="pp-text" style="left:788px;top:522px;width:144px;height:26px;font-size:19px">20 → 17</div>
-  <div class="pp-shape f-accent" style="left:788px;top:562px;width:60px;height:16px"></div>
-  <div class="pp-text b" style="left:856px;top:554px;width:60px;height:28px;font-size:19px">▲3</div>
-  <div class="pp-shape f-accent" data-note="合計のカード：削減前後の指数と金額を、基調色の面で締める" style="left:954px;top:422px;width:262px;height:164px"></div>
-  <div class="pp-text t-white b" style="left:966px;top:430px;width:238px;height:34px;font-size:24px">合計 100 → 90</div>
-  <div class="pp-text t-white b" style="left:966px;top:474px;width:238px;height:30px;font-size:21px">▲10%＝▲1.2億円</div>
-  <div class="pp-text t-white" style="left:966px;top:514px;width:238px;height:56px;font-size:19px;line-height:1.3">うち回線と運用委託で▲7、削減目標の7割</div>
-  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 指数はFY2025の通信費12.0億円を100とし、▲10は柱Bの目標▲1.2億円に相当<br>→ 回線と運用委託の2項目で▲7を取れれば、残り3項目は▲1ずつでも目標に届く</div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">今回の見積は前回より1,000万円低いが、差の実質は保守の計上先の変更にすぎない</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">見積の差額の内訳（前回2026年6月 → 今回9月、万円・税抜）</div>
+  <div class="pp-chart" data-overlap data-note="滝グラフ：全幅で低め。主役の 1 項目だけ強調色" data-chart='{"type":"waterfall","categories":["前回 6月","機器","設計","切替作業","保守","今回 9月"],"series":[{"name":"見積（万円）","values":[12000,600,-900,300,-1000,11000]}],"totals":[0,5],"highlight":4,"fmt":"#,##0","axis":{"min":0,"max":15000,"major":5000}}' style="left:64px;top:224px;width:1152px;height:256px"></div>
+  <div class="pp-shape f-white" data-note="項目カード：項目ごとの理由と前後の値、差額の大きな数字。主役の項目だけパネル地" style="left:64px;top:488px;width:220px;height:100px"></div>
+  <div class="pp-text b" style="left:76px;top:495px;width:100px;height:28px;font-size:19px">機器</div>
+  <div class="pp-text b right" style="left:176px;top:491px;width:96px;height:34px;font-size:22px">＋600</div>
+  <div class="pp-text" data-role="caption" style="left:76px;top:529px;width:196px;height:22px">予備機6台追加</div>
+  <div class="pp-text" style="left:76px;top:555px;width:196px;height:26px;font-size:19px">8,400→9,000</div>
+  <div class="pp-shape f-white" style="left:296px;top:488px;width:220px;height:100px"></div>
+  <div class="pp-text b" style="left:308px;top:495px;width:100px;height:28px;font-size:19px">設計</div>
+  <div class="pp-text b right" style="left:408px;top:491px;width:96px;height:34px;font-size:22px">▲900</div>
+  <div class="pp-text" data-role="caption" style="left:308px;top:529px;width:196px;height:22px">PoCで短縮</div>
+  <div class="pp-text" style="left:308px;top:555px;width:196px;height:26px;font-size:19px">2,000→1,100</div>
+  <div class="pp-shape f-white" style="left:528px;top:488px;width:220px;height:100px"></div>
+  <div class="pp-text b" style="left:540px;top:495px;width:100px;height:28px;font-size:19px">切替作業</div>
+  <div class="pp-text b right" style="left:640px;top:491px;width:96px;height:34px;font-size:22px">＋300</div>
+  <div class="pp-text" data-role="caption" style="left:540px;top:529px;width:196px;height:22px">並行稼働2週間</div>
+  <div class="pp-text" style="left:540px;top:555px;width:196px;height:26px;font-size:19px">600→900</div>
+  <div class="pp-shape f-soft" style="left:760px;top:488px;width:220px;height:100px"></div>
+  <div class="pp-text b" style="left:772px;top:495px;width:100px;height:28px;font-size:19px">保守</div>
+  <div class="pp-text b right" style="left:872px;top:491px;width:96px;height:34px;font-size:22px">▲1,000</div>
+  <div class="pp-text" data-role="caption" style="left:772px;top:529px;width:196px;height:22px">運用費へ移管（5年分）</div>
+  <div class="pp-text" style="left:772px;top:555px;width:196px;height:26px;font-size:19px">1,000→0</div>
+  <div class="pp-shape f-accent" data-note="合計のカード：結論の数字を、基調色の面で締める" style="left:992px;top:488px;width:220px;height:100px"></div>
+  <div class="pp-text t-white b" style="left:1004px;top:495px;width:100px;height:28px;font-size:19px">前回→今回</div>
+  <div class="pp-text t-white b right" style="left:1104px;top:491px;width:96px;height:34px;font-size:22px">▲8%</div>
+  <div class="pp-text t-white" data-role="caption" style="left:1004px;top:529px;width:196px;height:22px">12,000→11,000万円</div>
+  <div class="pp-text t-white" style="left:1004px;top:555px;width:196px;height:26px;font-size:19px">実質は保守の移管分</div>
+  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 金額はベンダー見積（税抜）。前回は6月の概算、今回は9月の正式見積<br>→ 機器と切替の＋900は設計の▲900で相殺され、差額▲1,000は保守の計上先の変更分だ</div>
 </section>

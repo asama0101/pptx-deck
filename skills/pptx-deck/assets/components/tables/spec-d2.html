@@ -1,55 +1,68 @@
-<!-- 用途: 項目一覧表（検証項目・機能一覧・要件一覧に共用）。デザイン1（spec）と同じ 6 項目・同じ原稿で差し替えられる。基準は必ず数値で書く（「問題ないこと」は書かない）。結果を書くときは tables/result（同じ項目の順で）を使う。
-     デザイン1との違い: 表ではなく、項目ごとの横長カードにする。左に No の丸と項目・担当、中央に観点と方法を 2 行で重ね、右端の基準だけパネル地の箱に太字で入れて目立たせる。関門の項目（6）だけ太字。
-     差し替える所: 図表タイトル・行 6（項目・観点は 2 行まで・基準の数値・方法・担当）・太字にする 1 行・注。機能一覧なら見出しを「項目・担当｜観点・方法→概要・方式｜合格基準→要件値」に読み替える。 -->
+<!-- 用途: 検証の表（計画と結果を同じ型で）。検証計画は d1、検証結果は d2（この表）。d1 と同じ項目・同じ順で「項目｜合格基準｜実測値｜判定｜備考」の 5 列に結果を書き、上に総合判定の帯を置く。
+     デザイン1との違い: 計画の「観点・方法・担当」の代わりに「実測値・判定・備考」を並べ、総合判定の帯（判定の語は強調色の面・1 枚 1 点。右に合格・条件付き・不合格の数）を表の上に置く。判定は ○＝合格・△＝条件付き・×＝不合格で、△と×の行だけパネル地の面で強調し、備考に条件か対処を書く。最下部の論点ボックスに、条件を前提に次の工程へ進むことの可否を書く。
+     差し替える所: 題・リード文・図表タイトル・総合判定の語と内訳の数・行 6（項目・基準・実測・判定・備考は 1 行 16 字まで）・強調する行・注・論点の文。 -->
 <section class="slide" data-layout="table">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">検証項目</div>
+  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">検証の結果</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">検証6項目はいずれも数値の合格基準を持つため、切替の可否を客観的に判定できる</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の検証項目と合格基準（PoC 2拠点、2027年1月。判定は情報システム委員会）</div>
-  <div class="pp-text b t-sub" style="left:114px;top:226px;width:186px;height:24px;font-size:19px;line-height:1.2">項目・担当</div>
-  <div class="pp-text b t-sub" style="left:310px;top:226px;width:560px;height:24px;font-size:19px;line-height:1.2">観点・方法</div>
-  <div class="pp-text b t-sub" style="left:890px;top:226px;width:320px;height:24px;font-size:19px;line-height:1.2">合格基準</div>
-  <div class="pp-shape f-white" data-note="行のカード：左から No・項目と担当・観点と方法（2 行）・合格基準（パネル地の箱で強調）" style="left:64px;top:254px;width:1152px;height:52px"></div>
-  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:262px;width:36px;height:36px"></div>
-  <div class="pp-text b center t-white" style="left:70px;top:268px;width:36px;height:24px;font-size:19px;line-height:1.2">1</div>
-  <div class="pp-text" style="left:114px;top:257px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>回線切替時間</b><br><span style="color:var(--text-sub)">基盤グループ</span></div>
-  <div class="pp-text" style="left:310px;top:257px;width:560px;height:46px;font-size:19px;line-height:1.2">MPLSからSD-WANへの切替で業務が止まる時間<br><span style="color:var(--text-sub)">夜間に切替し、業務端末で疎通を確認</span></div>
-  <div class="pp-shape f-soft" style="left:880px;top:258px;width:330px;height:44px"></div>
-  <div class="pp-text b" style="left:892px;top:268px;width:306px;height:24px;font-size:19px;line-height:1.25">1拠点あたり2時間以内</div>
-  <div class="pp-shape f-white" style="left:64px;top:310px;width:1152px;height:52px"></div>
-  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:318px;width:36px;height:36px"></div>
-  <div class="pp-text b center t-white" style="left:70px;top:324px;width:36px;height:24px;font-size:19px;line-height:1.2">2</div>
-  <div class="pp-text" style="left:114px;top:313px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>経路の自動切替</b><br><span style="color:var(--text-sub)">基盤グループ</span></div>
-  <div class="pp-text" style="left:310px;top:313px;width:560px;height:46px;font-size:19px;line-height:1.2">主回線の断で副回線へ自動で切り替わる<br><span style="color:var(--text-sub)">主回線を手動で切断し3回計測</span></div>
-  <div class="pp-shape f-soft" style="left:880px;top:314px;width:330px;height:44px"></div>
-  <div class="pp-text b" style="left:892px;top:324px;width:306px;height:24px;font-size:19px;line-height:1.25">30秒以内、セッション維持</div>
-  <div class="pp-shape f-white" style="left:64px;top:366px;width:1152px;height:52px"></div>
-  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:374px;width:36px;height:36px"></div>
-  <div class="pp-text b center t-white" style="left:70px;top:380px;width:36px;height:24px;font-size:19px;line-height:1.2">3</div>
-  <div class="pp-text" style="left:114px;top:369px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>応答遅延</b><br><span style="color:var(--text-sub)">業務システム部</span></div>
-  <div class="pp-text" style="left:310px;top:369px;width:560px;height:46px;font-size:19px;line-height:1.2">基幹系（ERP）の画面応答の増分<br><span style="color:var(--text-sub)">50画面を各10回計測し平均</span></div>
-  <div class="pp-shape f-soft" style="left:880px;top:370px;width:330px;height:44px"></div>
-  <div class="pp-text b" style="left:892px;top:380px;width:306px;height:24px;font-size:19px;line-height:1.25">現行＋0.3秒以内</div>
-  <div class="pp-shape f-white" style="left:64px;top:422px;width:1152px;height:52px"></div>
-  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:430px;width:36px;height:36px"></div>
-  <div class="pp-text b center t-white" style="left:70px;top:436px;width:36px;height:24px;font-size:19px;line-height:1.2">4</div>
-  <div class="pp-text" style="left:114px;top:425px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>帯域</b><br><span style="color:var(--text-sub)">ベンダー</span></div>
-  <div class="pp-text" style="left:310px;top:425px;width:560px;height:46px;font-size:19px;line-height:1.2">拠点のピーク時間帯の実効帯域<br><span style="color:var(--text-sub)">計測ツールで3営業日の連続測定</span></div>
-  <div class="pp-shape f-soft" style="left:880px;top:426px;width:330px;height:44px"></div>
-  <div class="pp-text b" style="left:892px;top:436px;width:306px;height:24px;font-size:19px;line-height:1.25">上り下りとも100Mbps以上</div>
-  <div class="pp-shape f-white" style="left:64px;top:478px;width:1152px;height:52px"></div>
-  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:486px;width:36px;height:36px"></div>
-  <div class="pp-text b center t-white" style="left:70px;top:492px;width:36px;height:24px;font-size:19px;line-height:1.2">5</div>
-  <div class="pp-text" style="left:114px;top:481px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>監視の検知</b><br><span style="color:var(--text-sub)">運用センター</span></div>
-  <div class="pp-text" style="left:310px;top:481px;width:560px;height:46px;font-size:19px;line-height:1.2">回線断・機器故障を監視センターが検知し通報する<br><span style="color:var(--text-sub)">障害を模擬し、検知と通報の時刻を記録</span></div>
-  <div class="pp-shape f-soft" style="left:880px;top:482px;width:330px;height:44px"></div>
-  <div class="pp-text b" style="left:892px;top:492px;width:306px;height:24px;font-size:19px;line-height:1.25">検知5分以内、通報10分以内</div>
-  <div class="pp-shape f-white" style="left:64px;top:534px;width:1152px;height:52px"></div>
-  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:542px;width:36px;height:36px"></div>
-  <div class="pp-text b center t-white" style="left:70px;top:548px;width:36px;height:24px;font-size:19px;line-height:1.2">6</div>
-  <div class="pp-text" style="left:114px;top:537px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>戻し手順</b><br><span style="color:var(--text-sub)">基盤グループ</span></div>
-  <div class="pp-text" style="left:310px;top:537px;width:560px;height:46px;font-size:19px;line-height:1.2"><b>切替に失敗したときにMPLSへ戻せる</b><br><span style="color:var(--text-sub)">リハーサルで戻しを実施し実測</span></div>
-  <div class="pp-shape f-soft" data-note="関門の項目：切替の可否に直結する行だけ太字" style="left:880px;top:538px;width:330px;height:44px"></div>
-  <div class="pp-text b" style="left:892px;top:548px;width:306px;height:24px;font-size:19px;line-height:1.25">1時間以内に復旧、手順書どおり</div>
-  <div class="pp-text" data-note="注：検証環境と判定日、基準を満たさないときの扱いを含意で締める" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 環境は本社とA工場の2拠点のPoC構成（本番と同じ機器・回線）。判定は2027年1月14日、経営会議（1/15）の前日<br>→ 6項目のうち1つでも基準を満たさなければ、本社の切替は次回の経営会議（3月）まで延期する</div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">5項目が基準を満たし、残る帯域も3月の回線増速で解消できるため、切替へ進める</div>
+  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の検証結果（PoC 2拠点、2027年1月14日判定、合格基準との対比）</div>
+  <div class="pp-shape f-soft" data-note="総合判定の帯：判定の語は強調色の面（1 枚 1 点）、右に合格・条件付き・不合格の数" style="left:64px;top:228px;width:1152px;height:43px"></div>
+  <div class="pp-text b" style="left:84px;top:236px;width:120px;height:28px;font-size:20px;line-height:1.2">総合判定</div>
+  <div class="pp-shape f-emph" data-note="総合判定の帯：判定の語は強調色の面（1 枚 1 点）、右に合格・条件付き・不合格の数" style="left:204px;top:232px;width:170px;height:36px"></div>
+  <div class="pp-text b t-white center" data-note="総合判定の帯：判定の語は強調色の面（1 枚 1 点）、右に合格・条件付き・不合格の数" style="left:204px;top:236px;width:170px;height:28px;font-size:20px;line-height:1.2">条件付き合格</div>
+  <div class="pp-text" style="left:400px;top:236px;width:796px;height:28px;font-size:19px;line-height:1.2;text-align:right">○ 合格 5項目　△ 条件付き 1項目　× 不合格 0項目（計6項目）</div>
+  <table class="pp-table" data-note="5 列の表：基準と実測を並べ、△と×の行だけパネル地の面で強調" style="left:64px;top:282px;width:1152px;font-size:19px;line-height:1.25">
+    <tr style="height:36px">
+      <td style="width:190px;padding:4px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">項目</td>
+      <td style="width:270px;padding:4px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">合格基準</td>
+      <td style="width:270px;padding:4px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">実測値</td>
+      <td style="width:90px;padding:4px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:center">判定</td>
+      <td style="width:332px;padding:4px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">備考</td>
+    </tr>
+    <tr style="height:40px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">回線切替時間</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);color:var(--text-sub)">1拠点あたり2時間以内</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">1.5時間（2拠点の平均）</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:center;font-weight:700">○</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">夜間切替で業務への影響なし</td>
+    </tr>
+    <tr style="height:40px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">経路の自動切替</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);color:var(--text-sub)">30秒以内、セッション維持</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">12秒、セッション維持</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:center;font-weight:700">○</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">主回線の切断3回とも成功</td>
+    </tr>
+    <tr style="height:40px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">応答遅延</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);color:var(--text-sub)">現行＋0.3秒以内</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">＋0.2秒（50画面の平均）</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:center;font-weight:700">○</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">工場の帳票出力だけ＋0.5秒</td>
+    </tr>
+    <tr style="height:40px" data-note="条件付きの行：パネル地の面で強調し、備考に条件を書く">
+      <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">帯域</td>
+      <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);color:var(--text-sub)">上下100Mbps以上</td>
+      <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">本社180・工場85Mbps</td>
+      <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);text-align:center;font-weight:700;color:var(--accent-dark)">△</td>
+      <td style="padding:4px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">工場の回線増速後、3月に再測定</td>
+    </tr>
+    <tr style="height:40px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">監視の検知</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);color:var(--text-sub)">検知5分・通報10分以内</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">検知2分、通報6分</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:center;font-weight:700">○</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">模擬障害4件すべて検知</td>
+    </tr>
+    <tr style="height:40px">
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">戻し手順</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);color:var(--text-sub)">1時間以内に復旧</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);font-weight:700">40分で復旧</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line);text-align:center;font-weight:700">○</td>
+      <td style="padding:4px 14px;border-bottom:1px solid var(--line)">手順書の修正2件を反映済み</td>
+    </tr>
+  </table>
+  <div class="pp-text" data-note="注：実測の環境と、条件付きの項目の対処（費用・時期）" data-role="caption" style="left:64px;top:561px;width:1152px;height:30px">注: 実測は本社とA工場の2拠点。帯域の条件は、工場の回線を100→200Mbpsへ増速（月＋3万円）したうえで、3月の切替前に再測定すること</div>
+  <div class="pp-shape f-soft" data-note="論点ボックス：条件を前提に次の工程へ進むことの可否を 1 行で" style="left:64px;top:598px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="論点ボックス：条件を前提に次の工程へ進むことの可否を 1 行で" style="left:84px;top:599px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　帯域の再測定を条件にPoCを合格と判定し、本社の本番切替（3月）へ進むことの可否</div>
 </section>

@@ -1,29 +1,29 @@
 <!-- 用途: 階層・優先度・段階（各層に名前、下に範囲と数値）。デザイン1（pyramid）と同じ層・同じ説明で差し替えられる。
-     デザイン1との違い: 三角形をやめ、層の柱を左（下位）から右（上位）へ高くなる階段に並べ、柱の下に層ごとの説明を 4 列で置く（柱の高さは層の高さの違いで、値には比例しない）。
+     デザイン1との違い: 三角形をやめ、層の柱を左（下位）から右（上位）へ高くなる階段に並べ、柱の下に層ごとの説明を 4 列で置く（柱の高さは層の高さの違いで、値には比例しない。濃い基調色の面は使わず、強調色の枠はリード文の主張の層 L1 の 1 点。説明は全列とも 見出し 2 行・数字 2 行・注記 2 行にそろえる）。
      差し替える所: 層の名前（短く）・下の説明 3 行（範囲｜件数・影響・復旧｜注記）・注。 -->
 <section class="slide" data-layout="diagram">
   <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">障害対応の階層</div>
   <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の4階層のうち、件数の8割はL1で閉じ、設計チームの対応は年40件に絞れている</div>
   <div class="pp-text b" data-role="body" data-note="図表タイトル：対象・期間・単位" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応のエスカレーション階層（FY2025実績。年間の件数・影響時間・平均の復旧時間）</div>
-  <div class="pp-shape f-soft" data-note="階段：左から右へ高くなる 4 本の柱。上位ほど高く、右に置く"  style="left:64px;top:364px;width:276px;height:44px"></div>
+  <div class="pp-shape f-soft" data-note="階段：左から右へ高くなる 4 本の柱。上位ほど高く、右に置く。強調色の枠はリード文の主張の層（L1）の 1 点" style="left:64px;top:364px;width:276px;height:44px;border:3px solid var(--emphasis)"></div>
   <div class="pp-text t-dark b center" style="left:64px;top:372px;width:276px;height:26px;font-size:19px">L1 ヘルプデスク</div>
-  <div class="pp-text b" data-note="層ごとの説明：範囲・件数と影響・復旧・注記を、柱の下に同じ位置で置く" style="left:64px;top:420px;width:276px;height:52px;font-size:19px">設定変更・利用者の問い合わせ</div>
+  <div class="pp-text b" data-note="層ごとの説明：範囲・件数と影響・復旧・注記を、柱の下に同じ位置で置く" style="left:64px;top:420px;width:276px;height:52px;font-size:19px">設定変更・<br>利用者の問い合わせ</div>
   <div class="pp-text " style="left:64px;top:474px;width:276px;height:52px;font-size:19px">900件・影響60時間（12%）<br>復旧0.2h</div>
   <div class="pp-text " data-role="caption" style="left:64px;top:530px;width:276px;height:44px;">ヘルプデスクで完結。<br>件数の80%（900/1,132件）</div>
   <div class="pp-shape f-light"  style="left:356px;top:320px;width:276px;height:88px"></div>
   <div class="pp-text t-dark b center" style="left:356px;top:326px;width:276px;height:26px;font-size:19px">L2 運用センター</div>
-  <div class="pp-text b" style="left:356px;top:420px;width:276px;height:52px;font-size:19px">回線断・機器故障、遠隔で復旧</div>
+  <div class="pp-text b" style="left:356px;top:420px;width:276px;height:52px;font-size:19px">回線断・機器故障、<br>遠隔で復旧</div>
   <div class="pp-text " style="left:356px;top:474px;width:276px;height:52px;font-size:19px">180件・影響90時間（19%）<br>復旧0.7h</div>
   <div class="pp-text " data-role="caption" style="left:356px;top:530px;width:276px;height:44px;">運用センター18名が<br>24時間で対応</div>
   <div class="pp-line hr" style="left:348px;top:420px;width:1px;height:150px"></div>
   <div class="pp-shape f-mid"  style="left:648px;top:276px;width:276px;height:132px"></div>
   <div class="pp-text t-dark b center" style="left:648px;top:282px;width:276px;height:26px;font-size:19px">L3 設計チーム</div>
-  <div class="pp-text b" style="left:648px;top:420px;width:276px;height:52px;font-size:19px">拠点全停止・設計変更を伴う障害</div>
+  <div class="pp-text b" style="left:648px;top:420px;width:276px;height:52px;font-size:19px">拠点全停止・<br>設計変更を伴う障害</div>
   <div class="pp-text " style="left:648px;top:474px;width:276px;height:52px;font-size:19px">40件・影響150時間（31%）<br>復旧2.0h</div>
   <div class="pp-text " data-role="caption" style="left:648px;top:530px;width:276px;height:44px;">設計チーム4名。<br>構成変更は変更管理委員会へ報告</div>
   <div class="pp-line hr" style="left:640px;top:420px;width:1px;height:150px"></div>
-  <div class="pp-shape f-accent"  style="left:940px;top:232px;width:276px;height:176px"></div>
+  <div class="pp-shape f-soft2"  style="left:940px;top:232px;width:276px;height:176px"></div>
   <div class="pp-text t-white b center" style="left:940px;top:238px;width:276px;height:26px;font-size:19px">重大障害</div>
   <div class="pp-text b" style="left:940px;top:420px;width:276px;height:52px;font-size:19px">全社停止・DC障害、<br>経営へ即時報告</div>
   <div class="pp-text " style="left:940px;top:474px;width:276px;height:52px;font-size:19px">12件・影響180時間（38%）<br>復旧4.5h</div>

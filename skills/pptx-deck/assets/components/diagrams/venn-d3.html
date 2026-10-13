@@ -1,23 +1,24 @@
-<!-- 用途: 2 つの条件の重なりで候補を絞る（左に条件の行と内訳、右に輪郭だけの大きなベン図）。左の行は「条件｜定義｜該当数」で、重なりの行だけパネル地・太字。右の 2 円は塗らず輪郭だけにして、各円に条件の名前・該当数・金額、重なりに絞り込んだ数と金額（太字）。重なる要素には data-overlap を両方に付ける。注の末尾に含意を 1 文。
-     デザイン1との違い: 左右を入れ替え、条件の表を行のカードにして左に置く。円は塗りつぶさず輪郭だけで、大きく描く。
-     差し替える所: 2 つの条件の名前・定義・該当数・金額・重なりの数と金額・内訳の棒（解約と統合）・手順・注。 -->
+<!-- 用途: 2 つの条件の重なりで候補を絞る（左に 3 領域の行、右に輪郭だけの大きなベン図）。左の行は「①だけ／②だけ／①かつ②」の 3 領域で、各領域に固有の項目（その領域だけに言えること）と該当数を 1 回ずつ書き、重なりの行だけパネル地・太字。右の 2 円は塗らず輪郭だけにして、各円に条件の名前・該当数・金額、重なりに絞り込んだ数と金額（太字）。
+     2 グループの作業・項目が重なるとき（重複の整理）もこの形: 共通の項目を「①かつ②」の行に 1 回だけ書き、固有の項目を「①だけ」「②だけ」の行に置く。重なる要素には data-overlap を両方に付ける。注の末尾に含意を 1 文。
+     デザイン1との違い: 左右を入れ替え、条件の表ではなく 3 領域（固有・固有・共通）の行を左に置く。円は塗りつぶさず輪郭だけで、大きく描く。
+     差し替える所: 3 領域の名前・内容・数・2 つの条件の名前・該当数・金額・重なりの数と金額・内訳の棒（解約と統合）・手順・注。 -->
 <section class="slide" data-layout="diagram">
   <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">通信契約の抽出</div>
   <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">利用率が低く単価も高い120契約は年4,000万円の無駄で、解約の第一候補に置くべきだ</div>
   <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">通信契約の抽出（FY2025、全1,200契約。2条件の重なりが解約候補）</div>
-  <div class="pp-shape f-white" data-note="条件の行：左に条件、中央に定義、右に該当数。①かつ②の行だけパネル地" style="left:64px;top:232px;width:520px;height:54px"></div>
-  <div class="pp-text b" style="left:76px;top:244px;width:130px;height:30px;font-size:19px">① 利用率</div>
-  <div class="pp-text" style="left:206px;top:244px;width:220px;height:30px;font-size:19px">利用率30%未満</div>
-  <div class="pp-text b" style="left:430px;top:244px;width:142px;height:30px;font-size:19px;text-align:right">320契約</div>
+  <div class="pp-shape f-white" data-note="3 領域の行：①だけ・②だけ・①かつ②。固有の内容と共通の内容を 1 回ずつ書き、重なりの行だけパネル地" style="left:64px;top:232px;width:520px;height:54px"></div>
+  <div class="pp-text b" style="left:76px;top:244px;width:110px;height:30px;font-size:19px">①だけ</div>
+  <div class="pp-text" style="left:186px;top:244px;width:250px;height:30px;font-size:19px">単価は標準。帯域を見直す</div>
+  <div class="pp-text b" style="left:440px;top:244px;width:132px;height:30px;font-size:19px;text-align:right">200契約</div>
   <div class="pp-shape f-white" style="left:64px;top:294px;width:520px;height:54px"></div>
-  <div class="pp-text b" style="left:76px;top:306px;width:130px;height:30px;font-size:19px">② 単価</div>
-  <div class="pp-text" style="left:206px;top:306px;width:220px;height:30px;font-size:19px">平均単価の1.2倍超</div>
-  <div class="pp-text b" style="left:430px;top:306px;width:142px;height:30px;font-size:19px;text-align:right">210契約</div>
+  <div class="pp-text b" style="left:76px;top:306px;width:110px;height:30px;font-size:19px">②だけ</div>
+  <div class="pp-text" style="left:186px;top:306px;width:250px;height:30px;font-size:19px">利用率は十分。単価を再交渉</div>
+  <div class="pp-text b" style="left:440px;top:306px;width:132px;height:30px;font-size:19px;text-align:right">90契約</div>
   <div class="pp-shape f-soft" style="left:64px;top:356px;width:520px;height:54px"></div>
-  <div class="pp-text b" style="left:76px;top:368px;width:130px;height:30px;font-size:19px;color:var(--accent-dark)">①かつ②</div>
-  <div class="pp-text b" style="left:206px;top:368px;width:220px;height:30px;font-size:19px">両方を満たす</div>
-  <div class="pp-text b" style="left:430px;top:368px;width:142px;height:30px;font-size:19px;text-align:right;color:var(--accent-dark)">120契約</div>
+  <div class="pp-text b" style="left:76px;top:368px;width:110px;height:30px;font-size:19px;color:var(--accent-dark)">①かつ②</div>
+  <div class="pp-text b" style="left:186px;top:368px;width:250px;height:30px;font-size:19px">両方を満たす。解約候補</div>
+  <div class="pp-text b" style="left:440px;top:368px;width:132px;height:30px;font-size:19px;text-align:right;color:var(--accent-dark)">120契約</div>
   <div class="pp-text b" style="left:64px;top:424px;width:520px;height:28px;font-size:19px">候補120契約の内訳（年額）</div>
   <div class="pp-shape f-accent" data-note="内訳の棒：解約と統合の契約数を長さで示す" style="left:64px;top:458px;width:412px;height:26px"></div>
   <div class="pp-shape f-light" style="left:476px;top:458px;width:108px;height:26px"></div>

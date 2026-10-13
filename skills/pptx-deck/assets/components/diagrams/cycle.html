@@ -1,0 +1,34 @@
+<!-- 用途: 繰り返しの運用（要素が 3〜6 つのサイクル。見本は 4 つ：計画 → 実行 → 評価 → 改善）。各要素に「番号・名前・説明」を置き、下の全幅の帯に周期と KPI を書く（基調色の面。1 枚 1 点）。要素が 2 つ（往復）のときは cycle-2。
+     要素を 5〜6 に増やすとき: 箱の幅を 260px にして輪の周りに等間隔に置く（上・右上・右下・下・左下・左上）。角の矢印の記号は輪の形に合わせて置き直す。
+     差し替える所: 題・リード文・図表タイトル・要素の名前と説明・輪の中央の一言・下の帯の周期と KPI・注。 -->
+<section class="slide" data-layout="diagram">
+  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">運用サイクル</div>
+  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">運用は四半期に1周の見直しで回し、1周ごとに稼働率と費用を経営会議へ報告する</div>
+  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN運用サイクル（四半期ごと。4段階）</div>
+  <div class="pp-shape " data-note="輪の上に 4 つの要素。右回りの矢印で回して、ループに見せる" data-shape="ellipse" data-overlap style="left:214px;top:270px;width:852px;height:206px;border:4px solid var(--accent);background:transparent"></div>
+  <div class="pp-shape f-soft" data-note="要素の箱：番号・名前・説明" data-overlap style="left:490px;top:224px;width:300px;height:98px"></div>
+  <div class="pp-shape f-soft" data-note="要素の箱：番号・名前・説明" data-overlap style="left:916px;top:324px;width:300px;height:98px"></div>
+  <div class="pp-shape f-soft" data-note="要素の箱：番号・名前・説明" data-overlap style="left:490px;top:430px;width:300px;height:98px"></div>
+  <div class="pp-shape f-soft" data-note="要素の箱：番号・名前・説明" data-overlap style="left:64px;top:324px;width:300px;height:98px"></div>
+  <div class="pp-text b t-dark" data-overlap style="left:502px;top:228px;width:276px;height:32px;font-size:24px">1 計画</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:502px;top:268px;width:276px;height:50px;font-size:19px;line-height:1.3">目標3つと予算を<br>四半期初に決める</div>
+  <div class="pp-text b t-dark" data-overlap style="left:928px;top:328px;width:276px;height:32px;font-size:24px">2 実行</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:928px;top:368px;width:276px;height:50px;font-size:19px;line-height:1.3">運用センターが日次で<br>稼働率と障害を見る</div>
+  <div class="pp-text b t-dark" data-overlap style="left:502px;top:434px;width:276px;height:32px;font-size:24px">3 評価</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:502px;top:474px;width:276px;height:50px;font-size:19px;line-height:1.3">運用費の予算差を<br>経理部と確認する</div>
+  <div class="pp-text b t-dark" data-overlap style="left:76px;top:328px;width:276px;height:32px;font-size:24px">4 改善</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:76px;top:368px;width:276px;height:50px;font-size:19px;line-height:1.3">是正を決め、<br>翌期の計画へ反映する</div>
+  <div class="pp-shape f-white" data-shape="ellipse" data-overlap style="left:915px;top:277px;width:52px;height:47px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:915px;top:282px;width:52px;height:40px;font-size:30px">↘</div>
+  <div class="pp-shape f-white" data-shape="ellipse" data-overlap style="left:915px;top:423px;width:52px;height:47px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:915px;top:428px;width:52px;height:40px;font-size:30px">↙</div>
+  <div class="pp-shape f-white" data-shape="ellipse" data-overlap style="left:313px;top:423px;width:52px;height:47px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:313px;top:428px;width:52px;height:40px;font-size:30px">↖</div>
+  <div class="pp-shape f-white" data-shape="ellipse" data-overlap style="left:313px;top:277px;width:52px;height:47px"></div>
+  <div class="pp-text t-dark b center" data-overlap style="left:313px;top:282px;width:52px;height:40px;font-size:30px">↗</div>
+  <div class="pp-text b t-dark center" data-overlap style="left:440px;top:352px;width:400px;height:36px;font-size:24px">右回りで1周</div>
+  <div class="pp-shape f-accent" data-note="下の帯：周期と KPI（基調色の面）" style="left:64px;top:532px;width:1152px;height:54px"></div>
+  <div class="pp-text t-white b center" data-overlap style="left:64px;top:537px;width:1152px;height:36px;font-size:24px">四半期に1周　KPI 稼働率99.9%以上・運用費 年1,200万円以内</div>
+  <div class="pp-text" data-note="注：指標の定義と、含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 指標の定義は経営会議への四半期報告と同じ。障害対応は月あたりの対応時間<br>→ 四半期報告だけで回せるので、経営会議の審議は例外が出たときに限る</div>
+</section>

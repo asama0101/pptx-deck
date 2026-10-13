@@ -1,5 +1,6 @@
 <!-- 用途: ロジックツリー（要因分解と打ち手の一覧）。罫線で枝をつながず、ブロックの高さで階層を示す。左端に根（基調色の面）、その右に要因のブロック（含む施策の行数だけ縦に伸びる）、右に末端の施策の行を並べる。効果（時間）は棒の長さと数値で見せ、実現期間を右端の列に置く。先に着手する施策（ここでは 1 年内に効く 3 手）だけ枠線とパネル地の期間欄。最下部のまとめの行で、着手する手と残りの寄与を足し上げる。
      デザイン1との違い: 直角の罫線ではなく、行にそろえたブロックの高さで階層を示す。効果を数値だけでなく棒の長さでも見せる（1 時間＝80px）。
+     強調色はまとめの行の 1 点（白地）。注に数値の出所を書く。
      差し替える所: 根・要因のブロック（名前と寄与）・末端の施策 6 行（施策・効果・実現期間）・まとめの行。効果の棒は「効果×80px」で幅を直す。 -->
 <section class="slide" data-layout="diagram">
   <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">復旧時間の要因</div>
@@ -66,6 +67,7 @@
   <div class="pp-text b" style="left:1004px;top:510px;width:66px;height:28px;font-size:19px">▲0.8</div>
   <div class="pp-shape f-white" style="left:1094px;top:501px;width:122px;height:47px"></div>
   <div class="pp-text center" style="left:1098px;top:511px;width:114px;height:28px;font-size:19px">1〜3年</div>
-  <div class="pp-shape f-soft" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す" style="left:64px;top:554px;width:1152px;height:34px"></div>
-  <div class="pp-text" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す" style="left:84px;top:556px;width:1112px;height:30px;font-size:19px">→ <b style="color:var(--accent-dark)">1年内に効く3手で▲2.1h（過半）</b>、残りの3手は1〜3年で▲1.7h</div>
+  <div class="pp-shape f-white" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す。強調色はここの 1 点（白地に置く）" style="left:64px;top:554px;width:1152px;height:34px"></div>
+  <div class="pp-text" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す" style="left:84px;top:556px;width:1112px;height:30px;font-size:19px">→ <b class="t-emph">1年内に効く3手で▲2.1h（過半）</b>、残りの3手は1〜3年で▲1.7h</div>
+  <div class="pp-text" data-role="caption" data-note="注：数値の出所と前提" style="left:64px;top:598px;width:1152px;height:40px">注: 効果はFY2025の障害記録（計1,132件）からの試算で、寄与は足すと根の▲3.8hに戻る。実現期間は着手から効果が出るまでの目安</div>
 </section>

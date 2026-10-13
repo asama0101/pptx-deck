@@ -1,52 +1,55 @@
-<!-- 用途: 項目一覧表（検証項目・機能一覧・要件一覧に共用）。デザイン1（spec）と同じ 6 項目・同じ原稿で差し替えられる。基準は必ず数値で書く（「問題ないこと」は書かない）。結果を書くときは tables/result（同じ項目の順で）を使う。
-     デザイン1との違い: 項目ごとのカードを 3 列×2 段に並べる。カードの上の帯に No・項目・担当、中に基準（パネル地の箱）・観点、下に方法を書く。関門の項目（6）だけ、帯を強調色にして観点を太字にする。
-     差し替える所: 図表タイトル・カード 6 枚（項目・観点は 2 行まで・基準の数値・方法は 2 行まで・担当）・強調する 1 枚・注。 -->
+<!-- 用途: 検証の表（計画と結果を同じ型で）。検証計画は d1、検証結果は d2、カードで見せるときは d3（このカード）。d1 と同じ 6 項目・同じ原稿で差し替えられる。基準は必ず数値で書く（「問題ないこと」は書かない）。
+     デザイン1との違い: 表ではなく、項目ごとの横長カードにする。左に No の丸と項目・担当、中央に観点と方法を 2 行で重ね、右端の基準だけパネル地の箱に太字で入れて「全項目に数値の基準がある」ことを見せる。
+     差し替える所: 図表タイトル・行 6（項目・観点は 1 行・基準の数値・方法・担当）・注。機能一覧なら見出しを「項目・担当｜観点・方法→概要・方式｜合格基準→要件値」に読み替える。 -->
 <section class="slide" data-layout="table">
   <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">検証項目</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">検証6項目はいずれも数値の合格基準を持つため、切替の可否を客観的に判定できる</div>
   <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の検証項目と合格基準（PoC 2拠点、2027年1月。判定は情報システム委員会）</div>
-  <div class="pp-shape f-white" data-note="項目ごとのカード 6 枚：上の帯に No・項目・担当、中に基準（パネル地）・観点・方法" style="left:64px;top:228px;width:368px;height:176px"></div>
-  <div class="pp-shape f-accent" style="left:64px;top:228px;width:368px;height:34px"></div>
-  <div class="pp-text t-white" style="left:76px;top:233px;width:344px;height:26px;font-size:19px;line-height:1.2"><b>1　回線切替時間</b>　基盤グループ</div>
-  <div class="pp-shape f-soft" style="left:76px;top:270px;width:344px;height:32px"></div>
-  <div class="pp-text b" style="left:86px;top:274px;width:324px;height:24px;font-size:19px;line-height:1.25">1拠点あたり2時間以内</div>
-  <div class="pp-text" style="left:76px;top:310px;width:344px;height:48px;font-size:19px;line-height:1.25">MPLSからSD-WANへの切替で業務が止まる時間</div>
-  <div class="pp-text t-sub" style="left:76px;top:358px;width:344px;height:24px;font-size:19px;line-height:1.25">夜間に切替し、業務端末で疎通を確認</div>
-  <div class="pp-shape f-white" style="left:456px;top:228px;width:368px;height:176px"></div>
-  <div class="pp-shape f-accent" style="left:456px;top:228px;width:368px;height:34px"></div>
-  <div class="pp-text t-white" style="left:468px;top:233px;width:344px;height:26px;font-size:19px;line-height:1.2"><b>2　経路の自動切替</b>　基盤グループ</div>
-  <div class="pp-shape f-soft" style="left:468px;top:270px;width:344px;height:32px"></div>
-  <div class="pp-text b" style="left:478px;top:274px;width:324px;height:24px;font-size:19px;line-height:1.25">30秒以内、セッション維持</div>
-  <div class="pp-text" style="left:468px;top:310px;width:344px;height:24px;font-size:19px;line-height:1.25">主回線の断で副回線へ自動で切り替わる</div>
-  <div class="pp-text t-sub" style="left:468px;top:358px;width:344px;height:24px;font-size:19px;line-height:1.25">主回線を手動で切断し3回計測</div>
-  <div class="pp-shape f-white" style="left:848px;top:228px;width:368px;height:176px"></div>
-  <div class="pp-shape f-accent" style="left:848px;top:228px;width:368px;height:34px"></div>
-  <div class="pp-text t-white" style="left:860px;top:233px;width:344px;height:26px;font-size:19px;line-height:1.2"><b>3　応答遅延</b>　業務システム部</div>
-  <div class="pp-shape f-soft" style="left:860px;top:270px;width:344px;height:32px"></div>
-  <div class="pp-text b" style="left:870px;top:274px;width:324px;height:24px;font-size:19px;line-height:1.25">現行＋0.3秒以内</div>
-  <div class="pp-text" style="left:860px;top:310px;width:344px;height:24px;font-size:19px;line-height:1.25">基幹系（ERP）の画面応答の増分</div>
-  <div class="pp-text t-sub" style="left:860px;top:358px;width:344px;height:24px;font-size:19px;line-height:1.25">50画面を各10回計測し平均</div>
-  <div class="pp-shape f-white" style="left:64px;top:412px;width:368px;height:176px"></div>
-  <div class="pp-shape f-accent" style="left:64px;top:412px;width:368px;height:34px"></div>
-  <div class="pp-text t-white" style="left:76px;top:417px;width:344px;height:26px;font-size:19px;line-height:1.2"><b>4　帯域</b>　ベンダー</div>
-  <div class="pp-shape f-soft" style="left:76px;top:454px;width:344px;height:32px"></div>
-  <div class="pp-text b" style="left:86px;top:458px;width:324px;height:24px;font-size:19px;line-height:1.25">上り下りとも100Mbps以上</div>
-  <div class="pp-text" style="left:76px;top:494px;width:344px;height:24px;font-size:19px;line-height:1.25">拠点のピーク時間帯の実効帯域</div>
-  <div class="pp-text t-sub" style="left:76px;top:542px;width:344px;height:24px;font-size:19px;line-height:1.25">計測ツールで3営業日の連続測定</div>
-  <div class="pp-shape f-white" style="left:456px;top:412px;width:368px;height:176px"></div>
-  <div class="pp-shape f-accent" style="left:456px;top:412px;width:368px;height:34px"></div>
-  <div class="pp-text t-white" style="left:468px;top:417px;width:344px;height:26px;font-size:19px;line-height:1.2"><b>5　監視の検知</b>　運用センター</div>
-  <div class="pp-shape f-soft" style="left:468px;top:454px;width:344px;height:32px"></div>
-  <div class="pp-text b" style="left:478px;top:458px;width:324px;height:24px;font-size:19px;line-height:1.25">検知5分以内、通報10分以内</div>
-  <div class="pp-text" style="left:468px;top:494px;width:344px;height:48px;font-size:19px;line-height:1.25">回線断・機器故障を監視センターが検知し通報する</div>
-  <div class="pp-text t-sub" style="left:468px;top:542px;width:344px;height:24px;font-size:19px;line-height:1.25">障害を模擬し、検知と通報の時刻を記録</div>
-  <div class="pp-shape f-white" style="left:848px;top:412px;width:368px;height:176px"></div>
-  <div class="pp-shape f-emph" data-note="関門の項目：切替の可否に直結するカードだけ帯を強調色にし、文を太字にする" style="left:848px;top:412px;width:368px;height:34px"></div>
-  <div class="pp-text t-white" style="left:860px;top:417px;width:344px;height:26px;font-size:19px;line-height:1.2"><b>6　戻し手順</b>　基盤グループ</div>
-  <div class="pp-shape f-soft" style="left:860px;top:454px;width:344px;height:32px"></div>
-  <div class="pp-text b" style="left:870px;top:458px;width:324px;height:24px;font-size:19px;line-height:1.25">1時間以内に復旧、手順書どおり</div>
-  <div class="pp-text b" style="left:860px;top:494px;width:344px;height:24px;font-size:19px;line-height:1.25">切替に失敗したときにMPLSへ戻せる</div>
-  <div class="pp-text t-sub" style="left:860px;top:542px;width:344px;height:24px;font-size:19px;line-height:1.25">リハーサルで戻しを実施し実測</div>
+  <div class="pp-text b t-sub" style="left:114px;top:226px;width:186px;height:24px;font-size:19px;line-height:1.2">項目・担当</div>
+  <div class="pp-text b t-sub" style="left:310px;top:226px;width:560px;height:24px;font-size:19px;line-height:1.2">観点・方法</div>
+  <div class="pp-text b t-sub" style="left:890px;top:226px;width:320px;height:24px;font-size:19px;line-height:1.2">合格基準</div>
+  <div class="pp-shape f-white" data-note="行のカード：左から No・項目と担当・観点と方法（2 行）・合格基準（パネル地の箱で強調）" style="left:64px;top:254px;width:1152px;height:52px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:262px;width:36px;height:36px"></div>
+  <div class="pp-text b center t-white" style="left:70px;top:268px;width:36px;height:24px;font-size:19px;line-height:1.2">1</div>
+  <div class="pp-text" style="left:114px;top:257px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>回線切替時間</b><br><span style="color:var(--text-sub)">基盤グループ</span></div>
+  <div class="pp-text" style="left:310px;top:257px;width:560px;height:46px;font-size:19px;line-height:1.2">MPLSからSD-WANへの切替で業務が止まる時間<br><span style="color:var(--text-sub)">夜間に切替し、業務端末で疎通を確認</span></div>
+  <div class="pp-shape f-soft" data-note="合格基準の箱：数値の基準だけをパネル地の太字で" style="left:880px;top:258px;width:330px;height:44px"></div>
+  <div class="pp-text b" style="left:892px;top:268px;width:306px;height:24px;font-size:19px;line-height:1.25">1拠点あたり2時間以内</div>
+  <div class="pp-shape f-white" style="left:64px;top:310px;width:1152px;height:52px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:318px;width:36px;height:36px"></div>
+  <div class="pp-text b center t-white" style="left:70px;top:324px;width:36px;height:24px;font-size:19px;line-height:1.2">2</div>
+  <div class="pp-text" style="left:114px;top:313px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>経路の自動切替</b><br><span style="color:var(--text-sub)">基盤グループ</span></div>
+  <div class="pp-text" style="left:310px;top:313px;width:560px;height:46px;font-size:19px;line-height:1.2">主回線の断で副回線へ自動で切り替わる<br><span style="color:var(--text-sub)">主回線を手動で切断し3回計測</span></div>
+  <div class="pp-shape f-soft" style="left:880px;top:314px;width:330px;height:44px"></div>
+  <div class="pp-text b" style="left:892px;top:324px;width:306px;height:24px;font-size:19px;line-height:1.25">30秒以内、セッション維持</div>
+  <div class="pp-shape f-white" style="left:64px;top:366px;width:1152px;height:52px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:374px;width:36px;height:36px"></div>
+  <div class="pp-text b center t-white" style="left:70px;top:380px;width:36px;height:24px;font-size:19px;line-height:1.2">3</div>
+  <div class="pp-text" style="left:114px;top:369px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>応答遅延</b><br><span style="color:var(--text-sub)">業務システム部</span></div>
+  <div class="pp-text" style="left:310px;top:369px;width:560px;height:46px;font-size:19px;line-height:1.2">基幹系（ERP）の画面応答の増分<br><span style="color:var(--text-sub)">50画面を各10回計測し平均</span></div>
+  <div class="pp-shape f-soft" style="left:880px;top:370px;width:330px;height:44px"></div>
+  <div class="pp-text b" style="left:892px;top:380px;width:306px;height:24px;font-size:19px;line-height:1.25">現行＋0.3秒以内</div>
+  <div class="pp-shape f-white" style="left:64px;top:422px;width:1152px;height:52px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:430px;width:36px;height:36px"></div>
+  <div class="pp-text b center t-white" style="left:70px;top:436px;width:36px;height:24px;font-size:19px;line-height:1.2">4</div>
+  <div class="pp-text" style="left:114px;top:425px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>帯域</b><br><span style="color:var(--text-sub)">ベンダー</span></div>
+  <div class="pp-text" style="left:310px;top:425px;width:560px;height:46px;font-size:19px;line-height:1.2">拠点のピーク時間帯の実効帯域<br><span style="color:var(--text-sub)">計測ツールで3営業日の連続測定</span></div>
+  <div class="pp-shape f-soft" style="left:880px;top:426px;width:330px;height:44px"></div>
+  <div class="pp-text b" style="left:892px;top:436px;width:306px;height:24px;font-size:19px;line-height:1.25">上り下りとも100Mbps以上</div>
+  <div class="pp-shape f-white" style="left:64px;top:478px;width:1152px;height:52px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:486px;width:36px;height:36px"></div>
+  <div class="pp-text b center t-white" style="left:70px;top:492px;width:36px;height:24px;font-size:19px;line-height:1.2">5</div>
+  <div class="pp-text" style="left:114px;top:481px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>監視の検知</b><br><span style="color:var(--text-sub)">運用センター</span></div>
+  <div class="pp-text" style="left:310px;top:481px;width:560px;height:46px;font-size:19px;line-height:1.2">回線断・機器故障を監視センターが検知し通報する<br><span style="color:var(--text-sub)">障害を模擬し、検知と通報の時刻を記録</span></div>
+  <div class="pp-shape f-soft" style="left:880px;top:482px;width:330px;height:44px"></div>
+  <div class="pp-text b" style="left:892px;top:492px;width:306px;height:24px;font-size:19px;line-height:1.25">検知5分以内、通報10分以内</div>
+  <div class="pp-shape f-white" style="left:64px;top:534px;width:1152px;height:52px"></div>
+  <div class="pp-shape f-accent" data-shape="ellipse" style="left:70px;top:542px;width:36px;height:36px"></div>
+  <div class="pp-text b center t-white" style="left:70px;top:548px;width:36px;height:24px;font-size:19px;line-height:1.2">6</div>
+  <div class="pp-text" style="left:114px;top:537px;width:186px;height:46px;font-size:19px;line-height:1.2"><b>戻し手順</b><br><span style="color:var(--text-sub)">基盤グループ</span></div>
+  <div class="pp-text" style="left:310px;top:537px;width:560px;height:46px;font-size:19px;line-height:1.2">切替に失敗したときにMPLSへ戻せる<br><span style="color:var(--text-sub)">リハーサルで戻しを実施し実測</span></div>
+  <div class="pp-shape f-soft" style="left:880px;top:538px;width:330px;height:44px"></div>
+  <div class="pp-text b" style="left:892px;top:548px;width:306px;height:24px;font-size:19px;line-height:1.25">1時間以内に復旧、手順書どおり</div>
   <div class="pp-text" data-note="注：検証環境と判定日、基準を満たさないときの扱いを含意で締める" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 環境は本社とA工場の2拠点のPoC構成（本番と同じ機器・回線）。判定は2027年1月14日、経営会議（1/15）の前日<br>→ 6項目のうち1つでも基準を満たさなければ、本社の切替は次回の経営会議（3月）まで延期する</div>
 </section>
