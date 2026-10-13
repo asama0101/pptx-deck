@@ -42,9 +42,10 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 年度ごとの設備の更改 | `roadmap` | `gantt` | `delta` |
 | 時系列（発生順の事象） | 区間の長さで待ちを見せる | `timeline-h` | `timeline-v` | `gantt` |
 | | 件数が多く文で読ませる | `timeline-v` | `timeline-h` | — |
-| 循環（繰り返す） | 4 段階・指標つき | `cycle` | `cycle-box` | `flow-h` |
-| | 2〜3 要素 | `cycle-round` | `cycle` | — |
-| | 5〜6 要素・指標は添えない | `cycle-box` | `cycle` | `flow-h` |
+| 循環（繰り返す） | 2 要素 | `cycle-2` | `flow-h` | — |
+| | 3 要素 | `cycle-3` | `flow-h` | — |
+| | 4 要素 | `cycle-4` | `cycle-5` | `flow-h` |
+| | 5〜6 要素 | `cycle-5` | `flow-h` | — |
 | 階層（上下の位置づけ） | 上位ほど少ない・小さい | `pyramid` | `layers` | `tree` |
 | | 下位ほど少ない（絞り込む） | `funnel` | `venn` | — |
 | | 層×系列の格子で自社の範囲を示す | `layers` | `architecture` | `pyramid` |
