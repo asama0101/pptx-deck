@@ -42,8 +42,8 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 年度ごとの設備の更改 | `roadmap` | `gantt` | `delta` |
 | 時系列（発生順の事象） | 区間の長さで待ちを見せる | `timeline-h` | `timeline-v` | `gantt` |
 | | 件数が多く文で読ませる | `timeline-v` | `timeline-h` | — |
-| 循環（繰り返す） | 4 段階・指標つき | `cycle` | 四角型サイクル（予定 `cycle-box`） | `flow-h` |
-| | 2〜3 要素 | 円型サイクル（予定 `cycle-round`） | `cycle` | — |
+| 循環（繰り返す） | 4 段階・指標つき | `cycle` | `cycle-box` | `flow-h` |
+| | 2〜3 要素 | `cycle-round` | `cycle` | — |
 | 階層（上下の位置づけ） | 上位ほど少ない・小さい | `pyramid` | `layers` | `tree` |
 | | 下位ほど少ない（絞り込む） | `funnel` | `venn` | — |
 | | 層×系列の格子で自社の範囲を示す | `layers` | `architecture` | `pyramid` |
@@ -73,8 +73,8 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 増減の差し引き | `waterfall` | `quote-bridge` | `bar` |
 | | 所見が長文 | 各グラフの `-note` 版（`bar-note`・`line-note`・`stacked-note`・`waterfall-note`） | 吹き出し版の各グラフ | — |
 | | 工数を棒で比べる | `effort-bar` | `effort` | `bar` |
-| 事例・実績・紹介 | 会社概要 | 会社概要（予定 `company`） | `summary` | `org` |
-| | メンバー紹介 | メンバー（予定 `members`） | `org` | `raci` |
+| 事例・実績・紹介 | 会社概要 | `company` | `summary` | `org` |
+| | メンバー紹介 | `members` | `org` | `raci` |
 | | 理念（MVV） | 理念（予定 `mvv`） | `pyramid` | `layers` |
 | | 導入実績 | 導入実績（予定 `track-record`） | `result` | `bar` |
 | | 沿革 | `timeline-h` | `timeline-v` | — |
