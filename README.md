@@ -93,7 +93,7 @@ Claude Code で「スライドを作って」「稟議資料を作って」と�
 | `issues` | 課題・不具合一覧。重要度・期限・状態 | 情報 |
 | `actions` | 再発防止策。恒久（■）と暫定（□） | 決定 |
 | `delta` | 設備増減表。現状・増・減・計画後 | 情報 |
-| `matrix` | 配置表。拠点種別×設備の台数 | 情報 |
+| `site-matrix` | 配置表。拠点種別×設備の台数 | 情報 |
 | `raci` | 役割分担表。工程×部門の責任・実行・支援 | 決定 |
 
 ### グラフ（10）
@@ -124,8 +124,8 @@ Claude Code で「スライドを作って」「稟議資料を作って」と�
 | 検証計画 | `summary` | `spec`・`architecture`/`topology`・`org`・`raci`・`gantt`・`options` | `decision`・`closing` |
 | 検証結果報告 | `summary` | `result`・`bar`/`line`・`issues`・`spec` | `decision`・`closing` |
 | 業務フロー | `section` | `swimlane-h`/`-v`・`before-after`/`-h`・`raci`・`cycle` | `decision`・`closing` |
-| 設計書 | `agenda` | `architecture`/`topology`・`layers`・`spec`・`options`・`matrix` | `summary`・`closing` |
-| 設備増減の計画 | `summary` | `delta`・`matrix`・`roadmap`・`side-by-side`・`stacked`/`waterfall`・`cost` | `decision`・`closing` |
+| 設計書 | `agenda` | `architecture`/`topology`・`layers`・`spec`・`options`・`site-matrix` | `summary`・`closing` |
+| 設備増減の計画 | `summary` | `delta`・`site-matrix`・`roadmap`・`side-by-side`・`stacked`/`waterfall`・`cost` | `decision`・`closing` |
 
 内容に合う型がなければ、断片の部品で組む。新しい型を作ったら `assets/components/` に足し、`check` で違反が 0 件になることを確かめる。
 

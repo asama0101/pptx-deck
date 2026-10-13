@@ -26,9 +26,9 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 
 | 内容の関係 | 条件 | 第 1 候補 | 次点 1 | 次点 2 |
 |---|---|---|---|---|
-| 並列（同格の項目を並べる） | 項目 2〜3 個・文が短い | 並列・横並び（予定 `parallel-h`） | `side-by-side` | 並列・複数羅列（予定 `parallel-grid`） |
-| | 項目 2〜3 個・文が長い | 並列・縦並び（予定 `parallel-v`） | `rating` | `spec` |
-| | 項目 4 個以上 | 並列・複数羅列（予定 `parallel-grid`） | `spec` | `compare` |
+| 並列（同格の項目を並べる） | 項目 2〜3 個・文が短い | `parallel-h` | `side-by-side` | `parallel-grid` |
+| | 項目 2〜3 個・文が長い | `parallel-v` | `rating` | `spec` |
+| | 項目 4 個以上 | `parallel-grid` | `spec` | `compare` |
 | 比較（2 つを突き合わせる） | 現行と計画を体制・数量で並べる | `side-by-side` | `delta` | `before-after-h` |
 | | 工程の前後を見せる（5 段以下は上下） | `before-after` | `before-after-h` | `side-by-side` |
 | | 工程の前後を見せる（5〜6 段は左右） | `before-after-h` | `before-after` | `side-by-side` |
@@ -49,8 +49,8 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 層×系列の格子で自社の範囲を示す | `layers` | `architecture` | `pyramid` |
 | 分解・因果 | 要因を寄与で分解する | `tree` | `cause` | — |
 | | 時間の連鎖で原因を追う | `cause` | `tree` | `timeline-h` |
-| 重なり・絞り込み | 2 条件の重なりで候補を絞る | `venn` | 領域図（予定 `area`） | `matrix` |
-| 位置づけ | 2 軸で象限に置く | 4 象限（予定 `positioning`） | `matrix` | `venn` |
+| 重なり・絞り込み | 2 条件の重なりで候補を絞る | `venn` | 4 象限（予定 `positioning`） | — |
+| 位置づけ | 2 軸で象限に置く | 4 象限（予定 `positioning`） | `venn` | — |
 | 規模の比較 | 数の大小を面で見せる | 規模比較（予定 `scale`） | `bar` | `delta` |
 | 式（足す・掛ける） | 要素の積み上げで結果を示す | 数式（予定 `formula`） | `cost` | `waterfall` |
 | 段階（積み上がる） | 段を登って到達点に至る | 階段（予定 `steps`） | `flow-h` | `pyramid` |
@@ -77,7 +77,7 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | メンバー紹介 | メンバー（予定 `members`） | `org` | `raci` |
 | | 理念（MVV） | 理念（予定 `mvv`） | `pyramid` | `layers` |
 | | 導入実績 | 導入実績（予定 `track-record`） | `result` | `bar` |
-| | 沿革 | 沿革（予定 `history`） | `timeline-h` | `timeline-v` |
+| | 沿革 | `timeline-h` | `timeline-v` | — |
 | | 画面・キャプチャの解説 | キャプチャ（予定 `screenshot`） | `architecture` | — |
 | | Q&A | Q&A（予定 `qa`） | `rating` | `issues` |
 | | 名言・要旨の引用 | 引用（予定 `quote-phrase`） | `summary` | — |
@@ -102,8 +102,8 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | 判定結果 | `result` | `spec` | `issues` |
 | 課題・不具合 | `issues` | `actions` | `risk` |
 | 再発防止策 | `actions` | `issues` | `risk` |
-| 設備増減 | `delta` | `side-by-side` | `matrix` |
-| 拠点種別×設備の台数 | `matrix` | `delta` | `roadmap` |
+| 設備増減 | `delta` | `side-by-side` | `site-matrix` |
+| 拠点種別×設備の台数 | `site-matrix` | `delta` | `roadmap` |
 | 工程×部門の役割 | `raci` | `org` | `swimlane-v` |
 
 ## 3 ページの項目で決まる型（型が一意）
