@@ -76,7 +76,6 @@ B（2 案目）も、次点 1 が内容に合わないときは同じ順で代�
 | | 沿革 | `timeline-h` | `timeline-v` | — |
 | | 画面・キャプチャの解説 | `screenshot` | `architecture` | — |
 | | Q&A | `qa` | `rating` | `issues` |
-| | 事例 | `case` | `before-after` | `result` |
 
 ### 表の使い分け
 
