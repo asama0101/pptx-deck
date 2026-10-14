@@ -16,4 +16,4 @@ SKILL.md の 5 章から参照する。`build`・`check` の出力 JSON の `vio
 | `orphanLine`（警告） | 最終行が 1〜2 字だけ。文字の枠の幅を変えるか、文を詰める |
 | `emptyBand`（警告） | 本体が本文領域の下端より 120px 以上手前で終わっている。図や表を下へ広げるか、間隔を配り直す |
 
-警告（`severity: warning`）は `ok` を false にしないが、5.1 で 0 件にする。`build` の前に見るときは `python "${CLAUDE_SKILL_DIR}/run.py" check "<名前>/final.html"`。
+警告（`severity: warning`）は `ok` を false にしないが、5.1 で 0 件にする。`build` の前に見るときは `python "${CLAUDE_PLUGIN_ROOT}/run.py" check "<名前>/source/final.html"`（確認用の画像 `previews` は `final.html` の撮影で、PPTX の実描画ではない）。
