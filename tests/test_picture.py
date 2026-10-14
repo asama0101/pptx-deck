@@ -64,6 +64,67 @@ class PictureBuildTest(unittest.TestCase):
             self.assertTrue(any("遮断が必要" in t for t in texts))
 
 
+PICTURES = PKG / "assets" / "components" / "pictures"
+SAMPLE_NAMES = ["traffic-flow", "network", "failure", "self-intro", "annotate"]
+
+
+class PictureSamplesTest(unittest.TestCase):
+    def test_all_samples_build_with_no_violations(self):
+        from pptx import Presentation
+        with tempfile.TemporaryDirectory() as td:
+            base = Path(td) / "demo"
+            self.assertEqual(run("init", str(base), "--color", "navy")[0], 0)
+            work = paths.resolve_work(base)
+            ans = "---\n---\n"
+            for i, n in enumerate(SAMPLE_NAMES, 1):
+                (work / "slides" / f"{i:02d}-A.html").write_text((PICTURES / f"{n}.html").read_text(encoding="utf-8"), encoding="utf-8")
+                ans += f"## S{i:02d}\n- 選択: A\n- 判定: 承認\n- コメント: \n"
+            (work / "answers-1.md").write_text(ans, encoding="utf-8")
+            self.assertEqual(run("finalize", str(base))[0], 0)
+            rc, out, err = run("build", str(base))
+            self.assertEqual(rc, 0, out + err)
+            self.assertEqual(json.loads(out)["violations"], [])
+            prs = Presentation(str(base / "demo.pptx"))
+            self.assertEqual(len(prs.slides), len(SAMPLE_NAMES))
+            for s in prs.slides:
+                self.assertEqual(len([x for x in s.shapes if x.name == "pp-picture"]), 1)
+
+    def test_samples_are_documented_in_their_own_header(self):
+        for n in SAMPLE_NAMES:
+            head = (PICTURES / f"{n}.html").read_text(encoding="utf-8").split("-->", 1)[0]
+            for word in ("用途", "差し替える所", "守ること", "data-alt"):
+                self.assertIn(word, head, f"{n}.html の先頭のコメントに「{word}」がありません")
+
+    def test_user_image_as_the_base_of_a_picture(self):
+        """利用者の画像（source/material/）を土台にして、矢印・番号だけを重ねる。画像は絵の一部として貼られる。"""
+        from PIL import Image
+        frag = (PICTURES / "annotate.html").read_text(encoding="utf-8")
+        a = frag.index("<!-- 土台（画面の絵）")
+        b = frag.index("<!-- 注釈 -->")
+        frag = frag[:a] + '<image href="material/screen.png" x="8" y="8" width="720" height="350" preserveAspectRatio="none"/>\n      ' + frag[b:]
+        with tempfile.TemporaryDirectory() as td:
+            base = Path(td) / "demo"
+            self.assertEqual(run("init", str(base), "--color", "navy")[0], 0)
+            work = paths.resolve_work(base)
+            (work / "material").mkdir()
+            Image.new("RGB", (720, 350), (200, 30, 30)).save(work / "material" / "screen.png")       # 赤一色（テーマの色と区別できる）
+            (work / "slides" / "01-A.html").write_text(frag, encoding="utf-8")
+            (work / "answers-1.md").write_text("---\n---\n## S01\n- 選択: A\n- 判定: 承認\n- コメント: \n", encoding="utf-8")
+            self.assertEqual(run("finalize", str(base))[0], 0)
+            rc, out, err = run("check", str(work / "final.html"))
+            self.assertEqual((rc, json.loads(out)), (0, []), out + err)                                  # 画像の色は変数の検査の対象外
+            rc, out, err = run("build", str(base))
+            self.assertEqual(rc, 0, out + err)
+            from pptx import Presentation
+            import io as _io
+            pic = [s for s in Presentation(str(base / "demo.pptx")).slides[0].shapes if s.name == "pp-picture"][0]
+            im = Image.open(_io.BytesIO(pic.image.blob)).convert("RGBA")
+            r, g, bl, al = im.getpixel((3 * 100, 3 * 300))        # 土台の画像の上（番号・凡例のない所）
+            self.assertGreater(r, 150)
+            self.assertLess(g, 80)
+            self.assertEqual(al, 255)
+
+
 class PictureCheckTest(unittest.TestCase):
     def check(self, mutate):
         frag = mutate(SAMPLE.read_text(encoding="utf-8"))
