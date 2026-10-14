@@ -24,13 +24,24 @@ class DocsTest(unittest.TestCase):
         for f in [REPO / "README.md", *PKG.rglob("*.md")]:
             for line in f.read_text(encoding="utf-8").splitlines():
                 if re.search(r"LibreOffice|soffice", line):
-                    self.assertRegex(line, r"使わ|使用しな|不要|なし|廃止", f"{f}: {line}")
+                    self.assertRegex(line, r"使わ|使用しな|不要|廃止", f"{f}: {line}")
 
     def test_wait_cap_documented(self):
-        for f in (PKG / "skills" / "create" / "SKILL.md", PKG / "references" / "review-flow.md"):
+        for f in (PKG / "skills" / "create" / "SKILL.md", PKG / "skills" / "review-plan" / "SKILL.md",
+                  PKG / "references" / "review-flow.md"):
             t = f.read_text(encoding="utf-8")
             self.assertIn("18 回", t, f)
             self.assertRegex(t, r"続行方法.*質問|質問.*続行方法", f)
+        revise = (PKG / "skills" / "revise" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("create の手順 4", revise)
+        self.assertIn("18 回", revise)
+
+    def test_revise_carries_force_or_out_to_build(self):
+        t = (PKG / "skills" / "revise" / "SKILL.md").read_text(encoding="utf-8")
+        m = re.search(r"^4\. .*build.*$", t, re.M)
+        self.assertIsNotNone(m)
+        self.assertIn("--force", m.group(0))
+        self.assertIn("--out", m.group(0))
 
     def test_references_have_no_old_vars(self):
         for f in PKG.rglob("*.md"):

@@ -38,8 +38,6 @@ compatibility: Windows 専用。Python 3.10 以上と Claude Code。システム
 
 | 置き場所 | ファイル |
 |---|---|
-| 置き場所 | ファイル |
-|---|---|
 | プラグイン `${CLAUDE_PLUGIN_ROOT}`（読み取り専用） | `skills/`、`assets/`（`components/` の断片、`web/`、`icons/`、`template/`）、`references/`、コード |
 | `<名前>/` | `<名前>.pptx`（成果物）と `source/` |
 | `<名前>/source/` | `design.md`（`init` が雛形を置く）、`script.md`、`slides/NN-X.html`、`answers-*.md`、`template.json`、`_template/template.<拡張子>`、`build.json`。作業中だけ `variants.html`・`plan-review.html`・`final.html`・`final-review.html`・`theme.css`・`base.css`・`chart-preview.js`・`icons/` |
@@ -52,7 +50,7 @@ compatibility: Windows 専用。Python 3.10 以上と Claude Code。システム
 - 数字を作らない。素材に無い数字は、前提を明記した試算にするか「xx」で残す（それらしく埋めない）。素材に無い固有名詞・出来事を足さない。
 
 ### 2.1 設計図（design.md）
-書式は `assets/sample/design.md`（`init` が `<名前>/design.md` に置く雛形。中身は見本）に従う。1 枚物なら、資料全体と台帳は省く。
+書式は `assets/sample/design.md`（`init` が `<名前>/source/design.md` に置く雛形。中身は見本）に従う。1 枚物なら、資料全体と台帳は省く。
 
 - 資料全体: **ガバニングメッセージ**（資料全体の結論）を 1 つ立て、各ページのヘッドをその下にぶら下げる。**論点**（決めさせること）は 3〜6 個に番号を付ける。冒頭のサマリで番号つきで予告し、最終ページで同じ番号で回収する。最終ページは、決定事項・日程・判断基準を載せた一番重いページにする。
 - 台帳を先に作る: `| No | ヘッド | 文型 | 上位への集約 | 直前からの接続語 | 本体の型 | 論点 |`。縦の検証: ヘッドを縦に通読し、隣り合うページが「だから／なぜなら」で繋がる。横の検証: 同じ階層の並びは切り口 1 つ・粒度をそろえる（「何で割ったか」を 1 語で言える）。
