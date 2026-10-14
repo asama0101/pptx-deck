@@ -7,6 +7,8 @@ import json
 import re
 from pathlib import Path
 
+from . import paths
+
 FRAG = re.compile(r"^(\d{2})-([A-Z])(?:-d([23]))?\.html$")      # NN-A.html（デザイン 1）・NN-A-d2.html・NN-A-d3.html（同じ型のデザイン 2・3）
 HEAD = ('<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>{title}</title>'
         '<link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="base.css">'
@@ -438,7 +440,7 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
              '</div>'
              f'<div class="body"><nav id="nav" aria-label="スライドの一覧">{"".join(nav)}</nav><div>{"".join(panes)}</div></div>'
              '</div>']
-    deck_js = json.dumps(work.name, ensure_ascii=False).replace("</", "<\\/")      # JS の文字列。</script> でも閉じない
+    deck_js = json.dumps(paths.deck_name(work), ensure_ascii=False).replace("</", "<\\/")      # JS の文字列。</script> でも閉じない
     preset_js = json.dumps(preset or {}, ensure_ascii=False).replace("</", "<\\/")
     parts.append(_SCRIPT.replace("__DECK__", deck_js).replace("__ROUND__", round_label).replace("__PRESET__", preset_js))
     parts.append("</body></html>")
@@ -579,6 +581,6 @@ def finalize(work: Path, answers_md: "str | list[str]", allow_comments: bool = F
     picked, _ = _chosen(work, answers_md, allow_comments)
     body = "\n".join(picked[nn] for nn in sorted(picked))
     out = work / "final.html"
-    out.write_text(HEAD.format(title=_html.escape(work.name), extra="") + body + "</body></html>", encoding="utf-8")
+    out.write_text(HEAD.format(title=_html.escape(paths.deck_name(work)), extra="") + body + "</body></html>", encoding="utf-8")
     review_final(work, answers_md, allow_comments)             # 最終の確認ページも同時に作る
     return out

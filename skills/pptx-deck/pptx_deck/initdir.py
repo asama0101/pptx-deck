@@ -37,7 +37,7 @@ def write_derived(work: Path, cfg: dict) -> list[str]:
 
 
 def init(workdir, color: str = "navy", template_path=None, force: bool = False, footer: str | None = None) -> dict:
-    work = Path(workdir)
+    work = paths.resolve_work(workdir)                            # <名前>/source（旧形式の既存フォルダはそのまま）
     base = theme.resolve(color)                                   # 不正なら何も作らずに失敗
     src = Path(template_path) if template_path else paths.ASSETS / "template" / "standard.potx"
     info = template.analyze(src)                                  # 非 16:9 などもここで失敗

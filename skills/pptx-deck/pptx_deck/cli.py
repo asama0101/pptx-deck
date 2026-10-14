@@ -67,7 +67,7 @@ def _load_cfg(work: Path):
 def cmd_check(args) -> int:
     from . import check, measure
     html = Path(args.html)
-    work = Path(args.workdir) if args.workdir else html.parent
+    work = paths.resolve_work(args.workdir) if args.workdir else html.parent
     _, info, _ = _load_cfg(work)
     violations = check.check_model(measure.measure(html), info)
     print(json.dumps(violations, ensure_ascii=False, indent=2))
@@ -76,8 +76,8 @@ def cmd_check(args) -> int:
 
 def cmd_build(args) -> int:
     from . import build, check, measure, preview
-    work = Path(args.workdir).resolve()
-    name = work.name
+    work = paths.resolve_work(args.workdir)
+    name = paths.deck_name(work)
     cfg, info, palette = _load_cfg(work)
     html = work / "final.html"
     if not html.exists():
@@ -89,7 +89,7 @@ def cmd_build(args) -> int:
     if check.errors(violations):
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 1
-    out = work / f"{name}.pptx"
+    out = paths.deck_dir(work) / f"{name}.pptx"
     footer = args.footer if args.footer is not None else cfg.get("footer")
     build.build(model, work / cfg["template"], info, palette, out, base_dir=work, footer=footer, work_name=name)
     violations += check.check_pptx(out)
@@ -106,7 +106,7 @@ def cmd_build(args) -> int:
 
 def cmd_variants(args) -> int:
     from . import variants
-    work = Path(args.workdir)
+    work = paths.resolve_work(args.workdir)
     print(variants.assemble(work, round_no=args.round or variants.next_round(work)))
     return 0
 
@@ -119,9 +119,10 @@ def _answers_mds(work: Path, given: list[str] | None) -> list[str]:
 
 def cmd_finalize(args) -> int:
     from . import variants
-    mds = _answers_mds(Path(args.workdir), args.answers)     # 回ごとの回答を順に重ねる
+    work = paths.resolve_work(args.workdir)
+    mds = _answers_mds(work, args.answers)     # 回ごとの回答を順に重ねる
     try:
-        print(variants.finalize(Path(args.workdir), mds, allow_comments=args.allow_comments))
+        print(variants.finalize(work, mds, allow_comments=args.allow_comments))
     except ValueError as e:
         print(f"エラー:\n{e}", file=sys.stderr)
         return 2
@@ -130,9 +131,10 @@ def cmd_finalize(args) -> int:
 
 def cmd_review_final(args) -> int:
     from . import variants
-    mds = _answers_mds(Path(args.workdir), args.answers)
+    work = paths.resolve_work(args.workdir)
+    mds = _answers_mds(work, args.answers)
     try:
-        print(variants.review_final(Path(args.workdir), mds, allow_comments=args.allow_comments))
+        print(variants.review_final(work, mds, allow_comments=args.allow_comments))
     except ValueError as e:
         print(f"エラー:\n{e}", file=sys.stderr)
         return 2
