@@ -16,9 +16,9 @@ compatibility: Windows 専用。create と同じ環境。作品の source/ フ�
    - `missing_pptx`・`unrecorded`: PPTX がない、または記録がない。そのまま続けてよいと伝える。
    - `legacy: true`: 旧形式のフォルダ。そのまま扱えると伝える。
 2. 利用者に直し方を選んでもらう。
-   - **(a) 型・デザインを選び直す**: `python "${CLAUDE_PLUGIN_ROOT}/run.py" variants "<名前>"` で `variants.html` を作り（前回承認したスライドは選択済み）、create の 3 章の手順 3〜6 と同じ手順で、選んでもらう。直したいスライドだけ、案を選び直して承認する。
+   - **(a) 型・デザインを選び直す**: `python "${CLAUDE_PLUGIN_ROOT}/run.py" variants "<名前>"` で `variants.html` を作り（前回承認したスライドは選択済み）、create（`${CLAUDE_PLUGIN_ROOT}/skills/create/SKILL.md`）の 3 章の手順 3〜6 と同じ手順で、選んでもらう。直したいスライドだけ、案を選び直して承認する。
    - **(b) 文言・数字だけ直す**: 直す内容を聞き、`source/slides/NN-X.html`（選ばれている案）と `source/script.md` の該当箇所を直す。数字を作らない（素材に無い数字は「xx」）。直したスライドは `source/round-N-notes.md` に「NN: 直した内容」と書く。
-3. `python "${CLAUDE_PLUGIN_ROOT}/run.py" finalize "<名前>"`（回答は `source/answers-*.md` を回の順に自動で使う）。`final-review.html` を開いて、create の 3 章の手順 8 と同じ手順で承認を得る（保存先は `source/answers-final.md` を上書き）。
+3. `python "${CLAUDE_PLUGIN_ROOT}/run.py" finalize "<名前>"`（回答は `source/answers-N.md` を回の順に自動で使い、最終確認の `answers-final.md` は案の決定に使わない）。`final-review.html` を開いて、create の 3 章の手順 8 と同じ手順で承認を得る（保存先は `source/answers-final.md` を上書き）。
 4. `python "${CLAUDE_PLUGIN_ROOT}/run.py" build "<名前>"`。手順 1 で上書きを選んだときは `--force`、別名のときは `--out <パス>` を付ける（手順 3 の `finalize` のあとの `build` も、直して 3 に戻ってからの `build` も同じ。付け忘れると再び終了コード 4 で止まる）。`ok` が false なら `violations` を読んで `source/slides/` を直し、3 に戻る。
 5. `previews` を開いて崩れを確認し、**PowerPoint で開いて最終確認することを勧める**。済んだら `clean "<名前>"`。
 

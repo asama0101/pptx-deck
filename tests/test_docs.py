@@ -49,6 +49,22 @@ class DocsTest(unittest.TestCase):
             self.assertNotIn("${CLAUDE_SKILL_DIR}", t, f)
             self.assertNotIn("pngs", t, f)
 
+    def test_skill_paths_resolve_from_plugin_root(self):
+        """SKILL.md のパスは ${CLAUDE_PLUGIN_ROOT} 基準で、実在する。相対リンク（references/…）は使わない。"""
+        for f in (PKG / "skills").rglob("SKILL.md"):
+            t = f.read_text(encoding="utf-8")
+            self.assertNotRegex(t, r"\]\((references|assets)/", f"{f}: 相対リンク")
+            self.assertNotRegex(t, r"`(references|assets)/[A-Za-z0-9_]", f"{f}: 地の文の相対パス")
+            for m in re.finditer(r"\$\{CLAUDE_PLUGIN_ROOT\}/((?:run\.py|references/|assets/)[A-Za-z0-9_./-]*)", t):
+                rel = m.group(1)
+                if "<" in rel:
+                    continue
+                self.assertTrue((PKG / rel.rstrip("/")).exists(), f"{f}: {rel}")
+
+    def test_revise_points_to_create_skill_location(self):
+        t = (PKG / "skills" / "revise" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("${CLAUDE_PLUGIN_ROOT}/skills/create/SKILL.md", t)
+
 
 if __name__ == "__main__":
     unittest.main()
