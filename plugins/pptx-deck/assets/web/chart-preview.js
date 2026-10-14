@@ -29,6 +29,21 @@
     return Math.ceil(v * 1.05 / step) * step;
   };
   var fmt = function (v) { return Math.round(v * 10) / 10 + ''; };
+  // 横幅 maxW（px）に収まるよう、軸ラベルを最大 2 行に折り返す。空白があればそこで折り、2 行を超える分だけ「…」で省く
+  var wrap = function (s, maxW) {
+    var cw = function (c) { return c.charCodeAt(0) > 255 ? 13 : 7; };      // 13px の全角・半角の概算幅
+    var width = function (t) { return t.split('').reduce(function (a, c) { return a + cw(c); }, 0); };
+    var lines = [], cur = '';
+    s.split('').forEach(function (c) {
+      cur += c;
+      if (width(cur) <= maxW) return;
+      var sp = cur.lastIndexOf(' ');
+      if (sp > 0) { lines.push(cur.slice(0, sp)); cur = cur.slice(sp + 1); }
+      else { lines.push(cur.slice(0, -1)); cur = c; }
+    });
+    lines.push(cur);
+    return lines.length > 2 ? [lines[0], lines[1].slice(0, -1) + '…'] : lines;
+  };
   var palette = function () {
     return [css('--accent'), css('--accent-mid'), '#8C8C8C', css('--accent-dark'), '#BFBFBF'];
   };
@@ -92,7 +107,7 @@
       });
       var label = spec.categories[i];
       if (horizontal) txt(svg, L - 8, T + i * slot + slot / 2 + 5, label, { anchor: 'end', size: 13 });
-      else txt(svg, L + i * slot + slot / 2, T + ph + 20, label.length > 8 ? label.slice(0, 7) + '…' : label, { size: 13 });
+      else wrap(label, slot - 8).forEach(function (s, k) { txt(svg, L + i * slot + slot / 2, T + ph + 20 + k * 14, s, { size: 13 }); });
     });
     legend(svg, spec, W, H);
   }
