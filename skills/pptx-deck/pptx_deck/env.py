@@ -1,22 +1,89 @@
-"""仮想環境の状態確認と作成。標準ライブラリのみ。"""
+"""実行する Python の選択（システム優先、なければ venv）と、venv の作成。標準ライブラリのみ。"""
+import json
 import subprocess
 import sys
 import venv
+from dataclasses import dataclass
+from pathlib import Path
 
 from . import paths
 
-# import 名 → pip 名
-MODULES = {"pptx": "python-pptx", "playwright": "playwright", "fitz": "pymupdf", "lxml": "lxml"}
+# pip 名 → 要求する版。requirements.txt と同じ内容（テストで一致を確かめる）
+REQUIREMENTS = {"python-pptx": "==1.0.2", "playwright": "==1.52.0", "pymupdf": "==1.28.2", "lxml": ">=5"}
 
-_CHROMIUM_PROBE = (
-    "from playwright.sync_api import sync_playwright as s;"
-    "p=s().start();import os;print(os.path.exists(p.chromium.executable_path));p.stop()"
-)
+_PROBE = r'''
+import json, os, sys
+import importlib.metadata as m
+out = {"python": list(sys.version_info[:2]), "versions": {}, "chromium": False}
+for pkg in ("python-pptx", "playwright", "pymupdf", "lxml"):
+    try:
+        out["versions"][pkg] = m.version(pkg)
+    except m.PackageNotFoundError:
+        out["versions"][pkg] = None
+if out["versions"]["playwright"]:
+    try:
+        from playwright.sync_api import sync_playwright
+        p = sync_playwright().start()
+        out["chromium"] = os.path.exists(p.chromium.executable_path)
+        p.stop()
+    except Exception:
+        pass
+print(json.dumps(out))
+'''
 
 
-def _py(code: str) -> subprocess.CompletedProcess:
-    return subprocess.run([str(paths.venv_python()), "-c", code],
-                          capture_output=True, text=True, timeout=120)
+def probe(python: Path) -> dict:
+    """指定した Python に、必要なものがどう入っているか。動かない Python は、すべて未導入として返す。"""
+    empty = {"python": [0, 0], "versions": {k: None for k in REQUIREMENTS}, "chromium": False}
+    try:
+        r = subprocess.run([str(python), "-c", _PROBE], capture_output=True, text=True, timeout=120)
+        return json.loads(r.stdout.strip().splitlines()[-1]) if r.returncode == 0 and r.stdout.strip() else empty
+    except (OSError, subprocess.SubprocessError, ValueError, IndexError):
+        return empty
+
+
+def _version_ok(spec: str, ver: str) -> bool:
+    if spec.startswith("=="):
+        return ver == spec[2:]
+    if spec.startswith(">="):
+        return int(ver.split(".")[0]) >= int(spec[2:].split(".")[0])      # 主版だけ比べる（lxml>=5）
+    return True
+
+
+def missing(info: dict) -> list[str]:
+    out = []
+    if tuple(info.get("python", [0, 0])) < (3, 10):
+        out.append("Python 3.10 以上が必要です")
+    for pkg, spec in REQUIREMENTS.items():
+        ver = info["versions"].get(pkg)
+        if ver is None:
+            out.append(f"{pkg} が未導入です")
+        elif not _version_ok(spec, ver):
+            out.append(f"{pkg} {ver}（要 {spec}）")
+    if not info.get("chromium"):
+        out.append("Playwright の chromium が使えません")
+    return out
+
+
+@dataclass
+class Selection:
+    kind: str                       # "system" | "venv" | "none"
+    path: Path | None
+    system_missing: list[str]
+    venv_missing: list[str]
+
+
+def select_python(system: Path | None = None) -> Selection:
+    """システムの Python に必要なものがそろっていればそれを、なければ venv を使う。どちらも使えなければ none。"""
+    system = Path(system or sys.executable)
+    sys_miss = missing(probe(system))
+    if not sys_miss:
+        return Selection("system", system, [], [])
+    vpy = paths.venv_python()
+    venv_miss = missing(probe(vpy)) if vpy.exists() else ["仮想環境がありません"]
+    if not venv_miss:
+        return Selection("venv", vpy, sys_miss, [])
+    return Selection("none", None, sys_miss, venv_miss)
 
 
 def venv_healthy() -> bool:
@@ -26,24 +93,6 @@ def venv_healthy() -> bool:
                               capture_output=True, timeout=60).returncode == 0
     except (OSError, subprocess.SubprocessError):
         return False
-
-
-def status() -> dict:
-    st = {"venv": paths.venv_python().exists(), "modules": {}, "chromium": False}
-    if not st["venv"]:
-        st["modules"] = {m: False for m in MODULES}
-        return st
-    for m in MODULES:
-        st["modules"][m] = _py(f"import {m}").returncode == 0
-    if st["modules"]["playwright"]:
-        r = _py(_CHROMIUM_PROBE)
-        st["chromium"] = r.returncode == 0 and r.stdout.strip() == "True"
-    return st
-
-
-def ready(st: dict | None = None) -> bool:
-    st = st or status()
-    return st["venv"] and all(st["modules"].values()) and st["chromium"]
 
 
 def setup(yes: bool) -> int:

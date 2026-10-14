@@ -7,7 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from . import env, paths
+from . import paths
 
 
 def _has_font(registered: list[str], family: str) -> bool:
@@ -35,10 +35,9 @@ def _font_installed() -> bool:
 
 
 def cmd_doctor(args) -> int:
-    st = env.status()
     out = {
+        "python": {"kind": os.environ.get("PPTX_DECK_PYTHON_KIND", "unknown"), "path": sys.executable},
         "venv": str(paths.venv_dir()),
-        "status": st,
         "libreoffice": bool(shutil.which("soffice") or os.path.exists(
             r"C:\Program Files\LibreOffice\program\soffice.exe")),
         "font_biz_udp_gothic": _font_installed(),
@@ -50,7 +49,7 @@ def cmd_doctor(args) -> int:
         warnings.append("BIZ UDPゴシックが未導入です。計測は代替フォントで行うため、折り返しが PowerPoint とずれる場合があります。")
     out["warnings"] = warnings
     print(json.dumps(out, ensure_ascii=False, indent=2))
-    return 0 if env.ready(st) else 1
+    return 0
 
 
 def cmd_init(args) -> int:
@@ -155,8 +154,8 @@ def entry(argv: list[str]) -> int:
     try:
         return main(argv)
     except ModuleNotFoundError as e:
-        print(f"仮想環境に必要なモジュールがありません: {e.name}")
-        print("利用者に「環境を作り直してよいか」を確認し、承認後に `python run.py setup --yes` を実行してください。")
+        print(f"必要なモジュールがありません: {e.name}")
+        print("`python run.py doctor` で使っている Python を確認し、足りなければ利用者の承認後に `python run.py setup --yes` を実行してください。")
         return 3
 
 
