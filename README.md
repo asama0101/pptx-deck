@@ -110,7 +110,6 @@ Playwright MCP はプラグインに含まれない。案の選択と回答の�
 | `plugins/pptx-deck/`（プラグイン） | `.claude-plugin/plugin.json`（プラグインの定義）、`run.py`（コマンドの入口）、`requirements.txt`（仮想環境に入れるもの）、`skills/`（`create`・`revise`・`rebuild`・`review-plan` の各 `SKILL.md`）、`pptx_deck/`（Python のコード）、`references/`（SKILL.md から参照する資料。`components.md`＝型の一覧と使い分け、`patterns.md`＝型の選定表、`html-rules.md`＝HTML の書き方と描画の規準、`head-rules.md`＝題とリード文（ヘッド）の規則、`review-flow.md`＝スライド案と最終 HTML のレビューの細則、`check-rules.md`＝検査の rule と直し方）、`assets/` |
 | `plugins/pptx-deck/assets/` | `components/`（51 型・147 本の HTML 断片。1 型に最大 3 つのデザイン。稟議・障害報告・検証計画・検証結果報告・業務フロー・設計書・設備増減の計画を作れる型をそろえる。本文の部品は「題 → リード文 → 図表タイトル → 本体 → 注」の構成で、判断を求める型は最下部に論点ボックスを置く）、`web/`（`base.css`・`chart-preview.js`。作業フォルダとレビューページが使う）、`icons/`（アイコン 14 種。それぞれ `accent`・`emphasis`・`white`・`gray` の 4 色）、`template/standard.potx`（既定のテンプレート）、`sample/`（設計図と原稿の書式の手本） |
 | `tests/` | 単体・通しのテスト（`unittest`。実行方法は後述） |
-| `docs/` | 仕様（SPEC）・計画・検証手順書（`verification.md`）・部品の点検結果。`docs/*.pdf` は著作物のためコミットしない（`.gitignore`） |
 | `部品見本.html`（リポジトリ直下） | 部品 51 型・147 本の見本を 9 区分で 1 ページに並べた一覧（ブラウザで開く。画像はファイルに埋め込み済み）。画像は以前に描いたもので、このリポジトリには作り直す手順（生成スクリプト）がまだない。部品を足したり直したりしても、見本は自動では更新されない |
 | 実行したディレクトリ直下の `<名前>/` | `<名前>.pptx`（成果物）と `source/`（`design.md`・`script.md`・`slides/`・`answers-*.md`・`template.json` など。作業中だけ `variants.html`・`final.html`・`final-review.html` ほか） |
 | OS の一時フォルダ `%TEMP%\pptx-deck\<名前>\` | 確認用の画像など一過性のもの |
@@ -139,8 +138,6 @@ Playwright MCP はプラグインに含まれない。案の選択と回答の�
 リポジトリのルートで、仮想環境の Python を使って実行する（システムの Python に `playwright` がないと、`test_review_page`・`test_plan_review` はエラーになる）。
 
     "%LOCALAPPDATA%\pptx-deck\venv\Scripts\python.exe" -m unittest discover -s tests -t . -v
-
-自動テストと、人が見る確認項目は `docs/verification.md` にある。
 
 ## 自動検査
 

@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Windows 専用の Claude Code プラグイン `pptx-deck`（`plugins/pptx-deck/`）。承認文書を、HTML スライドを経由して編集可能な PPTX にする。利用者向けの説明は README.md、検証の手順は `docs/verification.md`。
+Windows 専用の Claude Code プラグイン `pptx-deck`（`plugins/pptx-deck/`）。承認文書を、HTML スライドを経由して編集可能な PPTX にする。利用者向けの説明は README.md。
 
 ## コマンド
 
