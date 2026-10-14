@@ -35,23 +35,18 @@ def temp_dir(name: str) -> Path:
 
 
 def resolve_work(arg) -> Path:
-    """コマンドの <名前> を、作業フォルダ（<名前>/source）に解決する。旧形式（template.json が直下）はそのフォルダ。"""
+    """コマンドの <名前> を、作業フォルダ（<名前>/source）に解決する。<名前>/source を直接渡してもよい。"""
     base = Path(arg).resolve()
     src = base / "source"
     if src.is_dir():
         return src
-    if (base / "template.json").exists():
+    if base.name == "source" and (base / "template.json").exists():
         return base
     return src
 
 
-def is_legacy(work: Path) -> bool:
-    return Path(work).name != "source"
-
-
 def deck_dir(work: Path) -> Path:
-    work = Path(work)
-    return work if is_legacy(work) else work.parent
+    return Path(work).parent
 
 
 def deck_name(work: Path) -> str:

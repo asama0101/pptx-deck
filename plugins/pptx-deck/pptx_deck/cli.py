@@ -217,7 +217,7 @@ def cmd_lint_script(args) -> int:
     problems = script_lint.lint(md)
     for p in problems:
         print(p)
-    for n in script_lint.migration_notes(md):      # 旧形式の移行の案内は、エラーにしない（終了コードに影響しない）
+    for n in script_lint.title_notes(md):      # 題の抜けの案内は、エラーにしない（終了コードに影響しない）
         print(n)
     return 1 if problems else 0
 

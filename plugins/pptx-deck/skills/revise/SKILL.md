@@ -14,7 +14,6 @@ compatibility: Windows 専用。create と同じ環境。作品の source/ フ�
    - `ok`: 続ける。
    - `modified`（終了コード 4）: PPTX が前回のビルドのあとに変更されている。作り直すと PowerPoint での手直しが消えると利用者に伝え、「上書きして続ける（`--force`）」か「別名で保存する（`build --out <パス>`）」かを選んでもらう。選ぶまで進めない。
    - `missing_pptx`・`unrecorded`: PPTX がない、または記録がない。そのまま続けてよいと伝える。
-   - `legacy: true`: 旧形式のフォルダ。そのまま扱えると伝える。
 2. 利用者に直し方を選んでもらう。
    - **(a) 型・デザインを選び直す**: `python "${CLAUDE_PLUGIN_ROOT}/run.py" variants "<名前>"` で `variants.html` を作り（前回承認したスライドは選択済み）、create（`${CLAUDE_PLUGIN_ROOT}/skills/create/SKILL.md`）の 3 章の手順 3〜6 と同じ手順で、選んでもらう。直したいスライドだけ、案を選び直して承認する。
    - **(b) 文言・数字だけ直す**: 直す内容を聞き、`source/slides/NN-X.html`（選ばれている案）と `source/script.md` の該当箇所を直す。数字を作らない（素材に無い数字は「xx」）。直したスライドは `source/round-N-notes.md` に「NN: 直した内容」と書く。

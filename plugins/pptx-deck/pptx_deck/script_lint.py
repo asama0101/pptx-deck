@@ -55,15 +55,15 @@ def _title_problems(sid, title):
     return out
 
 
-def migration_notes(md: str) -> list[str]:
-    """旧形式の原稿（本文スライドに「題」がない）への移行の案内。エラーではない（見出しはそのままリード文になる）。"""
+def title_notes(md: str) -> list[str]:
+    """本文スライドに「題」がないときの案内。エラーではない（見出しはそのままリード文になる）。"""
     slides = parse(md)
     missing = [s["id"] for s in slides if s["fields"].get("layout") in _BODY_LAYOUTS and not s["fields"].get("題")]
     if not missing:
         return []
-    return [f"移行の案内: 本文スライド {len(missing)} 枚（{', '.join(missing[:6])}{' ほか' if len(missing) > 6 else ''}）に「題」がありません。"
-            "ページ枠が 題（20 字以内の短い名詞句）＋リード文（見出し。判断を言い切る 30〜60 字）の 2 段になりました。"
-            "「- 題: …」を足してください（見出しは今のままリード文として使えます）。"]
+    return [f"案内: 本文スライド {len(missing)} 枚（{', '.join(missing[:6])}{' ほか' if len(missing) > 6 else ''}）に「題」がありません。"
+            "ページ枠は 題（20 字以内の短い名詞句）＋リード文（見出し。判断を言い切る 30〜60 字）の 2 段です。"
+            "「- 題: …」を足してください。"]
 
 
 def _head_problems(sid, head):
