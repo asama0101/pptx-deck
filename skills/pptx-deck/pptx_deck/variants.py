@@ -471,6 +471,49 @@ def merge_answers(mds: list[str]) -> dict[str, dict]:
     return out
 
 
+_ANS_FILE = re.compile(r"^answers-(\d+|final)\.md$")
+_PLAN_FILE = re.compile(r"^answers-plan-(\d+)\.md$")
+
+
+def answer_paths(work: Path, upto: int | None = None) -> list[Path]:
+    """answers-N.md（N は数字）を昇順に、最後に answers-final.md。answers-plan-*.md は含めない。"""
+    found: list[tuple[int, Path]] = []
+    for f in Path(work).glob("answers-*.md"):
+        m = _ANS_FILE.match(f.name)
+        if not m:
+            continue
+        n = int(m.group(1)) if m.group(1).isdigit() else 10 ** 9
+        if upto is not None and n > upto:
+            continue
+        found.append((n, f))
+    return [f for _, f in sorted(found)]
+
+
+def plan_answer_paths(work: Path) -> list[Path]:
+    found = [(int(m.group(1)), f) for f in Path(work).glob("answers-plan-*.md") if (m := _PLAN_FILE.match(f.name))]
+    return [f for _, f in sorted(found)]
+
+
+def next_round(work: Path) -> int:
+    nums = [int(m.group(1)) for f in Path(work).glob("answers-*.md") if (m := _ANS_FILE.match(f.name)) and m.group(1).isdigit()]
+    return max(nums, default=0) + 1
+
+
+def approved_preset(mds: list[str]) -> dict[str, dict]:
+    """回の順に重ねて、最新の判定が承認でコメントが空のスライドだけ返す（再提示の画面で選択済みにする）。"""
+    cur: dict[str, dict] = {}
+    for md in mds:
+        for nn, a in parse_answers(md).items():
+            verdict = a.get("verdict", "")
+            if not verdict and not a["choice"]:
+                continue
+            prev = cur.get(nn, {})
+            cur[nn] = {"c": a["choice"] or prev.get("c", ""), "d": a.get("design", prev.get("d", 1)),
+                       "v": verdict or "承認", "m": a["comment"]}
+    return {nn: {"c": x["c"], "d": x["d"], "v": x["v"]}
+            for nn, x in cur.items() if x["v"] == "承認" and x["c"] and not x["m"]}
+
+
 def _chosen(work: Path, answers_md: "str | list[str]", allow_comments: bool = False):
     """回答から、選ばれた案（型）とデザインを決める。決まらないスライドやコメント未反映があれば ValueError。
     戻り値は（スライド → 選ばれた断片, 回答）。デザインの回答（- デザイン: N）が無ければデザイン 1。"""

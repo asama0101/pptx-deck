@@ -106,13 +106,20 @@ def cmd_build(args) -> int:
 
 def cmd_variants(args) -> int:
     from . import variants
-    print(variants.assemble(Path(args.workdir), round_no=args.round))
+    work = Path(args.workdir)
+    print(variants.assemble(work, round_no=args.round or variants.next_round(work)))
     return 0
+
+
+def _answers_mds(work: Path, given: list[str] | None) -> list[str]:
+    from . import variants
+    files = [Path(p) for p in given] if given else variants.answer_paths(work)
+    return [f.read_text(encoding="utf-8") for f in files]
 
 
 def cmd_finalize(args) -> int:
     from . import variants
-    mds = [Path(p).read_text(encoding="utf-8") for p in args.answers]     # 回ごとの回答を順に重ねる
+    mds = _answers_mds(Path(args.workdir), args.answers)     # 回ごとの回答を順に重ねる
     try:
         print(variants.finalize(Path(args.workdir), mds, allow_comments=args.allow_comments))
     except ValueError as e:
@@ -123,7 +130,7 @@ def cmd_finalize(args) -> int:
 
 def cmd_review_final(args) -> int:
     from . import variants
-    mds = [Path(p).read_text(encoding="utf-8") for p in args.answers]
+    mds = _answers_mds(Path(args.workdir), args.answers)
     try:
         print(variants.review_final(Path(args.workdir), mds, allow_comments=args.allow_comments))
     except ValueError as e:
@@ -174,17 +181,17 @@ def main(argv: list[str]) -> int:
     p.set_defaults(fn=cmd_build)
     p = sub.add_parser("variants")
     p.add_argument("workdir")
-    p.add_argument("--round", type=int, default=1)
+    p.add_argument("--round", type=int, default=None)
     p.set_defaults(fn=cmd_variants)
     p = sub.add_parser("finalize")
     p.add_argument("workdir")
-    p.add_argument("--answers", required=True, action="append",
+    p.add_argument("--answers", action="append", default=None,
                    help="回答の Markdown。回ごとに複数回指定できる（後の回答が前の回答を上書きする）")
     p.add_argument("--allow-comments", action="store_true")
     p.set_defaults(fn=cmd_finalize)
     p = sub.add_parser("review-final")
     p.add_argument("workdir")
-    p.add_argument("--answers", required=True, action="append", help="finalize と同じ回答の Markdown（回ごとに複数回指定できる）")
+    p.add_argument("--answers", action="append", default=None, help="finalize と同じ回答の Markdown（回ごとに複数回指定できる）")
     p.add_argument("--allow-comments", action="store_true")
     p.set_defaults(fn=cmd_review_final)
     p = sub.add_parser("lint-script")
