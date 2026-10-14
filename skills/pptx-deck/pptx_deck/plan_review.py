@@ -79,7 +79,13 @@ def build_docs(design_md: str, script_md: str) -> tuple[dict[str, str], dict[str
         body = f'<h3>S{nn}　{_html.escape(s["title"])}</h3><h4>原稿</h4><table>{rows}</table>'
         if nn in pages:
             body += "<h4>設計図</h4>" + _md_html(pages[nn])
+        else:
+            body += "<p><b>設計図にこのスライドのページがありません</b></p>"
         docs[nn] = body
+    for nn in sorted(set(pages) - set(docs)):                       # 原稿に無い設計図のページも、不整合として見せる
+        first = pages[nn].splitlines()[0]
+        titles[nn] = re.sub(r"^###\s*S\d{2}\s*", "", first).strip() or nn
+        docs[nn] = "<p><b>原稿にこのスライドがありません</b></p>" + _md_html(pages[nn])
     return docs, titles
 
 
@@ -88,7 +94,7 @@ def assemble(work: Path, round_no: int | None = None) -> Path:
     docs, titles = build_docs((work / "design.md").read_text(encoding="utf-8"),
                               (work / "script.md").read_text(encoding="utf-8"))
     paths_ = variants.plan_answer_paths(work)
-    n = round_no or (len(paths_) + 1)
+    n = round_no or variants.plan_next_round(work)
     preset = variants.approved_preset([p.read_text(encoding="utf-8") for p in paths_])
     out = work / "plan-review.html"
     frags = {nn: {"A": ""} for nn in docs}

@@ -394,7 +394,7 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
         single = final or len(letters) == 1 or docs is not None
         doc_attr = ' data-doc="1"' if docs is not None else ""
         p = [f'<section class="pane" data-slide="{nn}" data-single="{1 if single else 0}"{doc_attr} hidden>',
-             f'<div class="top"><h2>{"S" + nn if nn != "00" else ""}　{esc(t)}</h2></div>',
+             f'<div class="top"><h2>{esc(t) if docs is not None and nn == "00" else "S" + nn + "　" + esc(t)}</h2></div>',
              (f'<div class="doc">{docs[nn]}</div>' if docs is not None
               else '<div class="big"><div class="thumb"><div class="stage"></div></div></div>'),
              '<div class="cols"' + (' hidden' if docs is not None else '') + '>']
@@ -529,6 +529,11 @@ def answer_paths(work: Path, upto: int | None = None) -> list[Path]:
 def plan_answer_paths(work: Path) -> list[Path]:
     found = [(int(m.group(1)), f) for f in Path(work).glob("answers-plan-*.md") if (m := _PLAN_FILE.match(f.name))]
     return [f for _, f in sorted(found)]
+
+
+def plan_next_round(work: Path) -> int:
+    nums = [int(m.group(1)) for f in Path(work).glob("answers-plan-*.md") if (m := _PLAN_FILE.match(f.name))]
+    return max(nums, default=0) + 1
 
 
 def next_round(work: Path) -> int:
