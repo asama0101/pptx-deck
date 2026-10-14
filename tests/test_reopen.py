@@ -49,16 +49,6 @@ class ReopenTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             self.assertEqual(lifecycle.reopen(fresh(td))["status"], "missing_pptx")
 
-    def test_legacy_folder(self):
-        with tempfile.TemporaryDirectory() as td:
-            base = Path(td) / "old"
-            initdir.init(base, color="navy")
-            legacy = Path(td) / "legacy"
-            shutil.copytree(base / "source", legacy)           # source/ の中身を直下に置いた旧形式
-            r = lifecycle.reopen(paths.resolve_work(legacy))
-            self.assertTrue(r["legacy"])
-            self.assertTrue(any("旧形式" in n for n in r["notes"]))
-
 
 class EnsureDerivedTest(unittest.TestCase):
     def test_regenerates_after_prune_then_noop(self):

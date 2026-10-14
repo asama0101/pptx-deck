@@ -1,6 +1,6 @@
 # pptx-deck
 
-ビジネス上の承認文書（稟議・提案・計画）を、コンサル資料のテイストで作る Claude Code スキル。設計図と原稿の承認 → HTML スライド案（各 3 案）の選択 → 最終 HTML の承認 → 編集可能な PowerPoint(.pptx) の順に進める。Windows 専用。
+ビジネス上の承認文書（稟議・提案・計画）を、コンサル資料のテイストで作る Claude Code プラグイン（スキル 4 つ）。設計図と原稿の承認 → HTML スライド案（各 3 案）の選択 → 最終 HTML の承認 → 編集可能な PowerPoint(.pptx) の順に進める。Windows 専用。
 
 - 本文を画像にせず、PowerPoint の図形・文字・表・グラフで出力する（編集できる）。
 - 13.33×7.5in（16:9）、BIZ UDPゴシック、無彩色＋基調 1 色＋強調 1 色。配色はプリセット（紺・緑・灰）か、基調色 `#RRGGBB` の指定で変えられる。
@@ -23,7 +23,7 @@ LibreOffice は使わない（不要）。
 
 ## 導入
 
-プラグインとして導入する（GitHub に公開した後）:
+プラグインとして GitHub から導入する:
 
     /plugin marketplace add asama0101/pptx-deck
     /plugin install pptx-deck@pptx-deck-market
@@ -106,10 +106,41 @@ Playwright MCP はプラグインに含まれない。案の選択と回答の�
 
 | 場所 | 内容 |
 |---|---|
-| `plugins/pptx-deck/`（プラグイン） | `skills/`（`create`・`revise`・`rebuild`・`review-plan` の各 `SKILL.md`）、`run.py`、`references/`（SKILL.md から参照する資料。`components.md`＝型の一覧と使い分け、`html-rules.md`＝HTML の書き方と描画の規準、`head-rules.md`＝題とリード文（ヘッド）の規則、`review-flow.md`＝スライド案と最終 HTML のレビューの細則、`check-rules.md`＝検査の rule と直し方）、テンプレート（`assets/components/` の 51 型・147 本。1 型に最大 3 つのデザイン。稟議・障害報告・検証計画・検証結果報告・業務フロー・設計書・設備増減の計画を作れる型をそろえる。本文の部品は「題 → リード文 → 図表タイトル → 本体 → 注」の構成で、判断を求める型は最下部に論点ボックスを置く。`patterns.md` は型の選定表）、`assets/icons/` のアイコン 14、`assets/template/standard.potx`）、設計図と原稿の手本（`assets/sample/`）、コード |
+| `.claude-plugin/marketplace.json` | プラグインの配布の定義（マーケットプレイス名 `pptx-deck-market`） |
+| `plugins/pptx-deck/`（プラグイン） | `.claude-plugin/plugin.json`（プラグインの定義）、`run.py`（コマンドの入口）、`requirements.txt`（仮想環境に入れるもの）、`skills/`（`create`・`revise`・`rebuild`・`review-plan` の各 `SKILL.md`）、`pptx_deck/`（Python のコード）、`references/`（SKILL.md から参照する資料。`components.md`＝型の一覧と使い分け、`patterns.md`＝型の選定表、`html-rules.md`＝HTML の書き方と描画の規準、`head-rules.md`＝題とリード文（ヘッド）の規則、`review-flow.md`＝スライド案と最終 HTML のレビューの細則、`check-rules.md`＝検査の rule と直し方）、`assets/` |
+| `plugins/pptx-deck/assets/` | `components/`（51 型・147 本の HTML 断片。1 型に最大 3 つのデザイン。稟議・障害報告・検証計画・検証結果報告・業務フロー・設計書・設備増減の計画を作れる型をそろえる。本文の部品は「題 → リード文 → 図表タイトル → 本体 → 注」の構成で、判断を求める型は最下部に論点ボックスを置く）、`web/`（`base.css`・`chart-preview.js`。作業フォルダとレビューページが使う）、`icons/`（アイコン 14 種。それぞれ `accent`・`emphasis`・`white`・`gray` の 4 色）、`template/standard.potx`（既定のテンプレート）、`sample/`（設計図と原稿の書式の手本） |
+| `tests/` | 単体・通しのテスト（`unittest`。実行方法は後述） |
+| `docs/` | 仕様（SPEC）・計画・検証手順書（`verification.md`）・部品の点検結果。`docs/*.pdf` は著作物のためコミットしない（`.gitignore`） |
 | `部品見本.html`（リポジトリ直下） | 部品 51 型・147 本の見本を 9 区分で 1 ページに並べた一覧（ブラウザで開く。画像はファイルに埋め込み済み）。画像は以前に描いたもので、このリポジトリには作り直す手順（生成スクリプト）がまだない。部品を足したり直したりしても、見本は自動では更新されない |
 | 実行したディレクトリ直下の `<名前>/` | `<名前>.pptx`（成果物）と `source/`（`design.md`・`script.md`・`slides/`・`answers-*.md`・`template.json` など。作業中だけ `variants.html`・`final.html`・`final-review.html` ほか） |
 | OS の一時フォルダ `%TEMP%\pptx-deck\<名前>\` | 確認用の画像など一過性のもの |
+
+## コマンド
+
+普段はスキルが呼ぶので、直接実行する必要はない。`python run.py <コマンド>`（`run.py` は `plugins/pptx-deck/` にある）。
+
+| コマンド | 内容 |
+|---|---|
+| `doctor` | 使う Python（`system` か `venv`）と、足りないもの、フォントの有無を確認する |
+| `setup [--yes]` | 仮想環境（`%LOCALAPPDATA%\pptx-deck\venv`）を作る。`--yes` は利用者の承認後に付ける |
+| `init <名前> --color … [--template …] [--footer …]` | 作業フォルダ `<名前>/source/` を作る（`--footer` は左下のコピーライト）。`--force` で既存の派生ファイルを上書きする |
+| `lint-script <script.md>` | 原稿の書式・題・見出しを検査する |
+| `review-plan <名前> [--round N]` | 設計図と原稿の確認ページ `plan-review.html` を作る |
+| `variants <名前> [--round N]` | スライド案の選択ページ `variants.html` を作る |
+| `finalize <名前> [--answers …]` | 選ばれた案を統合して `final.html` と `final-review.html` を作る |
+| `review-final <名前>` | 最終確認ページ `final-review.html` だけを作り直す |
+| `check <final.html>` | 体裁を検査する（`build` の前に見るとき） |
+| `build <名前> [--footer …] [--out …] [--force]` | PPTX を書き出し、検査と確認用の画像を作る。成功すると派生ファイルを消す |
+| `reopen <名前> [--force]` | 派生ファイルを作り直し、PPTX が手直しされていないかを調べる。`--force` は変更されていても続ける（手直しは消える） |
+| `clean <名前>` | 一時フォルダの確認用の画像を消す |
+
+## テスト
+
+リポジトリのルートで、仮想環境の Python を使って実行する（システムの Python に `playwright` がないと、`test_review_page`・`test_plan_review` はエラーになる）。
+
+    "%LOCALAPPDATA%\pptx-deck\venv\Scripts\python.exe" -m unittest discover -s tests -t . -v
+
+自動テストと、人が見る確認項目は `docs/verification.md` にある。
 
 ## 自動検査
 
@@ -117,7 +148,7 @@ Playwright MCP はプラグインに含まれない。案の選択と回答の�
 
 `lint-script` は原稿の書式と題（20 字以内の名詞句）、見出し〔リード文〕の規則（30〜60 字・判断語か接続語・「A。B」の二段構え・ダッシュ・「本ページ」などの自己言及・隣り合う 3 枚の文型の連続）、論点の個数（3〜6）を検査する。
 
-以前に書いた原稿は、本文スライドに「題」がなければ移行の案内が出る（エラーではない。見出しはそのままリード文になるので、`- 題:` を足す）。新しいヘッドの規則（判断語・1 行 41 字を目安とする長さなど）で `lint-script` に落ちることがある。直すか、正しい見出しなら `pptx_deck/script_lint.py` の `_JUDGE` に語を足す。
+本文スライドに「題」がなければ、`lint-script` が案内を出す（エラーではない。見出しはそのままリード文になるので、`- 題:` を足す）。ヘッドの規則（判断語・1 行 41 字を目安とする長さなど）で `lint-script` に落ちたときは、直すか、正しい見出しなら `pptx_deck/script_lint.py` の `_JUDGE` に語を足す。
 
 古い作業フォルダは `base.css`・`theme.css`・`chart-preview.js` が `init` 時の写しなので、新しい部品（`f-soft2`・`dashed`・`axis`）を使うには `init --force` で更新する（`reopen` は派生ファイルを作り直す）（`script.md` などの既存ファイルは消えない。`design.md` は既にあれば上書きしない）。
 

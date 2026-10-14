@@ -15,17 +15,8 @@ class ResolveTest(unittest.TestCase):
             self.assertEqual(paths.resolve_work(base), (base / "source").resolve())
             self.assertEqual(paths.deck_dir(base / "source"), base)
             self.assertEqual(paths.deck_name(base / "source"), "deck")
-            self.assertFalse(paths.is_legacy(base / "source"))
-
-    def test_legacy_layout(self):
-        with tempfile.TemporaryDirectory() as td:
-            base = Path(td) / "old"
-            base.mkdir()
-            (base / "template.json").write_text("{}", encoding="utf-8")
-            w = paths.resolve_work(base)
-            self.assertEqual(w, base.resolve())
-            self.assertTrue(paths.is_legacy(w))
-            self.assertEqual(paths.deck_name(w), "old")
+            (base / "source" / "template.json").write_text("{}", encoding="utf-8")
+            self.assertEqual(paths.resolve_work(base / "source"), (base / "source").resolve())   # source を直接渡してもよい
 
 
 class InitLayoutTest(unittest.TestCase):

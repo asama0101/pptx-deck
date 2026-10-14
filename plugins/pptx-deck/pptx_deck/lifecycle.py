@@ -86,16 +86,12 @@ def reopen(work: Path) -> dict:
     work = Path(work)
     cfg = json.loads((work / "template.json").read_text(encoding="utf-8"))
     notes = list(initdir.write_derived(work, cfg))
-    legacy = paths.is_legacy(work)
-    if legacy:
-        notes.append("旧形式の作業フォルダです（source/ がありません）。このまま扱えますが、新しい作品は source/ に作ります。"
-                     "source/ へ移すには、<名前>/source/ を作ってこのフォルダの中身を移してください（自動では移しません）。")
     pptx = paths.deck_dir(work) / f"{paths.deck_name(work)}.pptx"
     st = fingerprint_status(work, pptx)
     status = {"unchanged": "ok", "modified": "modified", "missing": "missing_pptx", "unrecorded": "unrecorded"}[st]
     if status == "modified":
         notes.append("PPTX は前回のビルドのあとに変更されています。作り直すと PowerPoint での手直しが消えます。")
     slides = len({m.group(1) for f in (work / "slides").glob("*.html") if (m := variants.FRAG.match(f.name))}) if (work / "slides").is_dir() else 0
-    return {"status": status, "legacy": legacy, "source": str(work), "pptx": str(pptx),
+    return {"status": status, "source": str(work), "pptx": str(pptx),
             "answers": [str(p) for p in variants.answer_paths(work)], "next_round": variants.next_round(work),
             "slides": slides, "notes": notes}
