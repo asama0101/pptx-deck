@@ -197,6 +197,9 @@ def layout_bg_hex(prs, layout_index: int) -> str | None:
     theme = _theme_colors(master)
     cm = master._element.find("p:clrMap", _NS)
     clrmap = dict(cm.attrib) if cm is not None else {}
+    ovr = layout._element.find("p:clrMapOvr/a:overrideClrMapping", _NS)
+    if ovr is not None:                                  # レイアウトの色の対応づけがマスターより優先（masterClrMapping ならマスターのまま）
+        clrmap = dict(ovr.attrib)
     for part in (layout._element, master._element):
         bg = part.find("p:cSld/p:bg", _NS)
         if bg is None:
@@ -206,7 +209,9 @@ def layout_bg_hex(prs, layout_index: int) -> str | None:
             h = _color_hex(solid[0], theme, clrmap)
             return f"#{h}" if h else None
         ref = bg.find("p:bgRef", _NS)
-        if ref is not None and len(ref):                 # テーマの背景スタイルの参照。色の指定がある（bg1 など）
+        if ref is not None:                              # テーマの背景スタイルの参照
+            if ref.get("idx") != "1001" or not len(ref):  # 1001 はテーマの 1 番目の塗り（通常は単色）。1002 以上は単色と言い切れない
+                return None
             h = _color_hex(ref[0], theme, clrmap)
             return f"#{h}" if h else None
         return None                                      # 画像・グラデーションなど

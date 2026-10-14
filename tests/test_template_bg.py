@@ -72,5 +72,40 @@ class BackgroundColorsTest(unittest.TestCase):
         self.assertIn('.slide[data-layout="cover"] { --bg: #112233; }', css)
 
 
+def _set_clr_map_ovr(layout, inner_xml: str):
+    el = layout._element
+    old = el.find(f"{{{P}}}clrMapOvr")
+    if old is not None:
+        el.remove(old)
+    new = etree.fromstring(f'<p:clrMapOvr xmlns:p="{P}" xmlns:a="{A}">{inner_xml}</p:clrMapOvr>')
+    el.find(f"{{{P}}}cSld").addnext(new)
+
+
+OVR = ('<a:overrideClrMapping bg1="dk1" tx1="lt1" bg2="dk2" tx2="lt2" accent1="accent1" accent2="accent2" '
+       'accent3="accent3" accent4="accent4" accent5="accent5" accent6="accent6" hlink="hlink" folHlink="folHlink"/>')
+
+
+class LayoutBgClrMapAndStyleTest(unittest.TestCase):
+    def setUp(self):
+        self.prs = Presentation()
+
+    def test_clr_map_override_is_used(self):
+        lay = self.prs.slide_layouts[1]
+        _set_layout_bg(lay, '<p:bgRef idx="1001"><a:schemeClr val="bg1"/></p:bgRef>')
+        self.assertEqual(template.layout_bg_hex(self.prs, 1), "#FFFFFF")
+        _set_clr_map_ovr(lay, OVR)
+        self.assertEqual(template.layout_bg_hex(self.prs, 1), "#000000")
+
+    def test_master_clr_mapping_uses_master(self):
+        lay = self.prs.slide_layouts[1]
+        _set_layout_bg(lay, '<p:bgRef idx="1001"><a:schemeClr val="bg1"/></p:bgRef>')
+        _set_clr_map_ovr(lay, "<a:masterClrMapping/>")
+        self.assertEqual(template.layout_bg_hex(self.prs, 1), "#FFFFFF")
+
+    def test_bgref_style_table_beyond_1001_is_none(self):
+        _set_layout_bg(self.prs.slide_layouts[1], '<p:bgRef idx="1003"><a:schemeClr val="bg1"/></p:bgRef>')
+        self.assertIsNone(template.layout_bg_hex(self.prs, 1))
+
+
 if __name__ == "__main__":
     unittest.main()
