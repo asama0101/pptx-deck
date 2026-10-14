@@ -75,6 +75,7 @@ _SCRIPT = r"""<script>
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var panes = $$('.pane'), cur = 0, KEY = 'pptxdeck-review-' + __DECK__ + '-__ROUND__';
+  var PRESET = __PRESET__;
 
   function store(o) { try { sessionStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} }
   function load() { try { return JSON.parse(sessionStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; } }
@@ -95,6 +96,22 @@ _SCRIPT = r"""<script>
       $('textarea', p).value = a.t || '';
       p.dataset.verdict = a.v || '';
       Object.keys(a.d || {}).forEach(function (k) { var x = $('.dgroup[data-k="' + k + '"] input[value="' + a.d[k] + '"]', p); if (x) x.checked = true; });
+    });
+  }
+
+  // 前回承認したスライドを選択済みにする。同じタブで入力の途中なら、その入力を優先する
+  function applyPreset() {
+    if (Object.keys(load()).length) return;
+    panes.forEach(function (p) {
+      var a = PRESET[p.dataset.slide]; if (!a) return;
+      var single = p.dataset.single === '1';
+      var r = $('input[type=radio][name^="s"][value="' + (single ? 'A' : a.c) + '"]', p);
+      if (!r) return;                                           // 案がなくなっていれば引き継がない
+      r.checked = true;
+      if (!single) {
+        p.dataset.verdict = '承認';
+        if (a.d > 1) { var x = $('.dgroup[data-k="' + a.c + '"] input[value="' + a.d + '"]', p); if (x) x.checked = true; }
+      }
     });
   }
 
@@ -184,6 +201,7 @@ _SCRIPT = r"""<script>
       }
     }
     refresh(); store(snapshot());
+    if (v === '承認' && cur < panes.length - 1) go(cur + 1);       // 承認したら次のスライドへ（要修正と最後は動かない）
   }
   function refresh() {
     panes.forEach(function (p, i) {
@@ -277,8 +295,9 @@ _SCRIPT = r"""<script>
 
   function start() {
     restore();
+    applyPreset();
     $$('input[type=radio][name^="s"]:checked').forEach(function (x) { x.dataset.was = '1'; });
-    refresh(); go(0);
+    refresh(); store(snapshot()); go(0);
   }
   if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
 })();
@@ -344,7 +363,8 @@ def _read(path: Path) -> str:
 
 def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final: bool = False,
           prev: dict[str, dict] | None = None, notes: dict[str, str] | None = None,
-          designs: dict[str, dict[str, dict[int, str]]] | None = None) -> str:
+          designs: dict[str, dict[str, dict[int, str]]] | None = None,
+          preset: dict | None = None) -> str:
     esc = _html.escape
     prev, notes, designs = prev or {}, notes or {}, designs or {}
     title = "最終 HTML の確認" if final else "スライド案の選択"
@@ -419,7 +439,8 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
              f'<div class="body"><nav id="nav" aria-label="スライドの一覧">{"".join(nav)}</nav><div>{"".join(panes)}</div></div>'
              '</div>']
     deck_js = json.dumps(work.name, ensure_ascii=False).replace("</", "<\\/")      # JS の文字列。</script> でも閉じない
-    parts.append(_SCRIPT.replace("__DECK__", deck_js).replace("__ROUND__", round_label))
+    preset_js = json.dumps(preset or {}, ensure_ascii=False).replace("</", "<\\/")
+    parts.append(_SCRIPT.replace("__DECK__", deck_js).replace("__ROUND__", round_label).replace("__PRESET__", preset_js))
     parts.append("</body></html>")
     return "".join(parts)
 
@@ -433,7 +454,8 @@ def assemble(work: Path, round_no: int = 1) -> Path:
     prev = parse_answers(_read(work / f"answers-{round_no - 1}.md")) if round_no > 1 else {}
     notes = parse_notes(_read(work / f"round-{round_no}-notes.md")) if round_no > 1 else {}
     out = work / "variants.html"
-    out.write_text(_page(work, frags, str(round_no), prev=prev, notes=notes, designs=designs), encoding="utf-8")
+    preset = approved_preset([f.read_text(encoding="utf-8") for f in answer_paths(work, upto=round_no - 1)]) if round_no > 1 else {}
+    out.write_text(_page(work, frags, str(round_no), prev=prev, notes=notes, designs=designs, preset=preset), encoding="utf-8")
     return out
 
 
@@ -547,7 +569,8 @@ def review_final(work: Path, answers_md: "str | list[str]", allow_comments: bool
     picked, _ = _chosen(work, answers_md, allow_comments)
     one = {nn: {"A": picked[nn]} for nn in sorted(picked)}
     out = work / "final-review.html"
-    out.write_text(_page(work, one, "final", final=True), encoding="utf-8")
+    mds = [answers_md] if isinstance(answers_md, str) else list(answers_md)
+    out.write_text(_page(work, one, "final", final=True, preset=approved_preset(mds)), encoding="utf-8")
     return out
 
 
