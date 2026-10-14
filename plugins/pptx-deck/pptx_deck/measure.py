@@ -1,8 +1,41 @@
 """final.html を Playwright(Python) で開き、部品の位置・大きさ・書式をモデルにする。"""
 from pathlib import Path
 
+RASTER_SCALE = 3          # 絵（pp-picture）を画像にするときの倍率（1280px の幅で 3840px）
 
-def measure(html: Path) -> list[dict]:
+# 絵を 1 枚ずつ撮るときの CSS。対象の絵以外（下地・ほかの部品）を隠し、背景を透明にして、重なった部品が絵に写り込まないようにする
+_SNAP_CSS = """
+html.pp-snap, html.pp-snap body, html.pp-snap section.slide { background: transparent !important; background-image: none !important; }
+html.pp-snap section.slide * { visibility: hidden !important; }
+html.pp-snap section.slide [data-snap], html.pp-snap section.slide [data-snap] * { visibility: visible !important; }
+"""
+
+
+def _rasterize(page, slides: list[dict], out_dir: Path) -> None:
+    """model の kind=picture の要素ごとに、その絵だけを透過の PNG にして `src` に入れる。"""
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    page.add_style_tag(content=_SNAP_CSS)
+    slide_els = page.query_selector_all("section.slide")
+    for s, slide_el in zip(slides, slide_els):
+        pics = [e for e in s["elements"] if e["kind"] == "picture"]
+        if not pics:
+            continue
+        handles = slide_el.query_selector_all(".pp-picture")
+        for n, (e, h) in enumerate(zip(pics, handles), start=1):
+            path = out_dir / f"picture-{s['index']:02d}-{n:02d}.png"
+            page.evaluate("document.documentElement.classList.add('pp-snap')")
+            h.evaluate("el => el.setAttribute('data-snap', '')")
+            try:
+                h.screenshot(path=str(path), omit_background=True)
+            finally:
+                h.evaluate("el => el.removeAttribute('data-snap')")
+                page.evaluate("document.documentElement.classList.remove('pp-snap')")
+            e["src"] = str(path)
+
+
+def measure(html: Path, raster_dir: Path | None = None) -> list[dict]:
+    """raster_dir を渡すと、絵（pp-picture）を PNG にして raster_dir に置き、モデルの `src` に入れる（build 用）。"""
     from playwright.sync_api import sync_playwright
 
     js = (Path(__file__).parent / "measure.js").read_text(encoding="utf-8")
@@ -10,10 +43,13 @@ def measure(html: Path) -> list[dict]:
     with sync_playwright() as p:
         browser = p.chromium.launch()
         try:
-            page = browser.new_page(viewport={"width": 1280, "height": 720})
+            page = browser.new_page(viewport={"width": 1280, "height": 720},
+                                    device_scale_factor=RASTER_SCALE if raster_dir else 1)
             page.goto(html.as_uri())
             page.evaluate("document.fonts.ready.then(() => true)")
             slides = page.evaluate(js)
+            if raster_dir and slides:
+                _rasterize(page, slides, raster_dir)
         finally:
             browser.close()
     if not slides:

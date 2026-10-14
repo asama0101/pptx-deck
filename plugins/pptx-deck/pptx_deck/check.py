@@ -14,7 +14,8 @@ AREA_BOTTOM_GAP = 120                          # 本文の下端が領域下端�
 SAME_WORD_MIN = 6                              # 同じ文言の重複を数える最小字数
 _DASH = re.compile("[—―─]")
 SHAPE_KINDS = {"rect", "round", "ellipse", "triangle"}        # build.py の SHAPES と同じ。これ以外は build が止まる
-TITLE_MAX, LEAD_MIN, LEAD_MAX = 20, 30, 60                   # 題（短い名詞句）の字数の上限、リード文（判断を言い切る 1 文）の字数
+PICTURE_NAME = "pp-picture"                                  # build.py の PICTURE_NAME と同じ（絵として貼った画像の名前）
+TITLE_MAX, LEAD_MIN, LEAD_MAX = 20, 30, 60                  # 題（短い名詞句）の字数の上限、リード文（判断を言い切る 1 文）の字数
 
 
 
@@ -39,6 +40,33 @@ def _inter(a, b):
 def _contains(a, b, tol=2):
     return (a["x"] - tol <= b["x"] and a["y"] - tol <= b["y"]
             and a["x"] + a["w"] + tol >= b["x"] + b["w"] and a["y"] + a["h"] + tol >= b["y"] + b["h"])
+
+
+def _check_picture(e, n, label):
+    """絵（pp-picture）の検査。絵の中身は PPTX で直せないので、HTML の段階で文字・色・代替テキストを確かめる。
+    絵の内部の重なり（矢印・番号・吹き出しを絵に重ねる）は検査しない。絵全体とほかの部品の重なりは、呼び出し側が検査する。"""
+    out = []
+    if not e.get("alt"):
+        out.append(_v("imageAlt", n, f"{label}: 絵の代替テキスト（data-alt）がありません。絵の内容を 1〜2 文で書いてください"))
+    if not e.get("hasSvg"):
+        out.append(_v("pictureSvg", n, f"{label}: pp-picture の中に <svg> がありません"))
+    if e.get("badColors"):
+        out.append(_v("pictureColor", n, f"{label}: テーマの変数以外の色があります（{', '.join(e['badColors'][:4])}）。"
+                      "var(--accent) などの変数か、sv-f-* / sv-s-* のクラスを使ってください", "warning"))
+    texts = e.get("texts", [])
+    for t in texts:
+        floor = MIN_PT_SMALL if t.get("small") else MIN_PT_DEFAULT
+        pt = t["size_px"] * 0.75
+        if pt < floor:
+            out.append(_v("fontMin", n, f"{label}: 絵の中の文字「{t['text'][:10]}」は {pt:.1f}pt で、下限 {floor}pt 未満です"
+                          "（図を 2 枚に分けるか、番号だけを絵に置いて説明を凡例の表に出す）"))
+        if t.get("outside"):
+            out.append(_v("pictureOverflow", n, f"{label}: 絵の中の文字「{t['text'][:10]}」が絵の外にはみ出しています"))
+    for i, a in enumerate(texts):
+        for b in texts[i + 1:]:
+            if _inter(a["rect"], b["rect"]) > OVERLAP_MIN_AREA:
+                out.append(_v("pictureTextOverlap", n, f"{label}: 絵の中の文字「{a['text'][:8]}」と「{b['text'][:8]}」が重なっています", "warning"))
+    return out
 
 
 def check_model(model, info: TemplateInfo):
@@ -108,6 +136,8 @@ def check_model(model, info: TemplateInfo):
                         ratio = theme.contrast("#" + run["color"], "#" + e["bg"])
                         if ratio < need:
                             out.append(_v("contrast", n, f"{label}: 文字色 #{run['color']} と背景 #{e['bg']} のコントラスト比 {ratio:.1f} が {need} 未満です"))
+            if k == "picture":
+                out.extend(_check_picture(e, n, label))
             if k == "table":
                 for row in e["table"]["rows"]:
                     for c in row["cells"]:
@@ -133,7 +163,7 @@ def check_model(model, info: TemplateInfo):
                         out.append(_v("keepout", n, f"{label}: テンプレートのヘッダー・フッター領域に入っています"))
                         break
         # 重なり
-        cand = [e for e in els if e["kind"] in ("text", "shape", "image", "table", "chart")
+        cand = [e for e in els if e["kind"] in ("text", "shape", "image", "table", "chart", "picture")
                 and not (e["kind"] == "text" and not e["paras"])]
         for i, a in enumerate(cand):
             for b in cand[i + 1:]:
@@ -161,7 +191,7 @@ def check_pptx(path: Path):
                 continue
             if sh.left < -tol or sh.top < -tol or sh.left + sh.width > W + tol or sh.top + sh.height > H + tol:
                 out.append(_v("pptxBounds", i, f"{sh.name}: スライドの外にはみ出しています"))
-            if sh.shape_type == 13 and sh.width * sh.height > W * H * BODY_IMAGE_RATIO:
+            if sh.shape_type == 13 and sh.name != PICTURE_NAME and sh.width * sh.height > W * H * BODY_IMAGE_RATIO:
                 out.append(_v("pptxPicture", i, f"{sh.name}: 大きな画像があります（本文を画像にしない）"))
             if sh.has_text_frame:
                 for p in sh.text_frame.paragraphs:

@@ -9,7 +9,16 @@ body {
   background-color: var(--bg); background-size: 1280px 720px; background-repeat: no-repeat;
 }
 .slide { color: var(--text); }
-.pp-text, .pp-shape, .pp-line, .pp-image, .pp-table, .pp-chart { position: absolute; }
+.pp-text, .pp-shape, .pp-line, .pp-image, .pp-table, .pp-chart, .pp-picture { position: absolute; }
+/* 絵（pp-picture）: インライン SVG を 1 枚の画像にして PPTX に貼る。色はテーマの変数だけ。下のクラスで塗る */
+.pp-picture > svg { display: block; width: 100%; height: 100%; }
+.pp-picture > svg { font-family: inherit; fill: var(--text); }    /* 文字の既定色。g や text に sv-f-* を付ければ上書きされる（子へ継承） */
+.sv-f-accent { fill: var(--accent); }  .sv-f-dark { fill: var(--accent-dark); }  .sv-f-mid { fill: var(--accent-mid); }
+.sv-f-light { fill: var(--accent-light); }  .sv-f-soft { fill: var(--bg-soft); }  .sv-f-emph { fill: var(--emphasis); }
+.sv-f-white { fill: #FFFFFF; }  .sv-f-text { fill: var(--text); }  .sv-f-sub { fill: var(--text-sub); }  .sv-f-none { fill: none; }
+.sv-s-accent { stroke: var(--accent); }  .sv-s-dark { stroke: var(--accent-dark); }  .sv-s-line { stroke: var(--line); }
+.sv-s-text { stroke: var(--text); }  .sv-s-emph { stroke: var(--emphasis); }  .sv-s-sub { stroke: var(--text-sub); }
+.sv-s-white { stroke: #FFFFFF; }
 .pp-text { font-size: 20px; line-height: 1.5; color: var(--text); }
 .pp-text ul { list-style: none; }
 .pp-text li { margin-bottom: 6px; }

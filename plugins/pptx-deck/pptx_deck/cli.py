@@ -104,7 +104,7 @@ def cmd_build(args) -> int:
             print(f"エラー: {out.name} は前回のビルドのあとに変更されています。作り直すと PowerPoint での手直しが消えます。"
                   "上書きしてよければ --force、別の名前で出すなら --out <パス> を付けてください。", file=sys.stderr)
             return 4
-    model = measure.measure(html)
+    model = measure.measure(html, raster_dir=paths.temp_dir(name) / "picture")      # 絵（pp-picture）は、ここで画像にする
     violations = check.check_model(model, info)
     result = {"ok": False, "violations": violations, "pptx": None, "previews": [], "removed": [], "notes": list(info.notes)}
     if check.errors(violations):
