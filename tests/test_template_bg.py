@@ -1,4 +1,3 @@
-import copy
 import unittest
 
 from lxml import etree
@@ -33,8 +32,22 @@ class LayoutBgTest(unittest.TestCase):
 
     def test_layout_scheme_color_is_resolved_via_theme(self):
         _set_layout_bg(self.prs.slide_layouts[2], '<p:bgPr><a:solidFill><a:schemeClr val="tx1"/></a:solidFill><a:effectLst/></p:bgPr>')
-        got = template.layout_bg_hex(self.prs, 2)
-        self.assertRegex(got, r"^#[0-9A-F]{6}$")
+        self.assertEqual(template.layout_bg_hex(self.prs, 2), "#000000")
+
+    def test_color_transform_returns_none(self):
+        _set_layout_bg(self.prs.slide_layouts[4], '<p:bgPr><a:solidFill><a:schemeClr val="bg1"><a:lumMod val="95000"/></a:schemeClr></a:solidFill><a:effectLst/></p:bgPr>')
+        self.assertIsNone(template.layout_bg_hex(self.prs, 4))
+
+    def test_no_theme_part(self):
+        from pptx.opc.constants import RELATIONSHIP_TYPE as RT
+        master = self.prs.slide_masters[0]
+        for rId, rel in list(master.part.rels.items()):
+            if rel.reltype == RT.THEME:
+                master.part.rels.pop(rId)
+        _set_layout_bg(self.prs.slide_layouts[1], '<p:bgPr><a:solidFill><a:srgbClr val="1F3A5F"/></a:solidFill><a:effectLst/></p:bgPr>')
+        _set_layout_bg(self.prs.slide_layouts[2], '<p:bgPr><a:solidFill><a:schemeClr val="tx1"/></a:solidFill><a:effectLst/></p:bgPr>')
+        self.assertEqual(template.layout_bg_hex(self.prs, 1), "#1F3A5F")
+        self.assertIsNone(template.layout_bg_hex(self.prs, 2))
 
     def test_gradient_returns_none(self):
         _set_layout_bg(self.prs.slide_layouts[3], '<p:bgPr><a:gradFill><a:gsLst><a:gs pos="0"><a:srgbClr val="000000"/></a:gs></a:gsLst></a:gradFill><a:effectLst/></p:bgPr>')

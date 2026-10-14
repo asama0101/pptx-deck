@@ -161,7 +161,10 @@ _THEME_KEYS = ("dk1", "lt1", "dk2", "lt2", "accent1", "accent2", "accent3", "acc
 
 def _theme_colors(master) -> dict[str, str]:
     """テーマの色（dk1・lt1・accent1…）→ 6 桁の 16 進。"""
-    root = etree.fromstring(master.part.part_related_by(RT.THEME).blob)
+    try:
+        root = etree.fromstring(master.part.part_related_by(RT.THEME).blob)
+    except KeyError:                                     # テーマ part がない。srgbClr の直接指定だけ通す
+        return {}
     out = {}
     for key in _THEME_KEYS:
         el = root.find(f".//a:clrScheme/a:{key}", _NS)
@@ -175,6 +178,8 @@ def _theme_colors(master) -> dict[str, str]:
 
 
 def _color_hex(el, theme: dict[str, str], clrmap: dict[str, str]) -> str | None:
+    if len(el):                                          # lumMod・tint・alpha などの変換子付きは正しい色が決められない
+        return None
     if el.tag.endswith("srgbClr"):
         return el.get("val").upper()
     if el.tag.endswith("schemeClr"):
