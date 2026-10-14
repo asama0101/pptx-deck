@@ -75,7 +75,7 @@ def cmd_check(args) -> int:
 
 
 def cmd_build(args) -> int:
-    from . import build, check, measure, preview
+    from . import build, check, lifecycle, measure, preview
     work = paths.resolve_work(args.workdir)
     name = paths.deck_name(work)
     cfg, info, palette = _load_cfg(work)
@@ -83,13 +83,20 @@ def cmd_build(args) -> int:
     if not html.exists():
         print("エラー: final.html がありません（先に finalize を実行してください）", file=sys.stderr)
         return 2
+    default_out = paths.deck_dir(work) / f"{name}.pptx"
+    out = Path(args.out).resolve() if args.out else default_out
+    if out == default_out and not args.force:
+        st = lifecycle.fingerprint_status(work, out)
+        if st == "modified":
+            print(f"エラー: {out.name} は前回のビルドのあとに変更されています。作り直すと PowerPoint での手直しが消えます。"
+                  "上書きしてよければ --force、別の名前で出すなら --out <パス> を付けてください。", file=sys.stderr)
+            return 4
     model = measure.measure(html)
     violations = check.check_model(model, info)
-    result = {"ok": False, "violations": violations, "pptx": None, "previews": [], "notes": list(info.notes)}
+    result = {"ok": False, "violations": violations, "pptx": None, "previews": [], "removed": [], "notes": list(info.notes)}
     if check.errors(violations):
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 1
-    out = paths.deck_dir(work) / f"{name}.pptx"
     footer = args.footer if args.footer is not None else cfg.get("footer")
     build.build(model, work / cfg["template"], info, palette, out, base_dir=work, footer=footer, work_name=name)
     violations += check.check_pptx(out)
@@ -100,8 +107,22 @@ def cmd_build(args) -> int:
     except Exception as e:        # PPTX は出ている。確認用の画像だけ作れなかったことを知らせる
         result["notes"].append(f"確認用の画像を作れませんでした: {e}")
     result["ok"] = not check.errors(violations)
+    if result["ok"]:
+        if out == default_out:
+            lifecycle.record_build(work, out)
+        result["removed"] = lifecycle.prune(work)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if result["ok"] else 1
+
+
+def cmd_clean(args) -> int:
+    from . import lifecycle
+    work = paths.resolve_work(args.workdir)
+    name = paths.deck_name(work)
+    target = str(paths.temp_dir(name))          # 先にパスを求める（temp_dir は作って返す）
+    lifecycle.clean_temp(name)
+    print(json.dumps({"cleaned": target}, ensure_ascii=False))
+    return 0
 
 
 def cmd_variants(args) -> int:
@@ -180,7 +201,12 @@ def main(argv: list[str]) -> int:
     p = sub.add_parser("build")
     p.add_argument("workdir")
     p.add_argument("--footer", default=None)
+    p.add_argument("--out", default=None, help="PPTX の出力先（省略すると <名前>/<名前>.pptx）")
+    p.add_argument("--force", action="store_true", help="前回のビルド後に変更された PPTX も上書きする")
     p.set_defaults(fn=cmd_build)
+    p = sub.add_parser("clean")
+    p.add_argument("workdir")
+    p.set_defaults(fn=cmd_clean)
     p = sub.add_parser("variants")
     p.add_argument("workdir")
     p.add_argument("--round", type=int, default=None)
