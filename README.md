@@ -21,6 +21,17 @@
 
 LibreOffice は使わない（不要）。
 
+## 導入
+
+プラグインとして導入する（GitHub に公開した後）:
+
+    /plugin marketplace add asama0101/pptx-deck
+    /plugin install pptx-deck@pptx-deck-market
+
+開発中にローカルで試す: `claude --plugin-dir plugins/pptx-deck`（変更は `/reload-plugins` で反映）。
+
+Playwright MCP はプラグインに含まれない。案の選択と回答の受け取りに使うので、Claude Code に別に設定する（ない場合は、回答を貼り付けて渡す）。
+
 ## 使い方
 
 入口（スキル）は 4 つ。

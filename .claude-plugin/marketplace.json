@@ -1,0 +1,12 @@
+{
+  "name": "pptx-deck-market",
+  "owner": { "name": "asama0101" },
+  "metadata": { "description": "ビジネス上の承認文書から編集可能な PPTX を作るプラグイン pptx-deck の配布用マーケットプレイス。" },
+  "plugins": [
+    {
+      "name": "pptx-deck",
+      "source": "./plugins/pptx-deck",
+      "description": "ビジネス上の承認文書をコンサルテイストで作り、PPTX を再修正・再生成できる。Windows 専用。"
+    }
+  ]
+}
