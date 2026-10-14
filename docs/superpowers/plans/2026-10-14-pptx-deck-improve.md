@@ -1376,8 +1376,10 @@ def cmd_build(args) -> int:
 def cmd_clean(args) -> int:
     from . import lifecycle
     work = paths.resolve_work(args.workdir)
-    lifecycle.clean_temp(paths.deck_name(work))
-    print(json.dumps({"cleaned": str(paths.temp_dir(paths.deck_name(work)))}, ensure_ascii=False))
+    name = paths.deck_name(work)
+    target = str(paths.temp_dir(name))          # 先にパスを求める（temp_dir は作って返す）
+    lifecycle.clean_temp(name)
+    print(json.dumps({"cleaned": target}, ensure_ascii=False))
     return 0
 ```
 
@@ -1395,7 +1397,6 @@ def cmd_clean(args) -> int:
     p.set_defaults(fn=cmd_clean)
 ```
 
-（`cmd_clean` の `temp_dir` は作って返すので、表示のあと空フォルダが残らないよう、`cmd_clean` 内で `clean_temp` を表示より後に呼ぶ。実装時は「パスを先に求め、`clean_temp`、表示」の順にする。）
 
 **実装判断（SPEC の項目 6 からの差分）:** SPEC は `%TEMP%\pptx-deck\<名前>\` を `build` 成功時に削除するとしているが、確認用の画像（`previews`）は `build` の直後に見るものなので、`build` では消さず、見終わった後に `clean` で消す。`SKILL.md` の手順に入れる（Task 13）。
 
