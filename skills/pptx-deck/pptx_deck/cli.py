@@ -2,8 +2,6 @@ import argparse
 import glob
 import json
 import os
-import shutil
-import subprocess
 import sys
 from pathlib import Path
 
@@ -39,13 +37,9 @@ def cmd_doctor(args) -> int:
         "python": {"kind": os.environ.get("PPTX_DECK_PYTHON_KIND", "unknown"), "path": sys.executable,
                    "system_missing": json.loads(os.environ.get("PPTX_DECK_SYSTEM_MISSING", "[]"))},
         "venv": str(paths.venv_dir()),
-        "libreoffice": bool(shutil.which("soffice") or os.path.exists(
-            r"C:\Program Files\LibreOffice\program\soffice.exe")),
         "font_biz_udp_gothic": _font_installed(),
     }
     warnings = []
-    if not out["libreoffice"]:
-        warnings.append("LibreOffice がありません。確認用の画像が作れません。")
     if not out["font_biz_udp_gothic"]:
         warnings.append("BIZ UDPゴシックが未導入です。計測は代替フォントで行うため、折り返しが PowerPoint とずれる場合があります。")
     out["warnings"] = warnings
@@ -81,7 +75,7 @@ def cmd_check(args) -> int:
 
 
 def cmd_build(args) -> int:
-    from . import build, check, measure, render
+    from . import build, check, measure, preview
     work = Path(args.workdir).resolve()
     name = work.name
     cfg, info, palette = _load_cfg(work)
@@ -91,7 +85,7 @@ def cmd_build(args) -> int:
         return 2
     model = measure.measure(html)
     violations = check.check_model(model, info)
-    result = {"ok": False, "violations": violations, "pptx": None, "pngs": [], "notes": list(info.notes)}
+    result = {"ok": False, "violations": violations, "pptx": None, "previews": [], "notes": list(info.notes)}
     if check.errors(violations):
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 1
@@ -102,9 +96,8 @@ def cmd_build(args) -> int:
     result["violations"] = violations
     result["pptx"] = str(out)
     try:
-        result["pngs"] = [str(p) for p in render.pptx_to_pngs(out, paths.temp_dir(name) / "render")]
-    except (RuntimeError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
-        # PPTX は出ている。確認用の画像だけ作れなかったことを知らせる（LibreOffice の失敗・タイムアウト）
+        result["previews"] = [str(p) for p in preview.screenshots(html, paths.temp_dir(name) / "preview")]
+    except Exception as e:        # PPTX は出ている。確認用の画像だけ作れなかったことを知らせる
         result["notes"].append(f"確認用の画像を作れませんでした: {e}")
     result["ok"] = not check.errors(violations)
     print(json.dumps(result, ensure_ascii=False, indent=2))
