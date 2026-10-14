@@ -37,8 +37,6 @@ LibreOffice は使わない（不要）。
 
 開発中にローカルで試す: `claude --plugin-dir plugins/pptx-deck`（変更は `/reload-plugins` で反映）。
 
-旧形式（`~/.claude/skills/pptx-deck` にリンクを張る方式）で導入していた場合は、そのリンクを外す。プラグインと同名のスキルが二重になるのを避けるため。リンク先が消えて切れていることもある。
-
 Playwright MCP はプラグインに含まれない。案の選択と回答の受け取りに使うので、Claude Code に別に設定する（ない場合は、回答を貼り付けて渡す）。
 
 ## 使い方
