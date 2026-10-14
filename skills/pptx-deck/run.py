@@ -3,6 +3,7 @@
   python run.py setup [--yes]   # 仮想環境の作成（--yes は利用者の承認後）
   python run.py <サブコマンド>   # それ以外は選んだ Python に渡す
 """
+import json
 import os
 import subprocess
 import sys
@@ -26,7 +27,8 @@ def main(argv: list[str]) -> int:
         print(f"利用者に「{paths.venv_dir()} に仮想環境と chromium（数百 MB）を導入してよいか」を確認し、"
               "承認後に `python run.py setup --yes` を実行してください。システムの Python には何も入れません。")
         return 3
-    e = {**os.environ, "PYTHONPATH": str(SKILL), "PYTHONUTF8": "1", "PPTX_DECK_PYTHON_KIND": sel.kind}
+    e = {**os.environ, "PYTHONPATH": str(SKILL), "PYTHONUTF8": "1", "PPTX_DECK_PYTHON_KIND": sel.kind,
+         "PPTX_DECK_SYSTEM_MISSING": json.dumps(sel.system_missing, ensure_ascii=False)}
     return subprocess.call([str(sel.path), "-m", "pptx_deck", *argv], env=e)
 
 

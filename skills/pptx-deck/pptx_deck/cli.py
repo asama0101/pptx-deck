@@ -36,7 +36,8 @@ def _font_installed() -> bool:
 
 def cmd_doctor(args) -> int:
     out = {
-        "python": {"kind": os.environ.get("PPTX_DECK_PYTHON_KIND", "unknown"), "path": sys.executable},
+        "python": {"kind": os.environ.get("PPTX_DECK_PYTHON_KIND", "unknown"), "path": sys.executable,
+                   "system_missing": json.loads(os.environ.get("PPTX_DECK_SYSTEM_MISSING", "[]"))},
         "venv": str(paths.venv_dir()),
         "libreoffice": bool(shutil.which("soffice") or os.path.exists(
             r"C:\Program Files\LibreOffice\program\soffice.exe")),
