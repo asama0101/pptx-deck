@@ -1,9 +1,8 @@
-node_modules/
-deck-work/
 __pycache__/
 *.log
 .venv/
-.pytest_cache/
+
+# Claude Code・superpowers の作業用フォルダ
 .superpowers/
 .claude/worktrees/
 
