@@ -86,6 +86,11 @@ def cmd_build(args) -> int:
     work = paths.resolve_work(args.workdir)
     _ensure_derived(work)
     name = paths.deck_name(work)
+    try:
+        paths.temp_dir(name)                    # 確認用の画像の置き場の名前を、書き出す前に確かめる
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
     cfg, info, palette = _load_cfg(work)
     html = work / "final.html"
     if not html.exists():
@@ -127,7 +132,11 @@ def cmd_clean(args) -> int:
     from . import lifecycle
     work = paths.resolve_work(args.workdir)
     name = paths.deck_name(work)
-    target = str(paths.temp_dir(name))          # 先にパスを求める（temp_dir は作って返す）
+    try:
+        target = str(paths.temp_dir(name))      # 先にパスを求める（temp_dir は作って返す）
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
     lifecycle.clean_temp(name)
     print(json.dumps({"cleaned": target}, ensure_ascii=False))
     return 0

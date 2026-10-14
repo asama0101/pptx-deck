@@ -88,7 +88,8 @@ def reopen(work: Path) -> dict:
     notes = list(initdir.write_derived(work, cfg))
     legacy = paths.is_legacy(work)
     if legacy:
-        notes.append("旧形式の作業フォルダです（source/ がありません）。このまま扱えますが、新しい作品は source/ に作ります。")
+        notes.append("旧形式の作業フォルダです（source/ がありません）。このまま扱えますが、新しい作品は source/ に作ります。"
+                     "source/ へ移すには、<名前>/source/ を作ってこのフォルダの中身を移してください（自動では移しません）。")
     pptx = paths.deck_dir(work) / f"{paths.deck_name(work)}.pptx"
     st = fingerprint_status(work, pptx)
     status = {"unchanged": "ok", "modified": "modified", "missing": "missing_pptx", "unrecorded": "unrecorded"}[st]

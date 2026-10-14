@@ -27,6 +27,8 @@ def venv_python() -> Path:
 
 def temp_dir(name: str) -> Path:
     """OS の一時フォルダ配下の作業場所（確認用 PNG など一過性のもの）。"""
+    if not name.strip() or name.strip() in (".", "..") or "/" in name or "\\" in name:
+        raise ValueError(f"一時フォルダの名前が不正です: {name!r}")     # clean が %TEMP%\pptx-deck 全体を消さないように
     d = Path(tempfile.gettempdir()) / "pptx-deck" / name
     d.mkdir(parents=True, exist_ok=True)
     return d

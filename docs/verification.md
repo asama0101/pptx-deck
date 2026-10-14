@@ -23,12 +23,12 @@ pptx-deck の改修（プラグイン化・レビュー流れ・LibreOffice 非�
 | 受入条件 | 確かめ方 |
 |---|---|
 | 1・2 | `tests/test_review_page.py` |
-| 3 | `skills/pptx-deck/SKILL.md` の文面を読む |
+| 3 | `plugins/pptx-deck/skills/create/SKILL.md` と `plugins/pptx-deck/references/review-flow.md` の文面を読む |
 | 4・5 | `tests/test_no_libreoffice.py`、`tests/test_template_bg.py` |
 | 6〜8 | `tests/test_e2e_sample.py`、`tests/test_reopen.py`、`tests/test_lifecycle.py` |
 | 9 | `tests/test_plan_review.py` |
 | 10 | `grep -ri libreoffice`（コードに LibreOffice への依存が残っていないこと） |
-| 11 | Task 14 で確認する |
+| 11 | `claude plugin validate plugins/pptx-deck --strict` と `claude plugin validate . --strict` が通る（確認済み）。マーケットプレイスからの導入と `${CLAUDE_PLUGIN_ROOT}` の展開は、push のあとに人が確認する（未確認） |
 | 12 | `tests/test_env_select.py` |
 | 13 | このファイル（自動テストの実行と、下記の人が見る項目） |
 

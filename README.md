@@ -9,12 +9,12 @@
 
 ## 依存関係
 
-`python run.py doctor` で、下の状態を確認できる（出力は `python`（`kind` は `system` か `venv`。`system_missing` はシステムの Python に足りないもの）・`venv`・`font_biz_udp_gothic`・`warnings`）。
+`python run.py doctor`（`run.py` はプラグインのフォルダ `plugins/pptx-deck/` にあるもの。スキルの中では `${CLAUDE_PLUGIN_ROOT}/run.py`）で、下の状態を確認できる（出力は `python`（`kind` は `system` か `venv`。`system_missing` はシステムの Python に足りないもの）・`venv`・`font_biz_udp_gothic`・`warnings`）。
 
 | 区分 | 内容 | 備考 |
 |---|---|---|
 | 必須 | Windows、Python 3.10 以上（コードが `X \| None` の型注釈を使う。動作確認は 3.14）、Claude Code | `python` が PATH にあること |
-| 必須 | システムの Python に `python-pptx`・`playwright`・`pymupdf`・`lxml`・chromium がそろっていればそれを使う。なければ `%LOCALAPPDATA%\pptx-deck\venv` に承認後に作る（`python-pptx==1.0.2`・`playwright==1.52.0`・`pymupdf==1.28.2`・`lxml>=5`、Playwright の chromium は数百 MB） | `python run.py setup --yes`。導入にはネットワークが要る。承認なしには作らない。システムの Python には何も入れない。`doctor` の `python.kind`（`system` か `venv`）で使われる方が分かる |
+| 必須 | システムの Python に `python-pptx`・`playwright`・`pymupdf`・`lxml`・chromium がそろっていればそれを使う。なければ `%LOCALAPPDATA%\pptx-deck\venv` に承認後に作る（`python-pptx==1.0.2`・`playwright==1.52.0`・`pymupdf==1.28.2`・`lxml>=5`、Playwright の chromium は数百 MB） | `python run.py setup --yes`（`run.py` は `doctor` と同じ、プラグインのフォルダのもの）。導入にはネットワークが要る。承認なしには作らない。システムの Python には何も入れない。`doctor` の `python.kind`（`system` か `venv`）で使われる方が分かる |
 | 推奨（スライド案・最終 HTML の確認） | Claude Code の Playwright MCP（`browser_navigate`・`browser_evaluate`） | プラグインには同梱しない。案の選択と「回答をコピー」の受け取りに使う。ないときは、HTML を自分で開き、コピーした回答をチャットに貼り付ける |
 | 推奨 | BIZ UDPゴシック（フォント） | 未導入だと、計測が代替フォントになり、PowerPoint と折り返しがずれることがある |
 | 最終確認 | Microsoft PowerPoint | 確認用の画像は HTML の撮影で、PPTX の実描画ではない。PowerPoint で開いて最終確認する |
