@@ -211,6 +211,52 @@ def cmd_reopen(args) -> int:
     return 4 if r["status"] == "modified" and not args.force else 0
 
 
+def cmd_review_picture(args) -> int:
+    from . import picture_plan
+    work = paths.resolve_work(args.workdir)
+    _ensure_derived(work)
+    try:
+        print(picture_plan.assemble(work, paths.deck_name(work), args.round))
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+    return 0
+
+
+def cmd_picture_status(args) -> int:
+    """絵の提案・構造の確認の回答（answers-picture-*.md）から、絵にする箇所・直す項目・未決を出す。未決と修正が 0 件なら frozen。"""
+    from . import picture_plan
+    work = paths.resolve_work(args.workdir)
+    try:
+        plan = picture_plan.load_plan(work)
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+    answers = picture_plan.merge_answers([p.read_text(encoding="utf-8") for p in picture_plan.answer_paths(work)])
+    r = picture_plan.resolve(plan, answers)
+    print(json.dumps(r, ensure_ascii=False, indent=2))
+    return 0 if r["frozen"] else 1
+
+
+def cmd_history(args) -> int:
+    from . import history
+    work = paths.resolve_work(args.workdir)
+    try:
+        if args.action == "snapshot":
+            r = history.snapshot(work, args.label or "")
+        elif args.action == "list":
+            r = history.versions(work)
+        else:
+            if args.version is None:
+                raise ValueError("restore には版の番号が要ります（history <名前> list で確かめる）")
+            r = history.restore(work, args.version, args.slide)
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+    print(json.dumps(r, ensure_ascii=False, indent=2))
+    return 0
+
+
 def cmd_lint_script(args) -> int:
     from . import script_lint
     md = Path(args.script).read_text(encoding="utf-8")
@@ -279,6 +325,20 @@ def main(argv: list[str]) -> int:
     p.add_argument("workdir")
     p.add_argument("--force", action="store_true", help="PPTX が変更されていても続ける（手直しは消える）")
     p.set_defaults(fn=cmd_reopen)
+    p = sub.add_parser("review-picture", help="絵にする箇所の提案と、読み取った構造の確認ページ（source/picture-plan.json から picture-review.html）")
+    p.add_argument("workdir")
+    p.add_argument("--round", type=int, default=None)
+    p.set_defaults(fn=cmd_review_picture)
+    p = sub.add_parser("picture-status", help="提案・構造の確認の回答（answers-picture-*.md）から、絵にする箇所・直す項目・未決を出す（終了コード 0＝凍結してよい）")
+    p.add_argument("workdir")
+    p.set_defaults(fn=cmd_picture_status)
+    p = sub.add_parser("history", help="絵の往復の履歴（直す前の slides/*.html を残す・戻す）")
+    p.add_argument("workdir")
+    p.add_argument("action", choices=["snapshot", "list", "restore"])
+    p.add_argument("version", nargs="?", type=int, default=None, help="restore する版の番号")
+    p.add_argument("--label", default=None, help="snapshot の名前（例: 構図を変える前）")
+    p.add_argument("--slide", default=None, help="restore で戻すスライドの番号（例: 02）。省略すると全部")
+    p.set_defaults(fn=cmd_history)
     p = sub.add_parser("lint-script")
     p.add_argument("script")
     p.set_defaults(fn=cmd_lint_script)

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from . import paths
 
-DERIVED_FILES = ("variants.html", "final-review.html", "plan-review.html", "final.html",
+DERIVED_FILES = ("variants.html", "final-review.html", "plan-review.html", "picture-review.html", "final.html",
                  "theme.css", "base.css", "chart-preview.js")
 DERIVED_DIRS = ("icons",)
 
