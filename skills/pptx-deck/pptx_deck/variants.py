@@ -70,6 +70,11 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .copybox{width:100%;height:90px;font:12px/1.4 Consolas,monospace}
 .rv .state{color:var(--ok);font-weight:700;font-size:13px}
 @media (max-width:820px){.rv .body{grid-template-columns:1fr}.rv nav{position:static;max-height:220px}.rv .opt,.rv .dopt{width:min(100%,300px)}}
+.rv .doc{background:#fff;color:#1a1a1a;padding:18px 22px;border:1px solid var(--line);font-size:14px;line-height:1.7;max-height:68vh;overflow:auto}
+.rv .doc h3{font-size:17px;margin:4px 0 8px}.rv .doc h4{font-size:14px;margin:14px 0 4px;color:#33496B}
+.rv .doc p{margin:2px 0}.rv .doc ul{margin:2px 0 2px 18px;list-style:disc}.rv .doc li{margin:1px 0}
+.rv .doc table{border-collapse:collapse;margin:6px 0;width:100%}.rv .doc th,.rv .doc td{border:1px solid #c9d2e0;padding:4px 8px;text-align:left;vertical-align:top}.rv .doc th{background:#eef2f8;white-space:nowrap}
+.rv .cols[hidden]{display:none}
 </style>"""
 
 _SCRIPT = r"""<script>
@@ -137,6 +142,7 @@ _SCRIPT = r"""<script>
   function dsel(p, k) { var r = $('.dgroup[data-k="' + k + '"] input[type=radio]:checked', p); return r ? +r.value : 1; }
   function showBig(p, k, d) {
     p.dataset.view = k;
+    if (p.dataset.doc === '1') { fit(); return; }
     d = d || dsel(p, k);
     $$('.opt', p).forEach(function (o) { o.classList.toggle('view', o.dataset.k === k); });
     $$('.dgroup', p).forEach(function (g) { g.hidden = g.dataset.k !== k; });      // 選んだ型のデザイン（1〜3）だけを出す
@@ -366,7 +372,8 @@ def _read(path: Path) -> str:
 def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final: bool = False,
           prev: dict[str, dict] | None = None, notes: dict[str, str] | None = None,
           designs: dict[str, dict[str, dict[int, str]]] | None = None,
-          preset: dict | None = None) -> str:
+          preset: dict | None = None,
+          docs: dict[str, str] | None = None, titles: dict[str, str] | None = None) -> str:
     esc = _html.escape
     prev, notes, designs = prev or {}, notes or {}, designs or {}
     title = "最終 HTML の確認" if final else "スライド案の選択"
@@ -375,16 +382,22 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
     else:
         lead = (f"ラウンド {round_label}。左の一覧から 1 枚ずつ見ます。案を選び（サムネを押すと大きく見えます）、"
                 "直したい点があればコメントに書いて、最後に判断欄の右端の「回答をコピー」を押してください。")
+    if docs is not None:
+        title = "設計図と原稿の確認"
+        lead = ("承認する前に、資料全体と、スライドごとの設計と原稿を確認します。1 枚ずつ見て「承認」か「要修正」を選び、"
+                "直したい点があればコメントに書いて、最後に判断欄の右端の「回答をコピー」を押してください。")
     nav, panes = [], []
     for nn, opts in frags.items():
         letters = sorted(opts)
-        t = _title_of(opts[letters[0]])
+        t = (titles or {}).get(nn) or _title_of(opts[letters[0]])
         nav.append(f'<button data-go="{nn}"><span class="st"></span><span>S{nn}<small>{esc(t)}</small></span></button>')
-        single = final or len(letters) == 1
-        p = [f'<section class="pane" data-slide="{nn}" data-single="{1 if single else 0}" hidden>',
-             f'<div class="top"><h2>S{nn}　{esc(t)}</h2></div>',
-             '<div class="big"><div class="thumb"><div class="stage"></div></div></div>',
-             '<div class="cols">']
+        single = final or len(letters) == 1 or docs is not None
+        doc_attr = ' data-doc="1"' if docs is not None else ""
+        p = [f'<section class="pane" data-slide="{nn}" data-single="{1 if single else 0}"{doc_attr} hidden>',
+             f'<div class="top"><h2>{"S" + nn if nn != "00" else ""}　{esc(t)}</h2></div>',
+             (f'<div class="doc">{docs[nn]}</div>' if docs is not None
+              else '<div class="big"><div class="thumb"><div class="stage"></div></div></div>'),
+             '<div class="cols"' + (' hidden' if docs is not None else '') + '>']
         pc = (prev.get(nn) or {}).get("comment", "")
         fx = notes.get(nn, "")
         if pc:

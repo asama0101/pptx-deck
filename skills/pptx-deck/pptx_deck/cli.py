@@ -173,6 +173,18 @@ def cmd_review_final(args) -> int:
     return 0
 
 
+def cmd_review_plan(args) -> int:
+    from . import plan_review
+    work = paths.resolve_work(args.workdir)
+    _ensure_derived(work)
+    for need in ("design.md", "script.md"):
+        if not (work / need).exists():
+            print(f"エラー: {work / need} がありません", file=sys.stderr)
+            return 2
+    print(plan_review.assemble(work, round_no=args.round))
+    return 0
+
+
 def cmd_reopen(args) -> int:
     from . import lifecycle
     work = paths.resolve_work(args.workdir)
@@ -244,6 +256,10 @@ def main(argv: list[str]) -> int:
     p.add_argument("--answers", action="append", default=None, help="finalize と同じ回答の Markdown（回ごとに複数回指定できる）")
     p.add_argument("--allow-comments", action="store_true")
     p.set_defaults(fn=cmd_review_final)
+    p = sub.add_parser("review-plan")
+    p.add_argument("workdir")
+    p.add_argument("--round", type=int, default=None)
+    p.set_defaults(fn=cmd_review_plan)
     p = sub.add_parser("reopen")
     p.add_argument("workdir")
     p.add_argument("--force", action="store_true", help="PPTX が変更されていても続ける（手直しは消える）")
