@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tests import _paths  # noqa: F401
+from tests import _paths
 from pptx_deck import cli, paths, picture_plan as pp
 
 PLAN = {
@@ -137,6 +137,49 @@ class PlanFileTest(unittest.TestCase):
         self.assertNotIn("P3-1", a["P3"]["items"])                 # 「しない」の提案は、項目を聞かない
         r = pp.resolve(PLAN, pp.merge_answers([md]))
         self.assertEqual([f["id"] for f in r["fixes"]], ["P1-2"])
+
+
+class SampleFlowTest(unittest.TestCase):
+    """見本の素材（assets/sample/picture/）から、提案・構造の確認 → 凍結 → 描く → PPTX まで通す。"""
+    SAMPLE = _paths.PKG / "assets" / "sample" / "picture"
+    PICTURES = _paths.PKG / "assets" / "components" / "pictures"
+
+    def test_sample_inputs_exist(self):
+        for n in ("incident-report.md", "self-intro-hearing.md", "network-memo.md", "picture-plan.example.json"):
+            self.assertTrue((self.SAMPLE / n).is_file(), n)
+
+    def test_from_the_sample_plan_to_a_pptx(self):
+        with tempfile.TemporaryDirectory() as td:
+            base = Path(td) / "demo"
+            self.assertEqual(run("init", str(base), "--color", "navy")[0], 0)
+            work = paths.resolve_work(base)
+            (work / "picture-plan.json").write_text((self.SAMPLE / "picture-plan.example.json").read_text(encoding="utf-8"), encoding="utf-8")
+            self.assertEqual(run("review-picture", str(base))[0], 0)
+            # 1 回目: P1 は「する」で、1 項目だけ修正。P2 は「しない」
+            md1 = ("---\npicture-plan: demo\nround: 1\n---\n"
+                   "## P1\n- 提案: する\n- 項目 P1-1: OK\n- 項目 P1-2: 修正｜4 番目は「応答なしのエラー」と書く\n- 項目 P1-3: OK\n- 項目 P1-4: OK\n- コメント: \n"
+                   "## P2\n- 提案: しない\n- コメント: \n")
+            (work / "answers-picture-1.md").write_text(md1, encoding="utf-8")
+            rc, out, _ = run("picture-status", str(base))
+            self.assertEqual(rc, 1)
+            self.assertEqual([f["id"] for f in json.loads(out)["fixes"]], ["P1-2"])
+            # 2 回目: 直して OK。P2 を「する」に変える（後の回答が前を上書きする）
+            md2 = ("---\npicture-plan: demo\nround: 2\n---\n## P1\n- 提案: する\n- 項目 P1-2: OK\n- コメント: \n"
+                   "## P2\n- 提案: する\n" + "".join(f"- 項目 P2-{i}: OK\n" for i in (1, 2, 3, 4)) + "- コメント: \n")
+            (work / "answers-picture-2.md").write_text(md2, encoding="utf-8")
+            rc, out, _ = run("picture-status", str(base))
+            r = json.loads(out)
+            self.assertEqual((rc, r["draw"], r["frozen"]), (0, ["P1", "P2"], True), out)
+            # 凍結した構造を描く（見本をそのまま使う）→ 下書きの確認 → 最終 → PPTX
+            for nn, n in (("01", "failure"), ("02", "traffic-flow")):
+                (work / "slides" / f"{nn}-A.html").write_text((self.PICTURES / f"{n}.html").read_text(encoding="utf-8"), encoding="utf-8")
+            self.assertEqual(run("draft", str(base))[0], 0)
+            (work / "answers-1.md").write_text("---\n---\n## S01\n- 選択: A\n## S02\n- 選択: A\n", encoding="utf-8")
+            self.assertEqual(run("finalize", str(base))[0], 0)
+            rc, out, err = run("build", str(base))
+            self.assertEqual(rc, 0, out + err)
+            self.assertEqual(json.loads(out)["violations"], [])
+            self.assertTrue((base / "demo.pptx").exists())
 
 
 if __name__ == "__main__":

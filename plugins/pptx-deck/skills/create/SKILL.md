@@ -69,6 +69,7 @@ compatibility: Windows 専用。Python 3.10 以上と Claude Code。システム
 
 - `layout`（`cover|section|agenda|content|diagram|table|chart|closing`）、`題`（本文スライドのみ。20 字以内の名詞句）、`見出し`（**2.2 の規則に従うリード文**）、`章名`（そのスライドが答える問い）、`本文`、`図表`（型と選んだ理由を 1 行）、必要なときだけ `出典`、判断が要るスライドは `判断の枠`（決めること・期限・推奨）。
 - 1 スライド 1 メッセージ。結論 → 根拠の順。出典は必要なときだけ書く（既定では書かない）。スピーカーノートは作らない。
+- 既存の型に合わない図（NW 構成図・トラフィックフロー・障害動作・自己紹介・画面への注釈など）は、`図表` に `絵/<種類>` と理由を書く。絵にする箇所があるときは、承認①の前に `diagram` の 4 章（`${CLAUDE_PLUGIN_ROOT}/skills/diagram/SKILL.md`。`picture-plan.json`・`review-picture`）で、絵にする提案と読み取った構造を HTML で確認する（利用者が「図にして」と頼んだ箇所は提案を省き、構造だけ確認する）。
 - 書いたら `python "${CLAUDE_PLUGIN_ROOT}/run.py" lint-script "<名前>/source/script.md"`。問題は全件出る。空になり、5.1 のヘッド・論理の確認を済ませてから、`python "${CLAUDE_PLUGIN_ROOT}/run.py" review-plan "<名前>"` で `plan-review.html` を作り、Playwright MCP の `browser_navigate` で開いて、「資料全体とスライドごとの設計・原稿を見て、『承認』か『要修正』を選び、『回答をコピー』を押してください」と伝える。待ち方と回答の保存は 3 章の手順 4・5 と同じ（保存先は `<名前>/source/answers-plan-N.md`）。要修正があれば、コメントに沿って設計図と原稿を直し、`review-plan` を出し直す（前回承認したスライドは選択済みで開く）。承認後は、承認なしに内容を変えない。
 - `lint-script` が検査する範囲と、人が見る範囲（完全文・体言止め・数え上げ・行数・逆テスト・縦読み・論点の回収・証拠対応）は [references/head-rules.md](${CLAUDE_PLUGIN_ROOT}/references/head-rules.md) の表にある。
 
@@ -91,7 +92,7 @@ compatibility: Windows 専用。Python 3.10 以上と Claude Code。システム
 
 - 本文の部品に共通の構成: 題（`data-role="title"`。20 字以内の名詞句）→ リード文の帯（`data-role="lead"`。判断を言い切る 30〜60 字）→ 図表タイトル → 図表本体 → 注（`caption`）。箱・行・棒のすべてに定量を 1 つ以上書き、本文領域の下端（y 640）まで使う。
 - **判断を求める型**（`decision`・`summary`・`decisions`・`argument`・`options`・`raci`・`actions`・`gantt`）は最下部に論点ボックス（「論点　〜の可否」1 行）を置く。**情報の型**は論点ボックスを置かず、注の末尾を「→ 含意」の 1 文で締める。
-- 内容に合う型がなければ、断片の部品で組む。新しい型やデザインを作ったら、`${CLAUDE_PLUGIN_ROOT}/assets/components/` に足し、`components.md`・`patterns.md` にも加え、`check` で違反が 0 件になることを確かめる。
+- 内容に合う型がなければ、`diagram`（`${CLAUDE_PLUGIN_ROOT}/skills/diagram/SKILL.md`）の手順で、SVG の絵（`pp-picture`）にする。見本は `${CLAUDE_PLUGIN_ROOT}/assets/components/pictures/`、作法は [references/picture-craft.md](${CLAUDE_PLUGIN_ROOT}/references/picture-craft.md)。絵のページの案・承認は create の流れ（②③）に従い、追加の承認は出さない。絵の中身は PowerPoint で直せない（描き直す）。新しい型やデザインを作ったら、`${CLAUDE_PLUGIN_ROOT}/assets/components/` に足し、`components.md`・`patterns.md` にも加え、`check` で違反が 0 件になることを確かめる。
 
 ## 4. HTML の書き方
 

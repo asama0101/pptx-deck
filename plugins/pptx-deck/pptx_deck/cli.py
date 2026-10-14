@@ -211,6 +211,28 @@ def cmd_reopen(args) -> int:
     return 4 if r["status"] == "modified" and not args.force else 0
 
 
+def cmd_draft(args) -> int:
+    """slides/ の断片を束ねて、確認用の画像と検査の結果を返す（絵の往復で、直すたびに使う）。PPTX は出さない。"""
+    from . import check, draft, measure, preview
+    work = paths.resolve_work(args.workdir)
+    _ensure_derived(work)
+    name = paths.deck_name(work)
+    try:
+        out_dir = paths.temp_dir(name) / "draft"
+        html, nns = draft.assemble(work, pick=args.pick, slides=args.slide)
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+    _, info, _ = _load_cfg(work)
+    violations = check.check_model(measure.measure(html), info)
+    for old in out_dir.glob("slide-*.png"):
+        old.unlink()
+    previews = [str(p) for p in preview.screenshots(html, out_dir)]
+    print(json.dumps({"ok": not check.errors(violations), "slides": nns, "previews": previews, "violations": violations},
+                     ensure_ascii=False, indent=2))
+    return 0 if not check.errors(violations) else 1
+
+
 def cmd_review_picture(args) -> int:
     from . import picture_plan
     work = paths.resolve_work(args.workdir)
@@ -325,6 +347,11 @@ def main(argv: list[str]) -> int:
     p.add_argument("workdir")
     p.add_argument("--force", action="store_true", help="PPTX が変更されていても続ける（手直しは消える）")
     p.set_defaults(fn=cmd_reopen)
+    p = sub.add_parser("draft", help="slides/ の断片を束ねて、確認用の画像と検査の結果を返す（絵の往復用。PPTX は出さない）")
+    p.add_argument("workdir")
+    p.add_argument("--pick", default="A", help="各スライドで使う案（A/B/C。なければ最初の案）")
+    p.add_argument("--slide", action="append", default=None, help="このスライドだけ（例: 02。複数指定できる）")
+    p.set_defaults(fn=cmd_draft)
     p = sub.add_parser("review-picture", help="絵にする箇所の提案と、読み取った構造の確認ページ（source/picture-plan.json から picture-review.html）")
     p.add_argument("workdir")
     p.add_argument("--round", type=int, default=None)

@@ -125,6 +125,65 @@ class PictureSamplesTest(unittest.TestCase):
             self.assertEqual(al, 255)
 
 
+class UniqueIdsTest(unittest.TestCase):
+    def test_uniquify_prefixes_ids_and_references_inside_pictures_only(self):
+        from pptx_deck import svgids
+        frag = ('<div class="pp-picture" data-alt="x"><svg><defs><marker id="m-acc"/><symbol id="i-server"/><symbol id="i-server2"/></defs>'
+                '<use href="#i-server"/><use href="#i-server2"/><path marker-end="url(#m-acc)"/></svg></div><div id="m-acc"></div>')
+        out = svgids.uniquify(frag, "s01a1-")
+        self.assertIn('<marker id="s01a1-m-acc"/>', out)
+        self.assertIn('<use href="#s01a1-i-server"/>', out)
+        self.assertIn('<use href="#s01a1-i-server2"/>', out)            # i-server と i-server2 を取り違えない
+        self.assertIn('marker-end="url(#s01a1-m-acc)"', out)
+        self.assertTrue(out.endswith('<div id="m-acc"></div>'))            # 絵の外は変えない
+        self.assertEqual(svgids.uniquify("<p>絵なし</p>", "p-"), "<p>絵なし</p>")
+
+    def test_a_later_picture_keeps_its_icons_and_arrowheads(self):
+        """同じ id の定義を持つ絵が前にあっても、あとの絵のアイコン・矢じりが消えない（絵だけを撮った PNG が、単独で作ったものと同じ）。"""
+        from PIL import Image, ImageChops
+        from pptx import Presentation
+        import io as _io
+
+        def picture_png(names):
+            with tempfile.TemporaryDirectory() as td:
+                base = Path(td) / "demo"
+                self.assertEqual(run("init", str(base), "--color", "navy")[0], 0)
+                work = paths.resolve_work(base)
+                ans = "---\n---\n"
+                for i, n in enumerate(names, 1):
+                    (work / "slides" / f"{i:02d}-A.html").write_text((PICTURES / f"{n}.html").read_text(encoding="utf-8"), encoding="utf-8")
+                    ans += f"## S{i:02d}\n- 選択: A\n"
+                (work / "answers-1.md").write_text(ans, encoding="utf-8")
+                self.assertEqual(run("finalize", str(base))[0], 0)
+                rc, out, err = run("build", str(base))
+                self.assertEqual(rc, 0, out + err)
+                last = list(Presentation(str(base / "demo.pptx")).slides)[-1]
+                pic = [s for s in last.shapes if s.name == "pp-picture"][0]
+                return Image.open(_io.BytesIO(pic.image.blob)).convert("RGBA")
+
+        alone = picture_png(["network"])
+        after = picture_png(["traffic-flow", "network"])
+        self.assertEqual(alone.size, after.size)
+        diff = ImageChops.difference(alone, after).convert("L").point(lambda v: 255 if v > 40 else 0)     # 破線の端のアンチエイリアスの揺れは許す
+        changed = diff.histogram()[255]
+        self.assertLess(changed / (alone.size[0] * alone.size[1]), 0.002,
+                        "2 枚目の絵が、単独で作ったものと違います（アイコン・矢じりが消えている）")
+
+
+class SingleOptionFlowTest(unittest.TestCase):
+    def test_finalize_works_with_a_choice_only_answer_and_leaves_the_approval_to_the_final_review(self):
+        """案が 1 つのとき、answers-1.md に「選択: A」だけを書いて finalize できる（判定は書かない。承認は最終確認で受ける）。"""
+        with tempfile.TemporaryDirectory() as td:
+            base = Path(td) / "demo"
+            self.assertEqual(run("init", str(base), "--color", "navy")[0], 0)
+            work = paths.resolve_work(base)
+            (work / "slides" / "01-A.html").write_text(SAMPLE.read_text(encoding="utf-8"), encoding="utf-8")
+            (work / "answers-1.md").write_text("---\n---\n## S01\n- 選択: A\n", encoding="utf-8")
+            self.assertEqual(run("finalize", str(base))[0], 0)
+            self.assertTrue((work / "final-review.html").exists())
+            self.assertEqual(run("build", str(base))[0], 0)
+
+
 class PictureCheckTest(unittest.TestCase):
     def check(self, mutate):
         frag = mutate(SAMPLE.read_text(encoding="utf-8"))

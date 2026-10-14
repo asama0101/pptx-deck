@@ -4,7 +4,7 @@ SKILL.md の 4 章の細則。断片（`source/slides/NN-X.html`）を書く前�
 
 ## HTML の書き方
 
-- 1 枚 = `<section class="slide" data-layout="…">`（1280×720px）。部品は `pp-text`・`pp-shape`・`pp-line`・`pp-image`・`pp-table`・`pp-chart` だけ。**これ以外のクラスの文字や図は PPTX に出ない**。
+- 1 枚 = `<section class="slide" data-layout="…">`（1280×720px）。部品は `pp-text`・`pp-shape`・`pp-line`・`pp-image`・`pp-table`・`pp-chart`・`pp-picture` だけ。**これ以外のクラスの文字や図は PPTX に出ない**。
 - 見てほしい要素（題・強調・差し替える所など、2〜4 点）には `data-note="題：結論の一文"` を付ける。レビューページが枠と番号で示す。同じ文を付けた要素は 1 つの見どころとして、枠でまとまる。PPTX には影響しない。型庫（`assets/components/`）の断片には付けてある。差し替えるときは、文が内容に合うかを見直す。
 - 位置は `style="left;top;width;height"`（px）。文字には必ず幅を付ける。面と文字は兄弟要素にし、文字の中心を含む面が背景色になる。
 - 文字: `data-role` = `title|lead|body|caption|display`。`title` は題（名詞句 20 字以内）、`lead` はリード文の帯の中の文（判断を言い切る 30〜60 字。図表タイトルは `body` で書く）。表紙・裏表紙の題と副題は `data-ph="title|subtitle"`（位置はテンプレート）。箇条書きは `<div class="pp-text"><ul><li>`。
@@ -13,6 +13,7 @@ SKILL.md の 4 章の細則。断片（`source/slides/NN-X.html`）を書く前�
 - 視線誘導: 読む順は **Z の法則**（左上 → 右上 → 左下へ斜め → 右下）に従い、始点（題・結論）を左上、終点（承認を求める対象・結論）を右下まで届かせる。文の寄せ方は変えない（文は左寄せ。右寄せは数字の列だけ）。使える場面では次の 3 つも使う。**矢印効果**（矢印で読む順・因果を示す。循環は輪と矢印で回して見せ、直線の矢印だけにしない。矢印は矢じり付きで、手順・因果の図には必ず入れる）、**孤立効果**（目立たせたい 1 点だけ色・大きさを変える。強調色は 1 点）、**類同の法則**（同じ種類の要素は形・色・大きさをそろえ、違う種類は変える）。
 - 画像はアイコン（`icons/<名前>-<accent|emphasis|white|gray>.svg`、`alt` と `data-role="icon"` が必須。写真は `data-role="photo"`、ロゴは `data-role="logo"`）と利用者の写真だけ。`data-role` がない画像は本文の画像として `bodyImage` で止まる。
 - 重ねる図（ベン図など）は、重なる要素の両方に `data-overlap`。
+- 絵（`pp-picture`）: 型に当てはまらない図（NW 構成図・トラフィックフロー・障害動作・自己紹介・画面への注釈）は、`<div class="pp-picture" data-alt="…" style="left;top;width;height"><svg viewBox="0 0 幅 高さ">…</svg></div>` と書く。`build` が絵の範囲だけを透過・3 倍の PNG にして、1 枚の画像として貼る（**絵の中身は PowerPoint で直せない**。題・リード文・図表タイトル・注は編集できる文字）。`data-alt`（絵の内容 1〜2 文）は必須。絵の中の色は `sv-f-*`（塗り）・`sv-s-*`（線）のクラスか `var(--…)` だけ（リテラルは警告）、文字は 14pt（約 19px）以上、強調色は 1 枚に 1 点。絵の内部の重なりは検査されない（文字どうしの重なりは警告）。絵全体とほかの部品の重なり・本文領域外は検査される。書き方・部品・図の種類ごとの作法は [picture-craft.md](picture-craft.md)。
 - グラフ: `data-chart='{"type":"bar|barh|line|pie|stacked|stacked100|waterfall","categories":[…],"series":[{"name":"…","values":[…]}],"highlight":番号,"fmt":"#,##0","totals":[…],"axis":{"min":0,"max":600,"major":150}}'`。`axis`（任意）は値の軸の最小・最大・目盛の間隔を固定する。省くと自動。小グラフを並べるときは、全パネルに同じ `axis` を書く。ブラウザのプレビューは近似で、実際は PowerPoint のグラフになる。
 
 ## 配色の 3 役

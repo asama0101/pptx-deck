@@ -7,7 +7,7 @@ import json
 import re
 from pathlib import Path
 
-from . import paths
+from . import paths, svgids
 
 FRAG = re.compile(r"^(\d{2})-([A-Z])(?:-d([23]))?\.html$")      # NN-A.html（デザイン 1）・NN-A-d2.html・NN-A-d3.html（同じ型のデザイン 2・3）
 HEAD = ('<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>{title}</title>'
@@ -322,7 +322,10 @@ def collect_designs(work: Path) -> dict[str, dict[str, dict[int, str]]]:
     for f in sorted(d.iterdir()):
         m = FRAG.match(f.name)
         if m:
-            out.setdefault(m.group(1), {}).setdefault(m.group(2), {})[int(m.group(3) or 1)] = f.read_text(encoding="utf-8")
+            dn = int(m.group(3) or 1)
+            # 絵（pp-picture）の SVG の id は、案ごとに一意にする（複数の絵で同じ id の定義が前の絵に引かれて、アイコンや矢じりが消えるのを防ぐ）
+            text = svgids.uniquify(f.read_text(encoding="utf-8"), f"s{m.group(1)}{m.group(2).lower()}{dn}-")
+            out.setdefault(m.group(1), {}).setdefault(m.group(2), {})[dn] = text
     if not out:
         raise ValueError(f"{d} に NN-A.html の形のファイルがありません")
     for nn, opts in out.items():
