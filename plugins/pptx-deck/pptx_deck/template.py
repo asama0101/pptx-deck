@@ -5,12 +5,12 @@ import zipfile
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
+from lxml import etree
 from pptx import Presentation
 from pptx.enum.shapes import PP_PLACEHOLDER as T
+from pptx.opc.constants import RELATIONSHIP_TYPE as RT
 
-from . import paths
-from .pptxutil import PX, SLIDE_H_EMU, SLIDE_W_EMU, clone_footer_placeholders, drop_all_slides
-from .render import pptx_to_pngs
+from .pptxutil import PX, SLIDE_H_EMU, SLIDE_W_EMU
 
 _COVER = re.compile(r"(title slide|(?<!裏)表紙|cover|タイトル ?スライド)", re.I)
 _CLOSING = re.compile(r"(裏表紙|closing|\bend\b|thank|結び)", re.I)
@@ -154,46 +154,82 @@ def analyze(path) -> TemplateInfo:
         keepout=keepout, notes=tuple(notes))
 
 
-def render_underlays(path, info: TemplateInfo, out_dir: Path, footer: str | None = None) -> str:
-    """表紙・本文・裏表紙の下地（背景・ロゴ・ヘッダー・フッター）を画像にする。本文の下地色を返す。"""
-    out_dir = Path(out_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
+_NS = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main",
+       "p": "http://schemas.openxmlformats.org/presentationml/2006/main"}
+_THEME_KEYS = ("dk1", "lt1", "dk2", "lt2", "accent1", "accent2", "accent3", "accent4", "accent5", "accent6", "hlink", "folHlink")
+
+
+def _theme_colors(master) -> dict[str, str]:
+    """テーマの色（dk1・lt1・accent1…）→ 6 桁の 16 進。"""
+    try:
+        root = etree.fromstring(master.part.part_related_by(RT.THEME).blob)
+    except KeyError:                                     # テーマ part がない。srgbClr の直接指定だけ通す
+        return {}
+    out = {}
+    for key in _THEME_KEYS:
+        el = root.find(f".//a:clrScheme/a:{key}", _NS)
+        if el is None or len(el) == 0:
+            continue
+        c = el[0]
+        val = c.get("val") if c.tag.endswith("srgbClr") else c.get("lastClr")
+        if val:
+            out[key] = val.upper()
+    return out
+
+
+def _color_hex(el, theme: dict[str, str], clrmap: dict[str, str]) -> str | None:
+    if len(el):                                          # lumMod・tint・alpha などの変換子付きは正しい色が決められない
+        return None
+    if el.tag.endswith("srgbClr"):
+        return el.get("val").upper()
+    if el.tag.endswith("schemeClr"):
+        key = el.get("val")
+        return theme.get(clrmap.get(key, key))
+    if el.tag.endswith("sysClr"):
+        return (el.get("lastClr") or "FFFFFF").upper()
+    return None
+
+
+def layout_bg_hex(prs, layout_index: int) -> str | None:
+    """レイアウト（なければマスター）の背景が単色なら '#RRGGBB'。画像・グラデーション・取れないときは None。"""
+    layout = prs.slide_layouts[layout_index]
+    master = layout.slide_master
+    theme = _theme_colors(master)
+    cm = master._element.find("p:clrMap", _NS)
+    clrmap = dict(cm.attrib) if cm is not None else {}
+    ovr = layout._element.find("p:clrMapOvr/a:overrideClrMapping", _NS)
+    if ovr is not None:                                  # レイアウトの色の対応づけがマスターより優先（masterClrMapping ならマスターのまま）
+        clrmap = dict(ovr.attrib)
+    for part in (layout._element, master._element):
+        bg = part.find("p:cSld/p:bg", _NS)
+        if bg is None:
+            continue
+        solid = bg.find("p:bgPr/a:solidFill", _NS)
+        if solid is not None and len(solid):
+            h = _color_hex(solid[0], theme, clrmap)
+            return f"#{h}" if h else None
+        ref = bg.find("p:bgRef", _NS)
+        if ref is not None:                              # テーマの背景スタイルの参照
+            if ref.get("idx") != "1001" or not len(ref):  # 1001 はテーマの 1 番目の塗り（通常は単色）。1002 以上は単色と言い切れない
+                return None
+            h = _color_hex(ref[0], theme, clrmap)
+            return f"#{h}" if h else None
+        return None                                      # 画像・グラデーションなど
+    return None
+
+
+def background_colors(path, info: TemplateInfo) -> tuple[dict[str, str], list[str]]:
+    """表紙・本文・裏表紙の背景色（HTML の下地）。単色でないレイアウトは白で近似し、notes に理由を返す。"""
     prs = open_template(path)
-    drop_all_slides(prs)
-    order = [("cover", info.cover), ("body", info.body)]
-    if info.closing is not None:
-        order.append(("closing", info.closing))
-    for _, idx in order:
-        layout = prs.slide_layouts[idx]
-        # PPTX にはレイアウトのフッター（コピーライト）・ページ番号が出るので、プレビューの下地にも写す
-        clone_footer_placeholders(prs.slides.add_slide(layout), layout, footer)
-    work = paths.temp_dir("underlay")
-    src = work / "underlay.pptx"
-    prs.save(str(src))
-    pngs = pptx_to_pngs(src, work / "png", stem="u")
-    for (name, _), png in zip(order, pngs):
-        (out_dir / f"bg-{name}.png").write_bytes(png.read_bytes())
-    if info.closing is None:
-        (out_dir / "bg-closing.png").write_bytes((out_dir / "bg-body.png").read_bytes())
-    return underlay_colors(out_dir, info)["body"]
-
-
-def _sample(png: Path, rect: Rect) -> str:
-    import fitz
-
-    pix = fitz.Pixmap(str(png))
-    px = min(int(rect.x) + 8, pix.width - 1)
-    py = min(int(rect.y) + 8, pix.height - 1)
-    r, g, b = pix.pixel(px, py)[:3]
-    return "#%02X%02X%02X" % (r, g, b)
-
-
-def underlay_colors(out_dir: Path, info: TemplateInfo) -> dict[str, str]:
-    """各レイアウトの下地色。文字を置く位置（本文の領域・表紙と裏表紙の題）の 1 点で測る。"""
-    out_dir = Path(out_dir)
-    return {"cover": _sample(out_dir / "bg-cover.png", info.cover_title),
-            "body": _sample(out_dir / "bg-body.png", info.area),
-            "closing": _sample(out_dir / "bg-closing.png", info.closing_title)}
+    idx = {"cover": info.cover, "body": info.body, "closing": info.closing if info.closing is not None else info.body}
+    out, notes = {}, []
+    for name, i in idx.items():
+        h = layout_bg_hex(prs, i)
+        if h is None:
+            h = "#FFFFFF"
+            notes.append(f"{name} の背景が単色ではないため、HTML の下地は白で近似しました（PPTX にはテンプレートの背景が出ます）。")
+        out[name] = h
+    return out, notes
 
 
 def layout_css(info: TemplateInfo, bg_hex: str, layout_bg: dict[str, str] | None = None) -> str:
@@ -208,8 +244,4 @@ def layout_css(info: TemplateInfo, bg_hex: str, layout_bg: dict[str, str] | None
     for name in ("cover", "closing"):       # 表紙・裏表紙の下地が本文と違う色でも、文字色の検査が合うようにする
         if layout_bg and layout_bg.get(name) and layout_bg[name] != bg_hex:
             root += f'.slide[data-layout="{name}"] {{ --bg: {layout_bg[name]}; }}\n'
-    root += (".slide[data-layout=\"cover\"] { background-image: url(_template/bg-cover.png); }\n"
-             ".slide[data-layout=\"closing\"] { background-image: url(_template/bg-closing.png); }\n"
-             ".slide:not([data-layout=\"cover\"]):not([data-layout=\"closing\"]) "
-             "{ background-image: url(_template/bg-body.png); }\n")
     return root

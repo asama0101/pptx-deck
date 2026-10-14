@@ -7,14 +7,16 @@ import json
 import re
 from pathlib import Path
 
+from . import paths
+
 FRAG = re.compile(r"^(\d{2})-([A-Z])(?:-d([23]))?\.html$")      # NN-A.html（デザイン 1）・NN-A-d2.html・NN-A-d3.html（同じ型のデザイン 2・3）
 HEAD = ('<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>{title}</title>'
         '<link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="base.css">'
         '<script src="chart-preview.js" defer></script>{extra}</head><body>')
 
 _STYLE = r"""<style>
-:root{--bg:#14263E;--panel:#1B3250;--line:#33496B;--fg:#EAF0F8;--sub:#AEBBD0;--ok:#6FC3A0;--cm:#F0A060;--co:#E83E8C;--sel:#25406A}
-body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;padding:0;background:var(--bg);color:var(--fg);font-size:15px;line-height:1.6}
+:root{--rv-bg:#14263E;--panel:#1B3250;--rv-line:#33496B;--fg:#EAF0F8;--sub:#AEBBD0;--ok:#6FC3A0;--cm:#F0A060;--co:#E83E8C;--sel:#25406A}
+body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;padding:0;background:var(--rv-bg);color:var(--fg);font-size:15px;line-height:1.6}
 .rv, .rv *{box-sizing:border-box}
 .rv h1,.rv h2,.rv h3,.rv p,.rv ol,.rv ul{margin:0;padding:0}.rv ol,.rv ul{list-style:none}
 .rv{max-width:1280px;margin:0 auto;padding:20px 16px 40px;display:flex;flex-direction:column;gap:16px}
@@ -33,7 +35,7 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .top h2{font-size:20px}
 .rv .showco{display:inline-flex;gap:6px;align-items:center;font-size:13.5px}
 .rv .nh{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 12px;margin-bottom:6px}.rv .nh h3{margin-bottom:0}
-.rv .thumb{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#fff;border:1px solid var(--line);--s:.5;padding:0;display:block}
+.rv .thumb{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#fff;border:1px solid var(--rv-line);--s:.5;padding:0;display:block}
 .rv .thumb .stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0}
 .rv .thumb .slide{margin:0}
 .rv .co-layer{position:absolute;left:0;top:0;width:1280px;height:720px;pointer-events:none}
@@ -51,14 +53,14 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .judge .sub{color:var(--sub);font-size:13.5px}
 .rv .opts{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
 .rv .opt,.rv .dopt{display:flex;flex-direction:column;gap:6px;width:min(31%,260px)}
-.rv .dgroup{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:10px}.rv .dgroup .sub{font-weight:700}
+.rv .dgroup{display:grid;gap:8px;border-top:1px solid var(--rv-line);padding-top:10px}.rv .dgroup .sub{font-weight:700}
 .rv .opts.single{display:none}
 .rv .opt .thumb,.rv .dopt .thumb{cursor:pointer}.rv .opt.view .thumb,.rv .dopt.view .thumb{outline:3px solid #fff;outline-offset:2px}
 .rv .opt label,.rv .dopt label{font-weight:700;display:flex;gap:6px;align-items:center;cursor:pointer}
 .rv .opt small{color:var(--sub);font-weight:400;font-size:12.5px;line-height:1.4}
-.rv textarea{width:100%;height:64px;font:inherit;font-size:14px;padding:8px 10px;background:var(--bg);color:var(--fg);border:1px solid var(--line)}
+.rv textarea{width:100%;height:64px;font:inherit;font-size:14px;padding:8px 10px;background:var(--rv-bg);color:var(--fg);border:1px solid var(--rv-line)}
 .rv .btns{display:flex;flex-wrap:wrap;gap:8px}
-.rv button.b1{font:inherit;font-size:14px;padding:8px 16px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;border-radius:0}
+.rv button.b1{font:inherit;font-size:14px;padding:8px 16px;border:1px solid var(--rv-line);background:transparent;color:var(--fg);cursor:pointer;border-radius:0}
 .rv .verdict .b1[aria-pressed="true"].ok{background:var(--ok);color:#0F1623;border-color:var(--ok);font-weight:700}
 .rv .verdict .b1[aria-pressed="true"].ng{background:var(--cm);color:#0F1623;border-color:var(--cm);font-weight:700}
 .rv .nav2{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
@@ -68,6 +70,11 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .copybox{width:100%;height:90px;font:12px/1.4 Consolas,monospace}
 .rv .state{color:var(--ok);font-weight:700;font-size:13px}
 @media (max-width:820px){.rv .body{grid-template-columns:1fr}.rv nav{position:static;max-height:220px}.rv .opt,.rv .dopt{width:min(100%,300px)}}
+.rv .doc{background:#fff;color:#1a1a1a;padding:18px 22px;border:1px solid var(--rv-line);font-size:14px;line-height:1.7;max-height:68vh;overflow:auto}
+.rv .doc h3{font-size:17px;margin:4px 0 8px}.rv .doc h4{font-size:14px;margin:14px 0 4px;color:#33496B}
+.rv .doc p{margin:2px 0}.rv .doc ul{margin:2px 0 2px 18px;list-style:disc}.rv .doc li{margin:1px 0}
+.rv .doc table{border-collapse:collapse;margin:6px 0;width:100%}.rv .doc th,.rv .doc td{border:1px solid #c9d2e0;padding:4px 8px;text-align:left;vertical-align:top}.rv .doc th{background:#eef2f8;white-space:nowrap}
+.rv .cols[hidden]{display:none}
 </style>"""
 
 _SCRIPT = r"""<script>
@@ -75,6 +82,7 @@ _SCRIPT = r"""<script>
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var panes = $$('.pane'), cur = 0, KEY = 'pptxdeck-review-' + __DECK__ + '-__ROUND__';
+  var PRESET = __PRESET__;
 
   function store(o) { try { sessionStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} }
   function load() { try { return JSON.parse(sessionStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; } }
@@ -98,6 +106,22 @@ _SCRIPT = r"""<script>
     });
   }
 
+  // 前回承認したスライドを選択済みにする。同じタブで入力の途中なら、その入力を優先する
+  function applyPreset() {
+    if (Object.keys(load()).length) return;
+    panes.forEach(function (p) {
+      var a = PRESET[p.dataset.slide]; if (!a) return;
+      var single = p.dataset.single === '1';
+      var r = $('input[type=radio][name^="s"][value="' + (single ? 'A' : a.c) + '"]', p);
+      if (!r) return;                                           // 案がなくなっていれば引き継がない
+      r.checked = true;
+      if (!single) {
+        p.dataset.verdict = '承認';
+        if (a.d > 1) { var x = $('.dgroup[data-k="' + a.c + '"] input[value="' + a.d + '"]', p); if (x) x.checked = true; }
+      }
+    });
+  }
+
   function fit() {
     $$('.thumb').forEach(function (t) {
       var w = t.clientWidth; if (!w) return;
@@ -118,6 +142,7 @@ _SCRIPT = r"""<script>
   function dsel(p, k) { var r = $('.dgroup[data-k="' + k + '"] input[type=radio]:checked', p); return r ? +r.value : 1; }
   function showBig(p, k, d) {
     p.dataset.view = k;
+    if (p.dataset.doc === '1') { fit(); return; }
     d = d || dsel(p, k);
     $$('.opt', p).forEach(function (o) { o.classList.toggle('view', o.dataset.k === k); });
     $$('.dgroup', p).forEach(function (g) { g.hidden = g.dataset.k !== k; });      // 選んだ型のデザイン（1〜3）だけを出す
@@ -184,6 +209,7 @@ _SCRIPT = r"""<script>
       }
     }
     refresh(); store(snapshot());
+    if (v === '承認' && cur < panes.length - 1) go(cur + 1);       // 承認したら次のスライドへ（要修正と最後は動かない）
   }
   function refresh() {
     panes.forEach(function (p, i) {
@@ -277,8 +303,9 @@ _SCRIPT = r"""<script>
 
   function start() {
     restore();
+    applyPreset();
     $$('input[type=radio][name^="s"]:checked').forEach(function (x) { x.dataset.was = '1'; });
-    refresh(); go(0);
+    refresh(); store(snapshot()); go(0);
   }
   if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
 })();
@@ -344,7 +371,9 @@ def _read(path: Path) -> str:
 
 def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final: bool = False,
           prev: dict[str, dict] | None = None, notes: dict[str, str] | None = None,
-          designs: dict[str, dict[str, dict[int, str]]] | None = None) -> str:
+          designs: dict[str, dict[str, dict[int, str]]] | None = None,
+          preset: dict | None = None,
+          docs: dict[str, str] | None = None, titles: dict[str, str] | None = None) -> str:
     esc = _html.escape
     prev, notes, designs = prev or {}, notes or {}, designs or {}
     title = "最終 HTML の確認" if final else "スライド案の選択"
@@ -353,16 +382,22 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
     else:
         lead = (f"ラウンド {round_label}。左の一覧から 1 枚ずつ見ます。案を選び（サムネを押すと大きく見えます）、"
                 "直したい点があればコメントに書いて、最後に判断欄の右端の「回答をコピー」を押してください。")
+    if docs is not None:
+        title = "設計図と原稿の確認"
+        lead = ("承認する前に、資料全体と、スライドごとの設計と原稿を確認します。1 枚ずつ見て「承認」か「要修正」を選び、"
+                "直したい点があればコメントに書いて、最後に判断欄の右端の「回答をコピー」を押してください。")
     nav, panes = [], []
     for nn, opts in frags.items():
         letters = sorted(opts)
-        t = _title_of(opts[letters[0]])
+        t = (titles or {}).get(nn) or _title_of(opts[letters[0]])
         nav.append(f'<button data-go="{nn}"><span class="st"></span><span>S{nn}<small>{esc(t)}</small></span></button>')
-        single = final or len(letters) == 1
-        p = [f'<section class="pane" data-slide="{nn}" data-single="{1 if single else 0}" hidden>',
-             f'<div class="top"><h2>S{nn}　{esc(t)}</h2></div>',
-             '<div class="big"><div class="thumb"><div class="stage"></div></div></div>',
-             '<div class="cols">']
+        single = final or len(letters) == 1 or docs is not None
+        doc_attr = ' data-doc="1"' if docs is not None else ""
+        p = [f'<section class="pane" data-slide="{nn}" data-single="{1 if single else 0}"{doc_attr} hidden>',
+             f'<div class="top"><h2>{esc(t) if docs is not None and nn == "00" else "S" + nn + "　" + esc(t)}</h2></div>',
+             (f'<div class="doc">{docs[nn]}</div>' if docs is not None
+              else '<div class="big"><div class="thumb"><div class="stage"></div></div></div>'),
+             '<div class="cols"' + (' hidden' if docs is not None else '') + '>']
         pc = (prev.get(nn) or {}).get("comment", "")
         fx = notes.get(nn, "")
         if pc:
@@ -418,8 +453,9 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
              '</div>'
              f'<div class="body"><nav id="nav" aria-label="スライドの一覧">{"".join(nav)}</nav><div>{"".join(panes)}</div></div>'
              '</div>']
-    deck_js = json.dumps(work.name, ensure_ascii=False).replace("</", "<\\/")      # JS の文字列。</script> でも閉じない
-    parts.append(_SCRIPT.replace("__DECK__", deck_js).replace("__ROUND__", round_label))
+    deck_js = json.dumps(paths.deck_name(work), ensure_ascii=False).replace("</", "<\\/")      # JS の文字列。</script> でも閉じない
+    preset_js = json.dumps(preset or {}, ensure_ascii=False).replace("</", "<\\/")
+    parts.append(_SCRIPT.replace("__DECK__", deck_js).replace("__ROUND__", round_label).replace("__PRESET__", preset_js))
     parts.append("</body></html>")
     return "".join(parts)
 
@@ -433,7 +469,8 @@ def assemble(work: Path, round_no: int = 1) -> Path:
     prev = parse_answers(_read(work / f"answers-{round_no - 1}.md")) if round_no > 1 else {}
     notes = parse_notes(_read(work / f"round-{round_no}-notes.md")) if round_no > 1 else {}
     out = work / "variants.html"
-    out.write_text(_page(work, frags, str(round_no), prev=prev, notes=notes, designs=designs), encoding="utf-8")
+    preset = approved_preset([f.read_text(encoding="utf-8") for f in answer_paths(work, upto=round_no - 1)]) if round_no > 1 else {}
+    out.write_text(_page(work, frags, str(round_no), prev=prev, notes=notes, designs=designs, preset=preset), encoding="utf-8")
     return out
 
 
@@ -471,6 +508,57 @@ def merge_answers(mds: list[str]) -> dict[str, dict]:
     return out
 
 
+_ANS_FILE = re.compile(r"^answers-(\d+|final)\.md$")
+_PLAN_FILE = re.compile(r"^answers-plan-(\d+)\.md$")
+
+
+def answer_paths(work: Path, upto: int | None = None, include_final: bool = True) -> list[Path]:
+    """answers-N.md（N は数字）を昇順に、最後に answers-final.md（include_final=False なら含めない）。
+    answers-plan-*.md は含めない。案の決定に使う回答は include_final=False で取る（最終確認の回答は案を決めない）。"""
+    found: list[tuple[int, Path]] = []
+    for f in Path(work).glob("answers-*.md"):
+        m = _ANS_FILE.match(f.name)
+        if not m:
+            continue
+        if not m.group(1).isdigit() and not include_final:
+            continue
+        n = int(m.group(1)) if m.group(1).isdigit() else 10 ** 9
+        if upto is not None and n > upto:
+            continue
+        found.append((n, f))
+    return [f for _, f in sorted(found)]
+
+
+def plan_answer_paths(work: Path) -> list[Path]:
+    found = [(int(m.group(1)), f) for f in Path(work).glob("answers-plan-*.md") if (m := _PLAN_FILE.match(f.name))]
+    return [f for _, f in sorted(found)]
+
+
+def plan_next_round(work: Path) -> int:
+    nums = [int(m.group(1)) for f in Path(work).glob("answers-plan-*.md") if (m := _PLAN_FILE.match(f.name))]
+    return max(nums, default=0) + 1
+
+
+def next_round(work: Path) -> int:
+    nums = [int(m.group(1)) for f in Path(work).glob("answers-*.md") if (m := _ANS_FILE.match(f.name)) and m.group(1).isdigit()]
+    return max(nums, default=0) + 1
+
+
+def approved_preset(mds: list[str]) -> dict[str, dict]:
+    """回の順に重ねて、最新の判定が承認でコメントが空のスライドだけ返す（再提示の画面で選択済みにする）。"""
+    cur: dict[str, dict] = {}
+    for md in mds:
+        for nn, a in parse_answers(md).items():
+            verdict = a.get("verdict", "")
+            if not verdict and not a["choice"]:
+                continue
+            prev = cur.get(nn, {})
+            cur[nn] = {"c": a["choice"] or prev.get("c", ""), "d": a.get("design", prev.get("d", 1)),
+                       "v": verdict or "承認", "m": a["comment"]}
+    return {nn: {"c": x["c"], "d": x["d"], "v": x["v"]}
+            for nn, x in cur.items() if x["v"] == "承認" and x["c"] and not x["m"]}
+
+
 def _chosen(work: Path, answers_md: "str | list[str]", allow_comments: bool = False):
     """回答から、選ばれた案（型）とデザインを決める。決まらないスライドやコメント未反映があれば ValueError。
     戻り値は（スライド → 選ばれた断片, 回答）。デザインの回答（- デザイン: N）が無ければデザイン 1。"""
@@ -497,22 +585,25 @@ def _chosen(work: Path, answers_md: "str | list[str]", allow_comments: bool = Fa
     return picked, ans
 
 
-def review_final(work: Path, answers_md: "str | list[str]", allow_comments: bool = False) -> Path:
+def review_final(work: Path, answers_md: "str | list[str]", allow_comments: bool = False,
+                 preset_extra_mds: "list[str] | None" = None) -> Path:
     """最終 HTML の確認ページ（final-review.html）を作る。final.html は変えない（build が使う）。
     「回答をコピー」を押すと、承認は「選択: A」、要修正は「選択: FIX」で、従来と同じ形の回答が返る（answers-final.md に保存する）。"""
     work = Path(work)
     picked, _ = _chosen(work, answers_md, allow_comments)
     one = {nn: {"A": picked[nn]} for nn in sorted(picked)}
     out = work / "final-review.html"
-    out.write_text(_page(work, one, "final", final=True), encoding="utf-8")
+    mds = [answers_md] if isinstance(answers_md, str) else list(answers_md)
+    out.write_text(_page(work, one, "final", final=True, preset=approved_preset(mds + list(preset_extra_mds or []))), encoding="utf-8")
     return out
 
 
-def finalize(work: Path, answers_md: "str | list[str]", allow_comments: bool = False) -> Path:
+def finalize(work: Path, answers_md: "str | list[str]", allow_comments: bool = False,
+             preset_extra_mds: "list[str] | None" = None) -> Path:
     work = Path(work)
     picked, _ = _chosen(work, answers_md, allow_comments)
     body = "\n".join(picked[nn] for nn in sorted(picked))
     out = work / "final.html"
-    out.write_text(HEAD.format(title=_html.escape(work.name), extra="") + body + "</body></html>", encoding="utf-8")
-    review_final(work, answers_md, allow_comments)             # 最終の確認ページも同時に作る
+    out.write_text(HEAD.format(title=_html.escape(paths.deck_name(work)), extra="") + body + "</body></html>", encoding="utf-8")
+    review_final(work, answers_md, allow_comments, preset_extra_mds)   # 最終の確認ページも同時に作る
     return out

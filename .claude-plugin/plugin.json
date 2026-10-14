@@ -1,6 +1,0 @@
-{
-  "name": "pptx-deck",
-  "version": "0.2.0",
-  "description": "ビジネス上の承認文書をコンサルテイストで作る。原稿の承認 → スライド案（各 3 案）の選択 → 最終 HTML → 編集可能な PPTX。利用者のテンプレートに従える。Windows 専用。",
-  "license": "MIT"
-}
