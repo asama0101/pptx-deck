@@ -143,8 +143,14 @@ def cmd_variants(args) -> int:
 
 def _answers_mds(work: Path, given: list[str] | None) -> list[str]:
     from . import variants
-    files = [Path(p) for p in given] if given else variants.answer_paths(work)
+    files = [Path(p) for p in given] if given else variants.answer_paths(work, include_final=False)   # 最終確認の回答は案を決めない
     return [f.read_text(encoding="utf-8") for f in files]
+
+
+def _final_preset_mds(work: Path) -> list[str]:
+    """前回の最終確認の回答（answers-final.md）。最終確認ページの承認の選択済み表示にだけ使う。"""
+    f = work / "answers-final.md"
+    return [f.read_text(encoding="utf-8")] if f.exists() else []
 
 
 def cmd_finalize(args) -> int:
@@ -153,7 +159,7 @@ def cmd_finalize(args) -> int:
     _ensure_derived(work)
     mds = _answers_mds(work, args.answers)     # 回ごとの回答を順に重ねる
     try:
-        print(variants.finalize(work, mds, allow_comments=args.allow_comments))
+        print(variants.finalize(work, mds, allow_comments=args.allow_comments, preset_extra_mds=_final_preset_mds(work)))
     except ValueError as e:
         print(f"エラー:\n{e}", file=sys.stderr)
         return 2
@@ -166,7 +172,7 @@ def cmd_review_final(args) -> int:
     _ensure_derived(work)
     mds = _answers_mds(work, args.answers)
     try:
-        print(variants.review_final(work, mds, allow_comments=args.allow_comments))
+        print(variants.review_final(work, mds, allow_comments=args.allow_comments, preset_extra_mds=_final_preset_mds(work)))
     except ValueError as e:
         print(f"エラー:\n{e}", file=sys.stderr)
         return 2

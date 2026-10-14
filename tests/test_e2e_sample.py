@@ -90,6 +90,35 @@ class E2ETest(unittest.TestCase):
         self.assertFalse(
             [c for c in calls if "soffice" in c.lower() or "libreoffice" in c.lower()], calls)
 
+    def test_final_answers_do_not_change_choice_then_build(self):
+        with tempfile.TemporaryDirectory() as td:
+            base = Path(td) / "demo"
+            self.assertEqual(run("init", str(base), "--color", "navy")[0], 0)
+            work = paths.resolve_work(base)
+            shutil.copyfile(COMP / "layouts" / "cover.html", work / "slides" / "01-A.html")
+            shutil.copyfile(COMP / "diagrams" / "flow-h.html", work / "slides" / "02-A.html")
+            shutil.copyfile(COMP / "diagrams" / "flow-v.html", work / "slides" / "02-B.html")
+            (work / "answers-1.md").write_text(
+                "---\n---\n## S01\n- 選択: A\n- 判定: 承認\n- コメント: \n"
+                "## S02\n- 選択: B\n- 判定: 承認\n- コメント: \n", encoding="utf-8")
+            (work / "answers-final.md").write_text(
+                "---\n---\n## S01\n- 選択: A\n- 判定: 承認\n- コメント: \n"
+                "## S02\n- 選択: A\n- 判定: 承認\n- コメント: \n", encoding="utf-8")
+            self.assertEqual(run("finalize", str(base))[0], 0)
+            body = (work / "final.html").read_text(encoding="utf-8")
+            self.assertIn((COMP / "diagrams" / "flow-v.html").read_text(encoding="utf-8"), body)
+            self.assertEqual(run("build", str(base))[0], 0)
+            # revise (a): 2 回目の回答で S02 を A に変える。古い answers-final.md（A）とは無関係に answers-2.md が効く
+            self.assertEqual(run("reopen", str(base))[0], 0)
+            (work / "answers-2.md").write_text(
+                "---\n---\n## S02\n- 選択: A\n- 判定: 承認\n- コメント: \n", encoding="utf-8")
+            (work / "answers-final.md").write_text(
+                "---\n---\n## S02\n- 選択: B\n- 判定: 承認\n- コメント: \n", encoding="utf-8")
+            self.assertEqual(run("finalize", str(base))[0], 0)
+            body = (work / "final.html").read_text(encoding="utf-8")
+            self.assertIn((COMP / "diagrams" / "flow-h.html").read_text(encoding="utf-8"), body)
+            self.assertNotIn((COMP / "diagrams" / "flow-v.html").read_text(encoding="utf-8"), body)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -512,12 +512,15 @@ _ANS_FILE = re.compile(r"^answers-(\d+|final)\.md$")
 _PLAN_FILE = re.compile(r"^answers-plan-(\d+)\.md$")
 
 
-def answer_paths(work: Path, upto: int | None = None) -> list[Path]:
-    """answers-N.md（N は数字）を昇順に、最後に answers-final.md。answers-plan-*.md は含めない。"""
+def answer_paths(work: Path, upto: int | None = None, include_final: bool = True) -> list[Path]:
+    """answers-N.md（N は数字）を昇順に、最後に answers-final.md（include_final=False なら含めない）。
+    answers-plan-*.md は含めない。案の決定に使う回答は include_final=False で取る（最終確認の回答は案を決めない）。"""
     found: list[tuple[int, Path]] = []
     for f in Path(work).glob("answers-*.md"):
         m = _ANS_FILE.match(f.name)
         if not m:
+            continue
+        if not m.group(1).isdigit() and not include_final:
             continue
         n = int(m.group(1)) if m.group(1).isdigit() else 10 ** 9
         if upto is not None and n > upto:
@@ -582,7 +585,8 @@ def _chosen(work: Path, answers_md: "str | list[str]", allow_comments: bool = Fa
     return picked, ans
 
 
-def review_final(work: Path, answers_md: "str | list[str]", allow_comments: bool = False) -> Path:
+def review_final(work: Path, answers_md: "str | list[str]", allow_comments: bool = False,
+                 preset_extra_mds: "list[str] | None" = None) -> Path:
     """最終 HTML の確認ページ（final-review.html）を作る。final.html は変えない（build が使う）。
     「回答をコピー」を押すと、承認は「選択: A」、要修正は「選択: FIX」で、従来と同じ形の回答が返る（answers-final.md に保存する）。"""
     work = Path(work)
@@ -590,15 +594,16 @@ def review_final(work: Path, answers_md: "str | list[str]", allow_comments: bool
     one = {nn: {"A": picked[nn]} for nn in sorted(picked)}
     out = work / "final-review.html"
     mds = [answers_md] if isinstance(answers_md, str) else list(answers_md)
-    out.write_text(_page(work, one, "final", final=True, preset=approved_preset(mds)), encoding="utf-8")
+    out.write_text(_page(work, one, "final", final=True, preset=approved_preset(mds + list(preset_extra_mds or []))), encoding="utf-8")
     return out
 
 
-def finalize(work: Path, answers_md: "str | list[str]", allow_comments: bool = False) -> Path:
+def finalize(work: Path, answers_md: "str | list[str]", allow_comments: bool = False,
+             preset_extra_mds: "list[str] | None" = None) -> Path:
     work = Path(work)
     picked, _ = _chosen(work, answers_md, allow_comments)
     body = "\n".join(picked[nn] for nn in sorted(picked))
     out = work / "final.html"
     out.write_text(HEAD.format(title=_html.escape(paths.deck_name(work)), extra="") + body + "</body></html>", encoding="utf-8")
-    review_final(work, answers_md, allow_comments)             # 最終の確認ページも同時に作る
+    review_final(work, answers_md, allow_comments, preset_extra_mds)   # 最終の確認ページも同時に作る
     return out
