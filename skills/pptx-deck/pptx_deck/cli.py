@@ -32,6 +32,13 @@ def _font_installed() -> bool:
     return _has_font(_registered_fonts(), "BIZ UDPGothic")
 
 
+def _ensure_derived(work: Path) -> None:
+    """template.json があれば、欠けた派生ファイル（prune 済みのもの）を再生成する。無ければ何もしない。"""
+    if (work / "template.json").exists():
+        from . import lifecycle
+        lifecycle.ensure_derived(work)
+
+
 def cmd_doctor(args) -> int:
     out = {
         "python": {"kind": os.environ.get("PPTX_DECK_PYTHON_KIND", "unknown"), "path": sys.executable,
@@ -77,6 +84,7 @@ def cmd_check(args) -> int:
 def cmd_build(args) -> int:
     from . import build, check, lifecycle, measure, preview
     work = paths.resolve_work(args.workdir)
+    _ensure_derived(work)
     name = paths.deck_name(work)
     cfg, info, palette = _load_cfg(work)
     html = work / "final.html"
@@ -99,6 +107,8 @@ def cmd_build(args) -> int:
         return 1
     footer = args.footer if args.footer is not None else cfg.get("footer")
     build.build(model, work / cfg["template"], info, palette, out, base_dir=work, footer=footer, work_name=name)
+    if out == default_out:
+        lifecycle.record_build(work, out)      # 検査で止まっても、書いた PPTX を「変更済み」と誤検出しないよう先に記録する
     violations += check.check_pptx(out)
     result["violations"] = violations
     result["pptx"] = str(out)
@@ -108,8 +118,6 @@ def cmd_build(args) -> int:
         result["notes"].append(f"確認用の画像を作れませんでした: {e}")
     result["ok"] = not check.errors(violations)
     if result["ok"]:
-        if out == default_out:
-            lifecycle.record_build(work, out)
         result["removed"] = lifecycle.prune(work)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if result["ok"] else 1
@@ -128,6 +136,7 @@ def cmd_clean(args) -> int:
 def cmd_variants(args) -> int:
     from . import variants
     work = paths.resolve_work(args.workdir)
+    _ensure_derived(work)
     print(variants.assemble(work, round_no=args.round or variants.next_round(work)))
     return 0
 
@@ -141,6 +150,7 @@ def _answers_mds(work: Path, given: list[str] | None) -> list[str]:
 def cmd_finalize(args) -> int:
     from . import variants
     work = paths.resolve_work(args.workdir)
+    _ensure_derived(work)
     mds = _answers_mds(work, args.answers)     # 回ごとの回答を順に重ねる
     try:
         print(variants.finalize(work, mds, allow_comments=args.allow_comments))
@@ -153,6 +163,7 @@ def cmd_finalize(args) -> int:
 def cmd_review_final(args) -> int:
     from . import variants
     work = paths.resolve_work(args.workdir)
+    _ensure_derived(work)
     mds = _answers_mds(work, args.answers)
     try:
         print(variants.review_final(work, mds, allow_comments=args.allow_comments))
@@ -160,6 +171,17 @@ def cmd_review_final(args) -> int:
         print(f"エラー:\n{e}", file=sys.stderr)
         return 2
     return 0
+
+
+def cmd_reopen(args) -> int:
+    from . import lifecycle
+    work = paths.resolve_work(args.workdir)
+    if not (work / "template.json").exists():
+        print(f"エラー: {work} に template.json がありません（作品の source/ が見つかりません）", file=sys.stderr)
+        return 2
+    r = lifecycle.reopen(work)
+    print(json.dumps(r, ensure_ascii=False, indent=2))
+    return 4 if r["status"] == "modified" and not args.force else 0
 
 
 def cmd_lint_script(args) -> int:
@@ -222,6 +244,10 @@ def main(argv: list[str]) -> int:
     p.add_argument("--answers", action="append", default=None, help="finalize と同じ回答の Markdown（回ごとに複数回指定できる）")
     p.add_argument("--allow-comments", action="store_true")
     p.set_defaults(fn=cmd_review_final)
+    p = sub.add_parser("reopen")
+    p.add_argument("workdir")
+    p.add_argument("--force", action="store_true", help="PPTX が変更されていても続ける（手直しは消える）")
+    p.set_defaults(fn=cmd_reopen)
     p = sub.add_parser("lint-script")
     p.add_argument("script")
     p.set_defaults(fn=cmd_lint_script)
