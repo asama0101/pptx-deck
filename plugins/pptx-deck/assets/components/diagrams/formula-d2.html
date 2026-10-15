@@ -1,11 +1,11 @@
 <!-- 用途: 数式（結果を、内訳の足し算で説明する）。デザイン1（formula）と同じ結果・同じ内訳・同じ根拠で差し替えられる。
      デザイン1との違い: 1 行の式と帯をやめ、内訳 3 つを縦棒（高さを金額に比例。1 億円＝140px）にして「＋」でつなぎ、「＝」の右に 3 つを積み上げた総額の棒を置く。棒の下に名前と根拠。強調色は、いちばん大きい内訳の金額 1 か所。濃淡も強調と合わせ、機器を最も濃く、移行を最も淡くする。
-     差し替える所: 題・リード文・図表タイトル・4 本の棒の高さ・金額・根拠・注。内訳が 3 つを超えるときは、別の型（waterfall・stacked）を検討する。 -->
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・4 本の棒の高さ・金額・根拠・注釈。内訳が 3 つを超えるときは、別の型（waterfall・stacked）を検討する。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">総費用の内訳</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">総費用の内訳</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">5年間の総費用1.7億円は、機器0.9億円・移行0.2億円・運用0.6億円の足し算で、機器が過半を占める</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">B案（SD-WAN）の5年間の総費用（FY2027〜2031、税抜）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">5年間の総費用1.7億円は、機器0.9億円・移行0.2億円・運用0.6億円の足し算で、機器が過半を占める</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">B案（SD-WAN）の5年間の総費用（FY2027〜2031、税抜）</div>
   <div class="pp-shape f-soft2" data-note="縦棒：高さを金額に比例させる（1 億円＝140px）。いちばん大きい内訳を最も濃く" style="left:79px;top:374px;width:200px;height:126px"></div>
   <div class="pp-text num center" data-note="強調色：いちばん大きい内訳の金額だけ（1 枚 1 点）" style="left:64px;top:334px;width:230px;height:38px;font-size:28px;color:var(--emphasis);line-height:1.2">0.9億円</div>
   <div class="pp-text b t-dark center" style="left:64px;top:506px;width:230px;height:32px;font-size:24px;line-height:1.2">機器</div>

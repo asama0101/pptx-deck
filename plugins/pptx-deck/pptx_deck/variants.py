@@ -100,7 +100,7 @@ _SCRIPT = r"""<script>
     panes.forEach(function (p) {
       var a = o[p.dataset.slide]; if (!a) return;
       if (a.c) { var r = $('input[type=radio][name^="s"][value="' + a.c + '"]', p); if (r) r.checked = true; }
-      $('textarea', p).value = a.t || '';
+      $('.cm', p).value = a.t || '';
       p.dataset.verdict = a.v || '';
       Object.keys(a.d || {}).forEach(function (k) { var x = $('.dgroup[data-k="' + k + '"] input[value="' + a.d[k] + '"]', p); if (x) x.checked = true; });
     });
@@ -253,7 +253,7 @@ _SCRIPT = r"""<script>
       th.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } };
       $('input[type=radio]', o).onchange = pick;
     });
-    $('textarea', p).oninput = function () { refresh(); store(snapshot()); };
+    $('.cm', p).oninput = function () { refresh(); store(snapshot()); };
     $('.coToggle', p).onchange = function () { $('.big', p).classList.toggle('nocol', !this.checked); };
     $$('.verdict button', p).forEach(function (b) { b.onclick = function () { setVerdict(p, b.dataset.v); }; });
     $('.clear', p).onclick = function () {
@@ -271,7 +271,7 @@ _SCRIPT = r"""<script>
     document.querySelectorAll('[data-slide]').forEach(function (sec) {
       if (!verdictOf(sec)) return;                                   // 承認か要修正を選んでいないスライドは、回答に含めない
       var sel = sec.querySelector('input[type=radio][name^="s"]:checked');
-      var c = sec.querySelector('textarea').value.replace(/\r?\n/g, ' ');
+      var c = sec.querySelector('.cm').value.replace(/\r?\n/g, ' ');
       lines.push('## S' + sec.dataset.slide, '- 選択: ' + (sel ? sel.value : ''));
       var dr = sel ? sec.querySelector('.dgroup[data-k="' + sel.value + '"] input[type=radio]:checked') : null;
       if (dr) lines.push('- デザイン: ' + dr.value);           // 選んだ型にデザイン 2・3 があるときだけ（省略時は 1）
@@ -443,7 +443,7 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
                 p.append('</div></div>')
         p.append('<div class="btns verdict"><button class="b1 ok" type="button" data-v="承認" aria-pressed="false">承認</button>'
                  '<button class="b1 ng" type="button" data-v="要修正" aria-pressed="false">要修正</button></div>'
-                 '<textarea placeholder="どうしてほしいか（任意）" aria-label="コメント"></textarea>'
+                 '<textarea class="cm" placeholder="どうしてほしいか（任意）" aria-label="コメント"></textarea>'
                  '<div class="nav2"><button class="b1 clear" type="button">選択を外す</button>'
                  '<button class="b1 prev" type="button">前へ</button>'
                  '<button class="b1 next" type="button">次へ</button>'
@@ -484,7 +484,7 @@ def parse_answers(md: str) -> dict[str, dict]:
         m = re.match(r"^## S(\d{2})\s*$", line)
         if m:
             cur = m.group(1)
-            out[cur] = {"choice": "", "comment": ""}
+            out[cur] = {"choice": "", "comment": "", "parts": []}
         elif cur and line.startswith("- 選択:"):
             out[cur]["choice"] = line.split(":", 1)[1].strip()
         elif cur and line.startswith("- デザイン:"):

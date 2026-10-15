@@ -1,6 +1,6 @@
 ---
 name: diagram
-description: 型にハマらない図（NW 構成図・トラフィックフロー・システムの障害動作・自己紹介・画面や写真への注釈など）を、素材のファイル・文章・画像、または利用者へのヒアリングから「絵」として描き、PPTX にする。絵は SVG で描いて 1 枚の画像として貼る（題・リード文・注は編集できる文字。絵の中身は PowerPoint で直せないので、直すときは描き直す）。「図にして」「構成図を作って」「障害の流れを絵にして」「自己紹介のスライドを作って」と頼まれたとき、または create の中で既存の型に合わない図が要るときに使う。Windows 専用。
+description: 型にハマらない図（NW 構成図・トラフィックフロー・システムの障害動作・自己紹介・画面や写真への注釈など）を、素材のファイル・文章・画像、または利用者へのヒアリングから「絵」として描き、PPTX にする。絵は SVG で描いて 1 枚の画像として貼る（題・ヘッドメッセージ・注釈は編集できる文字。絵の中身は PowerPoint で直せないので、直すときは描き直す）。「図にして」「構成図を作って」「障害の流れを絵にして」「自己紹介のスライドを作って」と頼まれたとき、または create の中で既存の型に合わない図が要るときに使う。Windows 専用。
 compatibility: Windows 専用。create と同じ環境（Python・Playwright・chromium）。提案・構造の確認と案の選択に Playwright MCP が必要（ないときは回答を貼り付ける）。
 ---
 
@@ -12,7 +12,7 @@ compatibility: Windows 専用。create と同じ環境（Python・Playwright・c
 
 ## 1. 入口
 
-- **単独で作る**: `init "<名前>" --color <プリセット|#RRGGBB>`（create の 1.2 と同じ。同名のフォルダが空でないときは中身を見せて承認を得る）。1 枚物なので、`source/design.md` は資料全体と台帳を省いた 1 ページ分、`source/script.md` は 1 スライド（`layout: diagram`・題・見出し・図表）にする。書式は `${CLAUDE_PLUGIN_ROOT}/assets/sample/`。見出し（リード文）は create の 2.2 の規則に従い、`lint-script` を通す。
+- **単独で作る**: `init "<名前>" --color <プリセット|#RRGGBB>`（create の 1.2 と同じ。同名のフォルダが空でないときは中身を見せて承認を得る）。1 枚物なので、`source/design.md` は資料全体と台帳を省いた 1 ページ分、`source/script.md` は 1 スライド（`layout: diagram`・題・見出し・図表）にする。書式は `${CLAUDE_PLUGIN_ROOT}/assets/sample/`。見出し（ヘッドメッセージ）は create の 2.2 の規則に従い、`lint-script` を通す。
 - **create の中で呼ばれた**: create の作業フォルダの `source/slides/` に、そのページの断片を書く。承認は create 側に従い、追加の承認は出さない。
 - **絵にするかどうか**: 利用者が「図にして」「絵にして」と頼んだときは、そのまま絵にする（`picture-plan.json` の `asked` を true にする）。そうでなく、素材に構造（手順・関係・前後の比較・構成・経路）を見つけたときは、文章のままにせず、4 章の HTML で「ここは絵がよい」と提案する（強制しない。`asked` は false）。
 

@@ -1,12 +1,12 @@
 <!-- 用途: NW 構成図（機器・回線・ゾーン）。ゾーンの枠、機器のアイコン、直角に分岐する配線、新設・変更の 1 点を強調色の破線で囲む。
-     絵（pp-picture）は 1 枚の画像として PPTX に貼られ、PowerPoint では直せない。題・リード文・図表タイトル・注は編集できる文字。直すときは Claude に頼んで描き直す。
-     差し替える所: ゾーンの枠と名前・機器（<use href="#i-…">。使う <symbol> を <defs> に写す。assets/pictures/parts.svg）・機器の名前・配線（M…H…V… の直角線）・強調の枠（1 枚 1 点）・data-alt・注。
+     絵（pp-picture）は 1 枚の画像として PPTX に貼られ、PowerPoint では直せない。題・ヘッドメッセージ・チャートタイトル・注釈は編集できる文字。直すときは Claude に頼んで描き直す。
+     差し替える所: ゾーンの枠と名前・機器（<use href="#i-…">。使う <symbol> を <defs> に写す。assets/pictures/parts.svg）・機器の名前・配線（M…H…V… の直角線）・強調の枠（1 枚 1 点）・data-alt・注釈。
      守ること: 絵の中の色は sv-f-*・sv-s-* のクラスだけ。文字は 20px（15pt）以上。回線の種類は線種（実線・破線）と太さで区別し、色を足さない。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">ネットワーク構成</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">ネットワーク構成</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">本社の出口は、ルーターの内側に FW を新設し、スイッチ配下の 3 系統を守る構成にする</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社ネットワークの構成（インターネットから、ルーター・FW・スイッチを経て、サーバ・DB・端末まで）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">本社の出口は、ルーターの内側に FW を新設し、スイッチ配下の 3 系統を守る構成にする</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社ネットワークの構成（インターネットから、ルーター・FW・スイッチを経て、サーバ・DB・端末まで）</div>
   <div class="pp-picture" data-alt="インターネットから、ルーター、新設の FW、L2 スイッチを経て、Web サーバ、AP サーバ、拠点端末の 3 系統に分岐し、AP サーバの先に DB がつながる本社ネットワークの構成図。新設の FW だけが強調色の破線で囲まれている。" style="left:64px;top:224px;width:1152px;height:366px">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1152 366" font-size="20">
       <defs>
@@ -47,5 +47,5 @@
       <text x="412" y="112" text-anchor="middle" font-weight="700" class="sv-f-emph">新設</text>
     </svg>
   </div>
-  <div class="pp-text" data-note="注：回線の種類と、強調の意味" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 実線は現行と同じ回線、破線の枠は今回の新設（FW 1 台）。台数・回線速度は xx<br>→ 出口に FW を 1 台足すだけで、3 系統のサーバと端末をまとめて守れ、追加の機器は最小限で済む</div>
+  <div class="pp-text" data-part="注釈" data-note="注：回線の種類と、強調の意味" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 実線は現行と同じ回線、破線の枠は今回の新設（FW 1 台）。台数・回線速度は xx<br>→ 出口に FW を 1 台足すだけで、3 系統のサーバと端末をまとめて守れ、追加の機器は最小限で済む</div>
 </section>

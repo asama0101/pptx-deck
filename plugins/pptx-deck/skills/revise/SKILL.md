@@ -17,6 +17,7 @@ compatibility: Windows 専用。create と同じ環境。作品の source/ フ�
 2. 利用者に直し方を選んでもらう。
    - **(a) 型・デザインを選び直す**: `python "${CLAUDE_PLUGIN_ROOT}/run.py" variants "<名前>"` で `variants.html` を作り（前回承認したスライドは選択済み）、create（`${CLAUDE_PLUGIN_ROOT}/skills/create/SKILL.md`）の 3 章の手順 3〜6 と同じ手順で、選んでもらう。直したいスライドだけ、案を選び直して承認する。
    - **(b) 文言・数字だけ直す**: 直す内容を聞き、`source/slides/NN-X.html`（選ばれている案）と `source/script.md` の該当箇所を直す。数字を作らない（素材に無い数字は「xx」）。直したスライドは `source/round-N-notes.md` に「NN: 直した内容」と書く。
+     - 利用者は部位の名前で指示できる（例: 「3 枚目の出典を直して」「5 枚目のスティッカー②を短く」）。部位名は断片の `data-part`（`${CLAUDE_PLUGIN_ROOT}/references/html-rules.md`）。スライド番号と部位名で `source/slides/NN-X.html` の要素を探し、同じ部位が複数あるときの番号は、スライド内の左上から右下の順。部位が見つからない（その型にない）、または番号が決まらないときは、推測せずに利用者に聞く。
    - **(c) 絵（`pp-picture`）を描き直す**: 絵の中身は PowerPoint で直せない。直す内容を聞き、`diagram`（`${CLAUDE_PLUGIN_ROOT}/skills/diagram/SKILL.md`）の 6 章の往復に従う（直す前に `history "<名前>" snapshot`、直したら `draft "<名前>"` で確認）。
 3. `python "${CLAUDE_PLUGIN_ROOT}/run.py" finalize "<名前>"`（回答は `source/answers-N.md` を回の順に自動で使い、最終確認の `answers-final.md` は案の決定に使わない）。`final-review.html` を開いて、create の 3 章の手順 8 と同じ手順で承認を得る（保存先は `source/answers-final.md` を上書き）。
 4. `python "${CLAUDE_PLUGIN_ROOT}/run.py" build "<名前>"`。手順 1 で上書きを選んだときは `--force`、別名のときは `--out <パス>` を付ける（手順 3 の `finalize` のあとの `build` も、直して 3 に戻ってからの `build` も同じ。付け忘れると再び終了コード 4 で止まる）。`ok` が false なら `violations` を読んで `source/slides/` を直し、3 に戻る。

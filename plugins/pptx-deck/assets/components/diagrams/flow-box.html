@@ -1,10 +1,10 @@
 <!-- 用途: フロー（箱型）。条件で分かれる手順を、箱とラベルで枝分かれさせて最後の対応まで示す。分岐の条件は角丸のラベル、状態や対応は箱に書く。一本道の手順は flow-h・flow-v、担当部門をまたぐ手順は swimlane を使う。
-     差し替える所: 題・リード文・図表タイトル・出発点の文・分岐の条件・箱の文・最後の対応（4 つ。対応名は 19px、説明は 20px で 1 行）・注。分岐を 3 つ以上に増やすときは、段の幅を詰め直す。  -->
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・出発点の文・分岐の条件・箱の文・最後の対応（4 つ。対応名は 19px、説明は 20px で 1 行）・注釈。分岐を 3 つ以上に増やすときは、段の幅を詰め直す。  -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">回線断の切り分け</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">回線断は拠点ルータの応答の有無で二手に分け、予備の有無で最後の対応を決める</div>
-  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">回線断の切り分けの流れ（分岐の条件と、最後の対応）</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">回線断の切り分け</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">回線断は拠点ルータの応答の有無で二手に分け、予備の有無で最後の対応を決める</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">回線断の切り分けの流れ（分岐の条件と、最後の対応）</div>
   <div class="pp-shape f-light" data-note="出発点：最初に確認する事象を、全幅の箱に書く" style="left:64px;top:224px;width:1152px;height:40px"></div>
   <div class="pp-text center b" style="left:64px;top:227px;width:1152px;height:34px;font-size:21px">回線断のアラート（拠点ルータへ ping を打つ）</div>
   <div class="pp-line " data-arrow="end" style="left:345px;top:264px;width:3px;height:22px;background:var(--accent)"></div>

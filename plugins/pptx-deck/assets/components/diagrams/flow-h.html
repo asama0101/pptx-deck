@@ -1,11 +1,11 @@
 <!-- 用途: 手順・段階を左から右へ（各段階に期間・成果物・承認点）。段階の箱はパネル地で、番号・名前・期間・成果物・承認点（◆）を同じ位置に置く。
      下に全体期間の横棒（長さを期間に比例。1 か月＝192px）を置き、段階の区切りに ◆ と承認日を書く。本番の関門（戻せない判断）の ◆ だけ強調色（1 枚 1 点）。注の末尾に、この進め方から言える含意を 1 文。
-     差し替える所: 段階の数（3〜4。3 のときは幅を 336px、x を 64/462/860 にする）・名前・期間・成果物・承認点・横棒の区切りと日付・注。 -->
+     差し替える所: 段階の数（3〜4。3 のときは幅を 336px、x を 64/462/860 にする）・名前・期間・成果物・承認点・横棒の区切りと日付・注釈。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">移行の進め方</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">移行の進め方</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">移行は4段階で進め、各段階の出口で承認を取るため、問題があれば前に戻せる</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の進め方（2026年11月〜2027年4月の6か月。段階ごとの期間・成果物・承認点）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">移行は4段階で進め、各段階の出口で承認を取るため、問題があれば前に戻せる</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の進め方（2026年11月〜2027年4月の6か月。段階ごとの期間・成果物・承認点）</div>
   <div class="pp-shape f-soft" data-note="段階の箱：番号・名前・期間・成果物・承認点を同じ位置に置く" style="left:64px;top:228px;width:258px;height:236px"></div>
   <div class="pp-text num t-dark" style="left:76px;top:235px;width:60px;height:44px;font-size:34px">01</div>
   <div class="pp-text b" data-note="段階の箱：番号・名前・期間・成果物・承認点を同じ位置に置く" style="left:140px;top:242px;width:170px;height:30px;font-size:21px">現状調査</div>
@@ -37,7 +37,7 @@
   <div class="pp-text" data-role="caption" style="left:672px;top:338px;width:234px;height:20px">成果物</div>
   <div class="pp-text" style="left:672px;top:356px;width:234px;height:52px;font-size:19px;line-height:1.35">リハーサル3回の記録<br>拠点切替（並行稼働2週間）</div>
   <div class="pp-text" data-role="caption" style="left:672px;top:404px;width:234px;height:20px">承認点</div>
-  <div class="pp-shape f-emph" data-note="承認点：各段階の出口で承認。本番の関門だけ強調色" style="left:672px;top:428px;width:234px;height:32px"></div>
+  <div class="pp-shape f-emph" data-part="アクセント" data-note="承認点：各段階の出口で承認。本番の関門だけ強調色" style="left:672px;top:428px;width:234px;height:32px"></div>
   <div class="pp-text b t-white" data-note="承認点：各段階の出口で承認。本番の関門だけ強調色" style="left:680px;top:429px;width:226px;height:28px;font-size:19px">◆ 本社切替 Go／NoGo</div>
   <div class="pp-line" data-arrow="end" style="left:924px;top:345px;width:28px;height:2px;background:var(--accent)"></div>
   <div class="pp-shape f-soft" style="left:958px;top:228px;width:258px;height:236px"></div>
@@ -67,5 +67,5 @@
   <div class="pp-text center" data-role="caption" style="left:964px;top:566px;width:120px;height:20px">3/31 Go／NoGo</div>
   <div class="pp-text b t-dark center" style="left:1156px;top:545px;width:60px;height:24px;font-size:19px">◆</div>
   <div class="pp-text center" data-role="caption" style="left:1116px;top:566px;width:100px;height:20px">4/30 完了</div>
-  <div class="pp-text" data-note="注：承認の場と、進め方から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 承認はいずれも経営会議。3/31 のGo／NoGoだけは戻せない判断（MPLS回線の解約を伴う）<br>→ 関門ごとに前の段階へ戻せるため、失敗時の損失は最大でも1段階分（2.5か月・4,000万円）に限られる</div>
+  <div class="pp-text" data-part="注釈" data-note="注：承認の場と、進め方から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 承認はいずれも経営会議。3/31 のGo／NoGoだけは戻せない判断（MPLS回線の解約を伴う）<br>→ 関門ごとに前の段階へ戻せるため、失敗時の損失は最大でも1段階分（2.5か月・4,000万円）に限られる</div>
 </section>

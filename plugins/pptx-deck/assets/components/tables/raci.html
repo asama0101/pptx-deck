@@ -1,11 +1,11 @@
 <!-- 用途: 役割分担表（工程×部門。業務フロー・検証計画・移行計画の体制）。行に工程、列に部門を置き、各セルに ◎＝責任（1 工程に 1 つ）、○＝実行、△＝支援・承認を書く。空のセルは空欄のまま。
-     見出しの行は基調色の面に白い文字。◎ は濃い基調色の太字。承認の関門になる工程の行だけパネル地にし、その ◎ だけ強調色の面に白い文字（1 枚 1 点）。凡例は図表タイトルに 1 回。最下部の論点ボックスに、分担の確定を「〜の可否」で書く。
-     差し替える所: 図表タイトル（凡例を含む）・工程（6 行まで）・部門（5 列まで）・各セルの記号・強調する行・注・論点の文。 -->
+     見出しの行は基調色の面に白い文字。◎ は濃い基調色の太字。承認の関門になる工程の行だけパネル地にし、その ◎ だけ強調色の面に白い文字（1 枚 1 点）。凡例はチャートタイトルに 1 回。最下部のメッセージボックスに、分担の確定を「〜の可否」で書く。
+     差し替える所: チャートタイトル（凡例を含む）・工程（6 行まで）・部門（5 列まで）・各セルの記号・強調する行・注釈・論点の文。 -->
 <section class="slide" data-layout="table">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">役割分担</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">役割分担</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">切替の責任は基盤グループに一本化し、承認は各拠点ではなく運用センターが担うべきだ</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の役割分担（工程×部門。◎＝責任、○＝実行、△＝支援・承認。2026年10月時点）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">切替の責任は基盤グループに一本化し、承認は各拠点ではなく運用センターが担うべきだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の役割分担（工程×部門。◎＝責任、○＝実行、△＝支援・承認。2026年10月時点）</div>
   <table class="pp-table" data-note="役割分担表：行＝工程、列＝部門。◎ は 1 工程に 1 つだけ" style="left:64px;top:228px;width:1152px;font-size:19px;line-height:1.25">
     <tr style="height:40px">
       <td style="width:232px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">工程</td>
@@ -64,7 +64,7 @@
       <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:center">○</td>
     </tr>
   </table>
-  <div class="pp-text" data-note="注：◎ の決め方と、分担から言える含意" data-role="caption" style="left:64px;top:574px;width:1152px;height:22px">注: ◎は1工程に1部門。ベンダーが責任を持つのは構築だけで、切替の判断は社内で行う。切替の責任を基盤グループに置けば、拠点ごとの判断待ち（平均3日）をなくせる</div>
-  <div class="pp-shape f-soft" data-note="論点ボックス：分担の確定を「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
-  <div class="pp-text" data-note="論点ボックス：分担の確定を「〜の可否」で 1 行に書く" style="left:84px;top:603px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　切替の責任を基盤グループ、承認を運用センターとするこの分担で、移行体制を確定することの可否</div>
+  <div class="pp-text" data-part="注釈" data-note="注：◎ の決め方と、分担から言える含意" data-role="caption" style="left:64px;top:574px;width:1152px;height:22px">注: ◎は1工程に1部門。ベンダーが責任を持つのは構築だけで、切替の判断は社内で行う。切替の責任を基盤グループに置けば、拠点ごとの判断待ち（平均3日）をなくせる</div>
+  <div class="pp-shape f-soft" data-part="メッセージボックス" data-note="メッセージボックス：分担の確定を「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="メッセージボックス：分担の確定を「〜の可否」で 1 行に書く" style="left:84px;top:603px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　切替の責任を基盤グループ、承認を運用センターとするこの分担で、移行体制を確定することの可否</div>
 </section>

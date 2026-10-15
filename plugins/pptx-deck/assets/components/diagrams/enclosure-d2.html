@@ -1,11 +1,11 @@
 <!-- 用途: 包括（要素が、より大きな範囲に属することを示す）。外枠（全体）の中に、子要素を置き、そのうち 1 つの中にさらに内側の箱（今回の対象）を入れる。内側の箱だけ強調色の太い枠。
      デザイン1との違い: 子要素を横 3 つに並べず、左に対象外の 2 つ（LAN・DC）を縦に積み、右に大きな WAN の箱を置いて、その中に今回の対象を大きく入れる。対象を主役にしたいときに向く。
-     差し替える所: 題・リード文・図表タイトル・外枠の名前・子要素 3 つの名前と説明・内側の対象の文・注。 -->
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・外枠の名前・子要素 3 つの名前と説明・内側の対象の文・注釈。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">更改の対象範囲</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">今回の更改はWANの専用線だけを対象とし、全社ネットワークのLANとDC内は変えない</div>
-  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">ネットワークの構成と更改の対象範囲（FY2025末時点）</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">更改の対象範囲</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">今回の更改はWANの専用線だけを対象とし、全社ネットワークのLANとDC内は変えない</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">ネットワークの構成と更改の対象範囲（FY2025末時点）</div>
   <div class="pp-shape f-soft" data-note="外枠：全社ネットワーク。属する要素を内側に置く" style="left:64px;top:224px;width:1152px;height:364px"></div>
   <div class="pp-text b t-dark" data-overlap style="left:80px;top:232px;width:800px;height:32px;font-size:21px">全社ネットワーク（48拠点・DC）</div>
   <div class="pp-shape f-white" style="left:88px;top:276px;width:340px;height:144px"></div>

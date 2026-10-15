@@ -1,13 +1,13 @@
 <!-- 用途: 全体に占める割合の比較（円）。構成が 4〜5 項目で、最大の項目を強調したいときに使う。小さい項目は「その他」にまとめ、ラベルが密集しないようにする。項目が 6 つ以上、または割合の大小を細かく比べるときは、横棒（hbar）か積み上げ（stacked）にする。強調するのは最大の 1 項目（highlight は 0 始まりの番号）だけ。凡例は円の直下に付く。
      デザイン1との違い: 右に内訳表（原因ごとの内容・件数・構成比の棒）と基調色の帯がつき、円は左半分になる。件数まで表で読ませたいときに使う。
-     差し替える所: 図表タイトル・data-chart・表の 4 行（原因・内容・件数・構成比・棒の幅）・表の下の注・合計の帯・注。 -->
+     差し替える所: チャートタイトル・data-chart・表の 4 行（原因・内容・件数・構成比・棒の幅）・表の下の注・合計の帯・注釈。 -->
 <section class="slide" data-layout="chart">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害原因の内訳</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">障害原因の内訳</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の半数は回線断が原因で、機器故障と合わせて8割を占めるため、回線対策を優先する</div>
-  <div class="pp-text b" data-note="円グラフ：最大の 1 項目だけ強調色。凡例は円の直下" data-role="body" style="left:64px;top:186px;width:596px;height:32px;font-size:21px">障害原因の内訳（2025年度、件数の構成比、%）</div>
-  <div class="pp-chart" data-overlap data-note="円グラフ：最大の 1 項目だけ強調色。凡例は円の直下" data-chart='{"type":"pie","categories":["回線断","機器故障","設定ミス","その他"],"series":[{"name":"構成比（%）","values":[52,28,12,8]}],"highlight":0,"fmt":"0\"%\""}' style="left:64px;top:224px;width:596px;height:360px"></div>
-  <div class="pp-text b" data-note="内訳表：件数の棒は値に比例。主張の 2 項目だけ濃い棒" data-role="body" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">原因ごとの件数と構成比（2025年度）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の半数は回線断が原因で、機器故障と合わせて8割を占めるため、回線対策を優先する</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="円グラフ：最大の 1 項目だけ強調色。凡例は円の直下" data-role="body" style="left:64px;top:186px;width:596px;height:32px;font-size:21px">障害原因の内訳（2025年度、件数の構成比、%）</div>
+  <div class="pp-chart" data-part="チャート" data-overlap data-note="円グラフ：最大の 1 項目だけ強調色。凡例は円の直下" data-chart='{"type":"pie","categories":["回線断","機器故障","設定ミス","その他"],"series":[{"name":"構成比（%）","values":[52,28,12,8]}],"highlight":0,"fmt":"0\"%\""}' style="left:64px;top:224px;width:596px;height:360px"></div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="内訳表：件数の棒は値に比例。主張の 2 項目だけ濃い棒" data-role="body" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">原因ごとの件数と構成比（2025年度）</div>
   <div class="pp-shape f-soft" data-note="内訳表：件数の棒は値に比例。主張の 2 項目だけ濃い棒" style="left:688px;top:224px;width:528px;height:360px"></div>
   <div class="pp-text" data-role="caption" style="left:710px;top:233px;width:90px;height:22px">原因</div>
   <div class="pp-text" data-role="caption" style="left:810px;top:233px;width:150px;height:22px">主な内容</div>
@@ -53,5 +53,5 @@
   <div class="pp-shape f-accent" data-note="合計の帯：結論の数字を、基調色の面で締める" style="left:700px;top:492px;width:504px;height:88px"></div>
   <div class="pp-text t-white b" style="left:716px;top:501px;width:290px;height:36px;font-size:22px">上位2原因 121件</div>
   <div class="pp-text t-white b right" style="left:1010px;top:501px;width:178px;height:36px;font-size:22px">全体の80%</div>
-  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 構成比は2025年度の障害チケット151件の原因分類（%）。その他は停電・電源と作業ミス<br>→ 対策は、回線の冗長化と機器の保守更新を優先する</div>
+  <div class="pp-text" data-part="注釈" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 構成比は2025年度の障害チケット151件の原因分類（%）。その他は停電・電源と作業ミス<br>→ 対策は、回線の冗長化と機器の保守更新を優先する</div>
 </section>

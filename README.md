@@ -2,7 +2,7 @@
 
 ビジネス上の承認文書（稟議・提案・計画）を、コンサル資料のテイストで作る Claude Code プラグイン（スキル 5 つ）。設計図と原稿の承認 → HTML スライド案（各 3 案）の選択 → 最終 HTML の承認 → 編集可能な PowerPoint(.pptx) の順に進める。Windows 専用。
 
-- 本文を画像にせず、PowerPoint の図形・文字・表・グラフで出力する（編集できる）。例外は**絵**（`pp-picture`）: 型に当てはまらない図（NW 構成図・トラフィックフロー・障害動作・自己紹介・画面への注釈）は、SVG で描いて 1 枚の画像として貼る（絵の中身は PowerPoint で直せないので、直すときは描き直す。題・リード文・注は編集できる文字）。
+- 本文を画像にせず、PowerPoint の図形・文字・表・グラフで出力する（編集できる）。例外は**絵**（`pp-picture`）: 型に当てはまらない図（NW 構成図・トラフィックフロー・障害動作・自己紹介・画面への注釈）は、SVG で描いて 1 枚の画像として貼る（絵の中身は PowerPoint で直せないので、直すときは描き直す。題・ヘッドメッセージ・注釈は編集できる文字）。
 - 13.33×7.5in（16:9）、BIZ UDPゴシック、無彩色＋基調 1 色＋強調 1 色。配色はプリセット（紺・緑・灰）か、基調色 `#RRGGBB` の指定で変えられる。
 - 利用者の PowerPoint テンプレート（`.potx`／`.pptx`）がある場合は、**表紙・裏表紙・ヘッダー・フッター**がそれに従う（マスター／レイアウトが残る）。フォントと配色はテンプレートにかかわらず固定。
 - 既存の PPTX の編集と、テンプレートの本文スライドの流用には使わない。
@@ -87,7 +87,7 @@ Playwright MCP はプラグインに含まれない。案の選択と回答の�
 
 `plugins/pptx-deck/assets/components/` に 51 型・147 本ある（一覧は `部品見本.html`）。1 つの型に最大 3 つのデザイン（`<型>.html`・`<型>-d2.html`・`<型>-d3.html`）があり、同じ原稿のまま形だけを選べる（`cover`・`effort`・`relation` は 1 つ）。各部品の先頭のコメントに「用途」と「差し替える所」（デザイン 2・3 は「デザイン 1 との違い」）がある。設計図の「型」はここから選び、第 1 候補・次点は `references/patterns.md`（型の選定表）で決める。
 
-**共通の構成** 題（名詞句 20 字以内）→ リード文の帯（判断を言い切る 30〜60 字）→ 図表タイトル → 図表本体 → 注。**判断を求める型**（`decision`・`summary`・`decisions`・`argument`・`options`・`raci`・`actions`・`gantt`）は最下部に論点ボックス（「論点　〜の可否」）を置く。**情報の型**は論点ボックスを置かず、注の末尾を「→ 含意」で締める。
+**共通の構成** 題（名詞句 20 字以内）→ ヘッドメッセージの帯（判断を言い切る 30〜60 字）→ チャートタイトル → 図表本体 → 注。**判断を求める型**（`decision`・`summary`・`decisions`・`argument`・`options`・`raci`・`actions`・`gantt`）は最下部にメッセージボックス（「論点　〜の可否」）を置く。**情報の型**はメッセージボックスを置かず、注釈の末尾を「→ 含意」で締める。
 
 問い（何を見せたいか）で 9 区分に分ける。
 
@@ -122,8 +122,8 @@ Playwright MCP はプラグインに含まれない。案の選択と回答の�
 | 場所 | 内容 |
 |---|---|
 | `.claude-plugin/marketplace.json` | プラグインの配布の定義（マーケットプレイス名 `pptx-deck-market`） |
-| `plugins/pptx-deck/`（プラグイン） | `.claude-plugin/plugin.json`（プラグインの定義）、`run.py`（コマンドの入口）、`requirements.txt`（仮想環境に入れるもの）、`skills/`（`create`・`revise`・`rebuild`・`review-plan`・`diagram` の各 `SKILL.md`）、`pptx_deck/`（Python のコード）、`references/`（SKILL.md から参照する資料。`components.md`＝型の一覧と使い分け、`patterns.md`＝型の選定表、`html-rules.md`＝HTML の書き方と描画の規準、`head-rules.md`＝題とリード文（ヘッド）の規則、`review-flow.md`＝スライド案と最終 HTML のレビューの細則、`check-rules.md`＝検査の rule と直し方、`picture-craft.md`＝絵の作法）、`assets/` |
-| `plugins/pptx-deck/assets/` | `components/`（51 型・147 本の HTML 断片。1 型に最大 3 つのデザイン。稟議・障害報告・検証計画・検証結果報告・業務フロー・設計書・設備増減の計画を作れる型をそろえる。本文の部品は「題 → リード文 → 図表タイトル → 本体 → 注」の構成で、判断を求める型は最下部に論点ボックスを置く）、`web/`（`base.css`・`chart-preview.js`。作業フォルダとレビューページが使う）、`icons/`（アイコン 14 種。それぞれ `accent`・`emphasis`・`white`・`gray` の 4 色）、`template/standard.potx`（既定のテンプレート）、`sample/`（設計図と原稿の書式の手本）、`pictures/parts.svg`（絵の部品。機器アイコン 12 種と矢じり）、`components/pictures/`（絵の見本 5 種） |
+| `plugins/pptx-deck/`（プラグイン） | `.claude-plugin/plugin.json`（プラグインの定義）、`run.py`（コマンドの入口）、`requirements.txt`（仮想環境に入れるもの）、`skills/`（`create`・`revise`・`rebuild`・`review-plan`・`diagram` の各 `SKILL.md`）、`pptx_deck/`（Python のコード）、`references/`（SKILL.md から参照する資料。`components.md`＝型の一覧と使い分け、`patterns.md`＝型の選定表、`html-rules.md`＝HTML の書き方と描画の規準、`head-rules.md`＝題とヘッドメッセージ（ヘッド）の規則、`review-flow.md`＝スライド案と最終 HTML のレビューの細則、`check-rules.md`＝検査の rule と直し方、`picture-craft.md`＝絵の作法）、`assets/` |
+| `plugins/pptx-deck/assets/` | `components/`（51 型・147 本の HTML 断片。1 型に最大 3 つのデザイン。稟議・障害報告・検証計画・検証結果報告・業務フロー・設計書・設備増減の計画を作れる型をそろえる。本文の部品は「題 → ヘッドメッセージ → チャートタイトル → 本体 → 注釈」の構成で、判断を求める型は最下部にメッセージボックスを置く）、`web/`（`base.css`・`chart-preview.js`。作業フォルダとレビューページが使う）、`icons/`（アイコン 14 種。それぞれ `accent`・`emphasis`・`white`・`gray` の 4 色）、`template/standard.potx`（既定のテンプレート）、`sample/`（設計図と原稿の書式の手本）、`pictures/parts.svg`（絵の部品。機器アイコン 12 種と矢じり）、`components/pictures/`（絵の見本 5 種） |
 | `tests/` | 単体・通しのテスト（`unittest`。実行方法は後述） |
 | `部品見本.html`（リポジトリ直下） | 部品 51 型・147 本の見本を 9 区分で 1 ページに並べた一覧（ブラウザで開く。画像はファイルに埋め込み済み）。画像は以前に描いたもので、このリポジトリには作り直す手順（生成スクリプト）がまだない。部品を足したり直したりしても、見本は自動では更新されない |
 | 実行したディレクトリ直下の `<名前>/` | `<名前>.pptx`（成果物）と `source/`（`design.md`・`script.md`・`slides/`・`answers-*.md`・`history/`（絵の往復の版）・`material/`（利用者の画像の素材）・`template.json` など。作業中だけ `variants.html`・`final.html`・`final-review.html` ほか） |
@@ -162,9 +162,9 @@ Playwright MCP はプラグインに含まれない。案の選択と回答の�
 
 `build` の前後に、文字のはみ出し、図形の重なり（テンプレートのヘッダー・フッターを含む）、文字サイズの下限（本文 14pt・注記 10pt）、文字のコントラスト比（4.5:1。大きい文字は 3:1）、画像の使い方（本文を画像にしない。絵は `pp-picture`）を検査する。絵は、代替テキスト（`data-alt`）・中の文字の大きさ（14pt 以上）・絵の外へのはみ出し・色（テーマの変数以外は警告）・文字どうしの重なり（警告）も見る。絵の内部の重なりは検査しない。あわせて、ダッシュ（—）、同じ文言の 1 枚内の重複、1〜2 字の孤立改行、本文の下の空白帯を警告する（警告では出力を止めない）。違反は JSON で返る。破線・点線は PowerPoint の線種で書き出し、グラフの軸は `data-chart` の `axis` で最小・最大・目盛を固定できる。
 
-`lint-script` は原稿の書式と題（20 字以内の名詞句）、見出し〔リード文〕の規則（30〜60 字・判断語か接続語・「A。B」の二段構え・ダッシュ・「本ページ」などの自己言及・隣り合う 3 枚の文型の連続）、論点の個数（3〜6）を検査する。
+`lint-script` は原稿の書式と題（20 字以内の名詞句）、ヘッドメッセージの規則（30〜60 字・判断語か接続語・「A。B」の二段構え・ダッシュ・「本ページ」などの自己言及・隣り合う 3 枚の文型の連続）、論点の個数（3〜6）を検査する。
 
-本文スライドに「題」がなければ、`lint-script` が案内を出す（エラーではない。見出しはそのままリード文になるので、`- 題:` を足す）。ヘッドの規則（判断語・1 行 41 字を目安とする長さなど）で `lint-script` に落ちたときは、直すか、正しい見出しなら `pptx_deck/script_lint.py` の `_JUDGE` に語を足す。
+本文スライドに「題」がなければ、`lint-script` が案内を出す（エラーではない。ヘッドメッセージはそのまま題の代わりになるので、`- 題:` を足す）。ヘッドの規則（判断語・1 行 41 字を目安とする長さなど）で `lint-script` に落ちたときは、直すか、正しい見出しなら `pptx_deck/script_lint.py` の `_JUDGE` に語を足す。
 
 古い作業フォルダは `base.css`・`theme.css`・`chart-preview.js` が `init` 時の写しなので、新しい部品（`f-soft2`・`dashed`・`axis`・絵の `pp-picture`・`sv-f-*`）を使うには `init --force` で更新する（`reopen` は派生ファイルを作り直す）（`script.md` などの既存ファイルは消えない。`design.md` は既にあれば上書きしない）。
 

@@ -1,12 +1,12 @@
 <!-- 用途: 業務フロー（担当部門をまたぐ手順）。レーン＝担当部門を上から下へ帯で並べ（レーン名は左の基調色の面、帯はパネル地と白の交互）、工程が左から右へ流れる。工程の箱（白＋罫線）を担当のレーンに置き、矢じり付きの矢印でつなぐ（レーンをまたぐときは、箱の下または上から縦線で次のレーンへ移り、横の矢印で次の箱に入る）。
      判断は箱に「◇ 〜判定」と書き、分岐の矢印に Yes／No を注記（採られない経路は破線）。各箱に名前と所要（注記）、上に累計の経過時間。待ちが生じる 1 工程の所要だけ強調色（1 枚 1 点）。最下部にパネル地の帯で合計の内訳。情報の型（注の末尾を「→ 含意」で締める）。
      段数の目安: 横レーン（このデザイン）は工程 7 つまで（箱 130px×7 列）。8 段以上はデザイン2（縦レーン）。待ちの長さを棒で見せたいときはデザイン3。一本道の手順は flow-h・flow-v、時刻の記録は timeline。
-     差し替える所: レーン 4 つ（名前と注記）・工程 7 つ（名前・所要・担当レーン。箱は幅 130px、x は 212＋145×順番）・判断の Yes／No・累計の経過時間・帯の文・注。 -->
+     差し替える所: レーン 4 つ（名前と注記）・工程 7 つ（名前・所要・担当レーン。箱は幅 130px、x は 212＋145×順番）・判断の Yes／No・累計の経過時間・帯の文・注釈。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応の業務フロー</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応の業務フロー</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応の所要10時間の半分は部門をまたぐ待ちで生じ、遠隔化はここに絞るべきだ</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の業務フロー（現行、2026年7月14日の実績。レーン＝担当部門、時間）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応の所要10時間の半分は部門をまたぐ待ちで生じ、遠隔化はここに絞るべきだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の業務フロー（現行、2026年7月14日の実績。レーン＝担当部門、時間）</div>
   <div class="pp-text" data-note="累計の経過時間：工程の列ごとに、着手時点の累計を上に書く" data-role="caption" style="left:64px;top:229px;width:140px;height:20px">累計の経過時間</div>
   <div class="pp-text center" data-note="累計の経過時間：工程の列ごとに、着手時点の累計を上に書く" data-role="caption" style="left:212px;top:229px;width:130px;height:20px">0.0h</div>
   <div class="pp-text center" data-role="caption" style="left:357px;top:229px;width:130px;height:20px">0.5h</div>
@@ -54,7 +54,7 @@
 
   <div class="pp-shape f-white" style="left:647px;top:489px;width:130px;height:58px"></div>
   <div class="pp-text b center" style="left:651px;top:496px;width:122px;height:28px;font-size:19px">到着待ち</div>
-  <div class="pp-text b t-emph center" data-note="待ちの工程：所要だけ強調色（1 点）" data-role="caption" style="left:651px;top:523px;width:122px;height:20px">出動要請・3.0h</div>
+  <div class="pp-text b t-emph center" data-part="アクセント" data-note="待ちの工程：所要だけ強調色（1 点）" data-role="caption" style="left:651px;top:523px;width:122px;height:20px">出動要請・3.0h</div>
   <div class="pp-line" data-arrow="end" style="left:777px;top:517px;width:15px;height:2px;background:var(--text-sub)"></div>
 
   <div class="pp-shape f-white" style="left:792px;top:489px;width:130px;height:58px"></div>
@@ -75,5 +75,5 @@
 
   <div class="pp-shape f-soft" data-note="合計の帯：作業と待ちの内訳を数字で示す" style="left:64px;top:563px;width:1152px;height:40px"></div>
   <div class="pp-text" data-note="合計の帯：作業と待ちの内訳を数字で示す" style="left:84px;top:566px;width:1112px;height:30px;font-size:19px"><b>合計 10.0h。</b>作業 5.0h、待ち 5.0h（到着3.0h・承認2.0h）。待ちはいずれも部門をまたぐ受け渡しで生じる</div>
-  <div class="pp-text" data-note="注：所要の出所と、フローから言える含意" data-role="caption" style="left:64px;top:610px;width:1152px;height:22px">注: 所要は2026年7月14日の対応記録。→ 到着待ちと承認待ちを遠隔復旧と自動切替で消せば、同じフローでも合計は5.0hに縮む</div>
+  <div class="pp-text" data-part="注釈" data-note="注：所要の出所と、フローから言える含意" data-role="caption" style="left:64px;top:610px;width:1152px;height:22px">注: 所要は2026年7月14日の対応記録。→ 到着待ちと承認待ちを遠隔復旧と自動切替で消せば、同じフローでも合計は5.0hに縮む</div>
 </section>

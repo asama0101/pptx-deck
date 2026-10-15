@@ -1,12 +1,12 @@
 <!-- 用途: 自己紹介。中央に人物、周りに 4 つの吹き出し（経歴・得意・最近・好きなど）を置く。線を手描き風に揺らして、親しみのある場面にも使える（filter の wobble を外せば、きちんとした見た目になる）。
-     絵（pp-picture）は 1 枚の画像として PPTX に貼られ、PowerPoint では直せない。題・リード文・図表タイトル・注は編集できる文字。直すときは Claude に頼んで描き直す。
-     差し替える所: 吹き出しの見出しと文（1 行 16 字まで・2 行）・氏名（素材に無ければ xx）・強調の吹き出し（1 枚 1 点。ほかは基調色の線）・data-alt・注。素材に無い経歴・数字は作らず xx。
+     絵（pp-picture）は 1 枚の画像として PPTX に貼られ、PowerPoint では直せない。題・ヘッドメッセージ・チャートタイトル・注釈は編集できる文字。直すときは Claude に頼んで描き直す。
+     差し替える所: 吹き出しの見出しと文（1 行 16 字まで・2 行）・氏名（素材に無ければ xx）・強調の吹き出し（1 枚 1 点。ほかは基調色の線）・data-alt・注釈。素材に無い経歴・数字は作らず xx。
      守ること: 絵の中の色は sv-f-*・sv-s-* のクラスだけ。文字は 20px（15pt）以上。吹き出しは左右・上下で同じ大きさにそろえる。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">自己紹介</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">自己紹介</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">ネットワーク運用の経験を生かし、障害の切り分けとクラウド移行の企画に取り組んでいる</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">私について（経歴・得意なこと・最近の取り組み・好きなこと）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">ネットワーク運用の経験を生かし、障害の切り分けとクラウド移行の企画に取り組んでいる</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">私について（経歴・得意なこと・最近の取り組み・好きなこと）</div>
   <div class="pp-picture" data-alt="中央に人物のアイコンがあり、その周りに、経歴、得意、最近、好きの 4 つの吹き出しが線でつながっている自己紹介の図。最近の取り組みの吹き出しだけが強調色の枠になっている。" style="left:64px;top:224px;width:1152px;height:366px">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1152 366" font-size="20">
       <defs>
@@ -32,5 +32,5 @@
       <text x="756" y="306">ランニングとコーヒー</text>
     </svg>
   </div>
-  <div class="pp-text" data-note="注：強調は最近の取り組み 1 つだけ。経歴の年数は素材の値（無ければ xx）" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 経歴の年数は xx。強調の枠は、今の仕事に直結する取り組み<br>→ 運用の現場感と企画の両方を持つため、移行の計画づくりで力を発揮できる</div>
+  <div class="pp-text" data-part="注釈" data-note="注：強調は最近の取り組み 1 つだけ。経歴の年数は素材の値（無ければ xx）" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 経歴の年数は xx。強調の枠は、今の仕事に直結する取り組み<br>→ 運用の現場感と企画の両方を持つため、移行の計画づくりで力を発揮できる</div>
 </section>

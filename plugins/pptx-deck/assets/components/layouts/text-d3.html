@@ -1,12 +1,12 @@
 <!-- 用途: 文だけのページ（ルール・前提・定義・想定問答など、図にならない説明）。見出し（短い名詞）と本文（2 行・約 60 字。数字を必ず入れる）を 1 組にして 3 組並べる。3 組が上限。
      3 デザインは同じ原稿で差し替えられる: デザイン1＝見出し＋本文、デザイン2＝質問と回答（見出しを質問文にした Q&A）、デザイン3＝アイコン＋話し言葉（見出しにアイコンを添え、本文を話し言葉で書く）。
      デザイン1との違い: 見出しの左に基調色の丸と白いアイコン（data-role="icon"）を添え、本文の要点を話し言葉の 1 文（24px）で大きく言い、本文は根拠として小さく下に置く。利用者・拠点に向けた約束や方針に使う。
-     差し替える所: 題・リード文・図表タイトル・3 組のアイコン・見出し・話し言葉の 1 文・本文・注。 -->
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・3 組のアイコン・見出し・話し言葉の 1 文・本文・注釈。 -->
 <section class="slide" data-layout="content">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">運用の3つの約束</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">運用の3つの約束</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">夜間の切替は、短い停止・事前の承認・すぐ戻す基準の3つを守って進める</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">夜間切替の運用ルール（2026年10月版）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">夜間の切替は、短い停止・事前の承認・すぐ戻す基準の3つを守って進める</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">夜間切替の運用ルール（2026年10月版）</div>
   <div class="pp-shape f-accent" data-note="アイコンの丸：3 つを同じ色合いでそろえる（基調色の丸に白いアイコン）" data-shape="ellipse" style="left:64px;top:234px;width:84px;height:84px"></div>
   <img class="pp-image" src="icons/clock-white.svg" alt="作業時間帯" data-role="icon" data-overlap style="left:82px;top:252px;width:48px;height:48px">
   <div class="pp-text b t-accent" data-note="見出し：項目を短い名詞で言う" style="left:172px;top:224px;width:1044px;height:32px;font-size:24px">作業時間帯</div>
@@ -24,5 +24,5 @@
   <div class="pp-text b t-accent" style="left:172px;top:468px;width:1044px;height:32px;font-size:24px">切戻しの基準</div>
   <div class="pp-text b" style="left:172px;top:502px;width:1044px;height:32px;font-size:24px">15分でつながらなければ、すぐ戻します</div>
   <div class="pp-text" data-role="caption" style="left:172px;top:546px;width:1044px;height:24px">切替後15分以内に疎通確認が取れないときは、旧回線へ切り戻す。切戻しは作業担当の判断で行い、理由を作業記録に残す</div>
-  <div class="pp-text" data-note="注：出典・前提と、→ 含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 運用ルールは2026年10月の運用会議で承認。対象は48拠点の回線切替作業<br>→ 3項目のどれかを満たさない作業は、実施せずに延期する</div>
+  <div class="pp-text" data-part="注釈" data-note="注：出典・前提と、→ 含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 運用ルールは2026年10月の運用会議で承認。対象は48拠点の回線切替作業<br>→ 3項目のどれかを満たさない作業は、実施せずに延期する</div>
 </section>

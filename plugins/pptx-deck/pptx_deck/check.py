@@ -3,6 +3,7 @@ import re
 from pathlib import Path
 
 from . import theme
+from . import template
 from .template import TemplateInfo
 
 SLIDE_W, SLIDE_H = 1280, 720
@@ -15,7 +16,7 @@ SAME_WORD_MIN = 6                              # 同じ文言の重複を数え�
 _DASH = re.compile("[—―─]")
 SHAPE_KINDS = {"rect", "round", "ellipse", "triangle"}        # build.py の SHAPES と同じ。これ以外は build が止まる
 PICTURE_NAME = "pp-picture"                                  # build.py の PICTURE_NAME と同じ（絵として貼った画像の名前）
-TITLE_MAX, LEAD_MIN, LEAD_MAX = 20, 30, 60                  # 題（短い名詞句）の字数の上限、リード文（判断を言い切る 1 文）の字数
+TITLE_MAX, LEAD_MIN, LEAD_MAX = 20, 30, 60                  # 題（短い名詞句）の字数の上限、ヘッドメッセージ（判断を言い切る 1 文）の字数
 
 
 
@@ -71,7 +72,7 @@ def _check_picture(e, n, label):
 
 def check_model(model, info: TemplateInfo):
     out = []
-    keepout = [r.to_dict() for r in info.keepout]
+    body_keepout = [r.to_dict() for r in info.keepout]
     for s in model:
         n = s["index"]
         els = s["elements"]
@@ -84,16 +85,16 @@ def check_model(model, info: TemplateInfo):
         if s["layout"] in ("content", "diagram", "table", "chart"):
             leads = [e for e in els if e["kind"] == "text" and e.get("role") == "lead"]
             if not leads:
-                out.append(_v("leadMissing", n, "リード文（data-role=\"lead\"。判断を言い切る 1 文、30〜60 字）がありません", "warning"))
+                out.append(_v("leadMissing", n, "ヘッドメッセージ（data-role=\"lead\"。判断を言い切る 1 文、30〜60 字）がありません", "warning"))
             else:
                 lt = "".join(r.get("text", "") for pa in leads[0]["paras"] for r in pa["runs"]).strip()
                 if not LEAD_MIN <= len(lt) <= LEAD_MAX:
-                    out.append(_v("leadLength", n, f"リード文が {len(lt)} 字です（{LEAD_MIN}〜{LEAD_MAX} 字。2 行までに収める）", "warning"))
+                    out.append(_v("leadLength", n, f"ヘッドメッセージが {len(lt)} 字です（{LEAD_MIN}〜{LEAD_MAX} 字。2 行までに収める）", "warning"))
             ttl = [e for e in els if e["kind"] == "text" and (e.get("role") == "title" or e.get("ph") == "title")]
             if ttl:
                 tt = "".join(r.get("text", "") for pa in ttl[0]["paras"] for r in pa["runs"]).strip()
                 if len(tt) > TITLE_MAX:
-                    out.append(_v("titleLength", n, f"題が {len(tt)} 字です（{TITLE_MAX} 字以内の短い名詞句。判断はリード文に書く）", "warning"))
+                    out.append(_v("titleLength", n, f"題が {len(tt)} 字です（{TITLE_MAX} 字以内の短い名詞句。判断はヘッドメッセージに書く）", "warning"))
         texts = []
         for e in els:
             if e["kind"] == "text":

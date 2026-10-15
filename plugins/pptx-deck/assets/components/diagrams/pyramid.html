@@ -1,11 +1,11 @@
 <!-- 用途: 階層・優先度・段階（各層に名前、右に範囲と数値）。三角形 1 つ（淡い階調 f-light。大きな面に濃い基調色は使わない）を白い線で 4 層に区切り（幅 640px、層の高さはそろえる）、層の中に名前を書く。
      右に各層の説明（対応の範囲と件数・影響時間・復旧時間）。各層と説明を横線で結び、説明どうしは細い線で区切る。注の末尾に、分布から言える含意を 1 文。
-     差し替える所: 層の名前（短く）・右の説明 3 行（範囲｜件数・影響・復旧｜注記）・注。 -->
+     差し替える所: 層の名前（短く）・右の説明 3 行（範囲｜件数・影響・復旧｜注記）・注釈。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応の階層</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応の階層</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の4階層のうち、件数の8割はL1で閉じ、設計チームの対応は年40件に絞れている</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応のエスカレーション階層（FY2025実績。年間の件数・影響時間・平均の復旧時間）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の4階層のうち、件数の8割はL1で閉じ、設計チームの対応は年40件に絞れている</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応のエスカレーション階層（FY2025実績。年間の件数・影響時間・平均の復旧時間）</div>
   <div class="pp-shape f-light" data-note="三角形 1 つを白い線で 4 層に区切る。上ほど影響が大きく、件数は少ない" data-shape="triangle" style="left:80px;top:224px;width:640px;height:364px"></div>
   <div class="pp-line" data-overlap style="left:60px;top:315px;width:680px;height:6px;background:#FFFFFF"></div>
   <div class="pp-line" data-overlap style="left:60px;top:406px;width:680px;height:6px;background:#FFFFFF"></div>
@@ -33,5 +33,5 @@
   <div class="pp-text b" style="left:760px;top:504px;width:456px;height:28px;font-size:19px">設定変更・利用者の問い合わせ</div>
   <div class="pp-text" style="left:760px;top:531px;width:456px;height:28px;font-size:19px">900件・影響60時間（12%）・復旧0.2h</div>
   <div class="pp-text" data-role="caption" style="left:760px;top:558px;width:456px;height:20px">ヘルプデスクで完結。件数の80%（900/1,132件）</div>
-  <div class="pp-text" data-note="注：数値の出所と、分布から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 件数・影響時間はFY2025の障害記録（計1,132件・480時間）。復旧は検知から復旧までの平均<br>→ 影響時間の7割（330時間）は重大障害とL3の52件で生じており、対策の投資はこの52件に集中させればよい</div>
+  <div class="pp-text" data-part="注釈" data-note="注：数値の出所と、分布から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 件数・影響時間はFY2025の障害記録（計1,132件・480時間）。復旧は検知から復旧までの平均<br>→ 影響時間の7割（330時間）は重大障害とL3の52件で生じており、対策の投資はこの52件に集中させればよい</div>
 </section>

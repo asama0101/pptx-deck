@@ -218,6 +218,6 @@
       e.table = { xs, rows };
       return e;
     });
-    return { index: si + 1, layout: slide.dataset.layout || 'content', bg: slideBg, elements };
+    return { index: si + 1, layout: slide.dataset.layout || 'content', type: slide.dataset.type || '', bg: slideBg, elements };
   });
 }

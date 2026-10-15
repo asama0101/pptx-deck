@@ -58,7 +58,7 @@ class PictureBuildTest(unittest.TestCase):
             self.assertEqual(im.size, (1152 * 3, 366 * 3))           # 3 倍の解像度
             self.assertEqual(im.mode, "RGBA")
             self.assertEqual(im.getpixel((0, 0))[3], 0)               # 透過（下地・ほかの部品が写り込まない）
-            # 題・リード文・注は、編集できる文字のまま
+            # 題・ヘッドメッセージ・注釈は、編集できる文字のまま
             texts = [s.text_frame.text for s in prs.slides[0].shapes if s.has_text_frame]
             self.assertTrue(any("通信経路" in t for t in texts))
             self.assertTrue(any("遮断が必要" in t for t in texts))

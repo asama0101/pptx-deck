@@ -1,11 +1,11 @@
 <!-- 用途: 検証の表（計画と結果を同じ型で）。検証計画は d1、検証結果は d2、カードで見せるときは d3（このカード）。d1 と同じ 6 項目・同じ原稿で差し替えられる。基準は必ず数値で書く（「問題ないこと」は書かない）。
      デザイン1との違い: 表ではなく、項目ごとの横長カードにする。左に No の丸と項目・担当、中央に観点と方法を 2 行で重ね、右端の基準だけパネル地の箱に太字で入れて「全項目に数値の基準がある」ことを見せる。
-     差し替える所: 図表タイトル・行 6（項目・観点は 1 行・基準の数値・方法・担当）・注。機能一覧なら見出しを「項目・担当｜観点・方法→概要・方式｜合格基準→要件値」に読み替える。 -->
+     差し替える所: チャートタイトル・行 6（項目・観点は 1 行・基準の数値・方法・担当）・注釈。機能一覧なら見出しを「項目・担当｜観点・方法→概要・方式｜合格基準→要件値」に読み替える。 -->
 <section class="slide" data-layout="table">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">検証項目</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">検証項目</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">検証6項目はいずれも数値の合格基準を持つため、切替の可否を客観的に判定できる</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の検証項目と合格基準（PoC 2拠点、2027年1月。判定は情報システム委員会）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">検証6項目はいずれも数値の合格基準を持つため、切替の可否を客観的に判定できる</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の検証項目と合格基準（PoC 2拠点、2027年1月。判定は情報システム委員会）</div>
   <div class="pp-text b t-sub" style="left:114px;top:226px;width:186px;height:24px;font-size:19px;line-height:1.2">項目・担当</div>
   <div class="pp-text b t-sub" style="left:310px;top:226px;width:560px;height:24px;font-size:19px;line-height:1.2">観点・方法</div>
   <div class="pp-text b t-sub" style="left:890px;top:226px;width:320px;height:24px;font-size:19px;line-height:1.2">合格基準</div>
@@ -51,5 +51,5 @@
   <div class="pp-text" style="left:310px;top:537px;width:560px;height:46px;font-size:19px;line-height:1.2">切替に失敗したときにMPLSへ戻せる<br><span style="color:var(--text-sub)">リハーサルで戻しを実施し実測</span></div>
   <div class="pp-shape f-soft" style="left:880px;top:538px;width:330px;height:44px"></div>
   <div class="pp-text b" style="left:892px;top:548px;width:306px;height:24px;font-size:19px;line-height:1.25">1時間以内に復旧、手順書どおり</div>
-  <div class="pp-text" data-note="注：検証環境と判定日、基準を満たさないときの扱いを含意で締める" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 環境は本社とA工場の2拠点のPoC構成（本番と同じ機器・回線）。判定は2027年1月14日、経営会議（1/15）の前日<br>→ 6項目のうち1つでも基準を満たさなければ、本社の切替は次回の経営会議（3月）まで延期する</div>
+  <div class="pp-text" data-part="注釈" data-note="注：検証環境と判定日、基準を満たさないときの扱いを含意で締める" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 環境は本社とA工場の2拠点のPoC構成（本番と同じ機器・回線）。判定は2027年1月14日、経営会議（1/15）の前日<br>→ 6項目のうち1つでも基準を満たさなければ、本社の切替は次回の経営会議（3月）まで延期する</div>
 </section>

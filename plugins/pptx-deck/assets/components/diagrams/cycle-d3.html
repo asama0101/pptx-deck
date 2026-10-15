@@ -1,12 +1,12 @@
 <!-- 用途: 繰り返しの運用（要素が 3〜6 つのサイクル。見本は 4 つ：計画 → 実行 → 評価 → 改善）。各要素に「番号・名前・説明」を置き、下の全幅の帯に周期と KPI を書く（基調色の面。1 枚 1 点）。要素が 2 つ（往復）のときは cycle-2。
      デザイン1との違い: 輪をやめて、要素を行に積み、最後の行から右の縦線で最初の行へ戻す（U ターン）。説明を 1 行で読ませたいときに使う。
      要素を 5〜6 に増やすとき: 行の高さを 44px にし、y＝228＋50×順番で 6 行まで。
-     差し替える所: 題・リード文・図表タイトル・要素の名前と説明・下の帯の周期と KPI・注。 -->
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・要素の名前と説明・下の帯の周期と KPI・注釈。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">運用サイクル</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">運用は四半期に1周の見直しで回し、1周ごとに稼働率と費用を経営会議へ報告する</div>
-  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN運用サイクル（四半期ごと。4段階）</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">運用サイクル</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">運用は四半期に1周の見直しで回し、1周ごとに稼働率と費用を経営会議へ報告する</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN運用サイクル（四半期ごと。4段階）</div>
   <div class="pp-shape f-soft" data-note="要素の行：番号・名前・説明を横に並べて縦に積む" style="left:64px;top:228px;width:1040px;height:64px"></div>
   <div class="pp-shape f-light" data-shape="ellipse" data-overlap style="left:80px;top:236px;width:48px;height:48px"></div>
   <div class="pp-text b t-dark center" data-overlap style="left:80px;top:241px;width:48px;height:36px;font-size:24px">1</div>
@@ -35,5 +35,5 @@
   <div class="pp-line hr" data-arrow="end" data-dir="rev" style="left:1104px;top:259px;width:56px;height:3px;background:var(--accent)"></div>
   <div class="pp-shape f-accent" data-note="下の帯：周期と KPI（基調色の面）" style="left:64px;top:532px;width:1152px;height:54px"></div>
   <div class="pp-text t-white b center" data-overlap style="left:64px;top:537px;width:1152px;height:36px;font-size:24px">四半期に1周　KPI 稼働率99.9%以上・運用費 年1,200万円以内</div>
-  <div class="pp-text" data-note="注：指標の定義と、含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 指標の定義は経営会議への四半期報告と同じ。障害対応は月あたりの対応時間<br>→ 四半期報告だけで回せるので、経営会議の審議は例外が出たときに限る</div>
+  <div class="pp-text" data-part="注釈" data-note="注：指標の定義と、含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 指標の定義は経営会議への四半期報告と同じ。障害対応は月あたりの対応時間<br>→ 四半期報告だけで回せるので、経営会議の審議は例外が出たときに限る</div>
 </section>

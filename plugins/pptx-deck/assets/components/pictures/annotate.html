@@ -1,14 +1,14 @@
 <!-- 用途: 画面・写真・既存の図に、番号付きの注釈（丸・矢印・枠）を重ねて説明する。右に番号の凡例を置く。土台は絵の中の <image> でも、SVG で描いた画面でもよい。
      土台に利用者の画像を使うとき: 画像を source/material/ に置き、下の「画面の絵」の代わりに <image href="material/xxx.png" x="8" y="8" width="720" height="350" preserveAspectRatio="xMidYMid meet"/> を置く。画像の中身は PowerPoint で直せない。
      機密: 画像の文字・IP アドレス・機器名は、そのまま PPTX に埋め込まれる。伏せる所は、画像の上に sv-f-dark の四角を重ねて隠す（元の画像は渡さない）。
-     絵（pp-picture）は 1 枚の画像として PPTX に貼られ、PowerPoint では直せない。題・リード文・図表タイトル・注は編集できる文字。直すときは Claude に頼んで描き直す。
-     差し替える所: 土台・注釈の丸と矢印と枠・凡例の文言（1 行 18 字まで）・強調（最重要の 1 つ。1 枚 1 点）・data-alt・注。
+     絵（pp-picture）は 1 枚の画像として PPTX に貼られ、PowerPoint では直せない。題・ヘッドメッセージ・チャートタイトル・注釈は編集できる文字。直すときは Claude に頼んで描き直す。
+     差し替える所: 土台・注釈の丸と矢印と枠・凡例の文言（1 行 18 字まで）・強調（最重要の 1 つ。1 枚 1 点）・data-alt・注釈。
      守ること: 絵の中の色は sv-f-*・sv-s-* のクラスだけ。文字は 20px（15pt）以上。丸の番号は凡例と同じ順に付ける。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">画面の見どころ</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">画面の見どころ</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の兆候は検索欄の下のエラー表示で確認でき、利用者の状態と合わせて切り分けられる</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">管理画面の見どころ（確認する 3 か所。番号の順に見る）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の兆候は検索欄の下のエラー表示で確認でき、利用者の状態と合わせて切り分けられる</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">管理画面の見どころ（確認する 3 か所。番号の順に見る）</div>
   <div class="pp-picture" data-alt="管理画面の絵に、番号 1 から 3 の丸と矢印が重ねられている。1 はログイン状態の表示、2 は検索欄、3 は検索欄の下のエラー表示で、3 だけが強調色になっている。右に、番号ごとの説明の凡例が並ぶ。" style="left:64px;top:224px;width:1152px;height:366px">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1152 366" font-size="20">
       <defs>
@@ -40,5 +40,5 @@
       <text x="814" y="216" class="sv-f-emph" font-weight="700">エラーの表示</text><text x="814" y="246" class="sv-f-sub">コードは xx。最初に見る</text>
     </svg>
   </div>
-  <div class="pp-text" data-note="注：番号は見る順番。強調は最初に見る 1 か所" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 番号は確認する順番。強調の 3 だけは、障害のときに最初に見る<br>→ 3 つを順に見れば、利用者の問題か、システムの障害かを数分で切り分けられる</div>
+  <div class="pp-text" data-part="注釈" data-note="注：番号は見る順番。強調は最初に見る 1 か所" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 番号は確認する順番。強調の 3 だけは、障害のときに最初に見る<br>→ 3 つを順に見れば、利用者の問題か、システムの障害かを数分で切り分けられる</div>
 </section>

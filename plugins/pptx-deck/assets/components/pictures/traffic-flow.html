@@ -1,12 +1,12 @@
 <!-- 用途: 構成図の上に通信の経路を矢印で重ねる絵（トラフィックフロー）。ゾーン（領域）ごとに機器を置き、番号付きの矢印で通信の順番を示す。想定外の経路だけ強調色の破線（1 枚 1 点）。
-     絵（pp-picture）は 1 枚の画像として PPTX に貼られ、PowerPoint では直せない。題・リード文・図表タイトル・注は編集できる文字。直すときは Claude に頼んで描き直す。
-     差し替える所: ゾーンの枠と名前・機器（<use href="#i-…">。使う <symbol> を <defs> に写す。assets/pictures/parts.svg）・機器の名前・矢印と番号・想定外の経路・data-alt（絵の内容を 1〜2 文）・注。
+     絵（pp-picture）は 1 枚の画像として PPTX に貼られ、PowerPoint では直せない。題・ヘッドメッセージ・チャートタイトル・注釈は編集できる文字。直すときは Claude に頼んで描き直す。
+     差し替える所: ゾーンの枠と名前・機器（<use href="#i-…">。使う <symbol> を <defs> に写す。assets/pictures/parts.svg）・機器の名前・矢印と番号・想定外の経路・data-alt（絵の内容を 1〜2 文）・注釈。
      守ること: 絵の中の色は sv-f-*・sv-s-* のクラスだけ。文字は 20px（15pt）以上。番号の丸は文字 20px。収まらないときは図を分けるか、番号だけにして説明を凡例に出す。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">通信経路</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">通信経路</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">通信は FW から LB を経て社内へ入るが、Web から DB への直接接続だけは想定外で、遮断が必要である</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">利用者から DB までの通信経路（想定の 5 経路と、想定外の 1 経路。DMZ・社内のゾーン別）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">通信は FW から LB を経て社内へ入るが、Web から DB への直接接続だけは想定外で、遮断が必要である</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">利用者から DB までの通信経路（想定の 5 経路と、想定外の 1 経路。DMZ・社内のゾーン別）</div>
   <div class="pp-picture" data-alt="利用者からインターネット、DMZ の FW・LB・Web、社内の AP・DB へ、番号 1 から 5 の矢印で通信が流れる構成図。Web から DB へ直接つながる想定外の経路が、強調色の破線で描かれている。" style="left:64px;top:224px;width:1152px;height:366px">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1152 366" font-size="20">
       <defs>
@@ -49,5 +49,5 @@
       <text x="825" y="104" text-anchor="middle" font-weight="700" class="sv-f-emph">想定外: Web から DB へ直接接続</text>
     </svg>
   </div>
-  <div class="pp-text" data-note="注：番号は通信の順番。想定外の経路が見つかった根拠と、含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 1〜5 は想定の通信の順番、破線は想定外の経路（xx 件の接続を確認）<br>→ DB への入口を AP だけに絞れば、Web から DB への経路は遮断でき、被害の拡大を防げる</div>
+  <div class="pp-text" data-part="注釈" data-note="注：番号は通信の順番。想定外の経路が見つかった根拠と、含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 1〜5 は想定の通信の順番、破線は想定外の経路（xx 件の接続を確認）<br>→ DB への入口を AP だけに絞れば、Web から DB への経路は遮断でき、被害の拡大を防げる</div>
 </section>

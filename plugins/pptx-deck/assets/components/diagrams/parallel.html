@@ -1,12 +1,12 @@
 <!-- 用途: 並列（同格の項目を並べて比べる。項目は 2〜3 つ、文が短いとき）。白いカードを横に 3 枚並べ、各カードに「アイコン＋名前 → 大きな数字 → 前後の差 → 根拠 → 変化率のタグ」を同じ位置に置く。
      数字の高さがそろうので、左から右へ比べやすい。タグの行は 3 枚とも同じ種類の値（ここでは変化率）にする。強調色は、承認を求める 1 枚の数字だけ（1 枚 1 点）。
      文が長いときはデザイン2（縦の行）、項目が 4 つ以上のときはデザイン3（格子）を使う。旧 parallel-h・parallel-v・parallel-grid はこの型に統合した。
-     差し替える所: 題・リード文・図表タイトル・カード 3 枚の名前と数字・前後の差・根拠・変化率のタグ・注。2 枚のときは幅 556px、x を 64/660 にする。 -->
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・カード 3 枚の名前と数字・前後の差・根拠・変化率のタグ・注釈。2 枚のときは幅 556px、x を 64/660 にする。 -->
 <section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">SD-WAN更改の効果</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">SD-WAN更改の効果</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">更改の効果は、費用・復旧・監視の3点に集約され、いずれも目標値に届く</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN更改の3つの効果（FY2025実績 → FY2030目標）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">更改の効果は、費用・復旧・監視の3点に集約され、いずれも目標値に届く</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN更改の3つの効果（FY2025実績 → FY2030目標）</div>
   <div class="pp-shape f-white" data-note="白いカード：アイコン・名前・数字・前後の差・根拠・変化率を縦に並べる" style="left:64px;top:224px;width:336px;height:364px"></div>
   <img class="pp-image" src="icons/coin-accent.svg" alt="通信費" data-role="icon" style="left:84px;top:244px;width:48px;height:48px">
   <div class="pp-text t-dark b" style="left:148px;top:248px;width:232px;height:40px;font-size:24px">通信費</div>
@@ -14,7 +14,7 @@
   <div class="pp-text num" data-note="数字：効果の大きさ。承認を求める 1 点だけ強調色" style="left:84px;top:322px;width:296px;height:60px;font-size:48px;color:var(--emphasis)">▲1.2億円</div>
   <div class="pp-text b t-dark" style="left:84px;top:394px;width:296px;height:30px;font-size:19px">12.0億円 → 10.8億円</div>
   <div class="pp-text" style="left:84px;top:438px;width:296px;height:80px;font-size:19px">専用線の解約と運用委託の統合</div>
-  <div class="pp-shape f-soft" data-note="タグ：3 枚とも同じ種類の値（変化率）にそろえる" style="left:84px;top:530px;width:296px;height:40px"></div>
+  <div class="pp-shape f-soft" data-part="スティッカー" data-note="タグ：3 枚とも同じ種類の値（変化率）にそろえる" style="left:84px;top:530px;width:296px;height:40px"></div>
   <div class="pp-text b t-dark center" style="left:84px;top:536px;width:296px;height:30px;font-size:19px">変化率 ▲10%</div>
   <div class="pp-shape f-white" style="left:472px;top:224px;width:336px;height:364px"></div>
   <img class="pp-image" src="icons/clock-accent.svg" alt="復旧時間" data-role="icon" style="left:492px;top:244px;width:48px;height:48px">
