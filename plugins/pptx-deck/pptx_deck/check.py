@@ -75,6 +75,9 @@ def check_model(model, info: TemplateInfo):
     body_keepout = [r.to_dict() for r in info.keepout]
     for s in model:
         n = s["index"]
+        # 専用レイアウト（章扉・目次・型ごと）を使うスライドは、そのレイアウトのヘッダー・フッター・ロゴの領域で検査する
+        li = template.layout_index(info, s)
+        keepout = [r.to_dict() for r in template.keepout_for(info, li)] if li in (*info.kinds.values(), *info.types.values()) else body_keepout
         els = s["elements"]
         has_title = any(e["kind"] == "text" and (e.get("role") == "title" or e.get("ph") == "title") for e in els)
         if not has_title and s["layout"] != "closing":

@@ -58,4 +58,5 @@ def init(workdir, color: str = "navy", template_path=None, force: bool = False, 
     stale = [p for p in (work / "slides").iterdir()]
     if stale:      # 消さない。古い案が variants に混ざるので、利用者に確認してもらう
         notes.append(f"slides/ に既存のファイルが {len(stale)} 個あります。前の作業の案が混ざるので、不要なら削除してください")
-    return {"workdir": str(work), "color": base, "template": str(dst), "notes": notes}
+    return {"workdir": str(work), "color": base, "template": str(dst), "notes": notes,
+            "layout_map": template.describe(work / cfg["template"], info)}

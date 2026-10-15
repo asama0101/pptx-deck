@@ -1,7 +1,7 @@
 <!-- 用途: 項目の大小の比較（横棒）。項目名が長いとき、または項目が多いときに、縦棒より読みやすい。主張に合う棒だけ強調色（highlight は categories の 0 始まりの番号。配列なら複数本。categories は下から上へ並ぶので、大きい順に上から見せるには値の小さい順で書く）。現行と計画の比較＋内訳（旧 effort-bar の用途）も、この型で見せる。
      デザイン1との違い: 全幅の低い横棒を上段、上位の拠点ごとのカード（件数の大きな数字つき）と基調色の合計カードを下段に横一列で置く。上位の項目を押し出したいときに使う。
      差し替える所: チャートタイトル・data-chart・拠点カードの 4 枚（拠点・件数・主な原因・構成比）・合計のカード・注釈。 -->
-<section class="slide" data-layout="chart">
+<section class="slide" data-layout="chart" data-type="hbar">
   <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">拠点別の障害件数</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害の7割は、東京・大阪・名古屋の3拠点に集中しており、他の拠点は少ない</div>

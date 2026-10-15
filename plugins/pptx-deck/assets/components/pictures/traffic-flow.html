@@ -2,7 +2,7 @@
      絵（pp-picture）は 1 枚の画像として PPTX に貼られ、PowerPoint では直せない。題・ヘッドメッセージ・チャートタイトル・注釈は編集できる文字。直すときは Claude に頼んで描き直す。
      差し替える所: ゾーンの枠と名前・機器（<use href="#i-…">。使う <symbol> を <defs> に写す。assets/pictures/parts.svg）・機器の名前・矢印と番号・想定外の経路・data-alt（絵の内容を 1〜2 文）・注釈。
      守ること: 絵の中の色は sv-f-*・sv-s-* のクラスだけ。文字は 20px（15pt）以上。番号の丸は文字 20px。収まらないときは図を分けるか、番号だけにして説明を凡例に出す。 -->
-<section class="slide" data-layout="diagram">
+<section class="slide" data-layout="diagram" data-type="traffic-flow">
   <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">通信経路</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">通信は FW から LB を経て社内へ入るが、Web から DB への直接接続だけは想定外で、遮断が必要である</div>

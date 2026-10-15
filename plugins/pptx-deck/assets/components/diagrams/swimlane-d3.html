@@ -1,7 +1,7 @@
 <!-- 用途: 業務フロー（担当部門をまたぐ手順）。レーン＝担当部門を行に並べ、工程を時間軸の上の棒で置く。棒の長さが所要時間（1 時間＝100px）で、塗り＝作業、枠線＝待ち。判断は ◇ の印と判定の名前で書き、Yes／No の行き先を添える。最大の待ち 1 工程の文字だけ強調色（1 枚 1 点）。最下部にパネル地の帯で合計の内訳。
      デザイン1との違い: 工程の箱と矢印をやめ、担当の行に時間軸に比例した棒を置く。待ちの長さが棒の長さで見える。
      差し替える所: 行 4 つ（担当の名前と注記）・棒 7 つ（行・開始時刻・所要・名前。x＝212＋100×開始、幅＝100×所要。所要 0 の判断は ◇ の印だけ）・判断の文・帯の文・注釈。 -->
-<section class="slide" data-layout="diagram">
+<section class="slide" data-layout="diagram" data-type="swimlane">
   <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応の業務フロー</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応の所要10時間の半分は部門をまたぐ待ちで生じ、遠隔化はここに絞るべきだ</div>

@@ -1,7 +1,7 @@
 <!-- 用途: 工数比較（表＋比例棒）。左の表に「工程｜従来（人日）｜B案（人日）｜差」を並べ、右に同じ行の高さで、値に比例した横棒 2 本（従来＝淡色、B案＝基調色。1 人日＝2px）と根拠を置く。表の数字と棒を同じ行で読める。
      合計の行は太字で上に太い罫線。合計の差だけ強調色（1 枚 1 点）。情報の型（メッセージボックスを置かず、注の末尾を「→ 含意」で締める）。工程を横棒グラフで比べたいときは charts/hbar（d2・d3 に現行と計画の比較＋工程別の内訳がある）を使う。この型はデザイン 1 本だけ。
      差し替える所: チャートタイトル・列見出し（比べる 2 つの名前）・工程 5 行（名前・2 つの値・差・棒の幅・根拠 30 字まで）・合計・凡例・注釈。行は 60px で、6 行にするときは行を 52px にする。 -->
-<section class="slide" data-layout="table">
+<section class="slide" data-layout="table" data-type="effort">
   <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">移行の工数</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">設定の一括配信と遠隔切替により、移行工数は従来比▲140人日の280人日に収まる</div>

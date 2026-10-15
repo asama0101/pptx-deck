@@ -1,7 +1,7 @@
 <!-- 用途: 系統図（左右・帯）。左に拠点の箱 4 つ、中央に回線の種別ごとの太い帯 3 本（大きな本数・種別・条件）、右にセンターの箱 3 つを置き、縦の集線（バス）で結ぶ。廃止する回線＝パネル地の帯に「解約」、新設する回線＝枠線の帯（本線・バックアップ）。二重化を示す 1 点（営業所の 2 回線化）だけ強調色の面。センターの箱は、変更する＝枠線、現行のまま＝パネル地。
      デザイン1との違い: 回線を細い線ではなく、本数を大きく書いた太い帯 3 本にする。線の記号（破線・実線）の代わりに、帯の塗り（廃止＝パネル地、新設＝枠線）で区別する。
      差し替える所: 拠点の箱 4 つ（名前・拠点数・台数）・センターの箱 3 つ・回線の帯 3 本（本数・種別・条件）・強調する 1 点・帯の本数・注釈。 -->
-<section class="slide" data-layout="diagram">
+<section class="slide" data-layout="diagram" data-type="topology">
   <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">拠点の接続系統</div>
   <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">1拠点3経路になるため、回線1本の断では業務が止まらず、MPLSは解約できる</div>

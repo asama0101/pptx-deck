@@ -15,6 +15,22 @@ from .pptxutil import PX, SLIDE_H_EMU, SLIDE_W_EMU
 _COVER = re.compile(r"(title slide|(?<!裏)表紙|cover|タイトル ?スライド)", re.I)
 _CLOSING = re.compile(r"(裏表紙|closing|\bend\b|thank|結び)", re.I)
 _BODY = re.compile(r"(title and content|本文|body|タイトルとコンテンツ|content)", re.I)
+_SECTION = re.compile(r"(章扉|中扉|セクション|section ?header|chapter|divider|区切り)", re.I)
+_AGENDA = re.compile(r"(目次|アジェンダ|agenda|contents?\b|index)", re.I)
+# 名前から型への対応を推定するための手がかり（型の名前 → レイアウト名の正規表現）。ここにない型は、カテゴリ（charts・tables・diagrams）の手がかりか、本文で代える
+_TYPE_HINTS = {
+    "screenshot": re.compile(r"(画像|写真|スクリーン|picture|photo|screenshot)", re.I),
+    "org": re.compile(r"(組織|org)", re.I),
+    "gantt": re.compile(r"(スケジュール|工程|schedule|timeline|ロードマップ)", re.I),
+    "roadmap": re.compile(r"(スケジュール|工程|schedule|timeline|ロードマップ)", re.I),
+    "timeline": re.compile(r"(スケジュール|工程|schedule|timeline|ロードマップ)", re.I),
+}
+_CATEGORY_HINTS = {
+    "charts": re.compile(r"(グラフ|chart)", re.I),
+    "tables": re.compile(r"(表|table)", re.I),
+    "diagrams": re.compile(r"(図解|ダイアグラム|diagram)", re.I),
+}
+KINDS = ("cover", "section", "agenda", "closing")     # レイアウトの種類（原稿の layout）のうち、テンプレートの専用レイアウトを探すもの
 
 
 @dataclass(frozen=True)
@@ -44,6 +60,9 @@ class TemplateInfo:
     closing_title: Rect
     keepout: tuple[Rect, ...] = ()
     notes: tuple[str, ...] = field(default_factory=tuple)
+    kinds: dict = field(default_factory=dict)             # 章扉・目次の専用レイアウト {"section": 3, "agenda": 4}。なければ本文で代える
+    types: dict = field(default_factory=dict)             # 型ごとの専用レイアウト {"gantt": 7}（data-type が一致するスライドに使う）。なければ本文
+    layout_keepout: dict = field(default_factory=dict)    # 専用レイアウトごとの、ヘッダー・フッター・ロゴの領域 {"3": (Rect, …)}
 
     def to_dict(self) -> dict:
         return {
@@ -53,6 +72,8 @@ class TemplateInfo:
             "cover_subtitle": self.cover_subtitle.to_dict() if self.cover_subtitle else None,
             "closing_title": self.closing_title.to_dict(),
             "keepout": [r.to_dict() for r in self.keepout], "notes": list(self.notes),
+            "kinds": dict(self.kinds), "types": dict(self.types),
+            "layout_keepout": {k: [r.to_dict() for r in v] for k, v in self.layout_keepout.items()},
         }
 
     @staticmethod
@@ -64,7 +85,29 @@ class TemplateInfo:
             cover_title=Rect.from_dict(d["cover_title"]),
             cover_subtitle=Rect.from_dict(sub) if sub else None,
             closing_title=Rect.from_dict(d["closing_title"]),
-            keepout=tuple(Rect.from_dict(r) for r in d["keepout"]), notes=tuple(d["notes"]))
+            keepout=tuple(Rect.from_dict(r) for r in d["keepout"]), notes=tuple(d["notes"]),
+            kinds=dict(d.get("kinds", {})), types=dict(d.get("types", {})),
+            layout_keepout={k: tuple(Rect.from_dict(r) for r in v) for k, v in d.get("layout_keepout", {}).items()})
+
+
+def layout_index(info: TemplateInfo, slide: dict) -> int:
+    """スライド（測ったモデルの 1 枚）に使うレイアウトの番号。型の専用レイアウト → 種類（表紙・章扉・目次・裏表紙）→ 本文の順。"""
+    t = slide.get("type") or ""
+    if t in info.types:
+        return info.types[t]
+    kind = slide.get("layout")
+    if kind == "cover":
+        return info.cover
+    if kind == "closing":
+        return info.closing if info.closing is not None else info.body
+    if kind in info.kinds:
+        return info.kinds[kind]
+    return info.body
+
+
+def keepout_for(info: TemplateInfo, index: int) -> tuple[Rect, ...]:
+    """そのレイアウトの、本文を置いてはいけない領域。専用レイアウトで測っていなければ、本文のもの。"""
+    return info.layout_keepout.get(str(index), info.keepout)
 
 
 def open_template(path) -> Presentation:
@@ -146,12 +189,130 @@ def analyze(path) -> TemplateInfo:
     ct = _phs(c, T.CENTER_TITLE, T.TITLE)
     cs = _phs(c, T.SUBTITLE)
     keepout = tuple(_rect(p) for p in _phs(b, T.SLIDE_NUMBER, T.FOOTER, T.DATE)) + _fixed_shapes(b)
+    kinds, types, lay_keep, extra_notes = _estimate_layouts(prs, cover, body, closing)
     return TemplateInfo(
         cover=cover, body=body, closing=closing, area=area, title=title,
         cover_title=_rect(ct[0]) if ct else title,
         cover_subtitle=_rect(cs[0]) if cs else None,
         closing_title=_rect(cl_titles[0]) if cl_titles else title,
-        keepout=keepout, notes=tuple(notes))
+        keepout=keepout, notes=tuple(notes + extra_notes), kinds=kinds, types=types, layout_keepout=lay_keep)
+
+
+def component_types() -> dict[str, str]:
+    """型の名前 → カテゴリ（assets/components の下のフォルダ名）。デザイン 2・3（-d2・-d3）は同じ型。"""
+    from . import paths
+    out = {}
+    root = paths.ASSETS / "components"
+    if root.is_dir():
+        for f in sorted(root.rglob("*.html")):
+            out.setdefault(re.sub(r"-d[23]$", "", f.stem), f.parent.name)
+    return out
+
+
+def _usable(layout) -> bool:
+    return bool(_phs(layout, T.TITLE, T.CENTER_TITLE))
+
+
+def _layout_keepout(layout) -> tuple[Rect, ...]:
+    return tuple(_rect(p) for p in _phs(layout, T.SLIDE_NUMBER, T.FOOTER, T.DATE)) + _fixed_shapes(layout)
+
+
+def _estimate_layouts(prs, cover, body, closing):
+    """テンプレートの全レイアウトから、章扉・目次・型ごとの専用レイアウトを名前で推定する。
+    推定できない種類・型は入れない（本文のレイアウトで代える）。戻り値は（kinds, types, 専用レイアウトの keepout, notes）。"""
+    L = list(prs.slide_layouts)
+    taken = {cover, body, closing}
+    kinds: dict[str, int] = {}
+    for kind, rx in (("section", _SECTION), ("agenda", _AGENDA)):
+        for i, lay in enumerate(L):
+            if i not in taken and _usable(lay) and rx.search(lay.name):
+                kinds[kind] = i
+                taken.add(i)
+                break
+    types: dict[str, int] = {}
+    for t, cat in component_types().items():
+        if t in KINDS:
+            continue
+        rx = _TYPE_HINTS.get(t) or _CATEGORY_HINTS.get(cat)
+        if not rx:
+            continue
+        for i, lay in enumerate(L):
+            if i not in (cover, body, closing) and i not in kinds.values() and _usable(lay) and rx.search(lay.name):
+                types[t] = i
+                break
+    notes = []
+    for kind, label in (("section", "章扉"), ("agenda", "目次")):
+        if kind not in kinds:
+            notes.append(f"{label}のレイアウトが見つかりません。本文のレイアウトで代えます。")
+    used = set(kinds.values()) | set(types.values())
+    return kinds, types, {str(i): _layout_keepout(L[i]) for i in sorted(used)}, notes
+
+
+def describe(path, info: TemplateInfo) -> dict:
+    """利用者に確認してもらう対応表。レイアウトの一覧（名前とプレースホルダー）と、型ごとの対応（本文で代える型は 1 行にまとめる）。"""
+    prs = open_template(path)
+    L = list(prs.slide_layouts)
+    name = lambda i: L[i].name
+    layouts = [{"index": i, "name": lay.name,
+                "placeholders": [str(p.placeholder_format.type).split(".")[-1].split(" ")[0] for p in lay.placeholders]}
+               for i, lay in enumerate(L)]
+    rows = [{"key": "cover", "layout": name(info.cover), "index": info.cover},
+            {"key": "section", "layout": name(info.kinds["section"]) if "section" in info.kinds else None, "index": info.kinds.get("section")},
+            {"key": "agenda", "layout": name(info.kinds["agenda"]) if "agenda" in info.kinds else None, "index": info.kinds.get("agenda")},
+            {"key": "closing", "layout": name(info.closing) if info.closing is not None else None, "index": info.closing}]
+    for t in sorted(info.types):
+        rows.append({"key": t, "layout": name(info.types[t]), "index": info.types[t]})
+    all_types = [t for t in component_types() if t not in KINDS]
+    return {"body": {"layout": name(info.body), "index": info.body}, "layouts": layouts, "rows": rows,
+            "body_types": [t for t in all_types if t not in info.types]}
+
+
+def set_mapping(path, info: TemplateInfo, key: str, layout_name: str | None) -> TemplateInfo:
+    """利用者の修正を反映する。key は cover・section・agenda・closing か型の名前。layout_name が None なら専用レイアウトをやめて本文で代える。
+    layout_name はレイアウトの名前（完全一致を優先、なければ部分一致が 1 つだけのとき）か番号。"""
+    from dataclasses import replace
+    prs = open_template(path)
+    L = list(prs.slide_layouts)
+    valid = set(KINDS) | set(component_types())
+    if key not in valid:
+        raise ValueError(f"{key} は対応づけできません（cover・section・agenda・closing か、型の名前: components.md）")
+    idx = None
+    if layout_name is not None:
+        if layout_name.isdigit() and int(layout_name) < len(L):
+            idx = int(layout_name)
+        else:
+            exact = [i for i, lay in enumerate(L) if lay.name == layout_name]
+            part = [i for i, lay in enumerate(L) if layout_name in lay.name]
+            hits = exact or part
+            if len(hits) != 1:
+                raise ValueError(f"レイアウト「{layout_name}」が決まりません（候補: {', '.join(lay.name for lay in L)}）")
+            idx = hits[0]
+        if not _usable(L[idx]):
+            raise ValueError(f"レイアウト「{L[idx].name}」にタイトルの領域がないため使えません")
+    kinds, types = dict(info.kinds), dict(info.types)
+    cover, closing = info.cover, info.closing
+    if key == "cover":
+        cover = idx if idx is not None else info.body
+    elif key == "closing":
+        closing = idx
+    elif key in ("section", "agenda"):
+        kinds.pop(key, None)
+        if idx is not None:
+            kinds[key] = idx
+    else:
+        types.pop(key, None)
+        if idx is not None:
+            types[key] = idx
+    used = set(kinds.values()) | set(types.values())
+    lay_keep = {str(i): _layout_keepout(L[i]) for i in sorted(used)}
+    c = L[cover]
+    ct = _phs(c, T.CENTER_TITLE, T.TITLE)
+    cs = _phs(c, T.SUBTITLE)
+    cl = _phs(L[closing], T.TITLE, T.CENTER_TITLE) if closing is not None else []
+    return replace(info, cover=cover, closing=closing, kinds=kinds, types=types, layout_keepout=lay_keep,
+                   cover_title=_rect(ct[0]) if ct else info.title,
+                   cover_subtitle=_rect(cs[0]) if cs else None,
+                   closing_title=_rect(cl[0]) if cl else info.title)
 
 
 _NS = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main",
@@ -222,6 +383,8 @@ def background_colors(path, info: TemplateInfo) -> tuple[dict[str, str], list[st
     """表紙・本文・裏表紙の背景色（HTML の下地）。単色でないレイアウトは白で近似し、notes に理由を返す。"""
     prs = open_template(path)
     idx = {"cover": info.cover, "body": info.body, "closing": info.closing if info.closing is not None else info.body}
+    idx.update(info.kinds)
+    idx.update({f"type:{t}": i for t, i in info.types.items()})
     out, notes = {}, []
     for name, i in idx.items():
         h = layout_bg_hex(prs, i)
@@ -241,7 +404,10 @@ def layout_css(info: TemplateInfo, bg_hex: str, layout_bg: dict[str, str] | None
     if info.cover_subtitle:
         root += v("cover-subtitle", info.cover_subtitle)
     root += "}\n"
-    for name in ("cover", "closing"):       # 表紙・裏表紙の下地が本文と違う色でも、文字色の検査が合うようにする
+    for name in ("cover", "section", "agenda", "closing"):       # 表紙・章扉・目次・裏表紙の下地が本文と違う色でも、文字色の検査が合うようにする
         if layout_bg and layout_bg.get(name) and layout_bg[name] != bg_hex:
             root += f'.slide[data-layout="{name}"] {{ --bg: {layout_bg[name]}; }}\n'
+    for name, color in (layout_bg or {}).items():           # 型ごとの専用レイアウトの下地（data-type が一致するスライド）
+        if name.startswith("type:") and color != bg_hex:
+            root += f'.slide[data-type="{name[5:]}"] {{ --bg: {color}; }}\n'
     return root

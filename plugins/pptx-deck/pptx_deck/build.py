@@ -228,14 +228,6 @@ def add_table(slide, el):
 
 
 # ---- スライド ----
-def _layout_index(info, name):
-    if name == "cover":
-        return info.cover
-    if name == "closing":
-        return info.closing if info.closing is not None else info.body
-    return info.body
-
-
 def build(model, template_path, info, palette, out: Path, base_dir: Path,
           footer: str | None = None, work_name: str = "build") -> Path:
     from . import charts
@@ -243,7 +235,7 @@ def build(model, template_path, info, palette, out: Path, base_dir: Path,
     prs = template.open_template(template_path)
     drop_all_slides(prs)
     for s in model:
-        layout = prs.slide_layouts[_layout_index(info, s["layout"])]
+        layout = prs.slide_layouts[template.layout_index(info, s)]
         slide = prs.slides.add_slide(layout)
         used = set()
         elements = s["elements"]

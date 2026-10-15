@@ -1,7 +1,7 @@
 <!-- 用途: 増減の道筋（ウォーターフォール）。使い方は 2 つ。(1) 差額の道筋: 前回の合計 → 項目ごとの増減 → 今回の合計（両端が合計。totals に最初と最後の位置を書く。見積の前回比・計画と実績の差など）。(2) 全体の分解: 合計 → 項目ごとの内訳（先頭だけ合計。totals は [0]。費用の内訳など）。totals は 0 始まりの位置。増減はどちらも灰（増加＝淡い灰、減少＝濃い灰）、合計は中間の灰で、主役の項目（highlight）だけ強調色。小さい増減のラベルは棒の外に出る。
      デザイン1との違い: 右に理由表（項目ごとの理由・前回・今回・差額の棒）と基調色の帯がつき、グラフは左半分になる。理由まで表で読ませたいときに使う。
      差し替える所: チャートタイトル・data-chart・表の 4 行（項目・理由・前回・今回・棒の幅と差額）・表の下の注・合計の帯・注釈。 -->
-<section class="slide" data-layout="chart">
+<section class="slide" data-layout="chart" data-type="waterfall">
   <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">見積の増減</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">今回の見積は前回より1,000万円低いが、差の実質は保守の計上先の変更にすぎない</div>

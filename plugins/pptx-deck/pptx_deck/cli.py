@@ -65,6 +65,38 @@ def cmd_init(args) -> int:
     return 0
 
 
+def cmd_template_map(args) -> int:
+    """テンプレートのレイアウトと、章扉・目次・型との対応（init が推定したもの）を出す。--set / --clear で、利用者の修正を template.json に反映する。"""
+    from . import initdir, template
+    work = paths.resolve_work(args.workdir)
+    if not (work / "template.json").exists():
+        print(f"エラー: {work} に template.json がありません（作品の source/ が見つかりません）", file=sys.stderr)
+        return 2
+    cfg = json.loads((work / "template.json").read_text(encoding="utf-8"))
+    info = template.TemplateInfo.from_dict(cfg["info"])
+    path = work / cfg["template"]
+    changed = False
+    try:
+        for item in args.set or []:
+            key, sep, layout = item.partition("=")
+            if not sep or not layout:
+                raise ValueError(f"--set は 種類か型=レイアウト名 の形で指定してください: {item}")
+            info = template.set_mapping(path, info, key.strip(), layout.strip())
+            changed = True
+        for key in args.clear or []:
+            info = template.set_mapping(path, info, key.strip(), None)
+            changed = True
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+    if changed:
+        cfg["info"] = info.to_dict()
+        (work / "template.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8")
+        initdir.write_derived(work, cfg)         # 下地の色（theme.css）を直す。作り直す PPTX は build で
+    print(json.dumps(template.describe(path, info), ensure_ascii=False, indent=2))
+    return 0
+
+
 def _load_cfg(work: Path):
     from . import template, theme
     cfg = json.loads((work / "template.json").read_text(encoding="utf-8"))
@@ -311,6 +343,11 @@ def main(argv: list[str]) -> int:
     p.add_argument("--footer", default=None, help="左下に出すコピーライトの文字列（例: \"© 2026 〇〇\"）。省略すると空欄")
     p.add_argument("--force", action="store_true")
     p.set_defaults(fn=cmd_init)
+    p = sub.add_parser("template-map", help="テンプレートのレイアウトと、章扉・目次・型との対応を出す。--set 型=レイアウト名 / --clear 型 で直す")
+    p.add_argument("workdir")
+    p.add_argument("--set", action="append", default=None, help="対応を直す（例: agenda=目次 / gantt=スケジュール / section=2）。レイアウトは名前か番号。複数指定できる")
+    p.add_argument("--clear", action="append", default=None, help="専用レイアウトをやめて本文で代える（例: gantt）")
+    p.set_defaults(fn=cmd_template_map)
     p = sub.add_parser("check")
     p.add_argument("html")
     p.add_argument("--workdir", default=None)

@@ -2,7 +2,7 @@
      デザイン1との違い: 小さな画面全体（320×180px）の中の注目する部分に強調色の枠（128×72px）を付け、枠の右の 2 つの角から、拡大した画面（512×288px）の左の 2 つの角へ斜めの線（基調色 3px）を引き、注目枠から拡大へ広がる楔の形で「ズームイン」を見せる。楔の中ほどに倍率の札（×4 拡大）を置く。拡大の画面は全体と同じ縦横比（16:9）で、枠は強調色（注目枠と同じ色。この 2 つで強調色の 1 点）。下に番号つきの見出しと説明を 3 列、拡大の画面の丸い番号（1〜3）と対応させる。
      全体の枠と拡大の枠には、同じ画面のキャプチャ（全体と、注目する部分を大きく写したもの）を入れる。注目枠は画面と重なるので、画像を入れたら枠を線だけにする。倍率の札の数字は（拡大の幅÷注目枠の幅）から直す。斜めの線は pp-line に data-dir="diag"（左上→右下）・"diag-up"（左下→右上）を付け、線の箱は両端の外接矩形にする。枠の中心の注記は画像に差し替えるときに消す。説明は 1 行（約 16 字）に収める。
      差し替える所: 題・ヘッドメッセージ・チャートタイトル・全体と拡大の画面の枠（画像）・注目枠の位置・斜めの線の端点・倍率の札・番号の位置・見出しと説明・注釈。 -->
-<section class="slide" data-layout="content">
+<section class="slide" data-layout="content" data-type="screenshot">
   <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">監視画面の見え方</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">監視画面では48拠点の状態が1画面で見え、障害は検知から切替まで3つの画面で追える</div>

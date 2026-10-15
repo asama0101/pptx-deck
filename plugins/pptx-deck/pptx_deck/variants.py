@@ -43,7 +43,6 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .co{position:absolute;border:calc(3px / var(--s)) solid var(--co);background:rgba(232,62,140,.07)}
 .rv .co-n{position:absolute;right:calc(-14px / var(--s));top:calc(-14px / var(--s));width:calc(28px / var(--s));height:calc(28px / var(--s));border-radius:50%;background:var(--co);color:#fff;font:700 calc(16px / var(--s))/calc(28px / var(--s)) sans-serif;text-align:center}
 .rv .nocol .co-layer{display:none}
-.rv .cols{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
 .rv .pt-layer{position:absolute;left:0;top:0;width:1280px;height:720px;pointer-events:none}
 .rv .pt{position:absolute;pointer-events:auto;cursor:pointer;font:700 calc(13px / var(--s))/1.25 sans-serif;padding:calc(2px / var(--s)) calc(7px / var(--s));background:#1B6FD1;color:#fff;border:0;border-radius:calc(11px / var(--s));white-space:nowrap}
 .rv .pt.has{background:#E8A33E;color:#1a1a1a}
@@ -51,6 +50,7 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .nopt .pt-layer{display:none}
 .rv .plist{display:grid;gap:6px}.rv .plist li{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:8px;align-items:start}
 .rv .plist li b{font-size:13px;padding-top:6px}.rv .plist textarea{height:44px}
+.rv .cols{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
 .rv .cols>div{background:var(--panel);padding:12px 14px;font-size:13.5px;min-width:0}
 .rv .cols h3{font-size:12px;letter-spacing:.06em;color:var(--sub);margin-bottom:6px}
 .rv .cols .q{border-left:3px solid var(--cm);padding-left:10px}.rv .cols .fix{border-left:3px solid var(--ok);padding-left:10px}
@@ -110,8 +110,8 @@ _SCRIPT = r"""<script>
       if (a.c) { var r = $('input[type=radio][name^="s"][value="' + a.c + '"]', p); if (r) r.checked = true; }
       $('.cm', p).value = a.t || '';
       p.dataset.verdict = a.v || '';
-      Object.keys(a.d || {}).forEach(function (k) { var x = $('.dgroup[data-k="' + k + '"] input[value="' + a.d[k] + '"]', p); if (x) x.checked = true; });
       Object.keys(a.pc || {}).forEach(function (k) { partRow(p, k, a.pc[k]); });
+      Object.keys(a.d || {}).forEach(function (k) { var x = $('.dgroup[data-k="' + k + '"] input[value="' + a.d[k] + '"]', p); if (x) x.checked = true; });
     });
   }
 
@@ -131,7 +131,6 @@ _SCRIPT = r"""<script>
     });
   }
 
-  function fit() {
   // 部位のコメント。key は「案|部位名（番号つき）」。行は、バッジを押したときに作る（空のままの行は回答に出さない）
   function partLabel(key) { var i = key.indexOf('|'); var k = key.slice(0, i), n = key.slice(i + 1); return (k ? '案 ' + k + ' ' : '') + n; }
   function partTexts(p) {
@@ -182,6 +181,7 @@ _SCRIPT = r"""<script>
     markParts(p);
   }
 
+  function fit() {
     $$('.thumb').forEach(function (t) {
       var w = t.clientWidth; if (!w) return;
       var s = w / 1280;
@@ -239,8 +239,8 @@ _SCRIPT = r"""<script>
       legend.appendChild(li);
     });
     big.appendChild(layer);
-    $('.notes', p).hidden = !legend.firstChild;                          // 見どころ・前回のコメント・今回の直しが何もなければ、枠ごと隠す
     addPartBadges(p, clone, k, big);
+    $('.notes', p).hidden = !legend.firstChild;                          // 見どころ・前回のコメント・今回の直しが何もなければ、枠ごと隠す
     $('.cols', p).hidden = $$('.cols > div:not([hidden])', p).length === 0;
     fit();
   }
@@ -315,8 +315,8 @@ _SCRIPT = r"""<script>
     });
     $('.cm', p).oninput = function () { refresh(); store(snapshot()); };
     $('.coToggle', p).onchange = function () { $('.big', p).classList.toggle('nocol', !this.checked); };
-    $$('.verdict button', p).forEach(function (b) { b.onclick = function () { setVerdict(p, b.dataset.v); }; });
     $('.ptToggle', p).onchange = function () { $('.big', p).classList.toggle('nopt', !this.checked); };
+    $$('.verdict button', p).forEach(function (b) { b.onclick = function () { setVerdict(p, b.dataset.v); }; });
     $('.clear', p).onclick = function () {
       p.dataset.verdict = '';
       $$('input[type=radio]', p).forEach(function (x) { x.checked = false; x.dataset.was = '0'; });
@@ -337,9 +337,9 @@ _SCRIPT = r"""<script>
       var dr = sel ? sec.querySelector('.dgroup[data-k="' + sel.value + '"] input[type=radio]:checked') : null;
       if (dr) lines.push('- デザイン: ' + dr.value);           // 選んだ型にデザイン 2・3 があるときだけ（省略時は 1）
       lines.push('- 判定: ' + verdictOf(sec), '- コメント: ' + c);
-    });
       var pt = partTexts(sec);
       Object.keys(pt).forEach(function (key) { lines.push('- 部位: ' + partLabel(key) + ' ／ コメント: ' + pt[key].replace(/\r?\n/g, ' ')); });
+    });
     return lines.join('\n') + '\n';
   }
   // 「回答をコピー」（判断欄の最後の行・右端）: 回答をクリップボードへ入れ、同時に window.__answersMd と window.__submitted を立てる。
@@ -479,15 +479,15 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
         p.append('<div class="notes"><div class="nh"><h3>見どころ</h3>'
                  '<label class="showco"><input type="checkbox" class="coToggle" checked> 見どころの枠を表示</label></div>'
                  '<ol class="legend"></ol></div></div>')
+        p.append('<div class="parts" hidden><div class="nh"><h3>部位のコメント（スライドの青いバッジを押すと、その部位に書けます）</h3>'
+                 '<label class="showco"><input type="checkbox" class="ptToggle" checked> 部位のバッジを表示</label></div>'
+                 '<ul class="plist"></ul></div>')
         p.append('<div class="judge"><div class="sub">'
                  + ("この内容を承認しますか。" if single else "案を選び（サムネを押すと大きく見えます）、承認か要修正を押してください。どの案でもない場合は、案を選ばずに要修正を押し、コメントに書いてください。") + '</div>')
         p.append('<div class="opts single">' if single else '<div class="opts">')     # 1 案だけのときは、案の選択（サムネとラジオ）を隠す
         for k in letters:
             vname, vreason = _variant_info(opts[k])
             p.append(f'<div class="opt" data-k="{k}" data-name="{esc(vname, quote=True)}" data-reason="{esc(vreason, quote=True)}">'
-        p.append('<div class="parts" hidden><div class="nh"><h3>部位のコメント（スライドの青いバッジを押すと、その部位に書けます）</h3>'
-                 '<label class="showco"><input type="checkbox" class="ptToggle" checked> 部位のバッジを表示</label></div>'
-                 '<ul class="plist"></ul></div>')
                      f'<div class="thumb" role="button" tabindex="0" aria-label="案 {k} を大きく見る">'
                      f'<div class="stage">{opts[k]}</div></div>')
             if final:
@@ -548,15 +548,15 @@ def assemble(work: Path, round_no: int = 1) -> Path:
     return out
 
 
+_PART_LINE = re.compile(r"^- 部位:\s*(.+?)\s*／\s*コメント:\s*(.*)$")
+
+
 def parse_answers(md: str) -> dict[str, dict]:
     out: dict[str, dict] = {}
     cur = None
     for line in md.splitlines():
         m = re.match(r"^## S(\d{2})\s*$", line)
         if m:
-_PART_LINE = re.compile(r"^- 部位:\s*(.+?)\s*／\s*コメント:\s*(.*)$")
-
-
             cur = m.group(1)
             out[cur] = {"choice": "", "comment": "", "parts": []}
         elif cur and line.startswith("- 選択:"):
@@ -571,23 +571,23 @@ _PART_LINE = re.compile(r"^- 部位:\s*(.+?)\s*／\s*コメント:\s*(.*)$")
                 out[cur]["verdict"] = v
         elif cur and line.startswith("- コメント:"):
             out[cur]["comment"] = line.split(":", 1)[1].strip()
+        elif cur and (pm := _PART_LINE.match(line)):      # 部位を指定したコメント（「- 部位: 注釈 ／ コメント: …」。案ごとの回答は「案 A 注釈」）
+            out[cur]["parts"].append({"part": pm.group(1).strip(), "comment": pm.group(2).strip()})
     return out
 
 
-def merge_answers(mds: list[str]) -> dict[str, dict]:
-    """複数回の回答を順に重ねる。選択が入っているスライドだけ、後の回答で置き換える。
-    2 回目以降に答えなかったスライド（選択が空）は、前の回答を消さない。"""
-        elif cur and (pm := _PART_LINE.match(line)):      # 部位を指定したコメント（「- 部位: 注釈 ／ コメント: …」。案ごとの回答は「案 A 注釈」）
-            out[cur]["parts"].append({"part": pm.group(1).strip(), "comment": pm.group(2).strip()})
-    out: dict[str, dict] = {}
-    for md in mds:
-        for nn, a in parse_answers(md).items():
 def comment_text(a: dict) -> str:
     """スライド全体のコメントと、部位ごとのコメントを 1 つの文にする（空なら空）。"""
     items = [a.get("comment", "")] + [f"【{x['part']}】{x['comment']}" for x in a.get("parts", []) if x["comment"]]
     return " ".join(t for t in items if t)
 
 
+def merge_answers(mds: list[str]) -> dict[str, dict]:
+    """複数回の回答を順に重ねる。選択が入っているスライドだけ、後の回答で置き換える。
+    2 回目以降に答えなかったスライド（選択が空）は、前の回答を消さない。"""
+    out: dict[str, dict] = {}
+    for md in mds:
+        for nn, a in parse_answers(md).items():
             if a["choice"] or nn not in out:
                 out[nn] = a
     return out

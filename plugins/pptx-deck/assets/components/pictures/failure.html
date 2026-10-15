@@ -2,7 +2,7 @@
      絵（pp-picture）は 1 枚の画像として PPTX に貼られ、PowerPoint では直せない。題・ヘッドメッセージ・チャートタイトル・注釈は編集できる文字。直すときは Claude に頼んで描き直す。
      差し替える所: 手順の数（4 まで。1 つの箱は幅 200・字数は 1 行 9 字まで）・箱の文言・分かれる点（強調の箱とアイコン。1 枚 1 点）・data-alt・注釈。数字は素材のとおり。無ければ xx。
      守ること: 絵の中の色は sv-f-*・sv-s-* のクラスだけ。文字は 20px（15pt）以上。上段と下段で、同じ手順の箱を同じ位置（x）に置く。 -->
-<section class="slide" data-layout="diagram">
+<section class="slide" data-layout="diagram" data-type="failure">
   <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">障害時の動作</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">DB が応答しない場合、AP は待ち続けてエラー画面を返すため、想定した縮退動作になっていない</div>
