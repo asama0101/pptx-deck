@@ -59,11 +59,12 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .dot{width:20px;height:20px;border-radius:50%;background:var(--co);color:#fff;font:700 12px/20px sans-serif;text-align:center;margin-top:1px}
 .rv .judge{display:grid;gap:10px;background:var(--panel);padding:12px 14px}
 .rv .judge .sub{color:var(--sub);font-size:13.5px}
+.rv .bar{position:sticky;bottom:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;background:var(--panel);border-top:1px solid var(--rv-line);padding:8px 12px}
+.rv .bar .btns{flex:none}.rv .bar .cm{flex:1 1 260px;height:42px;min-width:200px}.rv .bar .nav2{flex:none}.rv .bar .act{margin-left:0}
 .rv .opts{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
-.rv .opt,.rv .dopt{display:flex;flex-direction:column;gap:6px;width:min(31%,260px)}
+.rv .opt,.rv .dopt{display:flex;flex-direction:column;gap:6px;width:min(23%,220px)}
 .rv .dgroup{display:grid;gap:8px;border-top:1px solid var(--rv-line);padding-top:10px}.rv .dgroup .sub{font-weight:700}
 .rv .opts.single{display:none}
-.rv .opts.n4 .opt{width:min(23%,250px)}
 .rv .opt .thumb,.rv .dopt .thumb{cursor:pointer}.rv .opt.view .thumb,.rv .dopt.view .thumb{outline:3px solid #fff;outline-offset:2px}
 .rv .opt label,.rv .dopt label{font-weight:700;display:flex;gap:6px;align-items:center;cursor:pointer}
 .rv .opt small{color:var(--sub);font-weight:400;font-size:12.5px;line-height:1.4}
@@ -84,6 +85,11 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .doc p{margin:2px 0}.rv .doc ul{margin:2px 0 2px 18px;list-style:disc}.rv .doc li{margin:1px 0}
 .rv .doc table{border-collapse:collapse;margin:6px 0;width:100%}.rv .doc th,.rv .doc td{border:1px solid #c9d2e0;padding:4px 8px;text-align:left;vertical-align:top}.rv .doc th{background:#eef2f8;white-space:nowrap}
 .rv .cols[hidden]{display:none}
+.rv .tgl{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--sub)}
+.rv .tgl label{display:inline-flex;gap:5px;align-items:center;cursor:pointer}
+.rv:not(.show-co) .co-layer,.rv:not(.show-co) .notes{display:none}
+.rv:not(.show-vr) .vr{display:none}
+.rv:not(.show-pt) .pt-layer{display:none}
 </style>"""
 
 _SCRIPT = r"""<script>
@@ -181,6 +187,18 @@ _SCRIPT = r"""<script>
     markParts(p);
   }
 
+  // 見どころ・型と選んだ理由は、チェックが入っているときだけ出す。前回のコメントと今回の直しは常に出す
+  function updateCols(p) {
+    var root = $('.rv');
+    var vis = $$('.cols > div', p).filter(function (d) {
+      if (d.hidden) return false;
+      if (d.classList.contains('vr')) return root.classList.contains('show-vr');
+      if (d.classList.contains('notes')) return root.classList.contains('show-co');
+      return true;
+    });
+    $('.cols', p).hidden = vis.length === 0;
+  }
+
   function fit() {
     $$('.thumb').forEach(function (t) {
       var w = t.clientWidth; if (!w) return;
@@ -241,7 +259,7 @@ _SCRIPT = r"""<script>
     big.appendChild(layer);
     addPartBadges(p, clone, k, big);
     $('.notes', p).hidden = !legend.firstChild;                          // 見どころ・前回のコメント・今回の直しが何もなければ、枠ごと隠す
-    $('.cols', p).hidden = $$('.cols > div:not([hidden])', p).length === 0;
+    updateCols(p);
     fit();
   }
   // 承認／要修正。1 案だけのスライド（採用／要修正・最終確認）は選択のラジオ（A / FIX）と連動し、3 案のときは案の選択とは別に持つ
@@ -314,8 +332,15 @@ _SCRIPT = r"""<script>
       $('input[type=radio]', o).onchange = pick;
     });
     $('.cm', p).oninput = function () { refresh(); store(snapshot()); };
-    $('.coToggle', p).onchange = function () { $('.big', p).classList.toggle('nocol', !this.checked); };
-    if ($('.ptToggle', p)) $('.ptToggle', p).onchange = function () { $('.big', p).classList.toggle('nopt', !this.checked); };
+    [['coToggle', 'show-co'], ['vrToggle', 'show-vr'], ['ptToggle', 'show-pt']].forEach(function (t) {
+      var cb = $('.' + t[0], p); if (!cb) return;
+      cb.onchange = function () {
+        var on = this.checked;
+        $('.rv').classList.toggle(t[1], on);
+        $$('.' + t[0]).forEach(function (x) { x.checked = on; });          // 全スライドで共通
+        panes.forEach(updateCols); fit();
+      };
+    });
     $$('.verdict button', p).forEach(function (b) { b.onclick = function () { setVerdict(p, b.dataset.v); }; });
     $('.clear', p).onclick = function () {
       p.dataset.verdict = '';
@@ -373,6 +398,12 @@ _SCRIPT = r"""<script>
   if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
 })();
 </script>"""
+
+
+# スライド上部の行の表示の切り替え。どれも初期は隠す（ページ全体で共通。チェックで出す）
+_TOGGLES = ('<div class="tgl"><label><input type="checkbox" class="vrToggle"> 型と選んだ理由</label>'
+            '<label><input type="checkbox" class="coToggle"> 見どころ</label>'
+            '<label><input type="checkbox" class="ptToggle"> 部位のバッジ</label></div>')
 
 
 def collect_designs(work: Path) -> dict[str, dict[str, dict[int, str]]]:
@@ -465,65 +496,67 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
         single = final or len(letters) == 1 or docs is not None
         doc_attr = ' data-doc="1"' if docs is not None else ""
         p = [f'<section class="pane" data-slide="{nn}" data-single="{1 if single else 0}"{doc_attr} hidden>',
-             f'<div class="top"><h2>{esc(t) if docs is not None and nn == "00" else "S" + nn + "　" + esc(t)}</h2></div>',
+             f'<div class="top"><h2>{esc(t) if docs is not None and nn == "00" else "S" + nn + "　" + esc(t)}</h2>'
+             + ("" if docs is not None else _TOGGLES) + '</div>',
              (f'<div class="doc">{docs[nn]}</div>' if docs is not None
-              else '<div class="big"><div class="thumb"><div class="stage"></div></div></div>'),
-             '<div class="cols"' + (' hidden' if docs is not None else '') + '>']
+              else '<div class="big"><div class="thumb"><div class="stage"></div></div></div>')]
+        rest = ['<div class="cols"' + (' hidden' if docs is not None else '') + '>']          # 見どころ・前回のコメント・今回の直し、部位のコメント
+        sel, bar = [], []                                                                  # 選択（案・デザイン）と、画面下の判定バー
         pc = comment_text(prev.get(nn) or {})
         fx = notes.get(nn, "")
         if pc:
-            p.append(f'<div class="q"><h3>前回のコメント</h3>{esc(pc)}</div>')
+            rest.append(f'<div class="q"><h3>前回のコメント</h3>{esc(pc)}</div>')
         if fx:
-            p.append(f'<div class="fix"><h3>今回の直し</h3>{esc(fx)}</div>')
-        p.append('<div class="vr" hidden><h3>型と選んだ理由</h3><span></span></div>')
-        p.append('<div class="notes"><div class="nh"><h3>見どころ</h3>'
-                 '<label class="showco"><input type="checkbox" class="coToggle" checked> 見どころの枠を表示</label></div>'
-                 '<ol class="legend"></ol></div></div>')
+            rest.append(f'<div class="fix"><h3>今回の直し</h3>{esc(fx)}</div>')
+        rest.append('<div class="vr" hidden><h3>型と選んだ理由</h3><span></span></div>')
+        rest.append('<div class="notes"><div class="nh"><h3>見どころ</h3>'
+                 '</div><ol class="legend"></ol></div></div>')
         if docs is None:                                                                 # 設計図と原稿の確認ページには部位がない
-            p.append('<div class="parts"><div class="nh"><h3>部位のコメント（スライドの青いバッジを押すと、その部位に書けます）</h3>'
-                     '<label class="showco"><input type="checkbox" class="ptToggle" checked> 部位のバッジを表示</label></div>'
+            rest.append('<div class="parts"><div class="nh"><h3>部位のコメント（スライドの青いバッジを押すと、その部位に書けます）</h3></div>'
                      '<ul class="plist"></ul></div>')
-        p.append('<div class="judge"><div class="sub">'
+        sel.append('<div class="judge"><div class="sub">'
                  + ("この内容を承認しますか。" if single else "案を選び（サムネを押すと大きく見えます）、承認か要修正を押してください。どの案でもない場合は、案を選ばずに要修正を押し、コメントに書いてください。") + '</div>')
-        p.append('<div class="opts single">' if single else ('<div class="opts n4">' if len(letters) >= 4 else '<div class="opts">'))     # 1 案だけのときは、案の選択（サムネとラジオ）を隠す
+        sel.append('<div class="opts single">' if single else ('<div class="opts n4">' if len(letters) >= 4 else '<div class="opts">'))     # 1 案だけのときは、案の選択（サムネとラジオ）を隠す
         for k in letters:
             vname, vreason = _variant_info(opts[k])
-            p.append(f'<div class="opt" data-k="{k}" data-name="{esc(vname, quote=True)}" data-reason="{esc(vreason, quote=True)}">'
+            sel.append(f'<div class="opt" data-k="{k}" data-name="{esc(vname, quote=True)}" data-reason="{esc(vreason, quote=True)}">'
                      f'<div class="thumb" role="button" tabindex="0" aria-label="案 {k} を大きく見る">'
                      f'<div class="stage">{opts[k]}</div></div>')
             if final:
-                p.append(f'<label><input type="radio" name="s{nn}" value="A"> 承認</label>'
+                sel.append(f'<label><input type="radio" name="s{nn}" value="A"> 承認</label>'
                          f'<label><input type="radio" name="s{nn}" value="FIX"> 要修正</label>')
             elif len(letters) > 1:
-                p.append(f'<label><input type="radio" name="s{nn}" value="{k}"> 案 {k}{"（自由設計）" if k == FREE else ""}</label>'
+                sel.append(f'<label><input type="radio" name="s{nn}" value="{k}"> 案 {k}{"（自由設計）" if k == FREE else ""}</label>'
                          + (f'<small>{esc(vname)}</small>' if vname else ""))
             else:
-                p.append(f'<label><input type="radio" name="s{nn}" value="A"> 採用</label>'
+                sel.append(f'<label><input type="radio" name="s{nn}" value="A"> 採用</label>'
                          f'<label><input type="radio" name="s{nn}" value="FIX"> 要修正</label>')
-            p.append("</div>")
-        p.append('</div>')                                                              # 1 行目（案）を閉じる
+            sel.append("</div>")
+        sel.append('</div>')                                                              # 1 行目（案）を閉じる
         if not final:                                                                  # 2 行目: 案（型）を選んだあとに、その型のデザイン 1〜3 から選ぶ
             for k in letters:
                 ds = (designs.get(nn) or {}).get(k) or {}
                 if len(ds) < 2:
                     continue
-                p.append(f'<div class="dgroup" data-k="{k}" hidden><div class="sub">案 {k} のデザイン（同じ内容の見せ方の違い）を選びます</div><div class="opts">')
+                sel.append(f'<div class="dgroup" data-k="{k}" hidden><div class="sub">案 {k} のデザイン（同じ内容の見せ方の違い）を選びます</div><div class="opts">')
                 for d in sorted(ds):
-                    p.append(f'<div class="dopt" data-k="{k}" data-d="{d}"><div class="thumb" role="button" tabindex="0" aria-label="案 {k} のデザイン {d} を大きく見る">'
+                    sel.append(f'<div class="dopt" data-k="{k}" data-d="{d}"><div class="thumb" role="button" tabindex="0" aria-label="案 {k} のデザイン {d} を大きく見る">'
                              f'<div class="stage">{ds[d]}</div></div>'
                              f'<label><input type="radio" name="d{nn}{k}" value="{d}"> デザイン {d}</label></div>')
-                p.append('</div></div>')
-        p.append('<div class="btns verdict"><button class="b1 ok" type="button" data-v="承認" aria-pressed="false">承認</button>'
-                 '<button class="b1 ng" type="button" data-v="要修正" aria-pressed="false">要修正</button></div>'
-                 '<textarea class="cm" placeholder="どうしてほしいか（任意）" aria-label="コメント"></textarea>'
-                 '<div class="nav2"><button class="b1 clear" type="button">選択を外す</button>'
-                 '<button class="b1 prev" type="button">前へ</button>'
-                 '<button class="b1 next" type="button">次へ</button>'
-                 '<span class="act"><span class="state"></span><button class="copyBtn" type="button">回答をコピー</button></span></div>'
-                 '<textarea class="copybox" hidden readonly aria-label="回答（コピー用）"></textarea></div></section>')
+                sel.append('</div></div>')
+        sel.append('</div>')                                                              # 選択の枠（judge）を閉じる
+        bar.append('<div class="bar"><div class="btns verdict"><button class="b1 ok" type="button" data-v="承認" aria-pressed="false">承認</button>'
+                   '<button class="b1 ng" type="button" data-v="要修正" aria-pressed="false">要修正</button></div>'
+                   '<textarea class="cm" placeholder="どうしてほしいか（任意）" aria-label="コメント"></textarea>'
+                   '<div class="nav2"><button class="b1 clear" type="button">選択を外す</button>'
+                   '<button class="b1 prev" type="button">前へ</button>'
+                   '<button class="b1 next" type="button">次へ</button>'
+                   '<span class="act"><span class="state"></span><button class="copyBtn" type="button">回答をコピー</button></span></div></div>'
+                   '<textarea class="copybox" hidden readonly aria-label="回答（コピー用）"></textarea></section>')
+        p.extend(rest + sel + bar)
         panes.append("".join(p))
     parts = [HEAD.format(title=title, extra=_STYLE),
-             f'<div class="rv"><h1>{title}</h1><p class="lead">{lead}</p>'
+             f'<div class="rv"><h1 title="{esc(lead, quote=True)}">{title}</h1><p class="lead">{lead}</p>'
              f'<div class="strip"><span>スライド <b>{len(frags)}</b> 枚</span><span id="prog"></span>'
              '</div>'
              f'<div class="body"><nav id="nav" aria-label="スライドの一覧">{"".join(nav)}</nav><div>{"".join(panes)}</div></div>'

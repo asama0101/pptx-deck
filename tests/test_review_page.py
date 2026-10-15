@@ -84,7 +84,9 @@ class PartBadgeTest(unittest.TestCase):
     open = PageTest.open
     def page_with_parts(self, td):
         frags = {"01": {"A": PART_FRAG, "B": PART_FRAG}, "02": {"A": PART_FRAG}}
-        return self.open(variants._page(Path("deck"), frags, "1"), td)
+        page = self.open(variants._page(Path("deck"), frags, "1"), td)
+        page.check('.pane[data-slide="01"] .ptToggle')                                # 部位のバッジは初期はオフ。オンにして使う
+        return page
 
     def test_badges_numbered_top_left_to_bottom_right(self):
         with tempfile.TemporaryDirectory() as td:
@@ -130,6 +132,41 @@ class PartBadgeTest(unittest.TestCase):
             page = self.open(variants._page(Path("deck"), {"00": {"A": "<p>x</p>"}}, "1", docs={"00": "<p>x</p>"}), td)
             self.assertEqual(page.evaluate("document.querySelectorAll('.ptToggle').length"), 0)
 
+
+    def test_toggles_always_visible_and_all_off_by_default(self):
+        with tempfile.TemporaryDirectory() as td:
+            frag = PART_FRAG.replace('data-layout="content"', 'data-layout="content" data-variant="型名｜理由"').replace(
+                'data-part="注釈"', 'data-part="注釈" data-note="注：出典"')
+            page = self.open(variants._page(Path("deck"), {"01": {"A": frag, "B": frag}, "02": {"A": frag, "B": frag}}, "1"), td)
+            pane = '.pane[data-slide="01"] '
+            labels = page.evaluate("Array.from(document.querySelectorAll('.pane[data-slide=\"01\"] .tgl label')).map(l => l.textContent.trim())")
+            self.assertEqual(labels, ["型と選んだ理由", "見どころ", "部位のバッジ"])           # ページの並び順
+            for cls in ("coToggle", "vrToggle", "ptToggle"):
+                self.assertTrue(page.is_visible(pane + "." + cls))                   # チェックボックスは常に見える
+                self.assertFalse(page.is_checked(pane + "." + cls))                  # どれも初期はオフ
+            for sel in (".legend", ".co", ".vr", ".pt"):
+                self.assertFalse(page.is_visible(pane + sel))                        # 見どころ・理由・バッジは初期は隠れる
+            page.check(pane + ".coToggle")
+            page.check(pane + ".vrToggle")
+            page.check(pane + ".ptToggle")
+            for sel in (".legend", ".co", ".vr", ".pt"):
+                self.assertTrue(page.is_visible(pane + sel))
+            page.uncheck(pane + ".coToggle")
+            self.assertFalse(page.is_visible(pane + ".legend"))
+            page.click("#nav button[data-go=\"02\"]")                                 # 設定はスライドをまたいで共通
+            self.assertFalse(page.is_checked('.pane[data-slide="02"] .coToggle'))
+            self.assertTrue(page.is_checked('.pane[data-slide="02"] .ptToggle'))
+
+    def test_order_is_notes_then_select_then_bar(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.open(variants._page(Path("deck"), {"01": {"A": PART_FRAG, "B": PART_FRAG}}, "1"), td)
+            order = page.evaluate("Array.from(document.querySelectorAll('.pane[data-slide=\"01\"] > *')).map(e => e.className.split(' ')[0])")
+            self.assertEqual([c for c in order if c in ("big", "cols", "parts", "judge", "bar")], ["big", "cols", "parts", "judge", "bar"])
+
+    def test_previous_comment_stays_visible_when_notes_hidden(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.open(variants._page(Path("deck"), {"01": {"A": PART_FRAG}}, "2", prev={"01": {"comment": "直して", "parts": []}}), td)
+            self.assertTrue(page.is_visible('.pane[data-slide="01"] .q'))
 
     def test_empty_part_row_is_not_recorded(self):
         with tempfile.TemporaryDirectory() as td:
