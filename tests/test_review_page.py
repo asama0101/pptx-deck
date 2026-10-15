@@ -117,6 +117,20 @@ class PartBadgeTest(unittest.TestCase):
             page.click(".pane[data-slide=\"02\"] .copyBtn")
             self.assertIn("- 部位: タイトル ／ コメント: 短く", page.evaluate("window.__answersMd"))
 
+    def test_badge_toggle_is_always_visible_and_hides_badges(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.page_with_parts(td)
+            self.assertTrue(page.is_visible(".pane[data-slide=\"01\"] .ptToggle"))          # コメントを書く前から出ている
+            self.assertTrue(page.is_visible(".pane[data-slide=\"01\"] .pt"))
+            page.uncheck(".pane[data-slide=\"01\"] .ptToggle")
+            self.assertFalse(page.is_visible(".pane[data-slide=\"01\"] .pt"))
+
+    def test_plan_review_has_no_part_controls(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.open(variants._page(Path("deck"), {"00": {"A": "<p>x</p>"}}, "1", docs={"00": "<p>x</p>"}), td)
+            self.assertEqual(page.evaluate("document.querySelectorAll('.ptToggle').length"), 0)
+
+
     def test_empty_part_row_is_not_recorded(self):
         with tempfile.TemporaryDirectory() as td:
             page = self.page_with_parts(td)
@@ -175,3 +189,35 @@ class FreeDesignTest(unittest.TestCase):
             with self.assertRaises(ValueError) as cm:
                 variants.collect_designs(work)
             self.assertIn("pp-picture", str(cm.exception))
+
+
+class ErrorMessageTest(unittest.TestCase):
+    def test_fix_on_single_slide_shows_comments(self):
+        with tempfile.TemporaryDirectory() as td:
+            work = Path(td)
+            (work / "slides").mkdir()
+            (work / "slides" / "01-A.html").write_text(FRAG.format(n="a"), encoding="utf-8")
+            md = "## S01\n- 選択: FIX\n- 判定: 要修正\n- コメント: 全体\n- 部位: 注釈 ／ コメント: 出典を足す\n"
+            with self.assertRaises(ValueError) as cm:
+                variants.finalize(work, md)
+            self.assertIn("要修正です", str(cm.exception))
+            self.assertIn("【注釈】出典を足す", str(cm.exception))
+
+    def test_variants_command_reports_error_without_traceback(self):
+        import contextlib
+        import io
+        from pptx_deck import cli
+        with tempfile.TemporaryDirectory() as td:
+            base = Path(td) / "demo"
+            err = io.StringIO()
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(cli.main(["init", str(base)]), 0)
+            from pptx_deck import paths
+            slides = paths.resolve_work(base) / "slides"
+            (slides / "01-A.html").write_text(FRAG.format(n="a"), encoding="utf-8")
+            (slides / "01-R.html").write_text(FRAG.format(n="r") + '<div class="pp-picture"></div>', encoding="utf-8")
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
+                rc = cli.main(["variants", str(base)])
+            self.assertEqual(rc, 2)
+            self.assertIn("エラー:", err.getvalue())
+            self.assertIn("pp-picture", err.getvalue())

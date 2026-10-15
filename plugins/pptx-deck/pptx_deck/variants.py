@@ -63,6 +63,7 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .opt,.rv .dopt{display:flex;flex-direction:column;gap:6px;width:min(31%,260px)}
 .rv .dgroup{display:grid;gap:8px;border-top:1px solid var(--rv-line);padding-top:10px}.rv .dgroup .sub{font-weight:700}
 .rv .opts.single{display:none}
+.rv .opts.n4 .opt{width:min(23%,250px)}
 .rv .opt .thumb,.rv .dopt .thumb{cursor:pointer}.rv .opt.view .thumb,.rv .dopt.view .thumb{outline:3px solid #fff;outline-offset:2px}
 .rv .opt label,.rv .dopt label{font-weight:700;display:flex;gap:6px;align-items:center;cursor:pointer}
 .rv .opt small{color:var(--sub);font-weight:400;font-size:12.5px;line-height:1.4}
@@ -148,7 +149,6 @@ _SCRIPT = r"""<script>
       $('.plist', p).appendChild(li);
     }
     if (text) $('textarea', li).value = text;
-    $('.parts', p).hidden = false;
     return li;
   }
   function partChanged(p) {
@@ -315,7 +315,7 @@ _SCRIPT = r"""<script>
     });
     $('.cm', p).oninput = function () { refresh(); store(snapshot()); };
     $('.coToggle', p).onchange = function () { $('.big', p).classList.toggle('nocol', !this.checked); };
-    $('.ptToggle', p).onchange = function () { $('.big', p).classList.toggle('nopt', !this.checked); };
+    if ($('.ptToggle', p)) $('.ptToggle', p).onchange = function () { $('.big', p).classList.toggle('nopt', !this.checked); };
     $$('.verdict button', p).forEach(function (b) { b.onclick = function () { setVerdict(p, b.dataset.v); }; });
     $('.clear', p).onclick = function () {
       p.dataset.verdict = '';
@@ -479,12 +479,13 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
         p.append('<div class="notes"><div class="nh"><h3>見どころ</h3>'
                  '<label class="showco"><input type="checkbox" class="coToggle" checked> 見どころの枠を表示</label></div>'
                  '<ol class="legend"></ol></div></div>')
-        p.append('<div class="parts" hidden><div class="nh"><h3>部位のコメント（スライドの青いバッジを押すと、その部位に書けます）</h3>'
-                 '<label class="showco"><input type="checkbox" class="ptToggle" checked> 部位のバッジを表示</label></div>'
-                 '<ul class="plist"></ul></div>')
+        if docs is None:                                                                 # 設計図と原稿の確認ページには部位がない
+            p.append('<div class="parts"><div class="nh"><h3>部位のコメント（スライドの青いバッジを押すと、その部位に書けます）</h3>'
+                     '<label class="showco"><input type="checkbox" class="ptToggle" checked> 部位のバッジを表示</label></div>'
+                     '<ul class="plist"></ul></div>')
         p.append('<div class="judge"><div class="sub">'
                  + ("この内容を承認しますか。" if single else "案を選び（サムネを押すと大きく見えます）、承認か要修正を押してください。どの案でもない場合は、案を選ばずに要修正を押し、コメントに書いてください。") + '</div>')
-        p.append('<div class="opts single">' if single else '<div class="opts">')     # 1 案だけのときは、案の選択（サムネとラジオ）を隠す
+        p.append('<div class="opts single">' if single else ('<div class="opts n4">' if len(letters) >= 4 else '<div class="opts">'))     # 1 案だけのときは、案の選択（サムネとラジオ）を隠す
         for k in letters:
             vname, vreason = _variant_info(opts[k])
             p.append(f'<div class="opt" data-k="{k}" data-name="{esc(vname, quote=True)}" data-reason="{esc(vreason, quote=True)}">'
@@ -654,7 +655,10 @@ def _chosen(work: Path, answers_md: "str | list[str]", allow_comments: bool = Fa
         a = ans.get(nn)
         if not a or a["choice"] not in designs[nn]:
             got = a["choice"] if a and a["choice"] else "未回答"
-            problems.append(f"S{nn}: 案が決まっていません（回答: {got}）")
+            if got == "FIX":                      # 1 案だけのスライドの「要修正」。直す内容（コメントと部位のコメント）を添える
+                problems.append(f"S{nn}: 要修正です。直してから再提示してください: {comment_text(a) or '（コメントなし）'}")
+            else:
+                problems.append(f"S{nn}: 案が決まっていません（回答: {got}）")
             continue
         d = a.get("design", 1)
         if d not in designs[nn][a["choice"]]:

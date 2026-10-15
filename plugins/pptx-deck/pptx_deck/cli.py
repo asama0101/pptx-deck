@@ -178,7 +178,11 @@ def cmd_variants(args) -> int:
     from . import variants
     work = paths.resolve_work(args.workdir)
     _ensure_derived(work)
-    print(variants.assemble(work, round_no=args.round or variants.next_round(work)))
+    try:
+        print(variants.assemble(work, round_no=args.round or variants.next_round(work)))
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
     return 0
 
 
