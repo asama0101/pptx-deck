@@ -43,6 +43,8 @@ Windows 専用の Claude Code プラグイン `pptx-deck`（`plugins/pptx-deck/`
 
 ## 注意
 
+- 部位の名前（タイトル・ヘッドメッセージ・チャートタイトル・注釈・出典・メッセージボックスなど）は、断片の `data-part` で付ける（`references/html-rules.md`）。`variants.py` のページが `data-part` から番号つきバッジを重ね、部位ごとのコメントを回答 md の `- 部位: 名前 ／ コメント: …` に出す。バッジは画面専用で PPTX に出ない。`data-role` は測定・検査が使うので、部位名の置き換えに使わない。
+
 - **レビューページと、スライドのテーマが同じ DOM・同じ CSS 変数を共有する。** `variants.py` のページ側の変数は `--rv-bg`・`--rv-line` のように接頭辞を付けてある。`--bg`・`--line`・`--text` などテーマ側（`theme.css`）と同名にすると、スライドの背景や罫線が上書きされて見えなくなる。
 - 絵の SVG の中の色は、`base.css` の `sv-f-*`・`sv-s-*`（テーマの変数）で塗る。`parts.svg` のアイコンも同じ。`marker` は path の終点にだけ付くので、矢印は 1 本ずつ別の path にする。絵を撮るときは、他の部品を `visibility:hidden` にして背景を透明にする（`measure.py` の `_SNAP_CSS`）。`<defs>` の `symbol`・`marker` は、絵の `<svg>` の中に置く（外の定義は撮るときに隠れる）。
 - `chart-preview.js` はブラウザ用の近似で、`fmt`（桁区切りなど）や軸は PowerPoint の実際のグラフと一致しない。
