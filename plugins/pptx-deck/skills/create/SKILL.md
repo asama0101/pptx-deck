@@ -1,6 +1,6 @@
 ---
 name: create
-description: テーマ・素材・原稿から、コンサルテイストの承認資料（稟議・提案・計画）を新しく作る。設計図と原稿(Markdown)の承認 → HTML スライド案（各 3 案）の選択 → 最終 HTML の承認 → 編集可能な PowerPoint(.pptx) の順に進める。利用者の PPTX テンプレート（表紙・裏表紙・ヘッダー・フッター）に従える。「スライドを作って」「資料を作って」「PowerPoint を作って」「稟議資料」「提案資料」「デッキ」と頼まれたときに使う。作った PPTX の直しには revise、設計図と原稿の確認だけなら review-plan を使う。既存の PPTX の編集には使わない。Windows 専用。
+description: テーマ・素材・原稿から、コンサルテイストの承認資料（稟議・提案・計画）を新しく作る。設計図と原稿(Markdown)の承認 → HTML スライド案（型の 3 案と自由設計の 1 案）の選択 → 編集可能な PowerPoint(.pptx) の順に進める（承認は 2 回。直しは完成後に revise）。利用者の PPTX テンプレート（表紙・裏表紙・ヘッダー・フッター）に従える。「スライドを作って」「資料を作って」「PowerPoint を作って」「稟議資料」「提案資料」「デッキ」と頼まれたときに使う。作った PPTX の直しには revise、設計図と原稿の確認だけなら review-plan を使う。既存の PPTX の編集には使わない。Windows 専用。
 compatibility: Windows 専用。Python 3.10 以上と Claude Code。システムの Python に python-pptx・Playwright・chromium がそろっていればそれを使い、なければ仮想環境を承認を得て作る。スライド案の選択に Playwright MCP が必要（ないときは回答を貼り付ける）。LibreOffice は使わない。
 ---
 
@@ -23,9 +23,9 @@ compatibility: Windows 専用。Python 3.10 以上と Claude Code。システム
 | 入力 | 下の「1.1 入力で聞くこと」 | |
 | 設計図 | 図を作る前に `<名前>/source/design.md` を書く（ガバニングメッセージ・論点・台帳・ページごとの設計。2.1） | ①に含める |
 | 原稿 | `<名前>/source/script.md` を書く。`lint-script` が空になるまで直す | ① 設計図と原稿を HTML で承認（review-plan。内容を凍結） |
-| スライド案 | 全スライドの 3 案を `source/slides/NN-A.html`〜に書き、`variants` で 1 つの HTML にする | ② HTML 上で選択＋コメント |
-| 最終 HTML | 選ばれた案を `finalize` で統合し、`final-review.html` で全体を見せる | ③ HTML 上で承認／要修正（チャットでの承認でもよい） |
-| PPTX | `build` で書き出し、検査と確認用の画像（`final.html` の撮影）で崩れを確認する | |
+| スライド案 | 全スライドの案（型の A/B/C と自由設計の R）を `source/slides/NN-A.html`〜に書き、`variants` で 1 つの HTML にする | ② HTML 上で選択＋コメント（部位のバッジで部位を指定できる） |
+| 最終 HTML | 選ばれた案を `finalize` で統合する（`final-review.html` は完成後の参照用。承認は求めない） | |
+| PPTX | そのまま `build` で書き出し、検査と確認用の画像（`final.html` の撮影）で崩れを確認する。直しは完成後に `revise` | |
 
 ### 1.1 入力で聞くこと
 - 入口: テーマのみ／素材（メモ・文書・データ）／既存の Markdown 原稿。足りない前提（対象者・目的・枚数・期限・欠けている数字）は、作業を始める前にまとめて質問する。外れたときの手戻りが大きいものは推測しない。
@@ -73,7 +73,7 @@ compatibility: Windows 専用。Python 3.10 以上と Claude Code。システム
 - 書いたら `python "${CLAUDE_PLUGIN_ROOT}/run.py" lint-script "<名前>/source/script.md"`。問題は全件出る。空になり、5.1 のヘッド・論理の確認を済ませてから、`python "${CLAUDE_PLUGIN_ROOT}/run.py" review-plan "<名前>"` で `plan-review.html` を作り、Playwright MCP の `browser_navigate` で開いて、「資料全体とスライドごとの設計・原稿を見て、『承認』か『要修正』を選び、『回答をコピー』を押してください」と伝える。待ち方と回答の保存は 3 章の手順 4・5 と同じ（保存先は `<名前>/source/answers-plan-N.md`）。要修正があれば、コメントに沿って設計図と原稿を直し、`review-plan` を出し直す（前回承認したスライドは選択済みで開く）。承認後は、承認なしに内容を変えない。
 - `lint-script` が検査する範囲と、人が見る範囲（完全文・体言止め・数え上げ・行数・逆テスト・縦読み・論点の回収・証拠対応）は [references/head-rules.md](${CLAUDE_PLUGIN_ROOT}/references/head-rules.md) の表にある。
 
-## 3. スライド案（3 案）
+## 3. スライド案（型の 3 案と自由設計の R）
 
 1. スライドの主張から「問い」を決め、`${CLAUDE_PLUGIN_ROOT}/references/patterns.md` の選定表で型の第 1 候補・次点 1・次点 2 を取る。断片は `${CLAUDE_PLUGIN_ROOT}/assets/components/` から、型の一覧は `${CLAUDE_PLUGIN_ROOT}/references/components.md`。断片をコピーして、内容と数字を差し替え、`<名前>/source/slides/NN-A.html` に書く。
 2. **3 案は型違い**（A: 第 1 候補／B: 次点 1／C: 次点 2。候補が足りなければ 2 案、型が一意なら 1 案）。内容（文言と数字）は 3 案で同じ。基本として、**図と表を多用して説明する**。**デザイン違いは案にしない**: 利用者が型を選んだあとに、デザイン 1〜3 から選ぶ。デザイン 2・3 は `NN-A-d2.html`・`NN-A-d3.html`（B・C も同様）に書く。デザインを出さない型（デザイン 1 のみ）は書かなくてよい。各断片に `data-variant="型名｜選んだ理由"` を付けると、案の下に型名、大きな画面の下に理由が出る。

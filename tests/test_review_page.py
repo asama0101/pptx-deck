@@ -144,3 +144,34 @@ class PartAnswersTest(unittest.TestCase):
         self.assertEqual(variants.comment_text(a), "全体 【スティッカー②】文言を短く")
         md_ok = "## S01\n- 選択: A\n- 判定: 承認\n- コメント: \n- 部位: 注釈 ／ コメント: 直す\n"
         self.assertEqual(variants.approved_preset([md_ok]), {})
+
+
+class FreeDesignTest(unittest.TestCase):
+    def work(self, td, files):
+        work = Path(td)
+        (work / "slides").mkdir()
+        for name, text in files.items():
+            (work / "slides" / name).write_text(text, encoding="utf-8")
+        return work
+
+    def test_r_is_collected_and_finalized(self):
+        with tempfile.TemporaryDirectory() as td:
+            work = self.work(td, {"01-A.html": FRAG.format(n="a"), "01-B.html": FRAG.format(n="b"), "01-R.html": FRAG.format(n="r")})
+            self.assertEqual(sorted(variants.collect(work)["01"]), ["A", "B", "R"])
+            page = variants._page(work, variants.collect(work), "1", designs=variants.collect_designs(work))
+            self.assertIn("案 R（自由設計）", page)
+            self.assertNotIn('class="dgroup" data-k="R"', page)           # R にはデザイン 1〜3 の選択がない
+            out = variants.finalize(work, "## S01\n- 選択: R\n- 判定: 承認\n- コメント: \n")
+            self.assertIn("題r", out.read_text(encoding="utf-8"))
+
+    def test_r_rejects_design_variants_and_pictures(self):
+        with tempfile.TemporaryDirectory() as td:
+            work = self.work(td, {"01-A.html": FRAG.format(n="a"), "01-R.html": FRAG.format(n="r"), "01-R-d2.html": FRAG.format(n="r2")})
+            with self.assertRaises(ValueError) as cm:
+                variants.collect_designs(work)
+            self.assertIn("デザイン 2・3", str(cm.exception))
+        with tempfile.TemporaryDirectory() as td:
+            work = self.work(td, {"01-A.html": FRAG.format(n="a"), "01-R.html": FRAG.format(n="r") + '<div class="pp-picture"></div>'})
+            with self.assertRaises(ValueError) as cm:
+                variants.collect_designs(work)
+            self.assertIn("pp-picture", str(cm.exception))

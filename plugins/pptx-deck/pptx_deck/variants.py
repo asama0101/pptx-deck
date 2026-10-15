@@ -9,6 +9,7 @@ from pathlib import Path
 
 from . import paths, svgids
 
+FREE = "R"        # 自由設計の推奨案（型の選定表にとらわれない。デザインは 1 のみ。絵 pp-picture は使わない）
 FRAG = re.compile(r"^(\d{2})-([A-Z])(?:-d([23]))?\.html$")      # NN-A.html（デザイン 1）・NN-A-d2.html・NN-A-d3.html（同じ型のデザイン 2・3）
 HEAD = ('<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>{title}</title>'
         '<link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="base.css">'
@@ -385,6 +386,11 @@ def collect_designs(work: Path) -> dict[str, dict[str, dict[int, str]]]:
         m = FRAG.match(f.name)
         if m:
             dn = int(m.group(3) or 1)
+            if m.group(2) == FREE:
+                if dn != 1:
+                    raise ValueError(f"slides/{f.name}: 自由設計の案（R）にデザイン 2・3 は作りません（NN-R.html だけ）")
+                if "pp-picture" in f.read_text(encoding="utf-8"):
+                    raise ValueError(f"slides/{f.name}: 自由設計の案（R）に絵（pp-picture）は使えません（図形・表・グラフだけで描く。絵は diagram の流れ）")
             # 絵（pp-picture）の SVG の id は、案ごとに一意にする（複数の絵で同じ id の定義が前の絵に引かれて、アイコンや矢じりが消えるのを防ぐ）
             text = svgids.uniquify(f.read_text(encoding="utf-8"), f"s{m.group(1)}{m.group(2).lower()}{dn}-")
             out.setdefault(m.group(1), {}).setdefault(m.group(2), {})[dn] = text
@@ -488,7 +494,7 @@ def _page(work: Path, frags: dict[str, dict[str, str]], round_label: str, final:
                 p.append(f'<label><input type="radio" name="s{nn}" value="A"> 承認</label>'
                          f'<label><input type="radio" name="s{nn}" value="FIX"> 要修正</label>')
             elif len(letters) > 1:
-                p.append(f'<label><input type="radio" name="s{nn}" value="{k}"> 案 {k}</label>'
+                p.append(f'<label><input type="radio" name="s{nn}" value="{k}"> 案 {k}{"（自由設計）" if k == FREE else ""}</label>'
                          + (f'<small>{esc(vname)}</small>' if vname else ""))
             else:
                 p.append(f'<label><input type="radio" name="s{nn}" value="A"> 採用</label>'

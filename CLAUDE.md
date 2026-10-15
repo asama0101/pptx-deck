@@ -30,8 +30,8 @@ Windows 専用の Claude Code プラグイン `pptx-deck`（`plugins/pptx-deck/`
 **HTML が正本で、PPTX はそこから測って作る。**
 
 1. `source/design.md`（設計図）→ `script.md`（原稿。`script_lint.py` が検査）→ 承認①（`plan_review.py`）。
-2. `source/slides/NN-A.html`・`NN-B.html`・`NN-A-d2.html` などの断片（型は `assets/components/` からコピーして内容を差し替える）→ `variants.py` が `variants.html` を作る → 回答 `answers-N.md`（回の順に後勝ちで上書き。`answers-final.md` は案の決定に使わない）。
-3. `finalize` が選ばれた案を `final.html` に統合し、`final-review.html`（承認③）を作る。
+2. `source/slides/NN-A.html`・`NN-B.html`・`NN-A-d2.html` などの断片（型は `assets/components/` からコピーして内容を差し替える。型の A/B/C に加え、型にとらわれない自由設計の `NN-R.html` を足す。R はデザイン 1 のみ・`pp-picture` 不可で、`variants.collect_designs` が検査する）→ `variants.py` が `variants.html` を作る → 回答 `answers-N.md`（回の順に後勝ちで上書き。`answers-final.md` は案の決定に使わない）。
+3. `finalize` が選ばれた案を `final.html` に統合し、参照用の `final-review.html` を作る（最終 HTML の承認は求めない。承認は ①② の 2 回で、直しは完成後に `revise`）。
 4. `measure.py` が Playwright で `final.html` を開き、`measure.js` が `.pp-*` 部品の位置・サイズ・書式をモデルにする。**`pp-text`・`pp-shape`・`pp-line`・`pp-image`・`pp-table`・`pp-chart`・`pp-picture` 以外のクラスは PPTX に出ない。**
 5. `cli.py` の `build` が、測ったモデルを `check.check_model` で検査し（エラーがあれば PPTX を作らない）、`build.py` が python-pptx でテンプレート（既定は `assets/template/standard.potx`、利用者のもあり）の上に書き出し、できた PPTX を `check.check_pptx` で再検査する。グラフは `charts.py` がネイティブのグラフにする。`template.py` がテンプレートからヘッダー・フッター・背景色・レイアウトを読み、`init` が `template.json` と CSS 変数にして作業フォルダに残す。
 
