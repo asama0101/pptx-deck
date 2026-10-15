@@ -8,11 +8,11 @@ compatibility: Windows 専用。create と同じ環境（Python・Playwright・c
 
 `${CLAUDE_PLUGIN_ROOT}` は、このプラグインのフォルダ。コマンドはすべて `python "${CLAUDE_PLUGIN_ROOT}/run.py" …`。`<名前>` は作品の名前（実行したディレクトリ直下の `<名前>/`。作業ファイルは `<名前>/source/`、PPTX は `<名前>/<名前>.pptx`）。環境の確認（`doctor`・`setup`）は create の 0 章（`${CLAUDE_PLUGIN_ROOT}/skills/create/SKILL.md`）と同じ。
 
-絵の書き方・5 種の作法・往復・聞くことは [references/picture-craft.md](${CLAUDE_PLUGIN_ROOT}/references/picture-craft.md)。部品は `${CLAUDE_PLUGIN_ROOT}/assets/pictures/parts.svg`、見本は `${CLAUDE_PLUGIN_ROOT}/assets/components/pictures/`。既存の 28 型（`${CLAUDE_PLUGIN_ROOT}/references/patterns.md`）で足りる図は、型を使うほうが速い。型に合わないときに絵にする。
+絵の書き方・5 種の作法・往復・聞くことは [references/picture-craft.md](${CLAUDE_PLUGIN_ROOT}/references/picture-craft.md)。部品は `${CLAUDE_PLUGIN_ROOT}/assets/pictures/parts.svg`、見本は `${CLAUDE_PLUGIN_ROOT}/assets/components/pictures/`。既存の 51 型（`${CLAUDE_PLUGIN_ROOT}/references/patterns.md`）で足りる図は、型を使うほうが速い。型に合わないときに絵にする。
 
 ## 1. 入口
 
-- **単独で作る**: `init "<名前>" --color <プリセット|#RRGGBB>`（create の 1.2 と同じ。同名のフォルダが空でないときは中身を見せて承認を得る）。1 枚物なので、`source/design.md` は資料全体と台帳を省いた 1 ページ分、`source/script.md` は 1 スライド（`layout: diagram`・題・見出し・図表）にする。書式は `${CLAUDE_PLUGIN_ROOT}/assets/sample/`。見出し（ヘッドメッセージ）は create の 2.2 の規則に従い、`lint-script` を通す。
+- **単独で作る**: `init "<名前>" --color <プリセット|#RRGGBB>`（create の 1.2 と同じ。同名のフォルダが空でないときは中身を見せて承認を得る）。1 枚物なので、`source/design.md` は資料全体と台帳を省いた 1 ページ分、`source/script.md` は 1 スライド（`layout: diagram`・題・ヘッドメッセージ・図表）にする。書式は `${CLAUDE_PLUGIN_ROOT}/assets/sample/`。ヘッドメッセージは create の 2.2 の規則に従い、`lint-script` を通す。
 - **create の中で呼ばれた**: create の作業フォルダの `source/slides/` に、そのページの断片を書く。承認は create 側に従い、追加の承認は出さない。
 - **絵にするかどうか**: 利用者が「図にして」「絵にして」と頼んだときは、そのまま絵にする（`picture-plan.json` の `asked` を true にする）。そうでなく、素材に構造（手順・関係・前後の比較・構成・経路）を見つけたときは、文章のままにせず、4 章の HTML で「ここは絵がよい」と提案する（強制しない。`asked` は false）。
 
@@ -47,17 +47,17 @@ compatibility: Windows 専用。create と同じ環境（Python・Playwright・c
 
 ## 6. 構図の選択（案が複数のとき）と往復
 
-1. 案が複数のとき: create の 3 章の手順 3〜5（`variants`・待ち方・回答の保存。保存先は `source/answers-N.md`）で、構図（A/B/C）を選んでもらう。案が 1 つのときは、構図の選択を省く（`source/answers-1.md` に `## SNN` と `- 選択: A` だけを書く。判定は書かない。承認は 7 章の最終確認で受ける）。
+1. 案が複数のとき: create の 3 章の手順 3〜5（`variants`・待ち方・回答の保存。保存先は `source/answers-N.md`）で、構図（A/B/C）を選んでもらう。案が 1 つのときは、構図の選択を省く（`source/answers-1.md` に `## SNN` と `- 選択: A` だけを書く。判定は書かない）。
 2. 往復: 選ばれた案を 1 案にして、利用者と描き直す。**直す前に** `history "<名前>" snapshot --label "<直す内容>"`。確認用の画像（`draft`）を見せ、チャットの指示で直す。戻すときは `history "<名前>" restore <版>`。位置・形・色・構図・凡例の見せ方は、利用者の指示で直してよい。文言・数字を変えるときは、先に利用者に確かめる。
 
-## 7. 最終確認と PPTX
+## 7. PPTX
 
 1. `finalize "<名前>"` → `final.html` と `final-review.html`（参照用）。最終確認の承認は挟まない（6 章の往復で、確認用の画像を見て直し終えている）。利用者には、「絵は画像として PPTX に貼られ、PowerPoint では直せません（描き直します）。機密が絵に含まれていないかも見てください」と一言伝え、そのまま次へ進む。直したいときは、完成後に `revise` か 6 章の往復に戻る。
 2. `build "<名前>" [--footer …] [--force|--out …]`（終了コード 4 の扱いは create の 5 章）。`ok` が false なら `violations` を読んで直し、`finalize` からやり直す。`ok` なら `previews` を開いて崩れを確認し、**PowerPoint で開いて、絵の解像度・フォント・位置を最終確認することを勧める**。済んだら `clean "<名前>"`。
 
 ## 守ること
 
-- 絵の中身は PowerPoint で直せないことを、最終確認の前に利用者に伝える。直す依頼は、描き直して `build` する。
+- 絵の中身は PowerPoint で直せないことを、ビルドの前に利用者に伝える。直す依頼は、描き直して `build` する。
 - 数字・固有名詞を作らない（素材に無いものは、前提つきの試算か「xx」）。
 - 強調色は 1 枚に 1 点。絵の中の色はテーマのクラスだけ。文字は 14pt 以上。
 - 画像・既存の図の機密（IP アドレス・機器名・氏名）は、利用者に伏せ字の要否を聞く。素材はリポジトリに残さない。
