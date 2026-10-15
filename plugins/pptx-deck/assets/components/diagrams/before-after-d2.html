@@ -1,13 +1,13 @@
 <!-- 用途: Before/After（改革の前後で、工程・体制・数量がどう変わるかを並べて見せる）。ここでは障害対応の 4 工程の所要時間を比べる（現行 10.0h → 改革後 5.0h）。色と大きさを一貫させる: 現行＝灰の面（古い・長い）、改革後＝基調色（新しい・短い）。差は、棒や帯の長さ・大きな数字・矢印で見せる。
      3 デザインは同じ原稿（4 工程の現行と改革後の時間・変え方）で差し替えられる。強調色は、短縮のいちばん大きい工程（復旧作業の改革後）の 1 点だけ。
      デザイン2（工程ごとの 2 本棒）: 工程を 1 行ずつ、上に現行（灰の棒）、下に改革後（基調色の棒）を同じ左端から時間に比例した長さ（1h＝90px）で並べ、棒の右に時間、行の右端に差を大きく書く。下に合計の帯。工程が 5〜6 つあっても読める。体制・数量の前後の比較もこの形（棒を数値の表に差し替える）。
-     差し替える所: 題・リード文・図表タイトル・凡例・工程名・現行と改革後の時間（棒の幅 = 時間 × 90px）・変え方・差・強調する工程・合計の帯・注。 -->
-<section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">障害対応の工程</div>
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・凡例・工程名・現行と改革後の時間（棒の幅 = 時間 × 90px）・変え方・差・強調する工程・合計の帯・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="before-after">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">障害対応の工程</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">復旧作業を5.5hから2.0hに縮めれば、障害対応は10.0hから5.0hに半減する</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の所要時間（現行FY25実績 → FY27計画、時間）</div>
-  <div class="pp-shape f-mid" data-note="凡例：灰＝現行、基調色＝改革後。棒の長さは時間に比例（1h＝90px）" data-overlap style="left:64px;top:230px;width:22px;height:22px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">復旧作業を5.5hから2.0hに縮めれば、障害対応は10.0hから5.0hに半減する</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の所要時間（現行FY25実績 → FY27計画、時間）</div>
+  <div class="pp-shape f-mid" data-part="凡例" data-note="凡例：灰＝現行、基調色＝改革後。棒の長さは時間に比例（1h＝90px）" data-overlap style="left:64px;top:230px;width:22px;height:22px"></div>
   <div class="pp-text b" style="left:92px;top:226px;width:64px;height:30px;font-size:19px">現行</div>
   <div class="pp-shape f-accent" style="left:176px;top:230px;width:22px;height:22px"></div>
   <div class="pp-text b" style="left:204px;top:226px;width:100px;height:30px;font-size:19px">改革後</div>
@@ -31,7 +31,7 @@
   <div class="pp-text b" style="left:64px;top:410px;width:160px;height:40px;font-size:21px;line-height:1.5">復旧作業</div>
   <div class="pp-shape f-mid" style="left:232px;top:398px;width:495px;height:24px"></div>
   <div class="pp-text" style="left:735px;top:396px;width:80px;height:28px;font-size:19px;line-height:1.4">5.5h</div>
-  <div class="pp-shape f-emph" data-note="強調：短縮がいちばん大きい工程の改革後の棒だけ強調色" style="left:232px;top:426px;width:180px;height:24px"></div>
+  <div class="pp-shape f-emph" data-part="アクセント" data-note="強調：短縮がいちばん大きい工程の改革後の棒だけ強調色" style="left:232px;top:426px;width:180px;height:24px"></div>
   <div class="pp-text b" style="left:420px;top:424px;width:80px;height:28px;font-size:19px;line-height:1.4">2.0h</div>
   <div class="pp-text" style="left:830px;top:410px;width:180px;height:36px;font-size:19px;line-height:1.5">遠隔・自動切替</div>
   <div class="pp-text b right" style="left:1020px;top:404px;width:196px;height:44px;font-size:30px;line-height:1.4">▲3.5h</div>
@@ -45,5 +45,5 @@
   <div class="pp-text b right" style="left:1020px;top:470px;width:196px;height:44px;font-size:30px;line-height:1.4">▲0.5h</div>
   <div class="pp-shape f-accent" data-note="結論の帯：合計と差を、基調色の面で締める" data-overlap style="left:64px;top:534px;width:1152px;height:52px"></div>
   <div class="pp-text b t-white center" data-overlap style="left:64px;top:538px;width:1152px;height:44px;font-size:27px">合計 10.0h → 5.0h　差 ▲5.0h（▲50%）</div>
-  <div class="pp-text" data-note="注：出典・前提と、→ 含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 時間はFY25の障害120件の平均。<br>→ 復旧作業の短縮▲3.5hが、全体の短縮▲5.0hの7割を占める</div>
+  <div class="pp-text" data-part="注釈" data-note="注：出典・前提と、→ 含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 時間はFY25の障害120件の平均。<br>→ 復旧作業の短縮▲3.5hが、全体の短縮▲5.0hの7割を占める</div>
 </section>

@@ -8,3 +8,6 @@ __pycache__/
 
 # 著作物（株式会社CONE）のためコミットしない
 docs/*.pdf
+
+# 作業用の SPEC（grill-form が作る。コミットしない）
+docs/specs/

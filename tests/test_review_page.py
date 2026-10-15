@@ -68,3 +68,193 @@ class PageTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+PART_FRAG = ('<section class="slide" data-layout="content" style="position:relative;width:1280px;height:720px">'
+             '<div class="pp-text" data-role="title" data-part="タイトル" style="position:absolute;left:64px;top:30px;width:900px;height:40px">題</div>'
+             '<div class="pp-shape f-white" data-part="スティッカー" style="position:absolute;left:700px;top:300px;width:100px;height:30px"></div>'
+             '<div class="pp-shape f-white" data-part="スティッカー" style="position:absolute;left:100px;top:300px;width:100px;height:30px"></div>'
+             '<div class="pp-text" data-role="caption" data-part="注釈" style="position:absolute;left:64px;top:600px;width:900px;height:30px">注: x</div>'
+             '</section>')
+
+
+class PartBadgeTest(unittest.TestCase):
+    setUpClass = classmethod(PageTest.setUpClass.__func__)
+    tearDownClass = classmethod(PageTest.tearDownClass.__func__)
+    open = PageTest.open
+    def page_with_parts(self, td):
+        frags = {"01": {"A": PART_FRAG, "B": PART_FRAG}, "02": {"A": PART_FRAG}}
+        page = self.open(variants._page(Path("deck"), frags, "1"), td)
+        page.check('.pane[data-slide="01"] .ptToggle')                                # 部位のバッジは初期はオフ。オンにして使う
+        return page
+
+    def test_badges_numbered_top_left_to_bottom_right(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.page_with_parts(td)
+            names = page.evaluate("Array.from(document.querySelectorAll('.pane[data-slide=\"01\"] .pt')).map(b => b.textContent)")
+            # 同じ部位が複数あるものだけに番号を付け、左上から右下の順（左のスティッカーが①）
+            self.assertEqual(names, ["タイトル", "スティッカー①", "スティッカー②", "注釈"])
+            left1 = page.evaluate("parseFloat(document.querySelectorAll('.pane[data-slide=\"01\"] .pt')[1].style.left)")
+            self.assertEqual(left1, 100)
+
+    def test_part_comment_is_recorded_and_sets_fix(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.page_with_parts(td)
+            page.click(".pane[data-slide=\"01\"] .pt:has-text('注釈')")
+            page.fill(".pane[data-slide=\"01\"] .plist textarea", "出典を足す")
+            page.click(".pane[data-slide=\"01\"] .copyBtn")
+            md = page.evaluate("window.__answersMd")
+            self.assertIn("## S01", md)
+            self.assertIn("- 判定: 要修正", md)
+            self.assertIn("- 部位: 案 A 注釈 ／ コメント: 出典を足す", md)
+            a = variants.parse_answers(md)["01"]
+            self.assertEqual(a["parts"], [{"part": "案 A 注釈", "comment": "出典を足す"}])
+
+    def test_single_slide_part_label_has_no_variant(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.page_with_parts(td)
+            page.click("#nav button[data-go=\"02\"]")
+            page.click(".pane[data-slide=\"02\"] .pt:has-text('タイトル')")
+            page.fill(".pane[data-slide=\"02\"] .plist textarea", "短く")
+            page.click(".pane[data-slide=\"02\"] .copyBtn")
+            self.assertIn("- 部位: タイトル ／ コメント: 短く", page.evaluate("window.__answersMd"))
+
+    def test_badge_toggle_is_always_visible_and_hides_badges(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.page_with_parts(td)
+            self.assertTrue(page.is_visible(".pane[data-slide=\"01\"] .ptToggle"))          # コメントを書く前から出ている
+            self.assertTrue(page.is_visible(".pane[data-slide=\"01\"] .pt"))
+            page.uncheck(".pane[data-slide=\"01\"] .ptToggle")
+            self.assertFalse(page.is_visible(".pane[data-slide=\"01\"] .pt"))
+
+    def test_plan_review_has_no_part_controls(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.open(variants._page(Path("deck"), {"00": {"A": "<p>x</p>"}}, "1", docs={"00": "<p>x</p>"}), td)
+            self.assertEqual(page.evaluate("document.querySelectorAll('.ptToggle').length"), 0)
+
+
+    def test_toggles_always_visible_and_all_off_by_default(self):
+        with tempfile.TemporaryDirectory() as td:
+            frag = PART_FRAG.replace('data-layout="content"', 'data-layout="content" data-variant="型名｜理由"').replace(
+                'data-part="注釈"', 'data-part="注釈" data-note="注：出典"')
+            page = self.open(variants._page(Path("deck"), {"01": {"A": frag, "B": frag}, "02": {"A": frag, "B": frag}}, "1"), td)
+            pane = '.pane[data-slide="01"] '
+            labels = page.evaluate("Array.from(document.querySelectorAll('.pane[data-slide=\"01\"] .tgl label')).map(l => l.textContent.trim())")
+            self.assertEqual(labels, ["型と選んだ理由", "見どころ", "部位のバッジ"])           # ページの並び順
+            for cls in ("coToggle", "vrToggle", "ptToggle"):
+                self.assertTrue(page.is_visible(pane + "." + cls))                   # チェックボックスは常に見える
+                self.assertFalse(page.is_checked(pane + "." + cls))                  # どれも初期はオフ
+            for sel in (".legend", ".co", ".vr", ".pt"):
+                self.assertFalse(page.is_visible(pane + sel))                        # 見どころ・理由・バッジは初期は隠れる
+            page.check(pane + ".coToggle")
+            page.check(pane + ".vrToggle")
+            page.check(pane + ".ptToggle")
+            for sel in (".legend", ".co", ".vr", ".pt"):
+                self.assertTrue(page.is_visible(pane + sel))
+            page.uncheck(pane + ".coToggle")
+            self.assertFalse(page.is_visible(pane + ".legend"))
+            page.click("#nav button[data-go=\"02\"]")                                 # 設定はスライドをまたいで共通
+            self.assertFalse(page.is_checked('.pane[data-slide="02"] .coToggle'))
+            self.assertTrue(page.is_checked('.pane[data-slide="02"] .ptToggle'))
+
+    def test_order_is_notes_then_select_then_bar(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.open(variants._page(Path("deck"), {"01": {"A": PART_FRAG, "B": PART_FRAG}}, "1"), td)
+            order = page.evaluate("Array.from(document.querySelectorAll('.pane[data-slide=\"01\"] > *')).map(e => e.className.split(' ')[0])")
+            self.assertEqual([c for c in order if c in ("big", "cols", "parts", "judge", "bar")], ["big", "cols", "parts", "judge", "bar"])
+
+    def test_previous_comment_stays_visible_when_notes_hidden(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.open(variants._page(Path("deck"), {"01": {"A": PART_FRAG}}, "2", prev={"01": {"comment": "直して", "parts": []}}), td)
+            self.assertTrue(page.is_visible('.pane[data-slide="01"] .q'))
+
+    def test_empty_part_row_is_not_recorded(self):
+        with tempfile.TemporaryDirectory() as td:
+            page = self.page_with_parts(td)
+            page.click(".pane[data-slide=\"01\"] .pt:has-text('注釈')")        # 行は開くが、何も書かない
+            page.click(".pane[data-slide=\"01\"] .verdict .ok")           # 承認すると次のスライドへ進む
+            page.click(".pane[data-slide=\"02\"] .copyBtn")
+            self.assertNotIn("部位:", page.evaluate("window.__answersMd"))
+
+
+class PartAnswersTest(unittest.TestCase):
+    MD = "## S01\n- 選択: A\n- 判定: 要修正\n- コメント: 全体\n- 部位: スティッカー② ／ コメント: 文言を短く\n"
+
+    def test_part_comment_counts_as_unreflected_comment(self):
+        with tempfile.TemporaryDirectory() as td:
+            work = Path(td)
+            (work / "slides").mkdir()
+            (work / "slides" / "01-A.html").write_text(FRAG.format(n="01"), encoding="utf-8")
+            md = "## S01\n- 選択: A\n- 判定: 承認\n- コメント: \n- 部位: 注釈 ／ コメント: 出典を足す\n"
+            with self.assertRaises(ValueError) as cm:
+                variants.finalize(work, md)
+            self.assertIn("注釈", str(cm.exception))
+
+    def test_comment_text_and_preset(self):
+        a = variants.parse_answers(self.MD)["01"]
+        self.assertEqual(variants.comment_text(a), "全体 【スティッカー②】文言を短く")
+        md_ok = "## S01\n- 選択: A\n- 判定: 承認\n- コメント: \n- 部位: 注釈 ／ コメント: 直す\n"
+        self.assertEqual(variants.approved_preset([md_ok]), {})
+
+
+class FreeDesignTest(unittest.TestCase):
+    def work(self, td, files):
+        work = Path(td)
+        (work / "slides").mkdir()
+        for name, text in files.items():
+            (work / "slides" / name).write_text(text, encoding="utf-8")
+        return work
+
+    def test_r_is_collected_and_finalized(self):
+        with tempfile.TemporaryDirectory() as td:
+            work = self.work(td, {"01-A.html": FRAG.format(n="a"), "01-B.html": FRAG.format(n="b"), "01-R.html": FRAG.format(n="r")})
+            self.assertEqual(sorted(variants.collect(work)["01"]), ["A", "B", "R"])
+            page = variants._page(work, variants.collect(work), "1", designs=variants.collect_designs(work))
+            self.assertIn("案 R（自由設計）", page)
+            self.assertNotIn('class="dgroup" data-k="R"', page)           # R にはデザイン 1〜3 の選択がない
+            out = variants.finalize(work, "## S01\n- 選択: R\n- 判定: 承認\n- コメント: \n")
+            self.assertIn("題r", out.read_text(encoding="utf-8"))
+
+    def test_r_rejects_design_variants_and_pictures(self):
+        with tempfile.TemporaryDirectory() as td:
+            work = self.work(td, {"01-A.html": FRAG.format(n="a"), "01-R.html": FRAG.format(n="r"), "01-R-d2.html": FRAG.format(n="r2")})
+            with self.assertRaises(ValueError) as cm:
+                variants.collect_designs(work)
+            self.assertIn("デザイン 2・3", str(cm.exception))
+        with tempfile.TemporaryDirectory() as td:
+            work = self.work(td, {"01-A.html": FRAG.format(n="a"), "01-R.html": FRAG.format(n="r") + '<div class="pp-picture"></div>'})
+            with self.assertRaises(ValueError) as cm:
+                variants.collect_designs(work)
+            self.assertIn("pp-picture", str(cm.exception))
+
+
+class ErrorMessageTest(unittest.TestCase):
+    def test_fix_on_single_slide_shows_comments(self):
+        with tempfile.TemporaryDirectory() as td:
+            work = Path(td)
+            (work / "slides").mkdir()
+            (work / "slides" / "01-A.html").write_text(FRAG.format(n="a"), encoding="utf-8")
+            md = "## S01\n- 選択: FIX\n- 判定: 要修正\n- コメント: 全体\n- 部位: 注釈 ／ コメント: 出典を足す\n"
+            with self.assertRaises(ValueError) as cm:
+                variants.finalize(work, md)
+            self.assertIn("要修正です", str(cm.exception))
+            self.assertIn("【注釈】出典を足す", str(cm.exception))
+
+    def test_variants_command_reports_error_without_traceback(self):
+        import contextlib
+        import io
+        from pptx_deck import cli
+        with tempfile.TemporaryDirectory() as td:
+            base = Path(td) / "demo"
+            err = io.StringIO()
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(cli.main(["init", str(base)]), 0)
+            from pptx_deck import paths
+            slides = paths.resolve_work(base) / "slides"
+            (slides / "01-A.html").write_text(FRAG.format(n="a"), encoding="utf-8")
+            (slides / "01-R.html").write_text(FRAG.format(n="r") + '<div class="pp-picture"></div>', encoding="utf-8")
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
+                rc = cli.main(["variants", str(base)])
+            self.assertEqual(rc, 2)
+            self.assertIn("エラー:", err.getvalue())
+            self.assertIn("pp-picture", err.getvalue())

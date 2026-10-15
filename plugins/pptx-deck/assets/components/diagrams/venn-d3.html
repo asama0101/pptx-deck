@@ -1,12 +1,12 @@
 <!-- 用途: 2 つの条件の重なりで候補を絞る（左に 3 領域の行、右に輪郭だけの大きなベン図）。左の行は「①だけ／②だけ／①かつ②」の 3 領域で、各領域に固有の項目（その領域だけに言えること）と該当数を 1 回ずつ書き、重なりの行だけパネル地・太字。右の 2 円は塗らず輪郭だけにして、各円に条件の名前・該当数・金額、重なりに絞り込んだ数と金額（太字）。
      2 グループの作業・項目が重なるとき（重複の整理）もこの形: 共通の項目を「①かつ②」の行に 1 回だけ書き、固有の項目を「①だけ」「②だけ」の行に置く。重なる要素には data-overlap を両方に付ける。注の末尾に含意を 1 文。
      デザイン1との違い: 左右を入れ替え、条件の表ではなく 3 領域（固有・固有・共通）の行を左に置く。円は塗りつぶさず輪郭だけで、大きく描く。
-     差し替える所: 3 領域の名前・内容・数・2 つの条件の名前・該当数・金額・重なりの数と金額・内訳の棒（解約と統合）・手順・注。 -->
-<section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">通信契約の抽出</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">利用率が低く単価も高い120契約は年4,000万円の無駄で、解約の第一候補に置くべきだ</div>
-  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">通信契約の抽出（FY2025、全1,200契約。2条件の重なりが解約候補）</div>
+     差し替える所: 3 領域の名前・内容・数・2 つの条件の名前・該当数・金額・重なりの数と金額・内訳の棒（解約と統合）・手順・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="venn">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">通信契約の抽出</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">利用率が低く単価も高い120契約は年4,000万円の無駄で、解約の第一候補に置くべきだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">通信契約の抽出（FY2025、全1,200契約。2条件の重なりが解約候補）</div>
   <div class="pp-shape f-white" data-note="3 領域の行：①だけ・②だけ・①かつ②。固有の内容と共通の内容を 1 回ずつ書き、重なりの行だけパネル地" style="left:64px;top:232px;width:520px;height:54px"></div>
   <div class="pp-text b" style="left:76px;top:244px;width:110px;height:30px;font-size:19px">①だけ</div>
   <div class="pp-text" style="left:186px;top:244px;width:250px;height:30px;font-size:19px">単価は標準。帯域を見直す</div>
@@ -37,5 +37,5 @@
   <div class="pp-text b center" data-note="重なり：両方を満たす候補の数と金額を太字に" data-overlap style="left:846px;top:331px;width:140px;height:28px;font-size:19px">①かつ②</div>
   <div class="pp-text b center t-dark" data-overlap style="left:846px;top:358px;width:140px;height:40px;font-size:30px">120</div>
   <div class="pp-text b center" data-overlap style="left:838px;top:406px;width:156px;height:28px;font-size:19px">年▲4,000万円</div>
-  <div class="pp-text" data-note="注：定義の出所と、絞り込みから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 利用率＝ピーク帯域÷契約帯域（FY2025の月平均）。単価は同種契約の全社平均との比較<br>→ 95契約の解約で通信費は▲3,600万円。利用率30%未満のため、業務への影響は限定的</div>
+  <div class="pp-text" data-part="注釈" data-note="注：定義の出所と、絞り込みから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 利用率＝ピーク帯域÷契約帯域（FY2025の月平均）。単価は同種契約の全社平均との比較<br>→ 95契約の解約で通信費は▲3,600万円。利用率30%未満のため、業務への影響は限定的</div>
 </section>

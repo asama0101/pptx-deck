@@ -65,6 +65,38 @@ def cmd_init(args) -> int:
     return 0
 
 
+def cmd_template_map(args) -> int:
+    """テンプレートのレイアウトと、章扉・目次・型との対応（init が推定したもの）を出す。--set / --clear で、利用者の修正を template.json に反映する。"""
+    from . import initdir, template
+    work = paths.resolve_work(args.workdir)
+    if not (work / "template.json").exists():
+        print(f"エラー: {work} に template.json がありません（作品の source/ が見つかりません）", file=sys.stderr)
+        return 2
+    cfg = json.loads((work / "template.json").read_text(encoding="utf-8"))
+    info = template.TemplateInfo.from_dict(cfg["info"])
+    path = work / cfg["template"]
+    changed = False
+    try:
+        for item in args.set or []:
+            key, sep, layout = item.partition("=")
+            if not sep or not layout:
+                raise ValueError(f"--set は 種類か型=レイアウト名 の形で指定してください: {item}")
+            info = template.set_mapping(path, info, key.strip(), layout.strip())
+            changed = True
+        for key in args.clear or []:
+            info = template.set_mapping(path, info, key.strip(), None)
+            changed = True
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+    if changed:
+        cfg["info"] = info.to_dict()
+        (work / "template.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8")
+        initdir.write_derived(work, cfg)         # 下地の色（theme.css）を直す。作り直す PPTX は build で
+    print(json.dumps(template.describe(path, info), ensure_ascii=False, indent=2))
+    return 0
+
+
 def _load_cfg(work: Path):
     from . import template, theme
     cfg = json.loads((work / "template.json").read_text(encoding="utf-8"))
@@ -104,7 +136,7 @@ def cmd_build(args) -> int:
             print(f"エラー: {out.name} は前回のビルドのあとに変更されています。作り直すと PowerPoint での手直しが消えます。"
                   "上書きしてよければ --force、別の名前で出すなら --out <パス> を付けてください。", file=sys.stderr)
             return 4
-    model = measure.measure(html)
+    model = measure.measure(html, raster_dir=paths.temp_dir(name) / "picture")      # 絵（pp-picture）は、ここで画像にする
     violations = check.check_model(model, info)
     result = {"ok": False, "violations": violations, "pptx": None, "previews": [], "removed": [], "notes": list(info.notes)}
     if check.errors(violations):
@@ -146,7 +178,11 @@ def cmd_variants(args) -> int:
     from . import variants
     work = paths.resolve_work(args.workdir)
     _ensure_derived(work)
-    print(variants.assemble(work, round_no=args.round or variants.next_round(work)))
+    try:
+        print(variants.assemble(work, round_no=args.round or variants.next_round(work)))
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
     return 0
 
 
@@ -211,6 +247,74 @@ def cmd_reopen(args) -> int:
     return 4 if r["status"] == "modified" and not args.force else 0
 
 
+def cmd_draft(args) -> int:
+    """slides/ の断片を束ねて、確認用の画像と検査の結果を返す（絵の往復で、直すたびに使う）。PPTX は出さない。"""
+    from . import check, draft, measure, preview
+    work = paths.resolve_work(args.workdir)
+    _ensure_derived(work)
+    name = paths.deck_name(work)
+    try:
+        out_dir = paths.temp_dir(name) / "draft"
+        html, nns = draft.assemble(work, pick=args.pick, slides=args.slide)
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+    _, info, _ = _load_cfg(work)
+    violations = check.check_model(measure.measure(html), info)
+    for old in out_dir.glob("slide-*.png"):
+        old.unlink()
+    previews = [str(p) for p in preview.screenshots(html, out_dir)]
+    print(json.dumps({"ok": not check.errors(violations), "slides": nns, "previews": previews, "violations": violations},
+                     ensure_ascii=False, indent=2))
+    return 0 if not check.errors(violations) else 1
+
+
+def cmd_review_picture(args) -> int:
+    from . import picture_plan
+    work = paths.resolve_work(args.workdir)
+    _ensure_derived(work)
+    try:
+        print(picture_plan.assemble(work, paths.deck_name(work), args.round))
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+    return 0
+
+
+def cmd_picture_status(args) -> int:
+    """絵の提案・構造の確認の回答（answers-picture-*.md）から、絵にする箇所・直す項目・未決を出す。未決と修正が 0 件なら frozen。"""
+    from . import picture_plan
+    work = paths.resolve_work(args.workdir)
+    try:
+        plan = picture_plan.load_plan(work)
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+    answers = picture_plan.merge_answers([p.read_text(encoding="utf-8") for p in picture_plan.answer_paths(work)])
+    r = picture_plan.resolve(plan, answers)
+    print(json.dumps(r, ensure_ascii=False, indent=2))
+    return 0 if r["frozen"] else 1
+
+
+def cmd_history(args) -> int:
+    from . import history
+    work = paths.resolve_work(args.workdir)
+    try:
+        if args.action == "snapshot":
+            r = history.snapshot(work, args.label or "")
+        elif args.action == "list":
+            r = history.versions(work)
+        else:
+            if args.version is None:
+                raise ValueError("restore には版の番号が要ります（history <名前> list で確かめる）")
+            r = history.restore(work, args.version, args.slide)
+    except ValueError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+    print(json.dumps(r, ensure_ascii=False, indent=2))
+    return 0
+
+
 def cmd_lint_script(args) -> int:
     from . import script_lint
     md = Path(args.script).read_text(encoding="utf-8")
@@ -243,6 +347,11 @@ def main(argv: list[str]) -> int:
     p.add_argument("--footer", default=None, help="左下に出すコピーライトの文字列（例: \"© 2026 〇〇\"）。省略すると空欄")
     p.add_argument("--force", action="store_true")
     p.set_defaults(fn=cmd_init)
+    p = sub.add_parser("template-map", help="テンプレートのレイアウトと、章扉・目次・型との対応を出す。--set 型=レイアウト名 / --clear 型 で直す")
+    p.add_argument("workdir")
+    p.add_argument("--set", action="append", default=None, help="対応を直す（例: agenda=目次 / gantt=スケジュール / section=2）。レイアウトは名前か番号。複数指定できる")
+    p.add_argument("--clear", action="append", default=None, help="専用レイアウトをやめて本文で代える（例: gantt）")
+    p.set_defaults(fn=cmd_template_map)
     p = sub.add_parser("check")
     p.add_argument("html")
     p.add_argument("--workdir", default=None)
@@ -279,6 +388,25 @@ def main(argv: list[str]) -> int:
     p.add_argument("workdir")
     p.add_argument("--force", action="store_true", help="PPTX が変更されていても続ける（手直しは消える）")
     p.set_defaults(fn=cmd_reopen)
+    p = sub.add_parser("draft", help="slides/ の断片を束ねて、確認用の画像と検査の結果を返す（絵の往復用。PPTX は出さない）")
+    p.add_argument("workdir")
+    p.add_argument("--pick", default="A", help="各スライドで使う案（A/B/C。なければ最初の案）")
+    p.add_argument("--slide", action="append", default=None, help="このスライドだけ（例: 02。複数指定できる）")
+    p.set_defaults(fn=cmd_draft)
+    p = sub.add_parser("review-picture", help="絵にする箇所の提案と、読み取った構造の確認ページ（source/picture-plan.json から picture-review.html）")
+    p.add_argument("workdir")
+    p.add_argument("--round", type=int, default=None)
+    p.set_defaults(fn=cmd_review_picture)
+    p = sub.add_parser("picture-status", help="提案・構造の確認の回答（answers-picture-*.md）から、絵にする箇所・直す項目・未決を出す（終了コード 0＝凍結してよい）")
+    p.add_argument("workdir")
+    p.set_defaults(fn=cmd_picture_status)
+    p = sub.add_parser("history", help="絵の往復の履歴（直す前の slides/*.html を残す・戻す）")
+    p.add_argument("workdir")
+    p.add_argument("action", choices=["snapshot", "list", "restore"])
+    p.add_argument("version", nargs="?", type=int, default=None, help="restore する版の番号")
+    p.add_argument("--label", default=None, help="snapshot の名前（例: 構図を変える前）")
+    p.add_argument("--slide", default=None, help="restore で戻すスライドの番号（例: 02）。省略すると全部")
+    p.set_defaults(fn=cmd_history)
     p = sub.add_parser("lint-script")
     p.add_argument("script")
     p.set_defaults(fn=cmd_lint_script)

@@ -1,13 +1,13 @@
-<!-- 用途: 時間の推移（折れ線）。増加・横ばい・減少のどれにも使う。系列は 2〜3 本までで、注目する系列を先頭にする。値が重なる系列は "labels": false でラベルを消し、注目する系列のラベルだけ残す。上に図表タイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。
+<!-- 用途: 時間の推移（折れ線）。増加・横ばい・減少のどれにも使う。系列は 2〜3 本までで、注目する系列を先頭にする。値が重なる系列は "labels": false でラベルを消し、注目する系列のラベルだけ残す。上にチャートタイトル（対象・期間・単位）、下に注（出典・前提）と「→ 含意」の 1 文。
      デザイン1との違い: 右に内訳表（項目ごとの要因・前後の値・変化幅の棒）と基調色の帯がつき、グラフは左半分になる。要因を表で読ませたいときに使う。
-     差し替える所: 図表タイトル・data-chart・表の 4 行（項目・要因・前後の値・棒の幅と変化幅）・表の下の注・合計の帯・注。 -->
-<section class="slide" data-layout="chart">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応時間の推移</div>
+     差し替える所: チャートタイトル・data-chart・表の 4 行（項目・要因・前後の値・棒の幅と変化幅）・表の下の注・合計の帯・注釈。 -->
+<section class="slide" data-layout="chart" data-type="line">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応時間の推移</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応の時間は、導入後6か月で月40時間から8時間に下がる見込み</div>
-  <div class="pp-text b" data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-role="body" style="left:64px;top:186px;width:596px;height:32px;font-size:21px">障害対応の時間（月あたり、時間）</div>
-  <div class="pp-chart" data-overlap data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40],"labels":false}],"fmt":"#,##0","axis":{"min":0,"max":50,"major":10}}' style="left:64px;top:224px;width:596px;height:360px"></div>
-  <div class="pp-text b" data-note="内訳表：変化幅の棒は値に比例。効く項目だけ濃い棒" data-role="body" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">変化の内訳と要因（月あたり、時間）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応の時間は、導入後6か月で月40時間から8時間に下がる見込み</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-role="body" style="left:64px;top:186px;width:596px;height:32px;font-size:21px">障害対応の時間（月あたり、時間）</div>
+  <div class="pp-chart" data-part="チャート" data-overlap data-note="折れ線：現状と導入後の推移を重ね、注目する系列を先頭にする" data-chart='{"type":"line","categories":["1月","2月","3月","4月","5月","6月"],"series":[{"name":"導入後（見込み）","values":[40,30,20,12,9,8]},{"name":"現状","values":[40,41,39,40,42,40],"labels":false}],"fmt":"#,##0","axis":{"min":0,"max":50,"major":10}}' style="left:64px;top:224px;width:596px;height:360px"></div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="内訳表：変化幅の棒は値に比例。効く項目だけ濃い棒" data-role="body" style="left:688px;top:186px;width:528px;height:32px;font-size:21px">変化の内訳と要因（月あたり、時間）</div>
   <div class="pp-shape f-soft" data-note="内訳表：変化幅の棒は値に比例。効く項目だけ濃い棒" style="left:688px;top:224px;width:528px;height:360px"></div>
   <div class="pp-text" data-role="caption" style="left:710px;top:233px;width:60px;height:22px">項目</div>
   <div class="pp-text" data-role="caption" style="left:802px;top:233px;width:160px;height:22px">変化の要因</div>
@@ -53,5 +53,5 @@
   <div class="pp-shape f-accent" data-note="合計の帯：結論の数字を、基調色の面で締める" style="left:700px;top:492px;width:504px;height:88px"></div>
   <div class="pp-text t-white b" style="left:716px;top:501px;width:290px;height:36px;font-size:22px">合計 40→8時間（▲32）</div>
   <div class="pp-text t-white b right" style="left:1010px;top:501px;width:178px;height:36px;font-size:22px">▲80%</div>
-  <div class="pp-text" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 現状は繁忙期を含む月平均。導入後は基盤グループの試算で、実績ではない<br>→ 低下は本社・DCの切替完了が前提で、切替が遅れれば到達も遅れる</div>
+  <div class="pp-text" data-part="注釈" data-note="注：出典・前提と、グラフから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px;line-height:1.3">注: 現状は繁忙期を含む月平均。導入後は基盤グループの試算で、実績ではない<br>→ 低下は本社・DCの切替完了が前提で、切替が遅れれば到達も遅れる</div>
 </section>

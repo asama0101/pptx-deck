@@ -1,12 +1,12 @@
 <!-- 用途: 原因の連鎖（横）。左から 事象 → 直接原因 → 背景要因 → 根本原因 の 4 列を、箱と矢じり付きの矢印でつなぐ（直接・背景は 2 本ずつに分岐。接続は直角の罫線）。各箱に番号・名前（太字）・事実（数値 1 つ、注記）。
      事象は基調色の面、原因はパネル地。最下部に対策の行（枠線＝計画）を置き、どの原因に効くかを「対②」のように番号で示す。左端のパネルに対策後の値（試算）。恒久対策の 1 点だけ強調色（1 枚 1 点）。情報の型（注の末尾を「→ 含意」で締める）。
      要因を寄与つきで分解するときは tree（ロジックツリー）、原因を時間の連鎖で追うときはこの型を使う。
-     差し替える所: 事象（名前・日時・停止時間・損失）・直接原因 2 つ・背景要因 2 つ・根本原因・対策 3 つ（番号・名前・効果）・左端の試算・注。 -->
-<section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">回線断の原因</div>
+     差し替える所: 事象（名前・日時・停止時間・損失）・直接原因 2 つ・背景要因 2 つ・根本原因・対策 3 つ（番号・名前・効果）・左端の試算・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="cause">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">回線断の原因</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">回線断10時間の根は冗長化と遠隔運用への未投資にあり、SD-WAN化で同時に解ける</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社MPLS回線断（2026年7月14日）の原因の連鎖と対策（時間）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">回線断10時間の根は冗長化と遠隔運用への未投資にあり、SD-WAN化で同時に解ける</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社MPLS回線断（2026年7月14日）の原因の連鎖と対策（時間）</div>
   <div class="pp-text" data-note="4 列：事象から根本原因へ、矢印で左から右へたどる" data-role="caption" style="left:64px;top:229px;width:228px;height:22px">事象</div>
   <div class="pp-text" data-note="4 列：事象から根本原因へ、矢印で左から右へたどる" data-role="caption" style="left:340px;top:229px;width:228px;height:22px">直接原因</div>
   <div class="pp-text" data-note="4 列：事象から根本原因へ、矢印で左から右へたどる" data-role="caption" style="left:616px;top:229px;width:228px;height:22px">背景要因</div>
@@ -65,7 +65,7 @@
   <div class="pp-text" data-role="caption" style="left:628px;top:557px;width:204px;height:20px">承認待ち0h</div>
   <div class="pp-line" data-arrow="end" style="left:1052px;top:462px;width:2px;height:44px;background:var(--accent)"></div>
   <div class="pp-shape f-outline" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" style="left:892px;top:502px;width:324px;height:88px"></div>
-  <div class="pp-text b t-emph" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" style="left:904px;top:507px;width:300px;height:52px;font-size:19px;line-height:1.35">対①④⑤ SD-WAN化：2回線＋LTEの自動切替と遠隔復旧</div>
+  <div class="pp-text b t-emph" data-part="アクセント" data-note="対策の行：枠線＝計画。どの原因に効くかを番号で示し、恒久対策の 1 点だけ強調色" style="left:904px;top:507px;width:300px;height:52px;font-size:19px;line-height:1.35">対①④⑤ SD-WAN化：2回線＋LTEの自動切替と遠隔復旧</div>
   <div class="pp-text" data-role="caption" style="left:904px;top:557px;width:300px;height:20px">1回線断でも継続。現地出動なし（B案）</div>
-  <div class="pp-text" data-note="注：時間の出所と、連鎖から言える含意" data-role="caption" style="left:64px;top:600px;width:1152px;height:40px">注: 時間は2026年7月14日の対応記録、未投資の期間はFY2021〜25の予算実績。試算の1.0hは検知5分・自動切替・遠隔復旧の積み上げ<br>→ 根本原因⑤に手を打つB案が通れば①③④は同時に消え、②は監視の集約で解ける</div>
+  <div class="pp-text" data-part="注釈" data-note="注：時間の出所と、連鎖から言える含意" data-role="caption" style="left:64px;top:600px;width:1152px;height:40px">注: 時間は2026年7月14日の対応記録、未投資の期間はFY2021〜25の予算実績。試算の1.0hは検知5分・自動切替・遠隔復旧の積み上げ<br>→ 根本原因⑤に手を打つB案が通れば①③④は同時に消え、②は監視の集約で解ける</div>
 </section>

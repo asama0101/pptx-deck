@@ -1,11 +1,11 @@
 <!-- 用途: 縦型フロー（段階が多く、横に収まらない手順）。デザイン1（flow-v）と同じ 6 工程・同じ原稿で差し替えられる。
      デザイン1との違い: 縦 1 列の行をやめ、パネル地のカードを左右 2 列（左に 1〜3、右に 4〜6）に並べる。順は列の中の下向きの矢印と、3 から 4 へ渡る列の間の線で示す。カードの中は「番号と工程名 → 期間 → 内容 → 成果物」。判断点の工程のカードだけ強調色の枠。
-     差し替える所: 6 工程の名前・内容・期間・成果物・判断点の工程・注。 -->
-<section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">更改の進め方</div>
+     差し替える所: 6 工程の名前・内容・期間・成果物・判断点の工程・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="flow-v">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">更改の進め方</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">更改は6工程で進め、判断点は先行切替の完了後の1回に絞って、戻せない判断を減らす</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN更改の工程（11月〜翌10月。内容・期間・成果物）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">更改は6工程で進め、判断点は先行切替の完了後の1回に絞って、戻せない判断を減らす</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN更改の工程（11月〜翌10月。内容・期間・成果物）</div>
   <div class="pp-shape f-soft" data-note="工程のカード：番号・工程名・期間・内容・成果物を同じ位置に置く" style="left:64px;top:226px;width:552px;height:108px"></div>
   <div class="pp-shape f-accent" data-shape="ellipse" data-overlap style="left:76px;top:234px;width:34px;height:34px"></div>
   <div class="pp-text t-white b center" data-overlap style="left:76px;top:236px;width:34px;height:30px;font-size:19px">1</div>
@@ -28,7 +28,7 @@
   <div class="pp-text" data-overlap style="left:76px;top:522px;width:528px;height:38px;font-size:19px;line-height:1.1">機器112台とインターネット回線の契約を結ぶ</div>
   <div class="pp-text" data-role="caption" data-overlap style="left:76px;top:562px;width:528px;height:20px">成果物　契約書</div>
   <div class="pp-shape f-white" data-note="強調色：承認を求める判断点の工程だけ（1 枚 1 点）" style="left:664px;top:226px;width:552px;height:108px;border:3px solid var(--emphasis)"></div>
-  <div class="pp-shape f-emph" data-shape="ellipse" data-overlap style="left:676px;top:234px;width:34px;height:34px"></div>
+  <div class="pp-shape f-emph" data-part="アクセント" data-shape="ellipse" data-overlap style="left:676px;top:234px;width:34px;height:34px"></div>
   <div class="pp-text t-white b center" data-overlap style="left:676px;top:236px;width:34px;height:30px;font-size:19px">4</div>
   <div class="pp-text b t-dark" data-overlap style="left:720px;top:234px;width:300px;height:32px;font-size:21px">先行切替◆</div>
   <div class="pp-text b t-dark" data-overlap style="left:1044px;top:234px;width:160px;height:32px;font-size:19px;text-align:right">3月</div>

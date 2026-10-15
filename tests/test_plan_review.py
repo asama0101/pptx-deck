@@ -25,7 +25,7 @@ class ParseTest(unittest.TestCase):
         self.assertEqual(sorted(docs)[0], "00")
         self.assertEqual(len(docs), 11 + 1)                       # 見本の原稿は 11 枚 + 資料全体
         self.assertEqual(titles["00"], "資料全体")
-        self.assertIn("削減で生む原資が成長投資を支えるため", docs["02"])      # 見出し（リード文）が出る
+        self.assertIn("削減で生む原資が成長投資を支えるため", docs["02"])      # 見出し（ヘッドメッセージ）が出る
         self.assertIn("レイアウト記述", docs["04"])                  # 設計図のページ記述が合流する
 
 

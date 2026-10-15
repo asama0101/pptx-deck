@@ -2,11 +2,11 @@
      デザイン1との違い: 左から右ではなく上から下へ展開する。評価の列（効果・実現期間）を持たず、末端の各カードに 2 行目として添える。
      強調色はまとめの行の 1 点（白地）。注に数値の出所を書く。
      差し替える所: 根・枝（名前と寄与）・末端のカード 6 枚（施策・効果・実現期間）・まとめの行。末端は 1 枝に 2 枚まで。 -->
-<section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">復旧時間の要因</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">復旧時間短縮の過半は復旧側にあるため、1年内に効く3手から着手すべきだ</div>
-  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">復旧時間（MTTR）の要因分解と打ち手（FY25→FY28、時間）</div>
+<section class="slide" data-layout="diagram" data-type="tree">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">復旧時間の要因</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">復旧時間短縮の過半は復旧側にあるため、1年内に効く3手から着手すべきだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">復旧時間（MTTR）の要因分解と打ち手（FY25→FY28、時間）</div>
   <div class="pp-shape f-accent" data-note="根と枝：根に復旧時間の短縮、枝に要因と寄与（足すと根に戻る）。罫線は直角" style="left:430px;top:228px;width:420px;height:40px"></div>
   <div class="pp-text t-white b center" data-note="根と枝：根に復旧時間の短縮、枝に要因と寄与（足すと根に戻る）。罫線は直角" style="left:438px;top:232px;width:404px;height:32px;font-size:19px;line-height:1.35">復旧時間　▲3.8h（4.8h→1.0h）</div>
   <div class="pp-line " style="left:639px;top:268px;width:2px;height:8px;background:var(--text-sub)"></div>
@@ -53,5 +53,5 @@
   <div class="pp-text" data-role="caption" style="left:948px;top:442px;width:260px;height:20px">効果 ▲0.8h　実現 1〜3年</div>
   <div class="pp-shape f-white" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す。強調色はここの 1 点（白地に置く）" style="left:64px;top:544px;width:1152px;height:44px"></div>
   <div class="pp-text" data-note="まとめの行：着手する3手と残りの寄与を足し上げ、根の値に戻す" style="left:84px;top:551px;width:1112px;height:30px;font-size:19px">→ <b class="t-emph">1年内に効く3手で▲2.1h（過半）</b>、残りの3手は1〜3年で▲1.7h</div>
-  <div class="pp-text" data-role="caption" data-note="注：数値の出所と前提" style="left:64px;top:598px;width:1152px;height:40px">注: 効果はFY2025の障害記録（計1,132件）からの試算で、寄与は足すと根の▲3.8hに戻る。実現期間は着手から効果が出るまでの目安</div>
+  <div class="pp-text" data-part="注釈" data-role="caption" data-note="注：数値の出所と前提" style="left:64px;top:598px;width:1152px;height:40px">注: 効果はFY2025の障害記録（計1,132件）からの試算で、寄与は足すと根の▲3.8hに戻る。実現期間は着手から効果が出るまでの目安</div>
 </section>

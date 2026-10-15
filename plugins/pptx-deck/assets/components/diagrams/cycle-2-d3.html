@@ -1,11 +1,11 @@
 <!-- 用途: 2 要素の繰り返し（往復）。2 つの工程を行き来させ、周期と KPI の帯で締める。要素が 3 つ以上のときは cycle。
      デザイン1との違い: 面でなく円を左右に置き、説明は円の下へ出す。往復の矢印は円の間いっぱいに長く引く。
-     差し替える所: 題・リード文・図表タイトル・2 つの工程の名前と説明・矢印の脇の言葉・下の帯の周期と KPI・注。  -->
-<section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">障害対応の往復</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害は検知と是正の2工程を毎日往復させ、再発の芽をその日のうちに摘む</div>
-  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の運用サイクル（毎日1周。工程ごとの内容）</div>
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・2 つの工程の名前と説明・矢印の脇の言葉・下の帯の周期と KPI・注釈。  -->
+<section class="slide" data-layout="diagram" data-type="cycle-2">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">障害対応の往復</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害は検知と是正の2工程を毎日往復させ、再発の芽をその日のうちに摘む</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の運用サイクル（毎日1周。工程ごとの内容）</div>
   <div class="pp-shape f-light" data-note="円：工程を 1 つずつ円にして左右に置く" data-shape="ellipse" data-overlap style="left:164px;top:232px;width:180px;height:180px"></div>
   <div class="pp-text b t-dark center" data-note="先に読む所：最初に目に入る見出し" data-overlap style="left:164px;top:298px;width:180px;height:40px;font-size:24px">1 検知</div>
   <div class="pp-shape f-light" data-shape="ellipse" data-overlap style="left:936px;top:232px;width:180px;height:180px"></div>

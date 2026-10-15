@@ -1,11 +1,11 @@
 <!-- 用途: 案の評価表（評価軸×案 → 推奨）。デザイン1（options）と同じ評価軸・同じ記号と数値・同じ論点で差し替えられる。
      デザイン1との違い: 罫線の表をやめ、各セルに記号の札（○＝濃い基調色の塗り、△＝枠線、×＝淡い面）と値を並べる。推奨の案の列だけパネル地で縦に囲み、案ごとに○の数が総合の行で分かる。左の評価軸は「軸名＋要件」の 2 行（19px）で、行の間隔を 54px とって読めるようにする。推奨の案の見出しだけ強調色にする（1 枚 1 点）。
-     差し替える所: 図表タイトル・案の名前（3 つまで）・評価軸と要件（5 行まで）・各セルの記号と値（1 行に収める）・総合の行・推奨の列・論点の文。 -->
-<section class="slide" data-layout="table">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">3案の評価</div>
+     差し替える所: チャートタイトル・案の名前（3 つまで）・評価軸と要件（5 行まで）・各セルの記号と値（1 行に収める）・総合の行・推奨の列・論点の文。 -->
+<section class="slide" data-layout="table" data-type="options">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">3案の評価</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">費用・期間・リスクの3軸で、要件を満たすのはB案（SD-WAN）だけである</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">3案の評価（評価軸×案。○＝満たす、△＝条件付き、×＝満たさない）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">費用・期間・リスクの3軸で、要件を満たすのはB案（SD-WAN）だけである</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">3案の評価（評価軸×案。○＝満たす、△＝条件付き、×＝満たさない）</div>
   <div class="pp-shape f-soft" data-overlap data-note="推奨の案の列：パネル地で縦に囲む" style="left:600px;top:268px;width:308px;height:298px"></div>
   <div class="pp-text" style="left:64px;top:272px;width:224px;height:46px;font-size:19px;line-height:1.2"><b>総費用（5年）</b><br><span style="color:var(--text-sub)">上限2.0億円</span></div>
   <div class="pp-line hr" style="left:64px;top:322px;width:1152px"></div>
@@ -35,7 +35,7 @@
   <div class="pp-text t-white center" data-overlap style="left:304px;top:493px;width:44px;height:34px;font-size:19px;line-height:1.5"><b>○</b></div>
   <div class="pp-text" data-overlap style="left:358px;top:492px;width:238px;height:34px;font-size:19px;line-height:1.5">▲800万</div>
   <div class="pp-text b center" data-overlap style="left:304px;top:544px;width:284px;height:30px;font-size:19px">○1・△1・×3</div>
-  <div class="pp-shape f-emph" style="left:604px;top:226px;width:300px;height:40px"></div>
+  <div class="pp-shape f-emph" data-part="アクセント" style="left:604px;top:226px;width:300px;height:40px"></div>
   <div class="pp-text b t-white center" data-overlap style="left:612px;top:228px;width:284px;height:34px;font-size:19px">B案　SD-WAN（推奨）</div>
   <div class="pp-shape f-accent" data-shape="round" style="left:612px;top:277px;width:44px;height:34px"></div>
   <div class="pp-text t-white center" data-overlap style="left:612px;top:277px;width:44px;height:34px;font-size:19px;line-height:1.5"><b>○</b></div>
@@ -72,7 +72,7 @@
   <div class="pp-text" data-overlap style="left:974px;top:492px;width:238px;height:34px;font-size:19px;line-height:1.5">0</div>
   <div class="pp-text b center" data-overlap style="left:920px;top:544px;width:284px;height:30px;font-size:19px">○2・△1・×2</div>
   <div class="pp-text" style="left:64px;top:544px;width:224px;height:28px;font-size:19px;line-height:1.2"><b>総合</b><span style="color:var(--text-sub)">（○の数）</span></div>
-  <div class="pp-shape f-soft" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:64px;top:598px;width:1152px;height:40px"></div>
+  <div class="pp-shape f-soft" data-part="メッセージボックス" data-note="メッセージボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:64px;top:598px;width:1152px;height:40px"></div>
   <div class="pp-text" data-overlap style="left:84px;top:599px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　B案（SD-WAN段階移行、総費用1.7億円・6か月）を採用し、11月に設計へ進むことの可否</div>
   <div class="pp-text" data-role="caption" style="left:64px;top:572px;width:1152px;height:22px;line-height:1.3">注: 要件は情報システム委員会で定めたしきい値。費用は2026年9月時点の見積り（税抜）、効果は現行の運用費2,000万円との差</div>
 </section>

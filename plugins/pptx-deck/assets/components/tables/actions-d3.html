@@ -1,14 +1,14 @@
 <!-- 用途: 対応一覧（再発防止策・課題や不具合の一覧・リスクと対策の一覧に共用）。デザイン1（actions）と同じ 5 件・同じ原稿で差し替えられる。課題・不具合なら行を重要度（高・中・低）、列を 未着手｜対応中｜完了 に読み替える。
      デザイン1との違い: 行を状態（完了・設計中・計画）、列を区分（□ 暫定・■ 恒久）にしたマトリクスに対策のカードを置き、恒久策がどの状態に残っているかを一目で見せる。内容の文は載せず、対策名・期限・担当だけ（内容は d1・d2）。承認を求める ■ 恒久策の列の見出しだけ強調色の面（1 枚 1 点）、要の 1 件（③）だけパネル地。
-     差し替える所: 図表タイトル・列の見出し（区分）・行の見出し（状態）・カード（対策名は 12 字まで・期限・担当。1 マス 2 枚まで）・要のカード・注・論点の文。 -->
-<section class="slide" data-layout="table">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">再発防止策</div>
+     差し替える所: チャートタイトル・列の見出し（区分）・行の見出し（状態）・カード（対策名は 12 字まで・期限・担当。1 マス 2 枚まで）・要のカード・注釈・論点の文。 -->
+<section class="slide" data-layout="table" data-type="actions">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">再発防止策</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">暫定策で再発を抑えつつ、恒久策の3件はSD-WAN移行の計画に組み込むべきだ</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社MPLS回線断（2026年7月、停止10時間）の再発防止策（■＝恒久、□＝暫定。2026年10月時点）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">暫定策で再発を抑えつつ、恒久策の3件はSD-WAN移行の計画に組み込むべきだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社MPLS回線断（2026年7月、停止10時間）の再発防止策（■＝恒久、□＝暫定。2026年10月時点）</div>
   <div class="pp-shape f-accent" data-note="マトリクス：行＝状態、列＝区分。空のマスは破線" style="left:180px;top:226px;width:510px;height:38px"></div>
   <div class="pp-text b t-white" data-overlap style="left:194px;top:227px;width:482px;height:36px;font-size:19px">□ 暫定策（つなぎの手）　2件</div>
-  <div class="pp-shape f-emph" data-note="恒久策の列：承認を求める区分なので見出しだけ強調色の面（1 枚 1 点）" style="left:706px;top:226px;width:510px;height:38px"></div>
+  <div class="pp-shape f-emph" data-part="アクセント" data-note="恒久策の列：承認を求める区分なので見出しだけ強調色の面（1 枚 1 点）" style="left:706px;top:226px;width:510px;height:38px"></div>
   <div class="pp-text b t-white" data-overlap style="left:720px;top:227px;width:482px;height:36px;font-size:19px">■ 恒久策（確定して残す手）　3件</div>
   <div class="pp-shape f-light" style="left:64px;top:270px;width:110px;height:84px"></div>
   <div class="pp-text b t-dark center" data-overlap style="left:64px;top:298px;width:110px;height:28px;font-size:19px;line-height:1.4">完了</div>
@@ -34,7 +34,7 @@
   <div class="pp-shape f-white" style="left:969px;top:450px;width:247px;height:84px"></div>
   <div class="pp-text b" data-overlap style="left:981px;top:460px;width:225px;height:28px;font-size:19px;line-height:1.3">⑤ 手順と承認の簡素化</div>
   <div class="pp-text" data-role="caption" data-overlap style="left:981px;top:494px;width:225px;height:26px;font-size:19px;line-height:1.3">2027/4/30　運用部門</div>
-  <div class="pp-text" data-note="注：暫定策の費用と、恒久策の費用の扱い" data-role="caption" style="left:64px;top:552px;width:1152px;height:40px;line-height:1.3">注: 暫定策は実施済み（費用120万円）。恒久策の費用はB案の総費用1.7億円に含む<br>→ 恒久策が揃えば、同種の回線断は自動切替で2時間以内に収まる</div>
-  <div class="pp-shape f-soft" data-note="論点ボックス：恒久策の承認を「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
-  <div class="pp-text" data-note="論点ボックス：恒久策の承認を「〜の可否」で 1 行に書く" style="left:84px;top:603px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　暫定策2件の継続を前提に、恒久策3件をSD-WAN移行計画の一部として承認することの可否</div>
+  <div class="pp-text" data-part="注釈" data-note="注：暫定策の費用と、恒久策の費用の扱い" data-role="caption" style="left:64px;top:552px;width:1152px;height:40px;line-height:1.3">注: 暫定策は実施済み（費用120万円）。恒久策の費用はB案の総費用1.7億円に含む<br>→ 恒久策が揃えば、同種の回線断は自動切替で2時間以内に収まる</div>
+  <div class="pp-shape f-soft" data-part="メッセージボックス" data-note="メッセージボックス：恒久策の承認を「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="メッセージボックス：恒久策の承認を「〜の可否」で 1 行に書く" style="left:84px;top:603px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　暫定策2件の継続を前提に、恒久策3件をSD-WAN移行計画の一部として承認することの可否</div>
 </section>

@@ -1,12 +1,12 @@
 <!-- 用途: 画面（キャプチャ）を見せるページ。画面の枠は利用者のキャプチャの置き場で、ここでは枠（パネル地）だけ置く。枠の中心の「（画面）」の注記は、画像に差し替えるときに消す。画像は枠と同じ大きさ・位置に置き、画面の縦横比をそろえる。
      3 デザインは同じ原稿（画面 3 つ＋見出し・説明）で差し替えられる: デザイン1＝並べる、デザイン2＝手順（矢印でつなぐ）、デザイン3＝拡大（1 つの画面の注目する部分を大きく見せる）。
      デザイン1: 3 つの画面を同じ大きさ（360×202px）で横一列に並べ、枠の下に見出し（21px）と説明（19px・2 行約 30 字）を置く。順序や因果は示さない（同格の画面を見せる）。
-     差し替える所: 題・リード文・図表タイトル・3 つの画面の枠（画像）・見出しと説明・注。 -->
-<section class="slide" data-layout="content">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">監視画面の見え方</div>
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・3 つの画面の枠（画像）・見出しと説明・注釈。 -->
+<section class="slide" data-layout="content" data-type="screenshot">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">監視画面の見え方</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">監視画面では48拠点の状態が1画面で見え、障害は検知から切替まで3つの画面で追える</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN監視画面（画面イメージ。実際のキャプチャに差し替える）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">監視画面では48拠点の状態が1画面で見え、障害は検知から切替まで3つの画面で追える</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN監視画面（画面イメージ。実際のキャプチャに差し替える）</div>
   <div class="pp-shape f-soft" data-note="画面の枠：同じ大きさで横一列にそろえる" style="left:64px;top:232px;width:360px;height:202px"></div>
   <div class="pp-text center" data-role="caption" data-overlap style="left:64px;top:319px;width:360px;height:28px">（画面）</div>
   <div class="pp-text b" data-note="見出し：画面ごとに短い名詞で言う" style="left:64px;top:450px;width:360px;height:34px;font-size:21px">全拠点の状態</div>
@@ -19,5 +19,5 @@
   <div class="pp-text center" data-role="caption" data-overlap style="left:856px;top:319px;width:360px;height:28px">（画面）</div>
   <div class="pp-text b" style="left:856px;top:450px;width:360px;height:34px;font-size:21px">切替の結果</div>
   <div class="pp-text" style="left:856px;top:490px;width:360px;height:60px;font-size:19px;line-height:1.4">回線の自動切替と復旧時間を確かめる</div>
-  <div class="pp-text" data-note="注：出典・前提と、→ 含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 画面は、実際のキャプチャ（利用者の画像）に差し替える。ここでは枠だけ。画面は2026年9月時点の試験環境<br>→ 検知から切替まで3つの画面で追え、監視センターの担当者は画面の切り替えだけで状況を確かめられる</div>
+  <div class="pp-text" data-part="注釈" data-note="注：出典・前提と、→ 含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 画面は、実際のキャプチャ（利用者の画像）に差し替える。ここでは枠だけ。画面は2026年9月時点の試験環境<br>→ 検知から切替まで3つの画面で追え、監視センターの担当者は画面の切り替えだけで状況を確かめられる</div>
 </section>

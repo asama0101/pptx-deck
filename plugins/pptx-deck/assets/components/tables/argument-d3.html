@@ -1,11 +1,11 @@
 <!-- 用途: 論証テーブル（課題→現状→打ち手。旧 rating）。箱と矢印の行。案の評価は tables/options。課題ごとに 1 行を使い、「課題名 → 課題 → 現状（定量） → 打ち手」を箱と矢印でつないで、事実から打ち手までの流れを 1 行で読ませる。
      デザイン1との違い: 罫線の表をやめ、課題名の面（パネル地）と 3 つの箱（課題・現状は白地、打ち手は枠線）を、短い矢印でつなぐ。列の見出しは塗らずに灰の太字。基調色の太字は打ち手の要の 1 点だけ。
-     差し替える所: 図表タイトル・列の見出し・課題名と番号・各箱の文（■ は 1 項目 1 行）・基調色の太字の 1 点・注・論点の文。行は 3 行まで。 -->
-<section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">運用の課題と打ち手</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">運用の打ち手は監視センターへの集約に収れんするため、一括で付議すべきだ</div>
-  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">ネットワーク運用の3課題と打ち手（FY2025時点、件数は年間）</div>
+     差し替える所: チャートタイトル・列の見出し・課題名と番号・各箱の文（■ は 1 項目 1 行）・基調色の太字の 1 点・注釈・論点の文。行は 3 行まで。 -->
+<section class="slide" data-layout="diagram" data-type="argument">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">運用の課題と打ち手</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">運用の打ち手は監視センターへの集約に収れんするため、一括で付議すべきだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">ネットワーク運用の3課題と打ち手（FY2025時点、件数は年間）</div>
   <div class="pp-text b t-sub" data-note="列の見出し：課題→現状→打ち手の順" style="left:220px;top:224px;width:304px;height:27px;font-size:19px;line-height:1.4">課題｜何が起きているか</div>
   <div class="pp-text b t-sub" style="left:546px;top:224px;width:330px;height:27px;font-size:19px;line-height:1.4">現状（FY2025・定量）</div>
   <div class="pp-text b t-sub" style="left:898px;top:224px;width:318px;height:27px;font-size:19px;line-height:1.4">打ち手（中計・柱C）</div>
@@ -39,7 +39,7 @@
   <div class="pp-line hr" data-arrow="end" style="left:877px;top:508px;width:20px;height:2px;background:var(--text-sub)"></div>
   <div class="pp-shape f-outline" style="left:898px;top:460px;width:318px;height:100px"></div>
   <div class="pp-text" style="left:906px;top:464px;width:302px;height:92px;font-size:19px;line-height:1.2"><b>3段のランブックで標準化</b><br>■ 一次対応の手順を48本整備<br><span style="color:var(--accent)">➢</span> 復旧時間を4.8→1.0時間へ</div>
-  <div class="pp-text" data-note="注：数字の出所と、打ち手をまとめて付議する含意" data-role="caption" style="left:64px;top:568px;width:1152px;height:22px">注: 件数・人数はFY2025の運用実績（運用センター集計）。3つの打ち手はいずれも監視センターを前提にするため、個別でなく一括で付議する</div>
-  <div class="pp-shape f-soft" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
-  <div class="pp-text" data-note="論点ボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:84px;top:601px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　監視センター・認定制度・ランブックを、9月の投資委員会へ一括で付議することの可否</div>
+  <div class="pp-text" data-part="注釈" data-note="注：数字の出所と、打ち手をまとめて付議する含意" data-role="caption" style="left:64px;top:568px;width:1152px;height:22px">注: 件数・人数はFY2025の運用実績（運用センター集計）。3つの打ち手はいずれも監視センターを前提にするため、個別でなく一括で付議する</div>
+  <div class="pp-shape f-soft" data-part="メッセージボックス" data-note="メッセージボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="メッセージボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:84px;top:601px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　監視センター・認定制度・ランブックを、9月の投資委員会へ一括で付議することの可否</div>
 </section>

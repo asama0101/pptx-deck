@@ -20,6 +20,7 @@ ALIGN = {"left": PP_ALIGN.LEFT, "center": PP_ALIGN.CENTER, "right": PP_ALIGN.RIG
 SHAPES = {"rect": MSO_SHAPE.RECTANGLE, "round": MSO_SHAPE.ROUNDED_RECTANGLE,
           "ellipse": MSO_SHAPE.OVAL, "triangle": MSO_SHAPE.ISOSCELES_TRIANGLE}
 VALIGN = {"top": MSO_ANCHOR.TOP, "middle": MSO_ANCHOR.MIDDLE, "bottom": MSO_ANCHOR.BOTTOM}
+PICTURE_NAME = "pp-picture"        # 絵（pp-picture）として貼った画像の名前。check.check_pptx が大きな画像の検査から除く
 
 
 def url_to_path(url: str, base_dir: Path) -> Path:
@@ -164,6 +165,16 @@ def add_image(slide, el, base_dir, work_name):
     pic._element.nvPicPr.cNvPr.set("descr", el["alt"])
 
 
+def add_picture(slide, el):
+    """絵（pp-picture）: measure が PNG にした画像を、測った位置に貼る。名前を pp-picture にして、大きな画像の検査から区別する。"""
+    r = el["rect"]
+    if not el.get("src"):
+        raise ValueError("絵の画像がありません（measure を raster_dir 付きで実行してください）")
+    pic = slide.shapes.add_picture(el["src"], emu(r["x"]), emu(r["y"]), emu(r["w"]), emu(r["h"]))
+    pic._element.nvPicPr.cNvPr.set("descr", el["alt"])
+    pic._element.nvPicPr.cNvPr.set("name", PICTURE_NAME)
+
+
 # ---- 表 ----
 def _border(tcPr, tag, spec):
     for old in tcPr.findall(qn(tag)):
@@ -217,14 +228,6 @@ def add_table(slide, el):
 
 
 # ---- スライド ----
-def _layout_index(info, name):
-    if name == "cover":
-        return info.cover
-    if name == "closing":
-        return info.closing if info.closing is not None else info.body
-    return info.body
-
-
 def build(model, template_path, info, palette, out: Path, base_dir: Path,
           footer: str | None = None, work_name: str = "build") -> Path:
     from . import charts
@@ -232,7 +235,7 @@ def build(model, template_path, info, palette, out: Path, base_dir: Path,
     prs = template.open_template(template_path)
     drop_all_slides(prs)
     for s in model:
-        layout = prs.slide_layouts[_layout_index(info, s["layout"])]
+        layout = prs.slide_layouts[template.layout_index(info, s)]
         slide = prs.slides.add_slide(layout)
         used = set()
         elements = s["elements"]
@@ -273,6 +276,8 @@ def build(model, template_path, info, palette, out: Path, base_dir: Path,
                 add_line(slide, el)
             elif k == "image":
                 add_image(slide, el, base_dir, work_name)
+            elif k == "picture":
+                add_picture(slide, el)
             elif k == "table":
                 add_table(slide, el)
             elif k == "chart":

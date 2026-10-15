@@ -44,25 +44,25 @@ def _issues(md: str):
 
 
 def _title_problems(sid, title):
-    """題（短い名詞句・20 字以内）。判断は書かない（判断はリード文＝見出しに）。"""
+    """題（短い名詞句・20 字以内）。判断は書かない（判断はヘッドメッセージに）。"""
     out = []
     if len(title) > 20:
         out.append(f"{sid}: 題の字数が {len(title)} です（20 字以内の短い名詞句）")
     if re.search(r"[。！？、]", title):
-        out.append(f"{sid}: 題に句読点・文末記号は使えません（短い名詞句にする。判断は見出し〔リード文〕に書く）")
+        out.append(f"{sid}: 題に句読点・文末記号は使えません（短い名詞句にする。判断はヘッドメッセージに書く）")
     elif _TITLE_END.search(title):
-        out.append(f"{sid}: 題が文の形です（名詞句にする。判断はリード文に書く）: {title}")
+        out.append(f"{sid}: 題が文の形です（名詞句にする。判断はヘッドメッセージに書く）: {title}")
     return out
 
 
 def title_notes(md: str) -> list[str]:
-    """本文スライドに「題」がないときの案内。エラーではない（見出しはそのままリード文になる）。"""
+    """本文スライドに「題」がないときの案内。エラーではない（ヘッドメッセージはそのまま題の代わりになる）。"""
     slides = parse(md)
     missing = [s["id"] for s in slides if s["fields"].get("layout") in _BODY_LAYOUTS and not s["fields"].get("題")]
     if not missing:
         return []
     return [f"案内: 本文スライド {len(missing)} 枚（{', '.join(missing[:6])}{' ほか' if len(missing) > 6 else ''}）に「題」がありません。"
-            "ページ枠は 題（20 字以内の短い名詞句）＋リード文（見出し。判断を言い切る 30〜60 字）の 2 段です。"
+            "ページ枠は 題（20 字以内の短い名詞句）＋ヘッドメッセージ（判断を言い切る 30〜60 字）の 2 段です。"
             "「- 題: …」を足してください。"]
 
 
@@ -70,15 +70,15 @@ def _head_problems(sid, head):
     out = []
     n = len(head)
     if not (30 <= n <= 60):
-        out.append(f"{sid}: 見出しの字数が {n} です（30〜60 字。まず 1 行 36 字幅で書く）")
+        out.append(f"{sid}: ヘッドメッセージの字数が {n} です（30〜60 字。まず 1 行 36 字幅で書く）")
     if "。" in head.rstrip("。"):
-        out.append(f"{sid}: 見出しが「A。B」の二段構えです（接続語で 1 文に畳む）")
+        out.append(f"{sid}: ヘッドメッセージが「A。B」の二段構えです（接続語で 1 文に畳む）")
     if _DASH.search(head):
-        out.append(f"{sid}: 見出しにダッシュを使わないでください")
+        out.append(f"{sid}: ヘッドメッセージにダッシュを使わないでください")
     if _SELF.search(head):
-        out.append(f"{sid}: 見出しに自己言及（本ページ・この1枚）を書かないでください")
+        out.append(f"{sid}: ヘッドメッセージに自己言及（本ページ・この1枚）を書かないでください")
     if not (any(j in head for j in _JUDGE) or any(c in head for c in _CONNECT)):
-        out.append(f"{sid}: 見出しに判断語か接続語がありません（題名ではなく、判断を言い切る一文に）")
+        out.append(f"{sid}: ヘッドメッセージに判断語か接続語がありません（題名ではなく、判断を言い切る一文に）")
     return out
 
 
@@ -140,10 +140,10 @@ def lint(md: str) -> list[str]:
             out.append(f"{sid}: layout が不正です: {layout!r}（{', '.join(sorted(LAYOUTS))}）")
         if i == 1 and layout != "cover":
             out.append(f"{sid}: 最初のスライドは表紙（layout: cover）にしてください")
-        if not f.get("見出し"):
-            out.append(f"{sid}: 見出しがありません")
+        if not f.get("ヘッドメッセージ"):
+            out.append(f"{sid}: ヘッドメッセージがありません")
         elif layout in _BODY_LAYOUTS:
-            out.extend(_head_problems(sid, f["見出し"]))
+            out.extend(_head_problems(sid, f["ヘッドメッセージ"]))
             if isinstance(f.get("題"), str) and f["題"]:
                 out.extend(_title_problems(sid, f["題"]))
         if layout not in ("cover", "closing") and not f.get("章名"):
@@ -157,7 +157,7 @@ def lint(md: str) -> list[str]:
         out.append(f"論点は 3〜6 個にしてください（今は {len(issues)} 個）")
     run, prev = 0, None
     for s in slides:
-        h = s["fields"].get("見出し")
+        h = s["fields"].get("ヘッドメッセージ")
         if s["fields"].get("layout") not in _BODY_LAYOUTS or not isinstance(h, str):
             run, prev = 0, None
             continue
@@ -165,5 +165,5 @@ def lint(md: str) -> list[str]:
         run = run + 1 if t == prev and t != "その他" else 1
         prev = t
         if run == 3:
-            out.append(f"{s['id']}: 隣り合う 3 枚の見出しが同じ文型（{t}）です。文型を散らしてください")
+            out.append(f"{s['id']}: 隣り合う 3 枚のヘッドメッセージが同じ文型（{t}）です。文型を散らしてください")
     return out

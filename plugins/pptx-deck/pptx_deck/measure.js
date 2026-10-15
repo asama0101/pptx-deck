@@ -26,7 +26,7 @@
 
     // 背後の実効色: スライドの下地に、DOM 順で前にある塗りつぶし済みの面（pp-shape）のうち、
     // 対象の中心を含むものを順に重ねる。面と文字が兄弟要素でも、親子でも同じ結果になる。
-    const els = [...slide.querySelectorAll('.pp-text,.pp-shape,.pp-line,.pp-image,.pp-table,.pp-chart')];
+    const els = [...slide.querySelectorAll('.pp-text,.pp-shape,.pp-line,.pp-image,.pp-table,.pp-chart,.pp-picture')];
     const fills = els.map((e, i) => {
       if (!e.classList.contains('pp-shape')) return null;
       const f = parseColor(getComputedStyle(e).backgroundColor);
@@ -160,6 +160,34 @@
         e.alt = el.getAttribute('alt') || '';
         return e;
       }
+      if (el.classList.contains('pp-picture')) {
+        // 絵: インライン SVG を 1 枚の画像にして貼る。中身は PPTX で直せないので、文字の大きさ・はみ出し・色の指定をここで測って検査に渡す。
+        const e = base(el, 'picture', idx);
+        const pr = el.getBoundingClientRect();
+        e.alt = el.dataset.alt || '';
+        e.hasSvg = !!el.querySelector('svg');
+        e.texts = [...el.querySelectorAll('text')].map((t) => {
+          const m = t.getScreenCTM();
+          const scale = m ? Math.sqrt(Math.abs(m.a * m.d - m.b * m.c)) : 1;      // viewBox の拡大率（font-size は SVG の座標系の値）
+          const b = t.getBoundingClientRect();
+          return {
+            text: t.textContent.replace(/\s+/g, ' ').trim(), size_px: px(getComputedStyle(t).fontSize) * scale,
+            small: !!t.closest('[data-role="caption"]'), rect: rel(b),
+            outside: b.left < pr.left - 1 || b.top < pr.top - 1 || b.right > pr.right + 1 || b.bottom > pr.bottom + 1,
+          };
+        }).filter((t) => t.text);
+        const lit = new Set();
+        el.querySelectorAll('svg, svg *').forEach((n) => {
+          for (const p of ['fill', 'stroke', 'stop-color', 'color']) {
+            const vals = [n.getAttribute(p), n.style && n.style.getPropertyValue(p)];
+            for (const v of vals) {
+              if (v && !/^\s*(none|currentColor|inherit|transparent|url\(.*\)|var\(.*\))\s*$/i.test(v)) lit.add(v.trim());
+            }
+          }
+        });
+        e.badColors = [...lit];
+        return e;
+      }
       if (el.classList.contains('pp-chart')) {
         const e = base(el, 'chart', idx);
         e.chart = JSON.parse(el.dataset.chart);
@@ -190,6 +218,6 @@
       e.table = { xs, rows };
       return e;
     });
-    return { index: si + 1, layout: slide.dataset.layout || 'content', bg: slideBg, elements };
+    return { index: si + 1, layout: slide.dataset.layout || 'content', type: slide.dataset.type || '', bg: slideBg, elements };
   });
 }

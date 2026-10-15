@@ -1,11 +1,11 @@
 <!-- 用途: 見積内容の表（縞の行の明細＋右下の積み上げ）。「項目｜仕様・前提｜数量｜単位｜単価｜金額」の 6 列に明細を書き、小計・値引・消費税は表の外へ出して右に積む。
      デザイン1との違い: 見出しの面をやめて太い上下の罫線にし、1 行おきにパネル地の縞を引く。小計・値引・消費税は明細の下の右側へ、前提（見積日・有効期限・支払）は左の枠へ分け、見積合計は基調色の帯に右寄せで大きく置く。
-     差し替える所: 図表タイトル・明細 5〜6 行（項目・仕様・数量・単位・単価・金額）・前提の 3 行・小計と値引と消費税・帯の合計・注。 -->
-<section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">見積明細</div>
-  <div class="pp-shape f-soft" data-note="リード文の帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">見積合計は税込1.34億円で、機器7,200万円が税抜額の6割を占める</div>
-  <div class="pp-text b" data-note="図表タイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">B案（SD-WAN）の見積明細（2026年9月ベンダー見積、万円・税抜。合計のみ税込）</div>
+     差し替える所: チャートタイトル・明細 5〜6 行（項目・仕様・数量・単位・単価・金額）・前提の 3 行・小計と値引と消費税・帯の合計・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="quote">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">見積明細</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">見積合計は税込1.34億円で、機器7,200万円が税抜額の6割を占める</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">B案（SD-WAN）の見積明細（2026年9月ベンダー見積、万円・税抜。合計のみ税込）</div>
   <table class="pp-table" data-note="明細：項目ごとに数量×単価＝金額。縞の行で目で追いやすくする" style="left:64px;top:228px;width:1152px;font-size:19px;line-height:1.25">
     <tr style="height:34px"><td style="width:258px;padding:3px 14px;border-top:3px solid var(--text);border-bottom:1px solid var(--text);font-weight:700;text-align:left">項目</td><td style="width:394px;padding:3px 14px;border-top:3px solid var(--text);border-bottom:1px solid var(--text);font-weight:700;text-align:left">仕様・前提</td><td style="width:90px;padding:3px 14px;border-top:3px solid var(--text);border-bottom:1px solid var(--text);font-weight:700;text-align:right">数量</td><td style="width:70px;padding:3px 14px;border-top:3px solid var(--text);border-bottom:1px solid var(--text);font-weight:700;text-align:left">単位</td><td style="width:120px;padding:3px 14px;border-top:3px solid var(--text);border-bottom:1px solid var(--text);font-weight:700;text-align:right">単価</td><td style="width:220px;padding:3px 14px;border-top:3px solid var(--text);border-bottom:1px solid var(--text);font-weight:700;text-align:right">金額</td></tr>
     <tr style="height:34px" data-note="最大の項目：金額のセルだけ太字"><td style="padding:3px 14px;background:var(--bg-soft);text-align:left">SD-WAN機器（ルータ）</td><td style="padding:3px 14px;background:var(--bg-soft);text-align:left">48拠点に1台、回線2本＋LTE対応</td><td style="padding:3px 14px;background:var(--bg-soft);text-align:right">48</td><td style="padding:3px 14px;background:var(--bg-soft);text-align:left">台</td><td style="padding:3px 14px;background:var(--bg-soft);text-align:right">150</td><td style="padding:3px 14px;background:var(--bg-soft);text-align:right;font-weight:700">7,200</td></tr>
@@ -32,5 +32,5 @@
   <div class="pp-shape f-accent" data-note="合計の帯：見積合計（税込）を右に大きく" style="left:64px;top:568px;width:1152px;height:44px"></div>
   <div class="pp-text t-white b" style="left:84px;top:574px;width:500px;height:31px;font-size:22px;line-height:1.4">見積合計（税込）</div>
   <div class="pp-text t-white b" style="left:640px;top:572px;width:556px;height:36px;font-size:26px;line-height:1.4;text-align:right">13,420万円</div>
-  <div class="pp-text" data-note="注：単価の出所と、予算との関係を含意で締める" data-role="caption" style="left:64px;top:618px;width:1152px;height:22px">注: 単価はベンダー提示（税抜）。2年目以降のライセンスと保守は年1,200万円の運用費に含む → 税抜12,200万円はFY2027の予算額と一致し、追加の予算措置は要らない</div>
+  <div class="pp-text" data-part="注釈" data-note="注：単価の出所と、予算との関係を含意で締める" data-role="caption" style="left:64px;top:618px;width:1152px;height:22px">注: 単価はベンダー提示（税抜）。2年目以降のライセンスと保守は年1,200万円の運用費に含む → 税抜12,200万円はFY2027の予算額と一致し、追加の予算措置は要らない</div>
 </section>

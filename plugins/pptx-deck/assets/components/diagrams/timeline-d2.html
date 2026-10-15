@@ -1,12 +1,12 @@
 <!-- 用途: 時系列（発生順の事象）。左の縦線と点に沿って、時刻｜区間｜誰が何をしたか｜担当｜所要 を 1 行ずつ表で並べる。件数が多く、文で読ませたいときに使う（デザイン1 と同じ 6 区間・同じ原稿）。
      記号: 発生と復旧の点は基調色の塗り（f-accent）、途中の点は淡い塗り（f-mid）、待ちの区間の点は枠線（f-outline）。最大の待ちの行だけパネル地の帯、その所要だけ強調色（1 枚 1 点）。最下部にパネル地の帯で作業と待ちの内訳。
      デザイン1との違い: 比例の横棒をやめ、区間を行にして文で読ませる（6〜8 行まで）。
-     差し替える所: 行 6 つ（時刻・区間・誰が何をしたか・担当・所要。各セル 1 行。行の高さ 44px、点の y は行の上端＋15）・点の種類・強調する 1 行・帯の文・注。 -->
-<section class="slide" data-layout="diagram">
-  <div class="pp-text" data-role="title" style="top:36px;height:50px;font-size:37px">回線断の時系列</div>
+     差し替える所: 行 6 つ（時刻・区間・誰が何をしたか・担当・所要。各セル 1 行。行の高さ 44px、点の y は行の上端＋15）・点の種類・強調する 1 行・帯の文・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="timeline">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">回線断の時系列</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
-  <div class="pp-text b" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">復旧10時間の半分は現地出動と承認の待ちで、遠隔化すれば5時間に縮められる</div>
-  <div class="pp-text b" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社MPLS回線断の対応の時系列（2026年7月14日 9:05〜19:05、時間）</div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">復旧10時間の半分は現地出動と承認の待ちで、遠隔化すれば5時間に縮められる</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社MPLS回線断の対応の時系列（2026年7月14日 9:05〜19:05、時間）</div>
   <div class="pp-text" data-note="見出し：灰の小さな文字と罫線。所要は次の区間までの時間" data-role="caption" style="left:134px;top:229px;width:60px;height:22px">時刻</div>
   <div class="pp-text" data-note="見出し：灰の小さな文字と罫線。所要は次の区間までの時間" data-role="caption" style="left:214px;top:229px;width:240px;height:22px">区間</div>
   <div class="pp-text" data-note="見出し：灰の小さな文字と罫線。所要は次の区間までの時間" data-role="caption" style="left:464px;top:229px;width:400px;height:22px">誰が何をしたか</div>
@@ -66,5 +66,5 @@
   </table>
   <div class="pp-shape f-soft" data-note="内訳の帯：作業と待ちの合計を数字で示す" style="left:64px;top:530px;width:1152px;height:44px"></div>
   <div class="pp-text" data-note="内訳の帯：作業と待ちの合計を数字で示す" style="left:84px;top:537px;width:1112px;height:28px;font-size:19px"><b>作業 5.0h／待ち 5.0h。</b>待ちは現地到着と切替の承認の2区間で、復旧時間の半分を占める</div>
-  <div class="pp-text" data-note="注：時刻の出所と、時系列から言える含意" data-role="caption" style="left:64px;top:590px;width:1152px;height:40px;line-height:1.3">注: 時刻は運用センターの対応記録（2026年7月14日）。機会損失は停止1時間あたり150万円で1,500万円<br>→ 遠隔復旧と自動切替で待ちの2区間を消せば、同じ障害でも復旧は5.0hに縮む</div>
+  <div class="pp-text" data-part="注釈" data-note="注：時刻の出所と、時系列から言える含意" data-role="caption" style="left:64px;top:590px;width:1152px;height:40px;line-height:1.3">注: 時刻は運用センターの対応記録（2026年7月14日）。機会損失は停止1時間あたり150万円で1,500万円<br>→ 遠隔復旧と自動切替で待ちの2区間を消せば、同じ障害でも復旧は5.0hに縮む</div>
 </section>
