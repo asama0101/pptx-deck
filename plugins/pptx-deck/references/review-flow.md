@@ -28,6 +28,6 @@ create/SKILL.md の 3 章の手順 3〜8 の細則。ページの構成・ボタ
 
 すべて決まったら、`python "${CLAUDE_PLUGIN_ROOT}/run.py" finalize "<名前>"`（`--answers` を省くと `source/answers-*.md` を回の順に全部使う） → `final.html`（`build` が使う素のページ。変えない）と、確認用の `final-review.html`。後の回答が前の回答を上書きし、選択が空のスライドは前の回答を消さない。
 
-## 手順 8: 最終 HTML の確認（`final-review.html`）
+## 手順 8: 最終 HTML（`final-review.html`）は参照用
 
 最終 HTML の承認は求めない（承認は、設計図と原稿、スライド案の選択の 2 回）。`finalize` のあと、そのまま `build` へ進む。`final-review.html` は、完成後に利用者が全体を見返す参照用で、部位のバッジも出る（直しは `revise`）。`finalize` を使わずにページだけ作り直すときは `review-final "<名前>"`（`--answers` を省くと `answers-*.md` を自動で使う）。

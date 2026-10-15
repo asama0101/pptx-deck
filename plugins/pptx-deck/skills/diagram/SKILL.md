@@ -52,7 +52,7 @@ compatibility: Windows 専用。create と同じ環境（Python・Playwright・c
 
 ## 7. 最終確認と PPTX
 
-1. `finalize "<名前>"` → `final.html` と `final-review.html`。`final-review.html` を開き、「絵は画像として PPTX に貼られ、PowerPoint では直せません（描き直します）。機密が絵に含まれていないかも確認してください。1 枚ずつ見て、『承認』か『要修正』を選び、『回答をコピー』を押してください」と伝える。待ち方と回答の保存（`source/answers-final.md`）は 4 章の 3・4 と同じ。要修正があれば 6 章の往復に戻る。
+1. `finalize "<名前>"` → `final.html` と `final-review.html`（参照用）。最終確認の承認は挟まない（6 章の往復で、確認用の画像を見て直し終えている）。利用者には、「絵は画像として PPTX に貼られ、PowerPoint では直せません（描き直します）。機密が絵に含まれていないかも見てください」と一言伝え、そのまま次へ進む。直したいときは、完成後に `revise` か 6 章の往復に戻る。
 2. `build "<名前>" [--footer …] [--force|--out …]`（終了コード 4 の扱いは create の 5 章）。`ok` が false なら `violations` を読んで直し、`finalize` からやり直す。`ok` なら `previews` を開いて崩れを確認し、**PowerPoint で開いて、絵の解像度・フォント・位置を最終確認することを勧める**。済んだら `clean "<名前>"`。
 
 ## 守ること

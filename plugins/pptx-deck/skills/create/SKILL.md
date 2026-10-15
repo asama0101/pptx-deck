@@ -16,7 +16,7 @@ compatibility: Windows 専用。Python 3.10 以上と Claude Code。システム
 2. 承認後、`python "${CLAUDE_PLUGIN_ROOT}/run.py" setup --yes`。
 3. `doctor` の `python.kind`（`system` か `venv`）と `warnings`（BIZ UDPゴシック未導入など）を利用者に伝える。
 
-## 1. 流れ（承認は 3 回）
+## 1. 流れ（承認は 2 回）
 
 | 段階 | やること | 承認 |
 |---|---|---|
@@ -84,8 +84,9 @@ compatibility: Windows 専用。Python 3.10 以上と Claude Code。システム
 
 5. `submitted` が true なら、`md` を `<名前>/source/answers-N.md` に書く（N は何回目か）。利用者がチャットに貼り付けた md も同じように書く。回答の書式は [references/review-flow.md](${CLAUDE_PLUGIN_ROOT}/references/review-flow.md)。
 6. **コメントがあるスライドだけ**、選ばれた案を直して 1 案にし（`NN-A.html` を上書き、`NN-B/C` は削除）、`variants --round N+1` で再提示する。**利用者には直したスライドだけ答えてもらう**。コメントが未反映のうちは `finalize` が止まる。別案に戻す条件と `round-(N+1)-notes.md` の書き方は [references/review-flow.md](${CLAUDE_PLUGIN_ROOT}/references/review-flow.md)。
-7. すべて決まったら、`python "${CLAUDE_PLUGIN_ROOT}/run.py" finalize "<名前>"`（`--answers` を省くと `source/answers-*.md` を回の順に全部使う。後の回答が前の回答を上書きする。最終確認の回答 `answers-final.md` は案の決定に使わない） → `final.html`（`build` が使う素のページ。変えない）と、確認用の `final-review.html`。
-8. `final-review.html` を `browser_navigate` で開き、「1 枚ずつ見て、『承認』か『要修正』を選び、『回答をコピー』を押してください」と伝える。待ち方と `md` の扱いは 4・5 と同じ（保存先は `<名前>/source/answers-final.md`。コマンドは `review-final "<名前>"`、`--answers` を省くと `answers-*.md` を自動で使う）。『要修正』があれば、コメントに沿って `source/slides/` を直して `finalize` からやり直す。チャットで承認を受けた場合は、この手順は省いてよい。細則は [references/review-flow.md](${CLAUDE_PLUGIN_ROOT}/references/review-flow.md)。
+7. すべて決まったら、`python "${CLAUDE_PLUGIN_ROOT}/run.py" finalize "<名前>"`（`--answers` を省くと `source/answers-*.md` を回の順に全部使う。後の回答が前の回答を上書きする。最終確認の回答 `answers-final.md` は案の決定に使わない） → `final.html`（`build` が使う素のページ。変えない）と、完成後の参照用の `final-review.html`（承認は求めない）。そのまま 5 章の `build` へ進む（最終 HTML の承認は挟まない）。直しは、完成後に `revise`（部位名で指示できる。例: 「3 枚目の出典を直して」）。
+
+細則は [references/review-flow.md](${CLAUDE_PLUGIN_ROOT}/references/review-flow.md)。
 
 ### 型の選び方
 型の選び方は [references/patterns.md](${CLAUDE_PLUGIN_ROOT}/references/patterns.md)（問い → 型 → デザインの選定表）、型の一覧（51 型・147 本の用途・判断を求める型か情報の型か・文書の種類ごとの組み合わせ）は [references/components.md](${CLAUDE_PLUGIN_ROOT}/references/components.md) にある。選ぶ前に読み、各断片の先頭のコメント（用途・差し替える所・デザイン 1 との違い）も読む。

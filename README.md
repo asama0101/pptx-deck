@@ -88,7 +88,7 @@ Playwright MCP はプラグインに含まれない。案の選択と回答の�
 
 ### 絵（型に当てはまらない図）の流れ
 
-`diagram` は、次の順に進む。承認は 2 回（案の選択・最終確認）で、ほかのページは内容の合意。
+`diagram` は、次の順に進む。承認は案の選択の 1 回で、ほかのページは内容の合意。
 
 | 段階 | 内容 | 利用者の操作 |
 |---|---|---|
@@ -96,7 +96,7 @@ Playwright MCP はプラグインに含まれない。案の選択と回答の�
 | 2. 提案と構造の確認 | `picture-plan.json` から `picture-review.html` を作る。絵にする箇所の提案（「図にして」と頼んだ箇所は省く）と、読み取った構造の各項目を確認する | 提案ごとに する／しない、構造ごとに OK／修正（HTML） |
 | 3. 案 | 要素が少なければ 1 案、多ければ構図の違う 2〜3 案を `slides/NN-A.html` に描く。`draft` で確認用の画像と検査の結果を得る | 案が複数なら構図を選ぶ（承認①。HTML） |
 | 4. 往復 | 確認用の画像を見ながら、チャットの指示で描き直す。直す前に `history snapshot` で版を残し、戻すときは `history restore` | チャットで指示 |
-| 5. 最終確認と PPTX | `finalize` → `final-review.html`（絵は画像として貼られ、PowerPoint では直せないこと、機密を含まないかを確認）→ `build` | 承認／要修正（承認②。HTML） |
+| 5. PPTX | `finalize` → `build`（絵は画像として貼られ、PowerPoint では直せないこと、機密を含まないかを利用者に一言伝える。最終確認の承認は挟まない）。直しは完成後に `revise` か 4 の往復 | |
 
 絵は `<div class="pp-picture" data-alt="…">` の中のインライン SVG。`build` が Chromium で絵の範囲だけを透過・3 倍の PNG にして貼る。部品（機器アイコン・矢じり）は `assets/pictures/parts.svg`、見本 5 種は `assets/components/pictures/`、書き方と作法は `references/picture-craft.md`。
 

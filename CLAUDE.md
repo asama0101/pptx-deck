@@ -39,7 +39,7 @@ Windows 専用の Claude Code プラグイン `pptx-deck`（`plugins/pptx-deck/`
 
 **派生ファイルと指紋。** `variants.html`・`final.html`・`theme.css`・`base.css`・`chart-preview.js`・`icons/` などは再生成できる派生ファイルで、`build` 成功時に `lifecycle.DERIVED_FILES` だけが消される（`source/` の元データは消さない）。PPTX の SHA-256 を `build.json` に残し、手直しされた PPTX を `build`・`reopen` が検知して止まる。`theme.css`・`base.css`・`chart-preview.js` は `init` 時に `assets/web/` から作業フォルダへ**写される**ので、プラグイン側を直しても既存の作業フォルダには `init --force` か `reopen` まで届かない。
 
-**ワークフローはスキルが握っている。** `skills/*/SKILL.md`（create・revise・rebuild・review-plan・diagram）が手順を持ち、詳細な規則は `references/*.md`（`head-rules`・`html-rules`・`patterns`・`components`・`review-flow`・`check-rules`）にある。CLI は手順書から呼ばれる部品で、承認のゲート（設計図・原稿の凍結、案の選択、最終確認）はスキル側の責務。型の追加は `assets/components/` に足したうえで `references/components.md`・`patterns.md` も更新する。
+**ワークフローはスキルが握っている。** `skills/*/SKILL.md`（create・revise・rebuild・review-plan・diagram）が手順を持ち、詳細な規則は `references/*.md`（`head-rules`・`html-rules`・`patterns`・`components`・`review-flow`・`check-rules`）にある。CLI は手順書から呼ばれる部品で、承認のゲート（設計図・原稿の凍結、案の選択）はスキル側の責務。型の追加は `assets/components/` に足したうえで `references/components.md`・`patterns.md` も更新する。
 
 ## 注意
 
