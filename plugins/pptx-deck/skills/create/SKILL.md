@@ -1,6 +1,6 @@
 ---
 name: create
-description: テーマ・素材・原稿から、コンサルテイストの承認資料（稟議・提案・計画）を新しく作る。設計図と原稿(Markdown)の承認 → HTML スライド案（型の 3 案と自由設計の 1 案）の選択 → 編集可能な PowerPoint(.pptx) の順に進める（承認は 2 回。直しは完成後に revise）。利用者の PPTX テンプレート（表紙・裏表紙・ヘッダー・フッター）に従える。「スライドを作って」「資料を作って」「PowerPoint を作って」「稟議資料」「提案資料」「デッキ」と頼まれたときに使う。作った PPTX の直しには revise、設計図と原稿の確認だけなら review-plan を使う。既存の PPTX の編集には使わない。Windows 専用。
+description: テーマ・素材・原稿から、コンサルテイストの承認資料（稟議・提案・計画）を新しく作る。設計図と原稿(Markdown)の承認 → HTML スライド案（型の 3 案と自由設計の 1 案）の選択 → 編集可能な PowerPoint(.pptx) の順に進める（承認は 2 回。直しは完成後に revise）。利用者の PPTX テンプレート（表紙・章扉・目次などのレイアウト、ヘッダー・フッター）の上に作れる。「スライドを作って」「資料を作って」「PowerPoint を作って」「稟議資料」「提案資料」「デッキ」と頼まれたときに使う。作った PPTX の直しには revise、設計図と原稿の確認だけなら review-plan を使う。既存の PPTX の編集には使わない。Windows 専用。
 compatibility: Windows 専用。Python 3.10 以上と Claude Code。システムの Python に python-pptx・Playwright・chromium がそろっていればそれを使い、なければ仮想環境を承認を得て作る。スライド案の選択に Playwright MCP が必要（ないときは回答を貼り付ける）。LibreOffice は使わない。
 ---
 
@@ -77,14 +77,14 @@ compatibility: Windows 専用。Python 3.10 以上と Claude Code。システム
 
 1. スライドの主張から「問い」を決め、`${CLAUDE_PLUGIN_ROOT}/references/patterns.md` の選定表で型の第 1 候補・次点 1・次点 2 を取る。断片は `${CLAUDE_PLUGIN_ROOT}/assets/components/` から、型の一覧は `${CLAUDE_PLUGIN_ROOT}/references/components.md`。断片をコピーして、内容と数字を差し替え、`<名前>/source/slides/NN-A.html` に書く。
 2. **3 案は型違い**（A: 第 1 候補／B: 次点 1／C: 次点 2。候補が足りなければ 2 案、型が一意なら 1 案）。内容（文言と数字）は全案で同じ。基本として、**図と表を多用して説明する**。**型の案に加えて、自由設計の推奨案 R（`NN-R.html`）を 1 つ足す**。R は、選定表の型にとらわれず、そのページの主張をいちばんよく見せる構成を Claude が自由に設計する（`data-variant="自由設計｜選んだ理由"`。理由には、型の案と何が違うかを書く）。部品は `pp-*` だけで、**絵（`pp-picture`）は使わない**（`variants` が止める）。デザインは 1 つだけで、`NN-R-d2.html` は作らない（R を選ぶとデザインの選択は出ない）。**図・表・グラフのページに足す**。型が一意で自由設計の余地がないページ（表紙・章扉・目次・裏表紙・単純な文章のページ）と、絵のページ（構図の案）には足さず、足さない理由は書く必要はない。R も、5.1 の検査（`check` が違反 0 件）を満たす。**デザイン違いは案にしない**: 利用者が型を選んだあとに、デザイン 1〜3 から選ぶ。デザイン 2・3 は `NN-A-d2.html`・`NN-A-d3.html`（B・C も同様）に書く。デザインを出さない型（デザイン 1 のみ）は書かなくてよい。各断片に `data-variant="型名｜選んだ理由"` を付けると、案の下に型名、大きな画面の下に理由が出る。
-3. `python "${CLAUDE_PLUGIN_ROOT}/run.py" variants "<名前>"`（回は次の回が自動で選ばれる） → `<名前>/source/variants.html`。Playwright MCP の `browser_navigate` で `file:///C:/.../variants.html` を開き、「左の一覧から 1 枚ずつ見て、型（A/B/C）を選び、続けてデザイン 1〜3 を選んで、『承認』か『要修正』を押してください。直したい点や、どの案でもない場合はコメントに書いて（案は選ばず『要修正』）、判断欄の右端の『回答をコピー』を押してください」と伝える。**`browser_resize` で窓の大きさを変えない**。ページの構成とボタンの扱いは [references/review-flow.md](${CLAUDE_PLUGIN_ROOT}/references/review-flow.md)。
+3. `python "${CLAUDE_PLUGIN_ROOT}/run.py" variants "<名前>"`（回は次の回が自動で選ばれる） → `<名前>/source/variants.html`。Playwright MCP の `browser_navigate` で `file:///C:/.../variants.html` を開き、「左の一覧から 1 枚ずつ見て、型（A/B/C）か自由設計（R）を選び、続けてデザイン 1〜3 を選んで、画面下の『承認』か『要修正』を押してください。直したい点や、どの案でもない場合はコメントに書いて（案は選ばず『要修正』）、画面下の『回答をコピー』を押してください。見どころ・型と選んだ理由・部位のバッジは、題の右のチェックで出せます」と伝える。**`browser_resize` で窓の大きさを変えない**。ページの構成とボタンの扱いは [references/review-flow.md](${CLAUDE_PLUGIN_ROOT}/references/review-flow.md)。
 4. 「回答をコピー」が押されるのを待つ（ユーザーに「完了」と入力させない）。押されると `window.__submitted` が立つ。`browser_evaluate` で次を実行し、送信されるか約 100 秒たつまでブロックして結果を返す。`submitted` が false なら同じ呼び出しを繰り返す（合計約 30 分、18 回まで）。18 回（約 30 分）を超えても送信されないときは、待ちをやめて、続行方法（もう一度待つ／回答を貼り付けて渡す／中止）を利用者に質問して止まる。ユーザーがターミナルに入力したときは待ちをやめて、その内容に従う。
 
    `() => new Promise(res => { const t0 = Date.now(); const id = setInterval(() => { if (window.__submitted || Date.now() - t0 > 100000) { clearInterval(id); res({ submitted: !!window.__submitted, md: window.__answersMd }); } }, 500); })`
 
 5. `submitted` が true なら、`md` を `<名前>/source/answers-N.md` に書く（N は何回目か）。利用者がチャットに貼り付けた md も同じように書く。回答の書式は [references/review-flow.md](${CLAUDE_PLUGIN_ROOT}/references/review-flow.md)。
 6. **コメントがあるスライドだけ**、選ばれた案を直して 1 案にし（`NN-A.html` を上書き、`NN-B/C` は削除）、`variants --round N+1` で再提示する。**利用者には直したスライドだけ答えてもらう**。コメントが未反映のうちは `finalize` が止まる。別案に戻す条件と `round-(N+1)-notes.md` の書き方は [references/review-flow.md](${CLAUDE_PLUGIN_ROOT}/references/review-flow.md)。
-7. すべて決まったら、`python "${CLAUDE_PLUGIN_ROOT}/run.py" finalize "<名前>"`（`--answers` を省くと `source/answers-*.md` を回の順に全部使う。後の回答が前の回答を上書きする。最終確認の回答 `answers-final.md` は案の決定に使わない） → `final.html`（`build` が使う素のページ。変えない）と、完成後の参照用の `final-review.html`（承認は求めない）。そのまま 5 章の `build` へ進む（最終 HTML の承認は挟まない）。直しは、完成後に `revise`（部位名で指示できる。例: 「3 枚目の出典を直して」）。
+7. すべて決まったら、`python "${CLAUDE_PLUGIN_ROOT}/run.py" finalize "<名前>"`（`--answers` を省くと `source/answers-*.md` を回の順に全部使う。後の回答が前の回答を上書きする） → `final.html`（`build` が使う素のページ。変えない）と、完成後の参照用の `final-review.html`（承認は求めない）。そのまま 5 章の `build` へ進む（最終 HTML の承認は挟まない）。直しは、完成後に `revise`（部位名で指示できる。例: 「3 枚目の出典を直して」）。
 
 細則は [references/review-flow.md](${CLAUDE_PLUGIN_ROOT}/references/review-flow.md)。
 
@@ -99,7 +99,7 @@ compatibility: Windows 専用。Python 3.10 以上と Claude Code。システム
 
 細則（部品のクラス・`data-role`・`data-note`・色・文字サイズ・視線誘導・`data-chart`・配色の 3 役・配置の 4 原則・記号文法・階調・グラフと表の作法・禁止事項）は [references/html-rules.md](${CLAUDE_PLUGIN_ROOT}/references/html-rules.md) にある。断片を書く前に読み、従う。最低限:
 
-- 1 枚 = `<section class="slide" data-layout="…">`（1280×720px）。部品は `pp-text`・`pp-shape`・`pp-line`・`pp-image`・`pp-table`・`pp-chart` だけ。**これ以外のクラスの文字や図は PPTX に出ない**。
+- 1 枚 = `<section class="slide" data-layout="…">`（1280×720px）。部品は `pp-text`・`pp-shape`・`pp-line`・`pp-image`・`pp-table`・`pp-chart` と、絵の `pp-picture` だけ。**これ以外のクラスの文字や図は PPTX に出ない**。
 - 色は `var(--accent)` などの変数だけ。**強調色（`f-emph`・`t-emph`）は 1 スライドに 1 点**。
 - 本文 14pt（約 19px）以上、注記 10pt（14px）以上。ダッシュ（—）はどこにも使わない。
 
