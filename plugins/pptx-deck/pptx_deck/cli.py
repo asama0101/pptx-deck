@@ -605,6 +605,18 @@ def cmd_lint_script(args) -> int:
     return 1 if problems else 0
 
 
+def cmd_intake(args) -> int:
+    from . import intake
+
+    try:
+        r = intake.resolve(intake.parse(paths.read_text(args.answers)), Path.cwd())
+    except intake.IntakeError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2
+    print(json.dumps(r, ensure_ascii=False, indent=2))
+    return 4 if r["collisions"] and not args.allow_existing else 0
+
+
 def entry(argv: list[str]) -> int:
     """python -m pptx_deck の入口。依存が足りない仮想環境では、traceback ではなく案内を出す。"""
     try:
@@ -743,6 +755,12 @@ def main(argv: list[str]) -> int:
     p.add_argument("--label", default=None, help="snapshot の名前（例: 構図を変える前）")
     p.add_argument("--slide", default=None, help="restore で戻すスライドの番号（例: 02）。省略すると全部")
     p.set_defaults(fn=cmd_history)
+    p = sub.add_parser(
+        "intake", help="開始ページの回答を検証し、作業フォルダと PPTX の置き場を JSON で出す（何も作らない）"
+    )
+    p.add_argument("answers")
+    p.add_argument("--allow-existing", action="store_true", help="同名の PPTX・元データがあっても終了コード 4 にしない")
+    p.set_defaults(fn=cmd_intake)
     p = sub.add_parser("lint-script")
     p.add_argument("script")
     p.set_defaults(fn=cmd_lint_script)
