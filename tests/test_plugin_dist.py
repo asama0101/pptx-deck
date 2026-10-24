@@ -20,7 +20,6 @@ DIST_FILES = [
     "plugins/pptx-deck/skills/diagram/SKILL.md",
     "plugins/pptx-deck/run.py",
     "plugins/pptx-deck/requirements.txt",
-    "plugins/pptx-deck/README.md",
 ]
 CLAUDE = shutil.which("claude")
 
