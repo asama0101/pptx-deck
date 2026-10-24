@@ -58,15 +58,20 @@ def cmd_doctor(args) -> int:
 
 
 def cmd_init(args) -> int:
-    from . import initdir
+    from . import initdir, intake
 
     try:
+        answers = (
+            intake.parse(paths.read_text(args.input_from)) if args.input_from else {}
+        )  # 先に読む（不備なら何も作らない）
         r = initdir.init(
             Path(args.workdir), color=args.color, template_path=args.template, force=args.force, footer=args.footer
         )
-    except (FileExistsError, ValueError) as e:
+    except (FileExistsError, ValueError, OSError) as e:
         print(f"エラー: {e}", file=sys.stderr)
         return 2
+    if answers.get("kind") == "text" and answers["text"]:  # 本文を、エージェントが書き写さずそのまま残す（改行は LF）
+        (Path(r["workdir"]) / "input.md").write_bytes(f"{answers['text'].rstrip()}\n".encode())
     print(json.dumps(r, ensure_ascii=False, indent=2))
     return 0
 
@@ -661,6 +666,11 @@ def main(argv: list[str]) -> int:
         "--footer",
         default=None,
         help='左下に出すコピーライトの文字列（例: "© 2026 〇〇"）。省略すると空欄（--force なら既存の値を残す）',
+    )
+    p.add_argument(
+        "--input-from",
+        default=None,
+        help="開始ページの回答 md。種別がテキストなら、本文を input.md に書く（ファイル入力なら何もしない）",
     )
     p.add_argument("--force", action="store_true")
     p.set_defaults(fn=cmd_init)

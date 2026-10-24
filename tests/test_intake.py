@@ -296,3 +296,44 @@ def test_resolve_はドライブ名だけの出力先をエラーにする(tmp_p
     other = "Z:" if tmp_path.drive.upper() != "Z:" else "Y:"  # 作業フォルダと別のドライブ -> ドライブ相対になる
     with pytest.raises(intake.IntakeError, match="絶対パス"):
         _resolve(_md(files=[str(f)], out=other, name="n"), tmp_path)
+
+
+def _init(deck_base, ans: Path, capsys):
+    code = cli.main(["init", str(deck_base), "--input-from", str(ans)])
+    return code, capsys.readouterr()
+
+
+def test_init_の_input_from_は貼り付けた本文を_input_md_にそのまま書く(deck_base, tmp_path, capsys):
+    body = "# 稟議\n\n## 背景\n- 名前: 本文の中の行\n長い文章。"
+    ans = tmp_path / "ans.md"
+    ans.write_text(_md(kind="テキスト", name="n", text=body), encoding="utf-8")
+    code, _ = _init(deck_base, ans, capsys)
+    assert code == 0
+    assert (deck_base / "input.md").read_bytes().decode("utf-8") == f"{body}\n"  # 改行は LF のまま、末尾に 1 つ
+
+
+def test_init_の_input_from_はファイル入力なら_input_md_を作らない(deck_base, tmp_path, capsys):
+    f = _touch(tmp_path, "a.docx")
+    ans = tmp_path / "ans.md"
+    ans.write_text(_md(files=[str(f)], name="n"), encoding="utf-8")
+    code, _ = _init(deck_base, ans, capsys)
+    assert code == 0
+    assert not (deck_base / "input.md").exists()
+
+
+def test_init_の_input_from_は回答が読めなければ終了コード_2_で何も作らない(deck_base, tmp_path, capsys):
+    ans = tmp_path / "ans.md"
+    ans.write_text("開始ページの回答ではない\n", encoding="utf-8")
+    code, cap = _init(deck_base, ans, capsys)
+    assert code == 2
+    assert "エラー" in cap.err
+    assert not deck_base.exists()
+
+
+def test_init_の_input_from_は種別がファイルなら本文の節があっても_input_md_を作らない(deck_base, tmp_path, capsys):
+    f = _touch(tmp_path, "a.docx")
+    ans = tmp_path / "ans.md"
+    ans.write_text(_md(files=[str(f)], name="n", text="貼り付けた本文"), encoding="utf-8")
+    code, _ = _init(deck_base, ans, capsys)
+    assert code == 0
+    assert not (deck_base / "input.md").exists()
