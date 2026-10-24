@@ -243,13 +243,19 @@ def test_スキルと_README_に旧配置の_source_スラッシュ_の説明が
 
 
 def test_成果物の用語が統一されている():
-    old = "作品"
+    old = "".join(["作", "品"])
     targets = [
         f
         for ext in ("py", "md", "html", "json")
         for f in PKG.rglob(f"*.{ext}")
         if "__pycache__" not in f.parts and f.name != "部品見本.html"
     ]
-    targets += [REPO / "CLAUDE.md", REPO / "docs" / "development.md", *sorted((REPO / "tests").glob("*.py"))]
+    targets += [
+        REPO / "CLAUDE.md",
+        REPO / "README.md",
+        REPO / ".claude-plugin" / "marketplace.json",
+        *sorted((REPO / "docs").glob("*.md")),
+        *sorted((REPO / "tests").glob("*.py")),
+    ]
     offenders = [f.relative_to(REPO).as_posix() for f in targets if f.exists() and old in read(f)]
     assert not offenders, offenders
