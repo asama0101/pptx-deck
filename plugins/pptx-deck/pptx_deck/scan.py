@@ -13,13 +13,21 @@ EXTS = {".docx", ".pdf", ".pptx", ".md", ".txt"}
 SKIP_DIRS = {paths.SOURCE_PARENT, ".git", "node_modules"}
 
 
-def _hidden(p: Path) -> bool:
+_LINK_TAGS = {getattr(stat, "IO_REPARSE_TAG_MOUNT_POINT", -1), getattr(stat, "IO_REPARSE_TAG_SYMLINK", -1)}
+
+
+def _skip(p: Path) -> bool:
+    """辿らない・出さないもの: 隠し・システム属性、Office のロックファイル、シンボリックリンクとジャンクション。
+    ジャンクションは lstat の再解析タグで見る（Path.is_junction は Python 3.12 から）。OneDrive のクラウドの
+    ファイルも再解析ポイントなので、属性ではなくタグで、リンクとジャンクションだけを除く。"""
     if p.name.startswith((".", "~$")):  # ~$ は Office の作業中のロックファイル
         return True
     try:
         st = p.lstat()
     except OSError:
         return True  # 属性が読めないものは出さない（一覧は補助で、パス欄から指定できる）
+    if stat.S_ISLNK(st.st_mode) or getattr(st, "st_reparse_tag", 0) in _LINK_TAGS:
+        return True
     return bool(getattr(st, "st_file_attributes", 0) & (stat.FILE_ATTRIBUTE_HIDDEN | stat.FILE_ATTRIBUTE_SYSTEM))
 
 
@@ -33,7 +41,7 @@ def _tree(path: Path, name: str, depth: int) -> dict:
     for p in entries:
         if count >= MAX_ENTRIES:
             break
-        if _hidden(p) or p.is_symlink() or p.is_junction():
+        if _skip(p):
             continue
         if p.is_dir():
             if p.name in SKIP_DIRS or depth >= MAX_DEPTH:  # 深さの上限のフォルダは、ファイルだけ拾う

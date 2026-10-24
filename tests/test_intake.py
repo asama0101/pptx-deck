@@ -46,11 +46,17 @@ def test_parse_は複数ファイルと引用符付きのパスを読む():
     }
 
 
-def test_parse_は種別がテキストのとき本文を次の見出しか末尾まで読む():
-    md = _md(kind="テキスト", name="x", text="一行目\n\n二行目") + "## 後ろ\n- 無関係\n"
-    r = intake.parse(md)
+def test_parse_は種別がテキストのとき本文を末尾まで読む():
+    r = intake.parse(_md(kind="テキスト", name="x", text="一行目\n\n二行目"))
     assert r["kind"] == "text"
     assert r["text"] == "一行目\n\n二行目"
+
+
+def test_parse_は本文の見出しや箇条書きを本文として残し名前を変えない():
+    body = "# 稟議書\n\n## 背景\n- 名前: 上書き\n- 種別: ファイル\n\n```\n## コード\n---\n```\n\n## 結論\n末尾"
+    r = intake.parse(_md(kind="テキスト", name="稟議", text=body))
+    assert r["text"] == body
+    assert (r["kind"], r["name"], r["files"]) == ("text", "稟議", [])
 
 
 def test_parse_は_start_がない_md_をエラーにする():

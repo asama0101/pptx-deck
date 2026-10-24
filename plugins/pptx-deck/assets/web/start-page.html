@@ -201,7 +201,7 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;backgr
 
   function say(msg, warn) { var s = $('#state'); s.textContent = msg; s.classList.toggle('sp-warn', !!warn); }
 
-  // 回答の md（intake が読む形式）。本文は末尾に置く（次の見出しか末尾までが本文）
+  // 回答の md（intake が読む形式）。本文は最後の節に置く（「## 本文」の後ろは、見出しも含めて末尾まで本文として読まれる）
   function buildMd() {
     var t = kind() === 'text';
     var out = ['---', 'start: 1', '---', '## 入力', '- 種別: ' + (t ? 'テキスト' : 'ファイル')];

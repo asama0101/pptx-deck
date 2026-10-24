@@ -12,6 +12,7 @@ import pytest
 from pptx_deck import cli, intake, start_page
 
 slow = pytest.mark.slow
+BODY = "一行目\n\n## 見出し\n- 名前: 上書き\n二行目"  # 本文の見出し・箇条書きも本文のまま
 _DATA = re.compile(r"var DATA = (.*?);\n", re.DOTALL)
 
 
@@ -136,12 +137,12 @@ def test_テキスト種別は本文と名前が出てファイルは出ない(o
     page = open_start()
     page.check(_sel("data-file", work / "予算案.pdf"))
     page.check("input[name=kind][value=text]")
-    page.fill("#text", "一行目\n\n二行目")
+    page.fill("#text", BODY)
     page.fill("#name", "メモ")
 
     r = _copy(page)
 
-    assert (r["kind"], r["files"], r["text"], r["name"]) == ("text", [], "一行目\n\n二行目", "メモ")
+    assert (r["kind"], r["files"], r["text"], r["name"]) == ("text", [], BODY, "メモ")
 
 
 @slow

@@ -57,6 +57,20 @@ def test_対象の拡張子だけを拾い隠しと_pptx_deck_source_は辿ら�
     }
 
 
+def test_ジャンクションは辿らず_Path_is_junction_がない版でも動く(tmp_path, no_recent, monkeypatch):
+    cwd = tmp_path / "w"
+    _touch(cwd / "本物" / "a.md")
+    _touch(tmp_path / "外" / "b.md")
+    # Windows のジャンクション（管理者権限なしで作れる）
+    mklink = ["cmd", "/c", "mklink", "/J", str(cwd / "リンク"), str(tmp_path / "外")]
+    subprocess.run(mklink, check=True, capture_output=True)  # noqa: S603,S607
+    monkeypatch.delattr(Path, "is_junction", raising=False)  # Python 3.10・3.11 には Path.is_junction がない
+
+    tree = _place(scan.scan(cwd, home=tmp_path / "nohome"), "作業フォルダ")["tree"]
+
+    assert _names(tree) == ["本物"]
+
+
 def test_深さの上限を超えたフォルダは辿らない(tmp_path, no_recent):
     _touch(tmp_path / "w" / "a" / "b" / "c" / "c.md")
     _touch(tmp_path / "w" / "a" / "b" / "c" / "d" / "d.md")

@@ -27,14 +27,10 @@ def parse(md: str) -> dict:
     body = lines[lines.index("---", 1) + 1 :]
     out = {"kind": "", "files": [], "text": "", "out_dir": "", "name": ""}
     text: list[str] = []
-    in_text = False
-    for ln in body:
-        if ln.startswith("## "):
-            in_text = ln[3:].strip() == "本文"
-            continue
-        if in_text:
-            text.append(ln)
-            continue
+    for i, ln in enumerate(body):
+        if ln.startswith("## ") and ln[3:].strip() == "本文":
+            text = body[i + 1 :]  # 本文は最後の節。貼り付けた Markdown の見出しや箇条書きも、末尾まで本文として読む
+            break
         m = re.match(r"-\s*(種別|ファイル|フォルダ|名前)\s*[:：]\s*(.*)$", ln)
         if not m:
             continue
