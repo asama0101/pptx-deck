@@ -21,7 +21,7 @@ allowed-tools: 'Bash(python "${CLAUDE_PLUGIN_ROOT}/run.py" *)'
 
 | 段階 | やること | 承認 |
 |---|---|---|
-| 開始 | 下の「1.0 開始ページ」で、入力・出力先・成果物名を決める | |
+| 開始 | 下の「1.0 開始ページ」で、入力・保存先（`<出力先>`）・成果物名を決める | |
 | 入力 | 下の「1.1 入力で聞くこと」 | |
 | 設計図 | 図を作る前に `<元データ>/design.md` を書く（ガバニングメッセージ・論点・台帳・ページごとの設計。2.1） | なし（承認は求めない） |
 | 原稿 | `<元データ>/script.md` を書く。`lint-script` が空になるまで直す | なし（`lint-script` と 5.1 の自己確認だけ。利用者が見たいと頼んだときだけ review-plan） |
@@ -30,8 +30,8 @@ allowed-tools: 'Bash(python "${CLAUDE_PLUGIN_ROOT}/run.py" *)'
 | PPTX | そのまま `build` で書き出し、検査と確認用の画像（`final.html` の撮影）で崩れを確認する。直しは完成後に `revise` | |
 
 ### 1.0 開始ページ（最初にやる）
-1. `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" start-page` を実行する。出力は、入力（ファイルかテキスト）・出力先のフォルダ・成果物名を選ぶ HTML のパス。
-2. そのパスを Playwright MCP の `browser_navigate` で `file:///C:/…` として開き、「入力と出力先、成果物の名前を選んで、『回答をコピー』を押してください」と伝える。`browser_resize` で窓の大きさを変えない。
+1. `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" start-page` を実行する。出力は、入力（ファイルかテキスト）・保存先のフォルダ・成果物名を選ぶ HTML のパス。一覧は作業フォルダの中だけで、ほかの場所は利用者がパス欄に手動で書く。
+2. そのパスを Playwright MCP の `browser_navigate` で `file:///C:/…` として開き、「入力と保存先、成果物の名前を選んで、『回答をコピー』を押してください」と伝える。`browser_resize` で窓の大きさを変えない。ページを開いたあとに作業フォルダへ置いたファイルが一覧にないと言われたら、「フォルダを読み直す」を押して作業フォルダを選ぶよう伝える（押せないブラウザなら、`start-page` からページを作り直す）。
 3. 3 章の手順 4 と同じ `browser_evaluate` の待ち方（18 回まで、続行方法の質問を含む）で `window.__submitted` を待ち、`window.__answersMd` を取る。Playwright MCP がないときは、利用者に回答を貼り付けてもらう。
 4. 回答の md を、セッションのスクラッチパッド（OS の一時フォルダ。プロジェクトの中ではない）に保存する。
 5. `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" intake "<保存した回答ファイル>"` を実行する。何も作らず、JSON（`kind`・`files`・`text`・`out_dir`・`name`・`workdir`・`pptx`・`collisions`）を出す。

@@ -1,4 +1,4 @@
-"""開始ページ（入力と出力先を選ぶ HTML）を作る。一覧は scan で事前に調べて埋め込む（サーバーは立てない）。"""
+"""開始ページ（入力と保存先を選ぶ HTML）を作る。作業フォルダの一覧は scan で調べて埋め込む（サーバーなし）。"""
 
 import json
 from pathlib import Path
@@ -17,7 +17,7 @@ def render(data: dict) -> str:
     return template.replace(_MARK, json.dumps(data, ensure_ascii=False).replace("</", "<\\/"))
 
 
-def build(cwd: Path, out: Path | None = None, home: Path | None = None) -> Path:
+def build(cwd: Path, out: Path | None = None) -> Path:
     out = paths.temp_dir("start") / "start-page.html" if out is None else out
-    out.write_text(render(scan.scan(cwd, home)), encoding="utf-8")
+    out.write_text(render(scan.scan(cwd)), encoding="utf-8")
     return out

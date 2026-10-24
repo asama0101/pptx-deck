@@ -13,7 +13,7 @@ allowed-tools: 'Bash(python "${CLAUDE_PLUGIN_ROOT}/run.py" *)'
 
 ## 1. 入口
 
-- **単独で作る**: create の 1.0（`start-page` → `intake`）で出力先と成果物名を決めてから、`init "<元データ>" --color <プリセット|#RRGGBB>`（`<元データ>` は `intake` の `workdir`。create の 1.2 と同じ。同名のフォルダが空でないときは中身を見せて承認を得る）。1 枚物なので、`<元データ>/design.md` は資料全体と台帳を省いた 1 ページ分、`<元データ>/script.md` は 1 スライド（`layout: diagram`・題・ヘッドメッセージ・図表）にする。書式は `${CLAUDE_PLUGIN_ROOT}/assets/sample/`。ヘッドメッセージは create の 2.2 の規則に従い、`lint-script` を通す。
+- **単独で作る**: create の 1.0（`start-page` → `intake`）で保存先（`<出力先>`）と成果物名を決めてから、`init "<元データ>" --color <プリセット|#RRGGBB>`（`<元データ>` は `intake` の `workdir`。create の 1.2 と同じ。同名のフォルダが空でないときは中身を見せて承認を得る）。1 枚物なので、`<元データ>/design.md` は資料全体と台帳を省いた 1 ページ分、`<元データ>/script.md` は 1 スライド（`layout: diagram`・題・ヘッドメッセージ・図表）にする。書式は `${CLAUDE_PLUGIN_ROOT}/assets/sample/`。ヘッドメッセージは create の 2.2 の規則に従い、`lint-script` を通す。
 - **create の中で呼ばれた**: create の作業フォルダの `<元データ>/slides/` に、そのページの断片を書く。承認は create 側に従い、追加の承認は出さない。
 - **絵にするかどうか**: 利用者が「図にして」「絵にして」と頼んだときは、そのまま絵にする（`picture-plan.json` の `asked` を true にする）。そうでなく、素材に構造（手順・関係・前後の比較・構成・経路）を見つけたときは、文章のままにせず、4 章の HTML で「ここは絵がよい」と提案する（強制しない。`asked` は false）。
 

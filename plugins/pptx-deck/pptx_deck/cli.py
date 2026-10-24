@@ -606,17 +606,13 @@ def cmd_lint_script(args) -> int:
 
 
 def cmd_intake(args) -> int:
-    from . import intake, scan
+    from . import intake
 
     try:
         r = intake.resolve(intake.parse(paths.read_text(args.answers)), Path.cwd())
     except (intake.IntakeError, ValueError, OSError) as e:  # 回答ファイルがない・UTF-8 でないも入力の不備
         print(f"エラー: {e}", file=sys.stderr)
         return 2
-    try:  # 開始ページの「最近使った場所」用。記録できなくても取り込みは続ける
-        scan.remember_recent([r["out_dir"], *dict.fromkeys(str(Path(f).parent) for f in r["files"])])
-    except OSError as e:
-        print(f"注意: 最近使った場所を記録できませんでした（{e}）", file=sys.stderr)
     print(json.dumps(r, ensure_ascii=False, indent=2))
     return 4 if r["collisions"] and not args.allow_existing else 0
 
@@ -773,7 +769,7 @@ def main(argv: list[str]) -> int:
     p.add_argument("--allow-existing", action="store_true", help="同名の PPTX・元データがあっても終了コード 4 にしない")
     p.set_defaults(fn=cmd_intake)
     p = sub.add_parser(
-        "start-page", help="開始ページ（入力と出力先を選ぶ HTML）を、作業フォルダなどの一覧を埋め込んで作り、パスを出す"
+        "start-page", help="開始ページ（入力と保存先を選ぶ HTML）を、作業フォルダの一覧を埋め込んで作り、パスを出す"
     )
     p.set_defaults(fn=cmd_start_page)
     p = sub.add_parser("lint-script")

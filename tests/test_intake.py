@@ -5,12 +5,12 @@ import json
 from pathlib import Path
 
 import pytest
-from pptx_deck import cli, intake, scan
+from pptx_deck import cli, intake
 
 
 @pytest.fixture(autouse=True)
 def home(monkeypatch, tmp_path_factory):
-    """intake の成功時に書く「最近使った場所」を、テストごとの置き場に向ける（本物の置き場に書かない）。"""
+    """置き場をテストごとの空のフォルダに向ける（本物の置き場を読み書きしない）。"""
     h = tmp_path_factory.mktemp("pptx-home")
     monkeypatch.setenv("PPTX_DECK_HOME", str(h))
     return h
@@ -243,10 +243,9 @@ def test_cli_intake_は検証エラーで終了コード_2_を返し何も作ら
     assert "見つかりません" in cap.err
     assert sorted(p.name for p in tmp_path.rglob("*")) == ["answers.md"]
     assert not (tmp_path / "pptx-deck-source").exists()
-    assert scan.load_recent() == []  # 失敗したときは最近使った場所に残さない
 
 
-def test_cli_intake_は成功すると出力先と入力ファイルの場所を最近使った場所に残す(tmp_path, capsys):
+def test_cli_intake_は成功しても置き場に何も書かない(tmp_path, home, capsys):
     src = tmp_path / "入力 元"
     src.mkdir()
     f = _touch(src, "a.docx")
@@ -254,7 +253,7 @@ def test_cli_intake_は成功すると出力先と入力ファイルの場所を
     out.mkdir()
     code, _ = _run(tmp_path, _md(files=[str(f)], out=str(out), name="n"), capsys=capsys)
     assert code == 0
-    assert scan.load_recent() == [str(out), str(src)]
+    assert list(home.iterdir()) == []
 
 
 def test_cli_intake_は回答ファイルがないとき終了コード_2(tmp_path, capsys):

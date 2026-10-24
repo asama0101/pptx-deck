@@ -7,10 +7,11 @@
 import json
 import re
 import tempfile
+from datetime import datetime
 from pathlib import Path
 
 import pytest
-from pptx_deck import cli, intake, scan, start_page
+from pptx_deck import cli, intake, start_page
 
 slow = pytest.mark.slow
 BODY = "一行目\n\n## 見出し\n- 名前: 上書き\n二行目"  # 本文の見出し・箇条書きも本文のまま
@@ -22,12 +23,12 @@ def _embedded(html: str) -> dict:
 
 
 @pytest.fixture
-def home(monkeypatch, tmp_path):
-    """最近使った場所の記録を、空の置き場にする（本物の置き場を読み書きしない）。"""
-    h = tmp_path / "pptx-home"
-    h.mkdir()
-    monkeypatch.setenv("PPTX_DECK_HOME", str(h))
-    return h
+def temp_root(tmp_path, monkeypatch):
+    """OS の一時フォルダを tmp_path の下に向ける（開始ページを本物の一時フォルダに書かない）。"""
+    root = tmp_path / "os-temp"
+    root.mkdir()
+    monkeypatch.setattr(tempfile, "tempdir", str(root))
+    return root
 
 
 def test_埋め込んだデータが_JSON_として読め_閉じタグで壊れない():
@@ -38,31 +39,31 @@ def test_埋め込んだデータが_JSON_として読め_閉じタグで壊れ�
     assert _embedded(html) == data
 
 
-def test_build_は作業フォルダの一覧を埋め込んで書き出す(tmp_path, home):
+def test_build_は作業フォルダの一覧を埋め込んで書き出す(tmp_path):
     cwd = tmp_path / "作業 フォルダ"
     (cwd / "資料").mkdir(parents=True)
     (cwd / "資料" / "稟議書.docx").write_text("x", encoding="utf-8")
 
-    out = start_page.build(cwd, tmp_path / "page.html", tmp_path / "nohome")
+    out = start_page.build(cwd, tmp_path / "page.html")
 
     assert out == tmp_path / "page.html"
     data = _embedded(out.read_text(encoding="utf-8"))
     assert data["cwd"] == str(cwd)
+    assert [(p["label"], p["path"]) for p in data["places"]] == [("作業フォルダ", str(cwd))]
     assert data["places"][0]["tree"]["dirs"][0]["files"] == [str(cwd / "資料" / "稟議書.docx")]
 
 
-def test_cli_start_page_はページのパスを1行で出す(tmp_path, home, monkeypatch, capsys):
-    monkeypatch.chdir(tmp_path)
-    monkeypatch.setattr(tempfile, "tempdir", str(tmp_path / "os-temp"))  # 本物の一時フォルダに書かない
-    (tmp_path / "os-temp").mkdir()
-    monkeypatch.setattr(scan, "_registry_value", lambda name: None)  # 本物の既知フォルダを読まない
-    monkeypatch.setattr(scan.Path, "home", classmethod(lambda cls: tmp_path / "nohome"))
+def test_cli_start_page_はページのパスを1行で出す(tmp_path, temp_root, monkeypatch, capsys):
+    cwd = tmp_path / "作業"
+    cwd.mkdir()
+    monkeypatch.chdir(cwd)
     assert cli.main(["start-page"]) == 0
     out = capsys.readouterr().out
     assert out.count("\n") == 1
     page = Path(out.strip())
     assert page.name == "start-page.html"
-    assert _embedded(page.read_text(encoding="utf-8"))["cwd"] == str(tmp_path)
+    assert page.is_relative_to(temp_root)
+    assert _embedded(page.read_text(encoding="utf-8"))["cwd"] == str(cwd)
 
 
 # ---- 画面の操作 ----
@@ -80,8 +81,8 @@ def browser():
 
 
 @pytest.fixture
-def work(tmp_path, home):
-    """作業フォルダ（日本語・空白入り）に、ファイルと出力先の候補のフォルダを置く。"""
+def work(tmp_path):
+    """作業フォルダ（日本語・空白入り）に、ファイルと保存先の候補のフォルダを置く。"""
     cwd = tmp_path / "作業 フォルダ"
     for f in ("稟議書 2026.docx", "予算案.pdf"):
         (cwd / f).parent.mkdir(parents=True, exist_ok=True)
@@ -90,14 +91,37 @@ def work(tmp_path, home):
     return cwd
 
 
+# 「フォルダを読み直す」の外部（ブラウザのフォルダ選択）の代わり。window.__pick に
+# {name, spec}（spec はファイル名 -> null、フォルダ名 -> 入れ子の spec。"unreadable" はそのフォルダの values() が
+# 例外を出す）か {error: 例外名} を入れて使う
+FAKE_PICKER = """
+window.__mkdir = function mk(name, spec) {
+  return {kind: 'directory', name: name, values: async function* () {
+    if (spec === 'unreadable') throw new DOMException('読めません', 'NotAllowedError');
+    for (const k of Object.keys(spec)) yield spec[k] === null ? {kind: 'file', name: k} : mk(k, spec[k]);
+  }};
+};
+window.showDirectoryPicker = async function (opts) {
+  window.__pickOpts = opts;
+  const p = window.__pick;
+  if (p.error) throw new DOMException('選択しませんでした', p.error);
+  return window.__mkdir(p.name, p.spec);
+};
+"""
+NO_PICKER = "window.showDirectoryPicker = undefined;"
+LOADED = datetime(2026, 10, 24, 9, 5)
+
+
 @pytest.fixture
 def open_start(browser, work, tmp_path):
     pages = []
 
-    def _open():
-        f = start_page.build(work, tmp_path / "start-page.html", tmp_path / "nohome")
+    def _open(init=FAKE_PICKER, cwd=None):
+        f = start_page.build(cwd or work, tmp_path / "start-page.html")
         page = browser.new_page(viewport={"width": 1400, "height": 900})
         pages.append(page)
+        page.clock.set_fixed_time(LOADED)
+        page.add_init_script(init)
         page.goto(f.as_uri())
         return page
 
@@ -175,8 +199,269 @@ def test_引用符付きのパス欄も_intake_parse_で外れる(open_start, wo
 
 
 @slow
+def test_画面の表示は保存先と呼び_旧称を使わない(open_start):
+    page = open_start()
+    shown = page.inner_text("main") + "".join(_attrs(page, "[placeholder]", "placeholder")) + page.title()
+    assert "出力先" not in shown
+    assert page.inner_text("#h-out") == "保存先フォルダ"
+    assert "パス欄に手動でパスを書く" in page.get_attribute("#path-out", "placeholder")
+    assert page.inner_text("#reread-hint") == (
+        "選んだフォルダの名前だけで作業フォルダか確認します。別の場所の同名フォルダを選ぶと、実在しないパスが並びます"
+    )
+
+
+@slow
 def test_ファイルがないときはコピーせず案内を出す(open_start):
     page = open_start()
     page.click("#copy")
     assert page.evaluate("window.__submitted === true") is False
     assert "ファイル" in page.inner_text("#state")
+
+
+# ---- フォルダを読み直す ----
+
+
+def _reread(page, name="作業 フォルダ", spec=None, error=None) -> None:
+    page.evaluate("p => { window.__pick = p; }", {"name": name, "spec": spec or {}, "error": error})
+    page.click("#reread")
+    page.wait_for_function("!document.querySelector('#reread').disabled")  # 読み終わるとボタンが戻る
+
+
+def _open_folder(page, path: Path) -> None:
+    """入力のツリーのフォルダを選ぶ（閉じた <details> の中の行も押せるように、DOM で押す）。"""
+    page.evaluate(
+        "p => [...document.querySelectorAll('#tree-in .row[data-node]')].find(e => e.dataset.node === p).click()",
+        str(path),
+    )
+
+
+def _attrs(page, sel: str, attr: str) -> list[str]:
+    return page.eval_on_selector_all(sel, f"es => es.map(e => e.getAttribute({json.dumps(attr)}))")
+
+
+ORIGINAL = {"稟議書 2026.docx": None, "予算案.pdf": None, "成果物": {}}
+
+
+@slow
+def test_読み直すと新しいファイルとフォルダが入力と保存先の両方に出て時刻が変わる(open_start, work):
+    page = open_start()
+    assert page.inner_text("#read-at") == "読み込み: 09:05"
+    page.clock.set_fixed_time(datetime(2026, 10, 24, 9, 30))
+
+    _reread(page, spec={**ORIGINAL, "新規.md": None, "新しい": {"中.txt": None}})
+
+    assert page.evaluate("window.__pickOpts") == {"mode": "read"}
+    assert page.inner_text("#read-at") == "読み込み: 09:30"
+    assert page.inner_text("#reread-msg") == ""
+    assert _attrs(page, "#tree-in .row[data-node]", "data-node") == [
+        str(work),
+        str(work / "成果物"),
+        str(work / "新しい"),
+    ]
+    assert _attrs(page, "#tree-out input[data-dir]", "data-dir") == [
+        str(work),
+        str(work / "成果物"),
+        str(work / "新しい"),
+    ]
+    assert _attrs(page, "#files input[data-file]", "data-file") == [
+        str(work / f) for f in ("予算案.pdf", "新規.md", "稟議書 2026.docx")
+    ]
+    _open_folder(page, work / "新しい")
+    page.check(_sel("data-file", work / "新しい" / "中.txt"))
+    assert _copy(page)["files"] == [str(work / "新しい" / "中.txt")]
+
+
+@slow
+def test_読み直しで消えたファイルのチェックは外れ残ったファイルと保存先の選択は保たれる(open_start, work):
+    page = open_start()
+    page.check(_sel("data-file", work / "予算案.pdf"))
+    page.check(_sel("data-file", work / "稟議書 2026.docx"))
+    page.check(_sel("data-dir", work / "成果物"))
+
+    _reread(page, spec={"稟議書 2026.docx": None, "成果物": {}})
+
+    assert page.inner_text("#reread-msg") == ""  # 保存先は残っているので通知しない
+    assert page.is_checked(_sel("data-file", work / "稟議書 2026.docx"))
+    assert page.inner_text("#chosen-files") == str(work / "稟議書 2026.docx")
+    r = _copy(page)
+    assert r["files"] == [str(work / "稟議書 2026.docx")]
+    assert r["out_dir"] == str(work / "成果物")
+
+
+@slow
+def test_読み直しても開いていたフォルダが残っていればその一覧を出す(open_start, work):
+    page = open_start()
+    _open_folder(page, work / "成果物")
+
+    _reread(page, spec={**ORIGINAL, "成果物": {"追加.md": None}})
+
+    assert page.inner_text("#folder-h") == str(work / "成果物")
+    assert _attrs(page, "#files input[data-file]", "data-file") == [str(work / "成果物" / "追加.md")]
+
+
+@slow
+def test_読み直しで選んでいた保存先とフォルダが消えたら作業フォルダに戻る(open_start, work):
+    page = open_start()
+    page.check(_sel("data-file", work / "予算案.pdf"))
+    _open_folder(page, work / "成果物")  # 右の一覧を 成果物 にする（予算案.pdf のチェックは残る）
+    page.check(_sel("data-dir", work / "成果物"))
+
+    _reread(page, spec={"予算案.pdf": None})
+
+    assert page.inner_text("#reread-msg") == "選んでいた保存先が見つからないため、作業フォルダに戻しました"
+    assert page.inner_text("#folder-h") == str(work)
+    assert page.is_checked(_sel("data-dir", work))
+    r = _copy(page)
+    assert (r["files"], r["out_dir"]) == ([str(work / "予算案.pdf")], str(work))
+
+    _reread(page, error="AbortError")  # 次の操作（取り消しでも）で前の通知は消える
+    assert page.inner_text("#reread-msg") == ""
+
+
+@slow
+def test_違う名前のフォルダを選ぶと警告を出して一覧を変えない(open_start, work):
+    page = open_start()
+    page.check(_sel("data-file", work / "予算案.pdf"))
+
+    _reread(page, name="別のフォルダ", spec={"x.md": None})
+
+    msg = page.locator("#reread-msg")
+    assert (
+        msg.inner_text()
+        == "選んだフォルダ名（別のフォルダ）が作業フォルダ（作業 フォルダ）と違います。作業フォルダを選んでください"
+    )
+    assert "sp-warn" in msg.get_attribute("class")
+    assert _attrs(page, "#files input[data-file]", "data-file") == [
+        str(work / "予算案.pdf"),
+        str(work / "稟議書 2026.docx"),
+    ]
+    assert page.is_checked(_sel("data-file", work / "予算案.pdf"))
+    assert page.inner_text("#read-at") == "読み込み: 09:05"
+
+    _reread(page, error="AbortError")  # 取り消しても、前の警告は残さない
+    assert page.inner_text("#reread-msg") == ""
+
+
+@slow
+def test_作業フォルダそのものが読めないときは警告を出して一覧を変えない(open_start, work):
+    page = open_start()
+    page.check(_sel("data-file", work / "予算案.pdf"))
+
+    _reread(page, spec="unreadable")
+
+    msg = page.locator("#reread-msg")
+    assert msg.inner_text() == "フォルダを読み直せませんでした（NotAllowedError）"
+    assert "sp-warn" in msg.get_attribute("class")
+    assert _attrs(page, "#files input[data-file]", "data-file") == [
+        str(work / "予算案.pdf"),
+        str(work / "稟議書 2026.docx"),
+    ]
+    assert page.is_checked(_sel("data-file", work / "予算案.pdf"))
+    assert page.inner_text("#read-at") == "読み込み: 09:05"
+
+
+@slow
+def test_読めないサブフォルダは中身なしで出し警告しない(open_start, work):
+    page = open_start()
+
+    _reread(page, spec={"a.md": None, "読めない": "unreadable"})
+
+    assert page.inner_text("#reread-msg") == ""
+    assert _attrs(page, "#tree-in .row[data-node]", "data-node") == [str(work), str(work / "読めない")]
+    assert _attrs(page, "#files input[data-file]", "data-file") == [str(work / "a.md")]
+
+
+@slow
+def test_フォルダ名の大文字小文字の違いは同じフォルダとして読み直す(open_start, tmp_path):
+    cwd = tmp_path / "Deck Work"
+    cwd.mkdir()
+    page = open_start(cwd=cwd)
+
+    _reread(page, name="deck WORK", spec={"a.md": None})
+
+    assert page.inner_text("#reread-msg") == ""
+    assert _attrs(page, "#files input[data-file]", "data-file") == [str(cwd / "a.md")]
+
+
+@slow
+@pytest.mark.parametrize(
+    ("error", "msg"),
+    [("AbortError", ""), ("NotAllowedError", "フォルダを読み直せませんでした（NotAllowedError）")],
+    ids=["取り消しは何も出さない", "ほかの失敗は案内を出す"],
+)
+def test_フォルダの選択が失敗しても一覧を変えずページは動く(open_start, work, error, msg):
+    page = open_start()
+    errors = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    page.check(_sel("data-file", work / "予算案.pdf"))
+
+    _reread(page, error=error)
+
+    assert errors == []
+    assert page.inner_text("#reread-msg") == msg
+    assert page.inner_text("#read-at") == "読み込み: 09:05"
+    assert _attrs(page, "#files input[data-file]", "data-file") == [
+        str(work / "予算案.pdf"),
+        str(work / "稟議書 2026.docx"),
+    ]
+    assert _copy(page)["files"] == [str(work / "予算案.pdf")]
+
+
+@slow
+def test_フォルダ選択がないブラウザではボタンを無効にして案内を出す(open_start):
+    page = open_start(init=NO_PICKER)
+    assert page.is_disabled("#reread")
+    assert (
+        page.inner_text("#reread-msg")
+        == "このブラウザでは使えません（Chrome か Edge で開くか、ページを作り直してください）"
+    )
+    assert page.inner_text("#read-at") == "読み込み: 09:05"
+
+
+@slow
+def test_読み直しでも隠し_ロック_除外のフォルダと対象外の拡張子は出ない(open_start, work):
+    page = open_start()
+    spec = {
+        ".hidden": {"a.md": None},
+        ".h.md": None,
+        "~$a.docx": None,
+        ".git": {"y.md": None},
+        "node_modules": {"y.md": None},
+        "pptx-deck-source": {"deck": {"script.md": None}},
+        "f.xlsx": None,
+        "g.png": None,
+        "e.TXT": None,
+        "B.PDF": None,
+        "a.md": None,
+        "資料": {"x.docx": None},
+    }
+
+    _reread(page, spec=spec)
+
+    assert _attrs(page, "#tree-in .row[data-node]", "data-node") == [str(work), str(work / "資料")]
+    assert _attrs(page, "#files input[data-file]", "data-file") == [str(work / f) for f in ("a.md", "B.PDF", "e.TXT")]
+
+
+@slow
+def test_読み直しでも深さと件数の上限は_scan_と同じ(open_start, work):
+    page = open_start()
+    spec = {
+        "a": {"b": {"c": {"c.md": None, "d": {"d.md": None}}}},
+        "many": {f"{i:03}.md": None for i in reversed(range(205))},
+    }
+
+    _reread(page, spec=spec)
+
+    c = work / "a" / "b" / "c"
+    assert _attrs(page, "#tree-in .row[data-node]", "data-node") == [
+        str(work),
+        str(work / "a"),
+        str(work / "a" / "b"),
+        str(c),
+        str(work / "many"),
+    ]  # 深さ 4 の d は辿らない
+    _open_folder(page, c)
+    assert _attrs(page, "#files input[data-file]", "data-file") == [str(c / "c.md")]
+    _open_folder(page, work / "many")
+    files = _attrs(page, "#files input[data-file]", "data-file")
+    assert (len(files), files[0], files[-1]) == (200, str(work / "many" / "000.md"), str(work / "many" / "199.md"))
