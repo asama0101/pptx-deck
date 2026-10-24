@@ -1,5 +1,6 @@
 assets/template/standard.potx は、python-pptx 1.0.2 の既定テンプレート（pptx/templates/default.pptx）を元に、
 マスター・レイアウトを作り替えたものです。元の python-pptx のライセンス（MIT）を次に示します。
+これ以外の assets/ の素材・コード（icons/・pictures/parts.svg・components/・web/ など）は、他者の素材・コードを取り込まず、このプラグイン用に書いたものです。
 
 The MIT License (MIT)
 Copyright (c) 2013 Steve Canny, https://github.com/scanny
