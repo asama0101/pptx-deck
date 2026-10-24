@@ -55,7 +55,7 @@ def fingerprint_status(work: Path, pptx: Path) -> str:
 
 
 def prune(work: Path) -> list[str]:
-    """再生成できる派生ファイルだけを消す。source/ の元データと、未知のファイルは消さない。消した相対パスを返す。"""
+    """再生成できる派生ファイルだけを消す。元データ（slides/ など）と未知のファイルは消さない。消した相対パスを返す。"""
     work = Path(work)
     removed: list[str] = []
     for name in DERIVED_FILES:
@@ -96,7 +96,7 @@ def ensure_derived(work: Path) -> bool:
 
 
 def reopen(work: Path) -> dict:
-    """完成した作品を再修正するための準備。派生ファイルを template.json から再生成し、PPTX の指紋を確かめる。"""
+    """完成した成果物を再修正するための準備。派生ファイルを template.json から再生成し、PPTX の指紋を確かめる。"""
     from . import initdir, variants
 
     work = Path(work)

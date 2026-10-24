@@ -70,7 +70,7 @@ def run(capsys):
 @pytest.fixture
 def demo(tmp_path, run):
     """init 済みの作業フォルダ。write(plan) で picture-plan.json を書く。"""
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     assert run("init", str(base), "--color", "navy")[0] == 0
     work = paths.resolve_work(base)
 
@@ -281,4 +281,4 @@ def test_見本の提案から構造の確認_凍結_描画_PPTXまで通る(dem
     rc, out, err = run("build", str(base))
     assert rc == 0, out + err
     assert json.loads(out)["violations"] == []
-    assert (base / "demo.pptx").exists()
+    assert (base.parent.parent / "demo.pptx").exists()

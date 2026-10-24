@@ -21,7 +21,7 @@ def make(tmp_path, pkg):
     """init した作業フォルダに、断片を並べた final.html を置く。(base, work) を返す。"""
 
     def _make(frags=FRAGS):
-        base = tmp_path / "demo"
+        base = tmp_path / "out" / "pptx-deck-source" / "demo"
         initdir.init(base, color="navy")
         work = paths.resolve_work(base)
         body = "\n".join((pkg / "assets" / "components" / f).read_text(encoding="utf-8") for f in frags)
@@ -95,7 +95,7 @@ def test_スライドを順に積み編集UIを含まない(make):
 
 
 def test_final_htmlがなければValueError(tmp_path):
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     initdir.init(base, color="navy")
     with pytest.raises(ValueError, match="final.html"):
         htmlexport.build_html(paths.resolve_work(base))
@@ -109,11 +109,11 @@ def test_画像が見つからなければmissingに載せ参照はそのまま�
     assert 'src="icons/' in Path(r["html"]).read_text(encoding="utf-8")
 
 
-def test_export_htmlコマンドは作品名のhtmlを書く(make, capsys):
+def test_export_htmlコマンドは成果物名のhtmlを書く(make, capsys):
     base, _ = make()
     rc, out, err = run(capsys, "export-html", str(base))
     assert rc == 0, err
-    html = (base / "demo.html").read_text(encoding="utf-8")
+    html = (base.parent.parent / "demo.html").read_text(encoding="utf-8")
     assert html.count('<section class="slide"') == 3
     assert '"missing": []' in out
 
@@ -122,7 +122,7 @@ def test_export_htmlのpruneはfinal_htmlを消す(make, capsys):
     base, work = make()
     assert run(capsys, "export-html", str(base), "--prune")[0] == 0
     assert not (work / "final.html").exists()
-    assert (base / "demo.html").is_file()
+    assert (base.parent.parent / "demo.html").is_file()
 
 
 @pytest.mark.slow

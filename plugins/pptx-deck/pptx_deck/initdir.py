@@ -1,4 +1,4 @@
-"""作業フォルダ（実行ディレクトリ直下の <名前>/）の初期化。"""
+"""作業フォルダ（<出力先>/pptx-deck-source/<成果物名>）の初期化。"""
 
 import filecmp
 import shutil
@@ -59,7 +59,7 @@ def _existing_cfg(work: Path) -> dict:
 
 
 def init(workdir, color: str | None = None, template_path=None, force: bool = False, footer: str | None = None) -> dict:
-    work = paths.resolve_work(workdir)  # <名前>/source
+    work = paths.resolve_work(workdir)  # <出力先>/pptx-deck-source/<成果物名>
     if work.exists() and any(work.iterdir()) and not force:
         raise FileExistsError(f"{work} は空ではありません。中身を確認し、上書きしてよければ --force を付けてください")
     old = _existing_cfg(work) if force else {}
@@ -78,7 +78,7 @@ def init(workdir, color: str | None = None, template_path=None, force: bool = Fa
         if kept is not None and not kept.is_file():
             if custom is not False:  # 利用者のテンプレート、または記録のない古い作業フォルダ。黙って標準に替えない
                 raise ValueError(f"前のテンプレートが見つかりません（{kept}）。--template で指定してください")
-            kept = None  # 標準テンプレートだった作品は、標準から写し直す
+            kept = None  # 標準テンプレートだった成果物は、標準から写し直す
         src = kept if kept is not None else standard
     info = template.analyze(src)  # 非 16:9 などもここで失敗
     if custom is None:

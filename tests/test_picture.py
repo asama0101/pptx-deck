@@ -44,7 +44,7 @@ def sample(pictures):
 @pytest.fixture
 def make_work(tmp_path, run):
     """init → 断片を 01-A に置く → finalize。final.html のある作業フォルダを返す関数（base は tmp_path/demo）。"""
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
 
     def _make(fragment):
         assert run("init", str(base), "--color", "navy")[0] == 0
@@ -90,7 +90,7 @@ def test_見本はビルドでき_3倍で透過の画像として貼られ_題�
     result = json.loads(out)
     assert result["ok"], result["violations"]
     assert result["violations"] == []
-    prs = Presentation(str(base / "demo.pptx"))
+    prs = Presentation(str(base.parent.parent / "demo.pptx"))
     pics = [s for s in prs.slides[0].shapes if s.shape_type == 13]
     assert len(pics) == 1
     pic = pics[0]
@@ -111,12 +111,12 @@ def test_見本はビルドでき_3倍で透過の画像として貼られ_題�
 def test_全見本を1つの資料にビルドすると違反が0件で各スライドに絵が1つある(tmp_path, run, pictures):
     from pptx import Presentation
 
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     init_with_samples(run, base, pictures, SAMPLE_NAMES)
     rc, out, err = run("build", str(base))
     assert rc == 0, out + err
     assert json.loads(out)["violations"] == []
-    prs = Presentation(str(base / "demo.pptx"))
+    prs = Presentation(str(base.parent.parent / "demo.pptx"))
     assert len(prs.slides) == 5
     for s in prs.slides:
         assert len([x for x in s.shapes if x.name == "pp-picture"]) == 1
@@ -143,7 +143,7 @@ def test_利用者の画像を絵の土台にして貼れる(tmp_path, run, pict
         + '<image href="material/screen.png" x="8" y="8" width="720" height="350" preserveAspectRatio="none"/>\n      '
         + frag[b:]
     )
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     assert run("init", str(base), "--color", "navy")[0] == 0
     work = paths.resolve_work(base)
     (work / "material").mkdir()
@@ -157,7 +157,7 @@ def test_利用者の画像を絵の土台にして貼れる(tmp_path, run, pict
     assert (rc, json.loads(out)) == (0, []), out + err  # 画像の色は変数の検査の対象外
     rc, out, err = run("build", str(base))
     assert rc == 0, out + err
-    pic = [s for s in Presentation(str(base / "demo.pptx")).slides[0].shapes if s.name == "pp-picture"][0]
+    pic = [s for s in Presentation(str(base.parent.parent / "demo.pptx")).slides[0].shapes if s.name == "pp-picture"][0]
     r, g, _b, alpha = (
         Image.open(io.BytesIO(pic.image.blob)).convert("RGBA").getpixel((3 * 100, 3 * 300))
     )  # 土台の画像の上（番号・凡例のない所）
@@ -195,11 +195,11 @@ def test_あとの絵は前に同じid定義の絵があってもアイコンと
     from pptx import Presentation
 
     def picture_png(names, sub):
-        base = tmp_path / sub / "demo"
+        base = tmp_path / sub / "out" / "pptx-deck-source" / "demo"
         init_with_samples(run, base, pictures, names, answer_tail="")
         rc, out, err = run("build", str(base))
         assert rc == 0, out + err
-        last = list(Presentation(str(base / "demo.pptx")).slides)[-1]
+        last = list(Presentation(str(base.parent.parent / "demo.pptx")).slides)[-1]
         pic = [s for s in last.shapes if s.name == "pp-picture"][0]
         return Image.open(io.BytesIO(pic.image.blob)).convert("RGBA")
 
@@ -220,7 +220,7 @@ def test_あとの絵は前に同じid定義の絵があってもアイコンと
 
 @slow
 def test_案が1つのとき選択だけの回答でfinalizeでき承認は最終確認に任せる(tmp_path, run, sample):
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     assert run("init", str(base), "--color", "navy")[0] == 0
     work = paths.resolve_work(base)
     (work / "slides" / "01-A.html").write_text(sample, encoding="utf-8")
@@ -228,7 +228,7 @@ def test_案が1つのとき選択だけの回答でfinalizeでき承認は最�
     assert run("finalize", str(base))[0] == 0
     assert (work / "final-review.html").exists()
     assert run("build", str(base))[0] == 0
-    assert (base / "demo.pptx").exists()
+    assert (base.parent.parent / "demo.pptx").exists()
 
 
 # ---- 検査 ----

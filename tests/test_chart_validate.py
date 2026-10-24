@@ -116,7 +116,7 @@ def test_存在する画像は_imageSrc_を出さない(tmp_path):
 
 @pytest.mark.slow
 def test_不正なグラフ指定でも_build_は_traceback_を出さず_chartSpec_を報告して止まる(tmp_path):
-    base = tmp_path / "deck"
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(base, color="navy", template_path=None, force=False, footer=None)
     work = paths.resolve_work(base)
     sec = (
@@ -140,7 +140,7 @@ def test_不正なグラフ指定でも_build_は_traceback_を出さず_chartSp
     assert r.returncode == 1, r.stderr
     assert "Traceback" not in r.stderr
     assert "chartSpec" in r.stdout
-    assert not (base / "deck.pptx").exists()
+    assert not (base.parent.parent / "deck.pptx").exists()
 
 
 @pytest.mark.slow
@@ -153,7 +153,7 @@ def test_部品見本の全スライドで_chartSpec_と_imageSrc_の誤検出�
         if m:
             secs.append((f.relative_to(comp).as_posix(), m.group(0)))
     assert len(secs) >= 150
-    base = tmp_path / "deck"
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(base, color="navy", template_path=None, force=False, footer=None)
     work = paths.resolve_work(base)
     info = template.TemplateInfo.from_dict(json.loads((work / "template.json").read_text(encoding="utf-8"))["info"])

@@ -23,7 +23,7 @@ def browser():
 
 
 def make_slides(tmp_path, names):
-    work = tmp_path / "d" / "source"
+    work = tmp_path / "out" / "pptx-deck-source" / "d"
     (work / "slides").mkdir(parents=True)
     for n in names:
         (work / "slides" / n).write_text(FRAG_OK, encoding="utf-8")
@@ -50,9 +50,9 @@ def test_スライド断片でないhtmlは無視する(tmp_path):
 
 
 def review_page_initial_color(tmp_path, after_set_color):
-    base = tmp_path / "deck"
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(base, color="navy")
-    work = base / "source"
+    work = base
     (work / "slides" / "01-A.html").write_text(FRAG_OK, encoding="utf-8")
     md = "---\nround: 1\n---\n## S01\n- 選択: A\n- 判定: 承認\n- 配色: green\n"
     (work / "answers-1.md").write_text(md, encoding="utf-8")

@@ -78,7 +78,7 @@ def test_絵の_id_は絵の範囲の中だけ接頭辞つきに直す(frag, wan
 
 @pytest.fixture
 def work(tmp_path):
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     initdir.init(base, color="navy")
     return paths.resolve_work(base)
 

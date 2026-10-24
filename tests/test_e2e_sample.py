@@ -47,7 +47,7 @@ def test_全工程をLibreOfficeを呼ばずに通し_手直しされたPPTXは�
     monkeypatch.setattr(subprocess, "run", spy_run)
     monkeypatch.setattr(subprocess, "Popen", spy_popen)
 
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     assert run("init", str(base), "--color", "navy")[0] == 0
     work = paths.resolve_work(base)
     slides = work / "slides"
@@ -74,11 +74,11 @@ def test_全工程をLibreOfficeを呼ばずに通し_手直しされたPPTXは�
     rc, out, _ = run("build", str(base))
     assert rc == 0, out
     result = json.loads(out)
-    pptx = base / "demo.pptx"
+    pptx = base.parent.parent / "demo.pptx"
     assert pptx.exists()
     assert len(Presentation(str(pptx)).slides) == 3
     assert "final.html" in result["removed"]
-    assert sorted(p.name for p in base.iterdir()) == ["demo.pptx", "source"]
+    assert sorted(p.name for p in base.parent.parent.iterdir()) == ["demo.pptx", "pptx-deck-source"]
     assert not (work / "theme.css").exists()
     assert (work / "build.json").exists()
     assert result["previews"]
@@ -110,7 +110,7 @@ def test_全工程をLibreOfficeを呼ばずに通し_手直しされたPPTXは�
 
 @pytest.mark.slow
 def test_最終確認の回答は案の選択を変えず_後の回の回答が効いて_build_まで通る(tmp_path, run, comp):
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     assert run("init", str(base), "--color", "navy")[0] == 0
     work = paths.resolve_work(base)
     flow_h, flow_v = read(comp / "diagrams" / "flow-h.html"), read(comp / "diagrams" / "flow-v.html")

@@ -21,9 +21,9 @@ PKG = Path(__file__).resolve().parent.parent / "plugins" / "pptx-deck"
 
 @pytest.fixture(scope="module")
 def pristine_deck(tmp_path_factory) -> Path:
-    """init → variants → 回答 → finalize まで進めた作品（final.html つき）。
+    """init → variants → 回答 → finalize まで進めた成果物（final.html つき）。
     どのテストも変更しない（コピーして使う）。"""
-    base = tmp_path_factory.mktemp("pristine") / "deck"
+    base = tmp_path_factory.mktemp("pristine") / "out" / "pptx-deck-source" / "deck"
     assert cli.main(["init", str(base), "--color", "navy"]) == 0
     work = paths.resolve_work(base)
     shutil.copyfile(PKG / "assets" / "components" / "layouts" / "cover.html", work / "slides" / "01-A.html")
@@ -38,8 +38,8 @@ def pristine_deck(tmp_path_factory) -> Path:
 
 @pytest.fixture
 def work(pristine_deck, tmp_path) -> Path:
-    """final.html まで進んだ作品（作業フォルダ）。テストごとのコピー。"""
-    base = tmp_path / "deck"
+    """final.html まで進んだ成果物（作業フォルダ）。テストごとのコピー。"""
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
     shutil.copytree(pristine_deck, base)
     return paths.resolve_work(base)
 

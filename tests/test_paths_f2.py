@@ -20,8 +20,8 @@ def temp_root(tmp_path, monkeypatch):
 
 
 def test_同名で別の作業フォルダの一時フォルダは分かれ_同じ作業フォルダなら同じ場所(tmp_path, temp_root):
-    a = tmp_path / "A" / "提案" / "source"
-    b = tmp_path / "B" / "提案" / "source"
+    a = tmp_path / "A" / "pptx-deck-source" / "提案"
+    b = tmp_path / "B" / "pptx-deck-source" / "提案"
     da = paths.temp_dir("提案", a)
     db = paths.temp_dir("提案", b)
     assert da != db
@@ -32,13 +32,13 @@ def test_同名で別の作業フォルダの一時フォルダは分かれ_同�
 
 def test_作業フォルダを渡しても不正な名前は拒否される(temp_root):
     with pytest.raises(ValueError, match="一時フォルダの名前が不正です"):
-        paths.temp_dir("", temp_root / "x" / "source")
+        paths.temp_dir("", temp_root / "x" / "pptx-deck-source" / "提案")
 
 
-def test_clean_は同名の別の作品の一時フォルダを消さない(tmp_path, temp_root, capsys):
+def test_clean_は同名の別の成果物の一時フォルダを消さない(tmp_path, temp_root, capsys):
     works = []
     for side in ("A", "B"):
-        base = tmp_path / side / "提案"
+        base = tmp_path / side / "pptx-deck-source" / "提案"
         assert cli.main(["init", str(base)]) == 0
         works.append(paths.resolve_work(base))
     marks = []
@@ -47,24 +47,23 @@ def test_clean_は同名の別の作品の一時フォルダを消さない(tmp_
         m.write_text("x", encoding="utf-8")
         marks.append(m)
     capsys.readouterr()
-    assert cli.main(["clean", str(works[0].parent)]) == 0
+    assert cli.main(["clean", str(works[0])]) == 0
     assert json.loads(capsys.readouterr().out)["cleaned"] == str(marks[0].parent)
     assert not marks[0].exists()
     assert marks[1].read_text(encoding="utf-8") == "x"
 
 
-def test_template_json_のない_source_はそのまま返り_存在してもそのまま(tmp_path):
-    x = tmp_path / "X"
-    assert paths.resolve_work(x / "source") == (x / "source").resolve()
-    (x / "source").mkdir(parents=True)
-    assert paths.resolve_work(x / "source") == (x / "source").resolve()
+def test_存在する作業フォルダはそのまま返る(tmp_path):
+    x = tmp_path / "X" / "pptx-deck-source" / "提案"
+    x.mkdir(parents=True)
+    assert paths.resolve_work(x) == x.resolve()
 
 
-def test_init_に_source_を渡しても_source_が入れ子にならない(tmp_path):
-    x = tmp_path / "X"
-    assert cli.main(["init", str(x / "source")]) == 0
-    assert (x / "source" / "template.json").exists()
-    assert not (x / "source" / "source").exists()
+def test_init_は渡した作業フォルダに直接作り_入れ子の_source_を作らない(tmp_path):
+    x = tmp_path / "X" / "pptx-deck-source" / "提案"
+    assert cli.main(["init", str(x)]) == 0
+    assert (x / "template.json").exists()
+    assert not (x / "source").exists()
 
 
 def test_write_cfg_の置き換えに失敗しても旧いファイルが残り一時ファイルも残らない(tmp_path, monkeypatch):

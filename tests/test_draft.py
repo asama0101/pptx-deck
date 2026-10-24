@@ -23,9 +23,9 @@ def _temp_in_tmp_path(tmp_path, monkeypatch):
 
 @pytest.fixture
 def deck(pkg, tmp_path):
-    """init 済みで、01-A（故障の絵）・02-A（構成図）・02-B（自己紹介）の断片を置いた作品。(base, work)"""
+    """init 済みで、01-A（故障の絵）・02-A（構成図）・02-B（自己紹介）の断片を置いた成果物。(base, work)"""
     pictures = pkg / "assets" / "components" / "pictures"
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     assert cli.main(["init", str(base), "--color", "navy"]) == 0
     work = paths.resolve_work(base)
     for name, src in (("01-A", "failure"), ("02-A", "network"), ("02-B", "self-intro")):
@@ -52,7 +52,7 @@ def test_PPTXを作らずに確認用の画像と検査結果を返す(deck, cap
     for p in r["previews"]:
         assert Path(p).read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
     assert not (work / "final.html").exists()
-    assert list(base.glob("*.pptx")) == []
+    assert list(base.parent.parent.glob("*.pptx")) == []
     assert list(work.glob("draft*.html")) == []  # 一時の HTML は残さない
 
 

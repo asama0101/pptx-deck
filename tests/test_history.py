@@ -27,7 +27,7 @@ def read(p):
 
 @pytest.fixture
 def deck(tmp_path, capsys):
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     assert run(capsys, "init", str(base), "--color", "navy")[0] == 0
     work = paths.resolve_work(base)
     s = work / "slides"
@@ -110,7 +110,7 @@ def test_build_は履歴を消さない(deck, capsys, pkg):
     rc, out, err = run(capsys, "build", str(deck.base))
     assert rc == 0, out + err
     assert read(deck.work / "history" / "001" / "01-A.html") == read(sample)
-    assert (deck.base / "demo.pptx").exists()
+    assert (deck.base.parent.parent / "demo.pptx").exists()
 
 
 def test_版のディレクトリは番号だけでラベルは中に保存される(deck):

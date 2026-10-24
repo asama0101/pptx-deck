@@ -24,8 +24,8 @@ def run(capsys):
 
 @pytest.fixture
 def d(tmp_path, run):
-    deck = tmp_path / "デッキ"
-    work = deck / "source"
+    deck = tmp_path / "out" / "pptx-deck-source" / "デッキ"
+    work = deck
     code, _, err = run("init", str(deck))  # build は template.json を先に読む
     assert code == 0, err
     (work / "slides").mkdir(exist_ok=True)

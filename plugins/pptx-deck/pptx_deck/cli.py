@@ -78,7 +78,7 @@ def cmd_template_map(args) -> int:
 
     work = paths.resolve_work(args.workdir)
     if not (work / "template.json").exists():
-        print(f"エラー: {work} に template.json がありません（作品の source/ が見つかりません）", file=sys.stderr)
+        print(f"エラー: {work} に template.json がありません（成果物の元データが見つかりません）", file=sys.stderr)
         return 2
     cfg = paths.read_cfg(work)
     info = template.TemplateInfo.from_dict(cfg["info"])
@@ -109,7 +109,7 @@ def _no_cfg(work: Path) -> int | None:
     """作業フォルダに template.json がなければ案内を出して 2 を返す（あれば None）。"""
     if (work / "template.json").exists():
         return None
-    print(f"エラー: {work} に template.json がありません（作品の source/ が見つかりません）", file=sys.stderr)
+    print(f"エラー: {work} に template.json がありません（成果物の元データが見つかりません）", file=sys.stderr)
     return 2
 
 
@@ -438,7 +438,7 @@ def cmd_set_color(args) -> int:
 
     work = paths.resolve_work(args.workdir)
     if not (work / "template.json").exists():
-        print(f"エラー: {work} に template.json がありません（作品の source/ が見つかりません）", file=sys.stderr)
+        print(f"エラー: {work} に template.json がありません（成果物の元データが見つかりません）", file=sys.stderr)
         return 2
     try:
         notes = initdir.set_color(work, args.color)
@@ -496,7 +496,7 @@ def cmd_reopen(args) -> int:
 
     work = paths.resolve_work(args.workdir)
     if not (work / "template.json").exists():
-        print(f"エラー: {work} に template.json がありません（作品の source/ が見つかりません）", file=sys.stderr)
+        print(f"エラー: {work} に template.json がありません（成果物の元データが見つかりません）", file=sys.stderr)
         return 2
     r = lifecycle.reopen(work)
     print(json.dumps(r, ensure_ascii=False, indent=2))
@@ -665,12 +665,12 @@ def main(argv: list[str]) -> int:
     p = sub.add_parser("build")
     p.add_argument("workdir")
     p.add_argument("--footer", default=None)
-    p.add_argument("--out", default=None, help="PPTX の出力先（省略すると <名前>/<名前>.pptx）")
+    p.add_argument("--out", default=None, help="PPTX の出力先（省略すると <出力先>/<成果物名>.pptx）")
     p.add_argument("--force", action="store_true", help="前回のビルド後に変更された PPTX も上書きする")
     p.set_defaults(fn=cmd_build)
-    p = sub.add_parser("export-html", help="final.html を 1 枚で完結する閲覧用 HTML にする（<名前>/<名前>.html）")
+    p = sub.add_parser("export-html", help="final.html を 1 枚で完結する閲覧用 HTML にする（<出力先>/<成果物名>.html）")
     p.add_argument("workdir")
-    p.add_argument("--out", default=None, help="HTML の出力先（省略すると <名前>/<名前>.html）")
+    p.add_argument("--out", default=None, help="HTML の出力先（省略すると <出力先>/<成果物名>.html）")
     p.add_argument("--prune", action="store_true", help="成功後に派生ファイルを片付ける（HTML だけを選んだとき）")
     p.set_defaults(fn=cmd_export_html)
     p = sub.add_parser("clean")
@@ -723,7 +723,7 @@ def main(argv: list[str]) -> int:
     p.add_argument("--slide", action="append", default=None, help="このスライドだけ（例: 02。複数指定できる）")
     p.set_defaults(fn=cmd_draft)
     help_review_picture = (
-        "絵にする箇所の提案と、読み取った構造の確認ページ（source/picture-plan.json から picture-review.html）"
+        "絵にする箇所の提案と、読み取った構造の確認ページ（picture-plan.json から picture-review.html）"
     )
     p = sub.add_parser("review-picture", help=help_review_picture)
     p.add_argument("workdir")
@@ -747,4 +747,8 @@ def main(argv: list[str]) -> int:
     p.add_argument("script")
     p.set_defaults(fn=cmd_lint_script)
     args = ap.parse_args(argv)
-    return args.fn(args)
+    try:
+        return args.fn(args)
+    except paths.LayoutError as e:
+        print(f"エラー: {e}", file=sys.stderr)
+        return 2

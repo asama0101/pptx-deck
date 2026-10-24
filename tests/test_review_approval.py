@@ -344,7 +344,7 @@ def test_全部承認は案が未選択のスライドを承認せず次へも�
 def test_全部承認の回答mdは一枚ずつ承認したときと同じ(deck_page):
     frags = {"01": {"A": PART_FRAG, "B": PART_FRAG}, "02": {"A": PART_FRAG, "B": PART_FRAG}, "03": {"A": PART_FRAG}}
     expected = (
-        "---\ndeck: \nround: 1\n---\n## S01\n- 選択: A\n- 判定: 承認\n- コメント: \n"
+        "---\ndeck: deck\nround: 1\n---\n## S01\n- 選択: A\n- 判定: 承認\n- コメント: \n"
         "## S03\n- 選択: A\n- 判定: 承認\n- コメント: \n"
     )
 
