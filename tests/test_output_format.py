@@ -84,7 +84,7 @@ def test_前の回の形式を引き継ぎ_触らなければ行を出さず_初
 
 
 def test_assemble_は前の回の出力形式を次のページの初期値に引き継ぐ(tmp_path):
-    work = tmp_path / "deck" / "source"
+    work = tmp_path / "out" / "pptx-deck-source" / "deck"
     (work / "slides").mkdir(parents=True)
     (work / "slides" / "01-A.html").write_text(FRAG.replace("{n}", "a"), encoding="utf-8")
     (work / "answers-1.md").write_text(MD_HEAD + "- 出力形式: both\n", encoding="utf-8")
@@ -106,9 +106,9 @@ def test_出力形式は最終確認も含め_後の回が勝つ(tmp_path):
 
 
 def test_output_format_コマンドは形式を1行で出力する(tmp_path, capsys):
-    work = tmp_path / "deck" / "source"
+    work = tmp_path / "out" / "pptx-deck-source" / "deck"
     work.mkdir(parents=True)
     (work / "answers-1.md").write_text(MD_HEAD + "- 出力形式: html\n", encoding="utf-8")
-    code = cli.main(["output-format", str(work.parent)])
+    code = cli.main(["output-format", str(work)])
     assert code == 0
     assert capsys.readouterr().out == "html\n"

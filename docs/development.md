@@ -16,14 +16,15 @@ pptx-deck の内部構造・コマンド・テストの説明。利用者向け�
 
 LibreOffice は使わない（不要）。
 
-## 作品のフォルダと作成の段階
+## 成果物のフォルダと作成の段階
 
-作品のフォルダは、実行したディレクトリ直下の `<名前>/` で、完成後は次の構成になる。`build` は成功すると、再生成できる派生ファイル（`variants.html`・`final.html`・`theme.css` など）を `source/` から消す。元データは残るので、あとで `revise`・`rebuild` できる。
+成果物は、利用者が開始ページで選んだ出力先に置く。完成後は次の構成になる。`build` は成功すると、再生成できる派生ファイル（`variants.html`・`final.html`・`theme.css` など）を `pptx-deck-source/<成果物名>/`（以下の元データ）から消す。元データは残るので、あとで `revise`・`rebuild` できる。
 
 ```
-<名前>/
-  <名前>.pptx        成果物
-  source/            設計図 design.md・原稿 script.md・slides/・answers-*.md・template.json など
+<出力先>/
+  <成果物名>.pptx            成果物
+  pptx-deck-source/
+    <成果物名>/              元データ。設計図 design.md・原稿 script.md・slides/・answers-*.md・template.json など
 ```
 
 | 段階 | 内容 | 承認 |
@@ -92,36 +93,38 @@ LibreOffice は使わない（不要）。
 | `plugins/pptx-deck/assets/` | `components/`（51 型・147 本の HTML 断片。1 型に最大 3 つのデザイン。本文の部品は「題 → ヘッドメッセージ → チャートタイトル → 本体 → 注釈」の構成で、判断を求める型は最下部にメッセージボックスを置く）、`web/`（`base.css`・`chart-preview.js`。作業フォルダとレビューページが使う）、`icons/`（アイコン 123 種。一覧は `references/icons.md`。それぞれ `accent`・`emphasis`・`white`・`gray` の 4 色）、`template/standard.potx`（既定のテンプレート）、`sample/`（設計図と原稿の書式の手本）、`pictures/parts.svg`（絵の部品。機器アイコン 12 種と矢じり）、`components/pictures/`（絵の見本 5 種） |
 | `tests/` | 単体・通しのテスト（`pytest`。実行方法は後述） |
 | `部品見本.html`（リポジトリ直下） | 部品 51 型・147 本の見本を 9 区分で 1 ページに並べた一覧（ブラウザで開く。画像はファイルに埋め込み済み）。画像は以前に描いたもので、このリポジトリには作り直す手順（生成スクリプト）がまだない。部品を足したり直したりしても、見本は自動では更新されない |
-| 実行したディレクトリ直下の `<名前>/` | `<名前>.pptx`（成果物）と `source/`（`design.md`・`script.md`・`slides/`・`answers-*.md`・`history/`（絵の往復の版）・`material/`（利用者の画像の素材）・`template.json` など。作業中だけ `variants.html`・`final.html`・`final-review.html` ほか） |
-| OS の一時フォルダ `%TEMP%\pptx-deck\<名前>-<作業フォルダのハッシュ 8 桁>\` | 確認用の画像など一過性のもの（同名の別の作品と混ざらない） |
+| 開始ページで選んだ出力先 `<出力先>/` | `<成果物名>.pptx`（成果物）と `pptx-deck-source/<成果物名>/`（元データ。`design.md`・`script.md`・`slides/`・`answers-*.md`・`history/`（絵の往復の版）・`material/`（利用者の画像の素材）・`template.json` など。作業中だけ `variants.html`・`final.html`・`final-review.html` ほか） |
+| OS の一時フォルダ `%TEMP%\pptx-deck\<成果物名>-<作業フォルダのハッシュ 8 桁>\` | 確認用の画像など一過性のもの（同名の別の成果物と混ざらない） |
 
 ## コマンド
 
-普段はスキルが呼ぶので、直接実行する必要はない。`python run.py --data <絶対パス> <コマンド>`（`run.py` は `plugins/pptx-deck/` にある。`--data` は先頭に置く。環境変数 `PPTX_DECK_HOME` を設定すれば省ける）。どちらもなければ、終了コード 3 で止まる。
+普段はスキルが呼ぶので、直接実行する必要はない。`python run.py --data <絶対パス> <コマンド>`（`run.py` は `plugins/pptx-deck/` にある。`--data` は先頭に置く。環境変数 `PPTX_DECK_HOME` を設定すれば省ける）。どちらもなければ、終了コード 3 で止まる。表の `<元データ>` は作業フォルダ `<出力先>/pptx-deck-source/<成果物名>` で、`<出力先>/<成果物名>.pptx` のパスを渡しても同じ作業フォルダに解決される。旧配置（`source` フォルダに元データを置く形）や `pptx-deck-source` の直下でないパスは、終了コード 2 で止まる。
 
 | コマンド | 内容 |
 |---|---|
 | `doctor` | 専用の仮想環境の場所と使う Python のパス、足りないもの、フォントの有無を確認する |
 | `setup [--yes]` | 仮想環境（`<置き場>\venv`。置き場は `--data`＝スキルでは `${CLAUDE_PLUGIN_DATA}`、または `PPTX_DECK_HOME`）と chromium を入れる。`--yes` は利用者の承認後に付ける |
-| `init <名前> --color … [--template …] [--footer …]` | 作業フォルダ `<名前>/source/` を作る（`--footer` は左下のコピーライト）。`--force` で既存の派生ファイルを上書きする（渡さなかった `--color`・`--template`・`--footer` は既存の値を残す。前の利用者テンプレートのファイル（`_template/` の写し）が消えているのに `--template` がないときは、標準に替えず終了コード 2 で止める。標準テンプレートで作った作品なら、標準から写し直す。テンプレートの出どころの記録（`template.json` の `custom_template`）がない古い作業フォルダは、利用者テンプレートとみなして止める。テーマ・基本 CSS の更新は `init --force`、派生ファイルの作り直しは `reopen`）。出力の `layout_map` は、テンプレートのレイアウトと、章扉・目次・型との推定結果 |
-| `template-map <名前> [--set 型=レイアウト名] [--clear 型]` | レイアウトとの対応を出す。`--set agenda=目次`・`--set gantt=スケジュール` のように直し、`--clear gantt` で本文での代用に戻す（`template.json` に反映） |
+| `start-page` | 開始ページ（入力のファイルかテキスト・出力先・成果物名を選ぶ HTML）を、最近使った場所などを埋め込んで作り、そのパスを出す。「回答をコピー」で `window.__submitted`・`window.__answersMd` が立つ（レビューページと同じ） |
+| `intake <回答ファイル> [--allow-existing]` | 開始ページの回答 md（front matter `start: 1`、`## 入力`・`## 出力先`・`## 成果物名`、テキスト入力のときだけ最後の節の `## 本文`）を検証し、`kind`・`files`・`text`・`out_dir`・`name`・`workdir`・`pptx`・`collisions` の JSON を出す。何も作らない。入力の不備は終了コード 2。`collisions`（既にある PPTX・元データ）があり `--allow-existing` がないときは、JSON を出して終了コード 4 |
+| `init <元データ> --color … [--template …] [--footer …]` | 作業フォルダ `<出力先>/pptx-deck-source/<成果物名>/` を作る（`--footer` は左下のコピーライト）。`--force` で既存の派生ファイルを上書きする（渡さなかった `--color`・`--template`・`--footer` は既存の値を残す。前の利用者テンプレートのファイル（`_template/` の写し）が消えているのに `--template` がないときは、標準に替えず終了コード 2 で止める。標準テンプレートで作った成果物なら、標準から写し直す。テンプレートの出どころの記録（`template.json` の `custom_template`）がない古い作業フォルダは、利用者テンプレートとみなして止める。テーマ・基本 CSS の更新は `init --force`、派生ファイルの作り直しは `reopen`）。出力の `layout_map` は、テンプレートのレイアウトと、章扉・目次・型との推定結果 |
+| `template-map <元データ> [--set 型=レイアウト名] [--clear 型]` | レイアウトとの対応を出す。`--set agenda=目次`・`--set gantt=スケジュール` のように直し、`--clear gantt` で本文での代用に戻す（`template.json` に反映） |
 | `lint-script <script.md>` | 原稿の書式・題・ヘッドメッセージを検査する |
-| `review-plan <名前> [--round N]` | 設計図と原稿の確認ページ `plan-review.html` を作る |
-| `variants <名前> [--round N]` | スライド案の選択ページ `variants.html` を作る |
-| `finalize <名前> [--answers …]` | 選ばれた案を統合して `final.html` と `final-review.html` を作る |
-| `apply-edits <名前> [--answers …]` | 回答の `- 編集:` を `source/slides/*.html` へ反映する（直前に `history` へ `before-apply-edits` の版を残す。`final.html`・`final-review.html` は消す。回答に `- 編集の反映: 済み` を足す）。反映後は `finalize` をやり直す。反映できなかった編集（断片がない・対象が合わない・記録された元の文字と今の断片の文字が違う・読めない行）は標準エラーに回答名・断片・対象・理由で列挙し、終了コード 1 で終わる（反映できるものは反映し、反映済みの印も足すので、止まり続けることはない）。未反映の編集があると `finalize`・`review-final`・`build`・`export-html` は終了コード 2 で止まる |
-| `set-color <名前> <プリセット名\|#RRGGBB>` | 配色（navy・green・gray・作品の独自色）を `template.json` と `theme.css` に反映する。PPTX があるときは、これで変えてから `build` する |
-| `output-format <名前>` | 回答の `- 出力形式:` の最新（`pptx`・`html`・`both`。なければ `pptx`）を 1 語で出す |
-| `export-html <名前> [--out <パス>] [--prune]` | `final.html` から、CSS・JS・画像を埋め込んだ 1 枚の HTML `<名前>/<名前>.html` を作る。`--prune` は終わったあとに派生ファイルを消す（出力形式が `html` のとき） |
-| `review-final <名前>` | 参照用ページ `final-review.html` だけを作り直す |
+| `review-plan <元データ> [--round N]` | 設計図と原稿の確認ページ `plan-review.html` を作る |
+| `variants <元データ> [--round N]` | スライド案の選択ページ `variants.html` を作る |
+| `finalize <元データ> [--answers …]` | 選ばれた案を統合して `final.html` と `final-review.html` を作る |
+| `apply-edits <元データ> [--answers …]` | 回答の `- 編集:` を `slides/*.html` へ反映する（直前に `history` へ `before-apply-edits` の版を残す。`final.html`・`final-review.html` は消す。回答に `- 編集の反映: 済み` を足す）。反映後は `finalize` をやり直す。反映できなかった編集（断片がない・対象が合わない・記録された元の文字と今の断片の文字が違う・読めない行）は標準エラーに回答名・断片・対象・理由で列挙し、終了コード 1 で終わる（反映できるものは反映し、反映済みの印も足すので、止まり続けることはない）。未反映の編集があると `finalize`・`review-final`・`build`・`export-html` は終了コード 2 で止まる |
+| `set-color <元データ> <プリセット名\|#RRGGBB>` | 配色（navy・green・gray・成果物の独自色）を `template.json` と `theme.css` に反映する。PPTX があるときは、これで変えてから `build` する |
+| `output-format <元データ>` | 回答の `- 出力形式:` の最新（`pptx`・`html`・`both`。なければ `pptx`）を 1 語で出す |
+| `export-html <元データ> [--out <パス>] [--prune]` | `final.html` から、CSS・JS・画像を埋め込んだ 1 枚の HTML `<出力先>/<成果物名>.html` を作る。`--prune` は終わったあとに派生ファイルを消す（出力形式が `html` のとき） |
+| `review-final <元データ>` | 参照用ページ `final-review.html` だけを作り直す |
 | `check <final.html>` | 体裁を検査する（`build` の前に見るとき） |
-| `build <名前> [--footer …] [--out …] [--force]` | PPTX を書き出し、検査と確認用の画像を作る。`--out` が既存のファイルなら `--force` がない限り上書きせず終了コード 4。既定の出力先の PPTX が前回のビルド後に変更されている、または `build.json` に記録がない（元の資料を置いたときなど）ときも、`--force` がない限り終了コード 4（PPTX がまだないときは止めない）。`--out` がフォルダ、または拡張子が `.pptx` でないときは測定の前に終了コード 2 で止める。出力先に書けないとき（PowerPoint で開いているなど）も測定の前に終了コード 2 で止める。成功すると派生ファイルを消す |
-| `reopen <名前> [--force]` | 派生ファイルを作り直し、PPTX が手直しされていないかを調べる。`--force` は変更されていても、記録がなくても続ける（手直しや元の PPTX は消える）。PPTX が変更されている（`modified`）、または記録がない（`unrecorded`）と終了コード 4 |
-| `clean <名前>` | 一時フォルダの確認用の画像を消す |
-| `draft <名前> [--slide NN] [--pick A]` | `slides/` の断片を束ね、確認用の画像と検査の結果を返す（絵の往復用。PPTX は出さない。画像は実行ごとの一時フォルダに出し、1 日より古いものは消す） |
-| `review-picture <名前> [--round N]` | `picture-plan.json` から、絵にする箇所の提案と構造の確認ページ `picture-review.html` を作る |
-| `picture-status <名前>` | `answers-picture-*.md` から、絵にする箇所・直す項目・未決を出す（終了コード 0＝構造を凍結してよい） |
-| `history <名前> snapshot\|list\|restore [版] [--label …] [--slide NN]` | 絵を直す前の `slides/` の版を `source/history/NNN/`（版の番号だけの名前。ラベルは中の `label.txt`）に残す・一覧・戻す。並行して実行しても版の番号は重ならない。`restore` は `final.html`・`final-review.html` を消す（`finalize` をやり直す）。`build` は消さない。`--slide` は 2 桁の番号で、その版に断片があるものだけ（違えば版を作らずに終了コード 2） |
+| `build <元データ> [--footer …] [--out …] [--force]` | PPTX を書き出し、検査と確認用の画像を作る。`--out` が既存のファイルなら `--force` がない限り上書きせず終了コード 4。既定の出力先の PPTX が前回のビルド後に変更されている、または `build.json` に記録がない（元の資料を置いたときなど）ときも、`--force` がない限り終了コード 4（PPTX がまだないときは止めない）。`--out` がフォルダ、または拡張子が `.pptx` でないときは測定の前に終了コード 2 で止める。出力先に書けないとき（PowerPoint で開いているなど）も測定の前に終了コード 2 で止める。成功すると派生ファイルを消す |
+| `reopen <元データ> [--force]` | 派生ファイルを作り直し、PPTX が手直しされていないかを調べる。`--force` は変更されていても、記録がなくても続ける（手直しや元の PPTX は消える）。PPTX が変更されている（`modified`）、または記録がない（`unrecorded`）と終了コード 4 |
+| `clean <元データ>` | 一時フォルダの確認用の画像を消す |
+| `draft <元データ> [--slide NN] [--pick A]` | `slides/` の断片を束ね、確認用の画像と検査の結果を返す（絵の往復用。PPTX は出さない。画像は実行ごとの一時フォルダに出し、1 日より古いものは消す） |
+| `review-picture <元データ> [--round N]` | `picture-plan.json` から、絵にする箇所の提案と構造の確認ページ `picture-review.html` を作る |
+| `picture-status <元データ>` | `answers-picture-*.md` から、絵にする箇所・直す項目・未決を出す（終了コード 0＝構造を凍結してよい） |
+| `history <元データ> snapshot\|list\|restore [版] [--label …] [--slide NN]` | 絵を直す前の `slides/` の版を `history/NNN/`（版の番号だけの名前。ラベルは中の `label.txt`）に残す・一覧・戻す。並行して実行しても版の番号は重ならない。`restore` は `final.html`・`final-review.html` を消す（`finalize` をやり直す）。`build` は消さない。`--slide` は 2 桁の番号で、その版に断片があるものだけ（違えば版を作らずに終了コード 2） |
 
 ### 画面での編集・配色・出力形式
 
@@ -130,8 +133,8 @@ LibreOffice は使わない（不要）。
 - 直せる対象: `pp-text`、表のセル（セル内の段落・箇条書きは 1 つずつ）、グラフのラベル（カテゴリ名・系列名。数値は直せない）。`pp-shape` は文字を持たないので対象外。絵（`pp-picture`）の中の文字も直せない。
 - 「リセット」で、押したツールバーのスライドの、フォーカス中（なければ最後に選んだ範囲を含む）の段落・セルを元の内容に戻し、その `- 編集:` の記録も消す（グラフのラベルは対象外）。
 - 許す装飾: 太字・改行・テーマ色のクラス・任意の色・文字サイズ。これ以外は取り除かれる。
-- 直した内容は、回答の `## SNN` の下に `- 編集: {"f","t","before","after"}` の 1 行で出る。直しただけでは判定にならないので、直したスライドも「承認」か「要修正」を押す（押していないと「回答をコピー」がそのスライドへ移って止まる）。`apply-edits` が断片へ文字列で書き戻す（元の文字が一致するかは確かめずに上書きする。直前の版が `history` に残るので、戻すときは `history restore`）。`apply-edits` が終了コード 1 で終わったときは、標準エラーに出た編集だけが入っていない。断片か回答を直して `--answers <回答ファイル>` を付けて再実行する（その回答の編集をすべて読み直す）か、断片を手で直す。`final-review.html` で直した編集は、`variants.html` と同じく「回答をコピー」した内容を `source/answers-final.md` に保存してから、`apply-edits` と `finalize` をやり直す。反映後は `finalize`（回を続けるなら `variants --round N+1`）をやり直す。
-- `variants.html` だけ、配色（navy・green・gray・作品の独自色）の切り替えと、出力形式（PPTX・HTML・両方）の選択がある。読み込み時から変えたときだけ、回答に `- 配色: <名前または #RRGGBB>`・`- 出力形式: pptx|html|both` が出る。`finalize` は成功後に最新の配色を `template.json` と `theme.css` へ反映する（PPTX が既にあるときは警告だけで、変えるには `set-color` → `build`）。一度反映した回答の配色は、`set-color` で変えたあとの `finalize` で戻さない。あとの回のページで同じ色を選び直したときは反映する。`reopen` は配色を変えない。
+- 直した内容は、回答の `## SNN` の下に `- 編集: {"f","t","before","after"}` の 1 行で出る。直しただけでは判定にならないので、直したスライドも「承認」か「要修正」を押す（押していないと「回答をコピー」がそのスライドへ移って止まる）。`apply-edits` が断片へ文字列で書き戻す（元の文字が一致するかは確かめずに上書きする。直前の版が `history` に残るので、戻すときは `history restore`）。`apply-edits` が終了コード 1 で終わったときは、標準エラーに出た編集だけが入っていない。断片か回答を直して `--answers <回答ファイル>` を付けて再実行する（その回答の編集をすべて読み直す）か、断片を手で直す。`final-review.html` で直した編集は、`variants.html` と同じく「回答をコピー」した内容を `answers-final.md` に保存してから、`apply-edits` と `finalize` をやり直す。反映後は `finalize`（回を続けるなら `variants --round N+1`）をやり直す。
+- `variants.html` だけ、配色（navy・green・gray・成果物の独自色）の切り替えと、出力形式（PPTX・HTML・両方）の選択がある。読み込み時から変えたときだけ、回答に `- 配色: <名前または #RRGGBB>`・`- 出力形式: pptx|html|both` が出る。`finalize` は成功後に最新の配色を `template.json` と `theme.css` へ反映する（PPTX が既にあるときは警告だけで、変えるには `set-color` → `build`）。一度反映した回答の配色は、`set-color` で変えたあとの `finalize` で戻さない。あとの回のページで同じ色を選び直したときは反映する。`reopen` は配色を変えない。
 
 出力形式が `pptx` なら `build`、`html` なら `export-html --prune`、`both` なら `export-html` のあとに `build` を実行する。
 

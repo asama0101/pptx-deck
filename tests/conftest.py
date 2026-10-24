@@ -18,3 +18,9 @@ def pytest_collection_modifyitems(items):
     for item in items:
         if "browser" in getattr(item, "fixturenames", ()):
             item.add_marker(pytest.mark.slow)
+
+
+@pytest.fixture
+def deck_base(tmp_path) -> Path:
+    """成果物の作業フォルダ（<出力先>/pptx-deck-source/<成果物名>）。resolve_work(deck_base) はそのまま返る。"""
+    return tmp_path / "out" / "pptx-deck-source" / "deck"

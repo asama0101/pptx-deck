@@ -38,7 +38,7 @@ def run(capsys):
 
 @pytest.fixture
 def deck(tmp_path):
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     initdir.init(base, color="navy")
     work = paths.resolve_work(base)
     s = work / "slides"

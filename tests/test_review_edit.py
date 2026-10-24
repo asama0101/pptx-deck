@@ -308,7 +308,7 @@ def test_編集モードは初期オフで回答mdは編集前と1バイトも�
     assert page.evaluate("document.querySelector('.pane[data-slide=\"01\"] .opt.view').dataset.k") == "A"
     assert page.evaluate(count) == 0
     md = copy_md(page)
-    assert md == "---\ndeck: \nround: 2\n---\n## S01\n- 選択: B\n- 判定: 承認\n- コメント: \n"
+    assert md == "---\ndeck: deck\nround: 2\n---\n## S01\n- 選択: B\n- 判定: 承認\n- コメント: \n"
     for key in ("- 編集:", "- 配色:", "- 出力形式:"):
         assert key not in md
     page.check('.pane[data-slide="01"] .rv-edit-toggle')

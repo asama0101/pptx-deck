@@ -131,7 +131,7 @@ def test_revise_は_create_スキルの場所を指す():
 
 def _known_commands():
     cli_src = read(PKG / "pptx_deck" / "cli.py")
-    return set(re.findall(r'sub\.add_parser\("([a-z-]+)"', cli_src)) | {"setup"}  # setup は run.py が直接処理する
+    return set(re.findall(r'sub\.add_parser\(\s*"([a-z-]+)"', cli_src)) | {"setup"}  # setup は run.py が直接処理する
 
 
 @pytest.mark.parametrize("f", DOC_FILES, ids=rel)
@@ -143,7 +143,8 @@ def test_文書に書かれたコマンドは_cli_に実在する(f):
 
 
 @pytest.mark.parametrize(
-    "name", ["draft", "history", "review-picture", "picture-status", "apply-edits", "output-format"]
+    "name",
+    ["draft", "history", "review-picture", "picture-status", "apply-edits", "output-format", "start-page", "intake"],
 )
 def test_主要コマンドが_cli_に登録されている(name):
     assert name in _known_commands()
@@ -216,3 +217,55 @@ def test_picture_craft_に絵の作法の語が書いてある(word):
 def test_create_は_diagram_スキルを指し_readme_は_diagram_に2回以上触れる():
     assert "skills/diagram/SKILL.md" in skill_text("create")
     assert read(REPO / "README.md").count("diagram") >= 2
+
+
+def test_create_は開始ページから_intake_init_の順に案内する():
+    t = skill_text("create")
+    pos = [t.find(w) for w in ("start-page", "intake", 'init "', "input.md")]
+    assert all(p >= 0 for p in pos), pos
+    assert pos == sorted(pos)
+
+
+@pytest.mark.parametrize("name", ["revise", "rebuild"])
+def test_revise_と_rebuild_は_pptx_のパスを受け取ると書いている(name):
+    t = skill_text(name)
+    assert "<出力先>/<成果物名>.pptx" in t
+    assert "旧配置は未対応" in t
+
+
+def test_スキルと_README_に旧配置の_source_スラッシュ_の説明が残っていない():
+    for f in [*ALL_MD, REPO / "README.md", REPO / "docs" / "development.md"]:
+        t = read(f)
+        assert "<名前>/source/" not in t, f
+        assert not re.search(
+            r"(?<![\w-])source/(slides|script|design|final|answers|variants|material|history|picture)", t
+        ), f
+
+
+def test_成果物の用語が統一されている():
+    old = "".join(["作", "品"])
+    targets = [
+        f
+        for ext in ("py", "md", "html", "json")
+        for f in PKG.rglob(f"*.{ext}")
+        if "__pycache__" not in f.parts and f.name != "部品見本.html"
+    ]
+    targets += [
+        REPO / "CLAUDE.md",
+        REPO / "README.md",
+        REPO / ".claude-plugin" / "marketplace.json",
+        *sorted((REPO / "docs").glob("*.md")),
+        *sorted((REPO / "tests").glob("*.py")),
+    ]
+    offenders = [f.relative_to(REPO).as_posix() for f in targets if f.exists() and old in read(f)]
+    assert not offenders, offenders
+
+
+def test_部品の_html_に旧配置の_source_スラッシュ_の説明が残っていない():
+    pat = r"(?<![\w-])source/(slides|script|design|final|answers|variants|material|history|picture)"
+    offenders = [
+        f.relative_to(REPO).as_posix()
+        for f in (PKG / "assets" / "components").rglob("*.html")
+        if re.search(pat, read(f))
+    ]
+    assert not offenders, offenders

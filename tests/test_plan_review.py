@@ -26,7 +26,7 @@ def browser():
 
 
 def make_work(tmp_path, design_md=None, script_md=None):
-    work = tmp_path / "deck" / "source"
+    work = tmp_path / "out" / "pptx-deck-source" / "deck"
     work.mkdir(parents=True)
     if design_md is not None:
         (work / "design.md").write_text(design_md, encoding="utf-8")

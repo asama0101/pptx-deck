@@ -40,8 +40,8 @@ def custom_template(dst: Path) -> Path:
 
 @pytest.fixture
 def base(tmp_path) -> Path:
-    """標準テンプレートで init した作品の置き場。"""
-    b = tmp_path / "deck"
+    """標準テンプレートで init した成果物の置き場。"""
+    b = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(b)
     return b
 
@@ -56,7 +56,7 @@ def test_存在しない原稿の_lint_script_は終了コード2で案内する
     assert "nai.md" in err
 
 
-def test_テンプレートが消えた作品の_reopen_は終了コード2で案内する(base, capsys):
+def test_テンプレートが消えた成果物の_reopen_は終了コード2で案内する(base, capsys):
     work = paths.resolve_work(base)
     (work / paths.read_cfg(work)["template"]).unlink()
     rc, _, err = entry(capsys, "reopen", str(base))
@@ -93,8 +93,8 @@ def test_check_は存在しない_html_なら測定せず終了コード2で止�
 # ---- init --force とテンプレート ----
 
 
-def test_利用者のテンプレートが消えた作品の_force_は_template_を求めて終了コード2で止まる(tmp_path, capsys):
-    b = tmp_path / "deck"
+def test_利用者のテンプレートが消えた成果物の_force_は_template_を求めて終了コード2で止まる(tmp_path, capsys):
+    b = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(b, template_path=custom_template(tmp_path / "own.potx"))
     work = paths.resolve_work(b)
     assert paths.read_cfg(work)["custom_template"] is True
@@ -106,7 +106,7 @@ def test_利用者のテンプレートが消えた作品の_force_は_template_
     assert "--template" in err
 
 
-def test_標準テンプレートが消えた作品の_force_は標準テンプレートを作り直す(base):
+def test_標準テンプレートが消えた成果物の_force_は標準テンプレートを作り直す(base):
     work = paths.resolve_work(base)
     assert paths.read_cfg(work)["custom_template"] is False
     (work / paths.read_cfg(work)["template"]).unlink()
@@ -117,7 +117,7 @@ def test_標準テンプレートが消えた作品の_force_は標準テンプ�
 
 
 def test_force_で作り直しても利用者のテンプレートの印が残り_消えたら求める(tmp_path):
-    b = tmp_path / "deck"
+    b = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(b, template_path=custom_template(tmp_path / "own.potx"))
     work = paths.resolve_work(b)
     initdir.init(b, force=True)
@@ -128,12 +128,12 @@ def test_force_で作り直しても利用者のテンプレートの印が残�
 
 
 def test_標準テンプレートを明示して_init_しても利用者のテンプレート扱いにならない(tmp_path):
-    b = tmp_path / "deck"
+    b = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(b, template_path=STANDARD_POTX)
     assert paths.read_cfg(paths.resolve_work(b))["custom_template"] is False
 
 
-def test_テンプレートの記録がない古い作品でテンプレートが消えたら_force_は_template_を求める(base):
+def test_テンプレートの記録がない古い成果物でテンプレートが消えたら_force_は_template_を求める(base):
     work = paths.resolve_work(base)  # 記録のない古い作業フォルダは、利用者のテンプレートかもしれないので止める
     cfg = paths.read_cfg(work)
     del cfg["custom_template"]

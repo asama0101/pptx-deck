@@ -28,7 +28,7 @@ def _cfg(work: Path) -> dict:
 @pytest.fixture
 def deck(tmp_path):
     """緑・独自テンプレート・フッターつきで init した作業フォルダ。(base, work, 独自テンプレートのバイト列)"""
-    base = tmp_path / "deck"
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
     tpl = _custom_template(tmp_path / "other.potx")
     initdir.init(base, color="green", template_path=tpl, footer="© 2026 A")
     work = paths.resolve_work(base)
@@ -66,7 +66,7 @@ def test_forceと色を指定したら色だけ変わる(deck):
 
 
 def test_新規のinitは既定値_標準テンプレート_フッターなし(tmp_path):
-    base = tmp_path / "deck"
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(base)
     work = paths.resolve_work(base)
     cfg = _cfg(work)

@@ -62,7 +62,7 @@ def build_deck(capsys, base, comp, frags):
     assert run(capsys, "finalize", str(base))[0] == 0
     rc, out, err = run(capsys, "build", str(base))
     assert rc == 0, out + err
-    return [s.slide_layout.name for s in Presentation(str(base / "demo.pptx")).slides]
+    return [s.slide_layout.name for s in Presentation(str(base.parent.parent / "demo.pptx")).slides]
 
 
 # ---- 推定 ----
@@ -147,7 +147,7 @@ def test_set_mappingは対応を足し外し不正はValueErrorにする(tpl):
 
 @pytest.mark.slow
 def test_PPTXは推定した専用レイアウトで作られる(tmp_path, capsys, pkg, tpl):
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     rc, out, err = run(capsys, "init", str(base), "--template", str(tpl))
     assert rc == 0, err
     assert "layout_map" in out
@@ -162,7 +162,7 @@ def test_PPTXは推定した専用レイアウトで作られる(tmp_path, capsy
 
 @pytest.mark.slow
 def test_template_mapの変更がPPTXのレイアウトに反映される(tmp_path, capsys, pkg, tpl):
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     assert run(capsys, "init", str(base), "--template", str(tpl))[0] == 0
     rc, out, err = run(capsys, "template-map", str(base), "--clear", "section", "--set", "bar=スケジュール")
     assert rc == 0, err
@@ -175,7 +175,7 @@ def test_template_mapの変更がPPTXのレイアウトに反映される(tmp_pa
 
 
 def test_template_mapは決まらない指定を終了コード2で断る(tmp_path, capsys, tpl):
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     assert run(capsys, "init", str(base), "--template", str(tpl))[0] == 0
     rc, _, err = run(capsys, "template-map", str(base), "--set", "bar=ない")
     assert rc == 2
@@ -212,10 +212,10 @@ def test_存在しないかpptxでないテンプレートは終了コード2で
 
 @pytest.mark.parametrize("cmd", ["build", "draft", "finalize", "check"])
 def test_template_jsonがなければ終了コード2で案内する(tmp_path, capsys, cmd):
-    deck = tmp_path / "empty"
-    (deck / "source").mkdir(parents=True)
-    (deck / "source" / "final.html").write_text("<html></html>", encoding="utf-8")
-    target = str(deck / "source" / "final.html") if cmd == "check" else str(deck)
+    deck = tmp_path / "out" / "pptx-deck-source" / "empty"
+    deck.mkdir(parents=True)
+    (deck / "final.html").write_text("<html></html>", encoding="utf-8")
+    target = str(deck / "final.html") if cmd == "check" else str(deck)
     rc, _, err = run(capsys, cmd, target)
     assert rc == 2
     assert "template.json がありません" in err

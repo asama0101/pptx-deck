@@ -1,6 +1,6 @@
 """絵にする箇所の提案と、読み取った構造の確認（picture-review.html）。
 
-source/picture-plan.json を、HTML のページにする。
+<元データ>/picture-plan.json を、HTML のページにする。
 利用者は、提案ごとに「絵にする／しない」、構造の項目ごとに「OK／修正」を選ぶ。
 「回答をコピー」で window.__answersMd と window.__submitted が立つ（案の選択のページと同じ受け取り方）。
 回答は answers-picture-N.md に保存する。

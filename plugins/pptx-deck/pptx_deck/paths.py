@@ -54,7 +54,7 @@ def venv_python() -> Path:
 
 
 def temp_key(name: str, work=None) -> str:
-    """一時フォルダの名前。work（作業フォルダ）を渡すと、絶対パスのハッシュを足し、同名の別の作品と混ざらないようにする。"""
+    """一時フォルダの名前。work（作業フォルダ）を渡すと、絶対パスのハッシュを足し、同名の別の成果物と混ざらないようにする。"""
     if not name.strip() or name.strip() in (".", "..") or "/" in name or "\\" in name:
         raise ValueError(f"一時フォルダの名前が不正です: {name!r}")  # clean が %TEMP%\pptx-deck 全体を消さないように
     if work is None:
@@ -69,17 +69,39 @@ def temp_dir(name: str, work=None) -> Path:
     return d
 
 
-def resolve_work(arg) -> Path:
-    """コマンドの <名前> を、作業フォルダ（<名前>/source）に解決する。<名前>/source を直接渡してもよい。"""
-    base = Path(arg).resolve()
-    if base.name == "source":
-        return base
-    return base / "source"
+SOURCE_PARENT = "pptx-deck-source"
+
+
+class LayoutError(ValueError):
+    """成果物の置き場所の規則に合わないパス。"""
+
+
+def resolve_work(arg: str | Path) -> Path:
+    """コマンドの引数を、作業フォルダ（<出力先>/pptx-deck-source/<成果物名>）に解決する。
+    .pptx のパスを渡すと、その隣の pptx-deck-source/<成果物名> にする。"""
+    arg = Path(arg)
+    is_pptx = arg.suffix.lower() == ".pptx"
+    if is_pptx and (arg.parent / "source" / "template.json").is_file():
+        raise LayoutError(
+            f"旧配置は未対応です（<名前>/<名前>.pptx と <名前>/source の形は使えません。作り直してください）: {arg}"
+        )
+    work = arg.parent.resolve() / SOURCE_PARENT / arg.stem if is_pptx else arg.resolve()
+    if not work.name:
+        raise LayoutError(f"成果物の名前が空です（ドライブ直下は指定できません）: {arg}")
+    if work.parent.name != SOURCE_PARENT:
+        if work.name == "source" or (work / "source" / "template.json").is_file():
+            raise LayoutError(f"旧配置は未対応です（<名前>/source の形は使えません。作り直してください）: {arg}")
+        raise LayoutError(
+            f"成果物の元データは <出力先>/{SOURCE_PARENT}/<成果物名> に置きます。"
+            f"このパスは {SOURCE_PARENT} の直下ではありません: {arg}"
+        )
+    return work
 
 
 def deck_dir(work: Path) -> Path:
-    return Path(work).parent
+    """出力先（PPTX・HTML を置く、pptx-deck-source の親）。"""
+    return Path(work).parent.parent
 
 
 def deck_name(work: Path) -> str:
-    return deck_dir(work).name
+    return Path(work).name

@@ -344,7 +344,7 @@ def test_案が1つで要修正のときコメントを添えて止まる(tmp_pa
 
 
 def test_variantsコマンドは絵のあるRをトレースバックなしでエラーにする(tmp_path):
-    base = tmp_path / "demo"
+    base = tmp_path / "out" / "pptx-deck-source" / "demo"
     with contextlib.redirect_stdout(io.StringIO()):
         assert cli.main(["init", str(base)]) == 0
     slides = paths.resolve_work(base) / "slides"

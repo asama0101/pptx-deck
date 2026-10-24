@@ -87,9 +87,9 @@ def test_parse_settings(mds, expected):
 
 @pytest.fixture
 def navy_work(tmp_path):
-    base = tmp_path / "deck"
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(base, color="navy")
-    return SimpleNamespace(base=base, work=base / "source")
+    return SimpleNamespace(base=base, work=base)
 
 
 def test_set_colorはtemplate_jsonとtheme_cssを書き換え不正な色では何も変えない(navy_work):
@@ -110,10 +110,10 @@ def test_回答の配色は同じ色なら何もせずPPTXがあれば見送り�
     base, work = navy_work.base, navy_work.work
     assert cli._apply_color_from_answers(work, [MD_HEAD]) == "none"
     assert cli._apply_color_from_answers(work, [MD_HEAD + "- 配色: navy\n"]) == "none"
-    (base / "deck.pptx").write_bytes(b"dummy")
+    (base.parent.parent / "deck.pptx").write_bytes(b"dummy")
     assert cli._apply_color_from_answers(work, [MD_HEAD + "- 配色: green\n"]) == "skipped_pptx"
     assert color_of(work) == NAVY
-    (base / "deck.pptx").unlink()
+    (base.parent.parent / "deck.pptx").unlink()
     assert cli._apply_color_from_answers(work, [MD_HEAD + "- 配色: green\n"]) == "applied"
     assert color_of(work) == GREEN
 
@@ -121,12 +121,12 @@ def test_回答の配色は同じ色なら何もせずPPTXがあれば見送り�
 def test_PPTXがあるときの見送りは同じ色では繰り返さず新しい色は案内しPPTX削除後に反映する(navy_work):
     base, work = navy_work.base, navy_work.work
     green = [MD_HEAD + "- 配色: green\n"]
-    (base / "deck.pptx").write_bytes(b"dummy")
+    (base.parent.parent / "deck.pptx").write_bytes(b"dummy")
     assert cli._apply_color_from_answers(work, green) == "skipped_pptx"
     assert cli._apply_color_from_answers(work, green) == "none"  # 同じ警告を繰り返さない
     gray = green + [MD_HEAD + "- 配色: gray\n"]
     assert cli._apply_color_from_answers(work, gray) == "skipped_pptx"  # 新しい色は案内する
-    (base / "deck.pptx").unlink()
+    (base.parent.parent / "deck.pptx").unlink()
     assert cli._apply_color_from_answers(work, gray) == "applied"
     assert color_of(work) == GRAY
 
@@ -217,12 +217,12 @@ def test_2回目の回答で配色に触れなければset_colorの色が残る(
 
 
 def test_PPTXがあるときの警告は1回だけでPPTX削除後のfinalizeで反映される(deck, finalize):
-    (deck.base / "deck.pptx").write_bytes(b"dummy")
+    (deck.base.parent.parent / "deck.pptx").write_bytes(b"dummy")
     deck.answers(1, "green")
     assert "PPTX が作成済み" in finalize()
     assert "PPTX が作成済み" not in finalize()  # 同じ警告は繰り返さない
     assert color_of(deck.work) == NAVY
-    (deck.base / "deck.pptx").unlink()
+    (deck.base.parent.parent / "deck.pptx").unlink()
     finalize()
     assert color_of(deck.work) == GREEN
 
@@ -282,7 +282,7 @@ def scheme_page(browser, tmp_path):
             encoding="utf-8",
         )
         (tmp_path / "p.html").write_text(
-            variants._page(Path("demo") / "source", frags, "1", scheme=sch), encoding="utf-8"
+            variants._page(Path("pptx-deck-source") / "demo", frags, "1", scheme=sch), encoding="utf-8"
         )
         page = browser.new_page(viewport={"width": 1400, "height": 900})
         pages.append(page)
@@ -360,9 +360,9 @@ def test_引き継いだ選択で開き初期値へ戻すと行が出て後の�
     assert "---\n- 配色: navy\n## S01" in md
     r1 = MD_HEAD + "- 配色: green\n"
     assert variants.parse_settings([r1, md])["color"] == "navy"
-    base = tmp_path / "deck"
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(base, color="navy")
-    assert cli._apply_color_from_answers(base / "source", [r1, md]) == "none"
+    assert cli._apply_color_from_answers(base, [r1, md]) == "none"
 
 
 @slow

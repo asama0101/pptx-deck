@@ -97,7 +97,7 @@ def test_部品の全断片を測って_textLost_が0件(pkg, tmp_path):
         if m:
             secs.append((f.relative_to(comp).as_posix(), m.group(0)))
     assert len(secs) >= 150
-    base = tmp_path / "deck"
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(base, color="navy", template_path=None, force=False, footer=None)
     work = paths.resolve_work(base)
     info = template.TemplateInfo.from_dict(json.loads((work / "template.json").read_text(encoding="utf-8"))["info"])

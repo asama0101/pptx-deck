@@ -10,7 +10,7 @@ from pptx_deck import check, cli, initdir, lifecycle, paths
 @pytest.fixture
 def work(tmp_path) -> Path:
     """init して断片と回答を置き、build 後の状態（派生ファイルを prune した状態）にした作業フォルダ。"""
-    base = tmp_path / "deck"
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
     initdir.init(base, color="navy")
     w = paths.resolve_work(base)
     (w / "slides" / "01-A.html").write_text("<section class='slide'></section>", encoding="utf-8")
@@ -78,7 +78,7 @@ def test_PPTXの検査が失敗しても_build_json_を残し_派生ファイル
     )
     out = paths.deck_dir(work) / f"{paths.deck_name(work)}.pptx"
 
-    rc = cli.main(["build", str(work.parent)])
+    rc = cli.main(["build", str(work)])
 
     out_text = capsys.readouterr().out
     assert rc == 1

@@ -15,7 +15,7 @@ def test_プラグインのコードに_soffice_がなく_render_py_もない(pk
 
 
 def test_initは単色の背景だけを作る(tmp_path):
-    base = tmp_path / "d"
+    base = tmp_path / "out" / "pptx-deck-source" / "d"
     initdir.init(base, color="navy")
     src = paths.resolve_work(base)
     css = (src / "theme.css").read_text(encoding="utf-8")
