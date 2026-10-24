@@ -7,7 +7,7 @@ allowed-tools: 'Bash(python "${CLAUDE_PLUGIN_ROOT}/run.py" *)'
 
 # pptx-deck rebuild
 
-`${CLAUDE_PLUGIN_ROOT}` はこのプラグインのフォルダ。コマンドは `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" …`。直す対象は、利用者が渡す `<出力先>/<成果物名>.pptx` のパス。元データ `<元データ>` は、その隣の `<出力先>/pptx-deck-source/<成果物名>/`。コマンドの作業フォルダの引数は `"<元データ>"`（この .pptx のパスを渡してもよい）。
+`${CLAUDE_PLUGIN_ROOT}` はこのプラグインのフォルダ。コマンドは `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" …`。直す対象は、利用者が渡す `<出力先>/<成果物名>.pptx` のパス。元データ `<元データ>` は、その隣の `<出力先>/pptx-deck-source/<成果物名>/`。コマンドの作業フォルダの引数は `"<元データ>"`（この .pptx のパスを渡してもよい。ただしファイルのパスを取るコマンド（`check "<元データ>/final.html"`・`lint-script` など）には使えず、`<元データ>/…` のパスを渡す）。
 
 `pptx-deck-source/<成果物名>/` がない、または利用者が旧配置（`source` フォルダに元データを置く形）のパスを渡したときは、止まって利用者に伝える（旧配置は未対応。PPTX を移動・改名していないか確かめてもらう）。
 

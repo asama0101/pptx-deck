@@ -221,7 +221,7 @@ def test_create_は_diagram_スキルを指し_readme_は_diagram_に2回以上�
 
 def test_create_は開始ページから_intake_init_の順に案内する():
     t = skill_text("create")
-    pos = [t.find(w) for w in ("start-page", "intake", 'init "')]
+    pos = [t.find(w) for w in ("start-page", "intake", 'init "', "input.md")]
     assert all(p >= 0 for p in pos), pos
     assert pos == sorted(pos)
 
@@ -240,3 +240,16 @@ def test_スキルと_README_に旧配置の_source_スラッシュ_の説明が
         assert not re.search(
             r"(?<![\w-])source/(slides|script|design|final|answers|variants|material|history|picture)", t
         ), f
+
+
+def test_成果物の用語が統一されている():
+    old = "作品"
+    targets = [
+        f
+        for ext in ("py", "md", "html", "json")
+        for f in PKG.rglob(f"*.{ext}")
+        if "__pycache__" not in f.parts and f.name != "部品見本.html"
+    ]
+    targets += [REPO / "CLAUDE.md", REPO / "docs" / "development.md", *sorted((REPO / "tests").glob("*.py"))]
+    offenders = [f.relative_to(REPO).as_posix() for f in targets if f.exists() and old in read(f)]
+    assert not offenders, offenders

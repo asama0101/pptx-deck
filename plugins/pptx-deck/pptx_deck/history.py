@@ -1,4 +1,4 @@
-"""絵の往復の履歴。直す前の slides/*.html を source/history/NNN/ に残し
+"""絵の往復の履歴。直す前の slides/*.html を <元データ>/history/NNN/ に残し
 （ラベルは中の label.txt。古い NNN-ラベル/ の名前も読める）、前の版へ戻せるようにする。
 build は history/ を消さない（lifecycle.prune は既知の派生ファイルだけを消す）。"""
 

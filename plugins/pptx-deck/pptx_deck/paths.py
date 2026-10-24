@@ -54,7 +54,7 @@ def venv_python() -> Path:
 
 
 def temp_key(name: str, work=None) -> str:
-    """一時フォルダの名前。work（作業フォルダ）を渡すと、絶対パスのハッシュを足し、同名の別の作品と混ざらないようにする。"""
+    """一時フォルダの名前。work（作業フォルダ）を渡すと、絶対パスのハッシュを足し、同名の別の成果物と混ざらないようにする。"""
     if not name.strip() or name.strip() in (".", "..") or "/" in name or "\\" in name:
         raise ValueError(f"一時フォルダの名前が不正です: {name!r}")  # clean が %TEMP%\pptx-deck 全体を消さないように
     if work is None:
