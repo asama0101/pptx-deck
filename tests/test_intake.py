@@ -5,7 +5,15 @@ import json
 from pathlib import Path
 
 import pytest
-from pptx_deck import cli, intake
+from pptx_deck import cli, intake, scan
+
+
+@pytest.fixture(autouse=True)
+def home(monkeypatch, tmp_path_factory):
+    """intake の成功時に書く「最近使った場所」を、テストごとの置き場に向ける（本物の置き場に書かない）。"""
+    h = tmp_path_factory.mktemp("pptx-home")
+    monkeypatch.setenv("PPTX_DECK_HOME", str(h))
+    return h
 
 
 def _md(files=(), out="", name="", kind="ファイル", text=None) -> str:
@@ -227,3 +235,29 @@ def test_cli_intake_は検証エラーで終了コード_2_を返し何も作ら
     assert "見つかりません" in cap.err
     assert sorted(p.name for p in tmp_path.rglob("*")) == ["answers.md"]
     assert not (tmp_path / "pptx-deck-source").exists()
+    assert scan.load_recent() == []  # 失敗したときは最近使った場所に残さない
+
+
+def test_cli_intake_は成功すると出力先と入力ファイルの場所を最近使った場所に残す(tmp_path, capsys):
+    src = tmp_path / "入力 元"
+    src.mkdir()
+    f = _touch(src, "a.docx")
+    out = tmp_path / "出力"
+    out.mkdir()
+    code, _ = _run(tmp_path, _md(files=[str(f)], out=str(out), name="n"), capsys=capsys)
+    assert code == 0
+    assert scan.load_recent() == [str(out), str(src)]
+
+
+def test_cli_intake_は回答ファイルがないとき終了コード_2(tmp_path, capsys):
+    code = cli.main(["intake", str(tmp_path / "no.md")])
+    assert code == 2
+    assert capsys.readouterr().err.startswith("エラー: ")
+
+
+def test_cli_intake_は_UTF8_でない回答ファイルを終了コード_2_にする(tmp_path, capsys):
+    ans = tmp_path / "answers.md"
+    ans.write_bytes("---\nstart: 1\n---\n## 入力\n".encode("cp932"))
+    code = cli.main(["intake", str(ans)])
+    assert code == 2
+    assert "UTF-8" in capsys.readouterr().err

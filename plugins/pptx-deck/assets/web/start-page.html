@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>成果物を作る: 入力と出力先</title>
+<style>
+/* 変数は --sp- で始める（スライドのテーマ theme.css の変数と同名にしない） */
+:root{--sp-bg:#14263E;--sp-panel:#1B3250;--sp-line:#33496B;--sp-fg:#EAF0F8;--sp-sub:#AEBBD0;--sp-ok:#6FC3A0;--sp-cm:#F0A060;--sp-co:#E83E8C;--sp-sel:#25406A}
+body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;background:var(--sp-bg);color:var(--sp-fg);font-size:15px;line-height:1.6}
+.sp,.sp *{box-sizing:border-box}
+.sp h1,.sp h2,.sp p,.sp ul{margin:0;padding:0}.sp ul{list-style:none}
+.sp{max-width:1120px;margin:0 auto;padding:20px 16px 0;display:flex;flex-direction:column;gap:18px}
+.sp h1{font-size:22px;line-height:1.4}
+.sp .lead{color:var(--sp-sub);font-size:13.5px}
+.sp section{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
+.sp h2{font-size:16px;border-left:3px solid var(--sp-fg);padding-left:10px}
+.sp .note{color:var(--sp-sub);font-size:13px}
+.sp [hidden]{display:none!important}
+.sp .kind{display:inline-flex;border:1px solid var(--sp-line);width:max-content}
+.sp .kind label{display:inline-flex;gap:6px;align-items:center;padding:6px 16px;cursor:pointer}
+.sp .kind label:has(input:checked){background:var(--sp-sel);font-weight:700}
+.sp .split{display:grid;gap:12px;grid-template-columns:300px minmax(0,1fr)}
+.sp .box{background:var(--sp-panel);border:1px solid var(--sp-line);padding:8px 0;max-height:46vh;overflow:auto;min-width:0}
+.sp .box-h{font-size:13px;color:var(--sp-sub);padding:2px 14px 6px;overflow-wrap:anywhere}
+.sp details>summary{list-style:none}.sp details>summary::-webkit-details-marker{display:none}
+.sp .row{display:flex;gap:6px;align-items:center;padding:3px 14px;cursor:pointer;font-size:14px;white-space:nowrap;border-left:3px solid transparent}
+.sp .row:hover{background:var(--sp-sel)}
+.sp .row[aria-current="true"]{background:var(--sp-sel);border-left-color:var(--sp-fg);font-weight:700}
+.sp .tw{display:inline-block;width:12px;color:var(--sp-sub);font-size:10px;flex:none}
+.sp details[open]>summary .tw{transform:rotate(90deg)}
+.sp .kids{padding-left:16px}
+.sp .place>summary .row,.sp .place>.row{font-weight:700}
+.sp .files li label{display:flex;gap:8px;align-items:center;padding:4px 14px;cursor:pointer;font-size:14px}
+.sp .files li label:hover{background:var(--sp-sel)}
+.sp .empty{color:var(--sp-sub);font-size:13px;padding:4px 14px}
+.sp textarea,.sp input[type=text]{width:100%;font:inherit;font-size:14px;padding:8px 10px;background:var(--sp-bg);color:var(--sp-fg);border:1px solid var(--sp-line)}
+.sp textarea::placeholder,.sp input[type=text]::placeholder{color:var(--sp-sub)}
+.sp #path-files{height:64px}.sp #text{height:240px}
+.sp .chosen{background:var(--sp-panel);padding:8px 14px;font-size:13.5px;overflow-wrap:anywhere}
+.sp .chosen b{color:var(--sp-sub);font-weight:400;margin-right:8px}
+.sp .chosen li{overflow-wrap:anywhere}
+.sp .bar{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;background:var(--sp-panel);border-top:1px solid var(--sp-line);padding:10px 12px;margin-top:6px}
+.sp .bar button{font:inherit;font-weight:700;padding:7px 26px;border:0;background:#fff;color:#14263E;cursor:pointer}
+.sp .state{color:var(--sp-ok);font-weight:700;font-size:13px}.sp .state.sp-warn{color:var(--sp-cm)}
+.sp .copybox{width:100%;height:120px;font:12px/1.4 Consolas,monospace}
+.sp :focus-visible{outline:2px solid var(--sp-co);outline-offset:2px}
+@media (max-width:820px){.sp .split{grid-template-columns:1fr}.sp .box{max-height:260px}}
+</style>
+</head>
+<body>
+<main class="sp">
+  <h1>成果物を作る: 入力と出力先</h1>
+  <p class="lead">入力と出力先を選び、「回答をコピー」を押してください。一覧は、このページを作った時点のものです。一覧にない場所は、パス欄に書けます。</p>
+
+  <section aria-labelledby="h-in">
+    <h2 id="h-in">入力</h2>
+    <div class="kind" role="radiogroup" aria-label="入力の種別">
+      <label><input type="radio" name="kind" value="file" checked> ファイル</label>
+      <label><input type="radio" name="kind" value="text"> テキスト</label>
+    </div>
+    <div id="in-file" class="sp-pane">
+      <p class="note">資料（docx・pdf・pptx・md・txt）を選びます。複数選べます。</p>
+      <div class="split">
+        <nav class="box" id="tree-in" aria-label="場所"></nav>
+        <div class="box"><p class="box-h" id="folder-h"></p><ul class="files" id="files"></ul></div>
+      </div>
+      <textarea id="path-files" placeholder="一覧にない場所は、パスをここに書く（1 行 1 つ）"></textarea>
+      <div class="chosen"><b>選択中</b><span id="chosen-files"></span></div>
+    </div>
+    <div id="in-text" class="sp-pane" hidden>
+      <p class="note">本文を貼り付けます。成果物の元データの input.md として保存されます。</p>
+      <textarea id="text" placeholder="ここに本文を貼り付ける"></textarea>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-out">
+    <h2 id="h-out">出力先フォルダ</h2>
+    <nav class="box" id="tree-out" aria-label="出力先"></nav>
+    <input type="text" id="path-out" placeholder="一覧にない場所は、パスをここに書く（書くと上の選択より優先）">
+    <div class="chosen"><b>選択中</b><span id="chosen-out"></span></div>
+  </section>
+
+  <section aria-labelledby="h-name">
+    <h2 id="h-name">成果物名</h2>
+    <input type="text" id="name" placeholder="空欄＝先頭の入力ファイル名から自動（テキストのときは必須）">
+  </section>
+
+  <div class="bar">
+    <button type="button" id="copy">回答をコピー</button>
+    <span class="state" id="state" role="status"></span>
+    <textarea class="copybox" id="copybox" hidden aria-label="回答（手動でコピーする）"></textarea>
+  </div>
+</main>
+<script>
+(function () {
+  var DATA = /*__DATA__*/null;
+  var $ = function (s) { return document.querySelector(s); };
+  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  var picked = [];   // 選んだ順のファイル（先頭のファイル名が成果物名の既定になる）
+  var current = null;
+  var folders = {};  // パス → ノード
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function lines(s) {
+    return s.split(/\r?\n/).map(function (x) { return x.trim(); }).filter(Boolean);
+  }
+  function oneLine(s) { return s.replace(/[\r\n\v\f\x1c-\x1e\x85\u2028\u2029]+/g, ' ').trim(); }
+
+  // ツリー。row(node) が 1 行を作り、子のフォルダは <details> で開閉する
+  function tree(node, row, open) {
+    var r = row(node);
+    if (!node.dirs.length) { var leaf = el('div'); leaf.appendChild(r); return leaf; }
+    var d = el('details'), s = el('summary'), kids = el('div', 'kids');
+    d.open = !!open;
+    s.appendChild(r); d.appendChild(s);
+    node.dirs.forEach(function (c) { kids.appendChild(tree(c, row, false)); });
+    d.appendChild(kids);
+    return d;
+  }
+  function twisty(node) { return el('span', 'tw', node.dirs.length ? '▶' : ''); }
+
+  // 入力: 左の場所のツリーでフォルダを選び、右にそのフォルダのファイルを出す
+  function inRow(node) {
+    var r = el('div', 'row');
+    r.appendChild(twisty(node));
+    r.appendChild(el('span', '', node.name));
+    if (node.path) {
+      folders[node.path] = node;
+      r.dataset.node = node.path;
+      r.addEventListener('click', function () { show(node.path); });
+    }
+    return r;
+  }
+  function show(path) {
+    current = path;
+    $$('#tree-in .row').forEach(function (r) { r.setAttribute('aria-current', String(r.dataset.node === path)); });
+    var node = folders[path], ul = $('#files');
+    $('#folder-h').textContent = path;
+    ul.textContent = '';
+    if (!node.files.length) { ul.appendChild(el('li', 'empty', 'このフォルダに対象のファイルはありません')); return; }
+    node.files.forEach(function (f) {
+      var li = el('li'), lb = el('label'), cb = el('input');
+      cb.type = 'checkbox';
+      cb.setAttribute('data-file', f);
+      cb.checked = picked.indexOf(f) >= 0;
+      cb.addEventListener('change', function () {
+        var i = picked.indexOf(f);
+        if (cb.checked && i < 0) picked.push(f);
+        if (!cb.checked && i >= 0) picked.splice(i, 1);
+        refresh();
+      });
+      lb.appendChild(cb);
+      lb.appendChild(el('span', '', f.slice(Math.max(f.lastIndexOf('\\'), f.lastIndexOf('/')) + 1)));
+      li.appendChild(lb); ul.appendChild(li);
+    });
+  }
+
+  // 出力先: フォルダごとのラジオ。パス欄に書けば、そちらが優先
+  function outRow(node) {
+    var r = el('label', 'row');
+    r.appendChild(twisty(node));
+    if (node.path) {
+      var rb = el('input');
+      rb.type = 'radio'; rb.name = 'out';
+      rb.setAttribute('data-dir', node.path);
+      rb.checked = node.path === DATA.cwd;
+      rb.addEventListener('change', refresh);
+      r.appendChild(rb);
+    }
+    r.appendChild(el('span', '', node.name + (node.path === DATA.cwd ? '（既定）' : '')));
+    return r;
+  }
+
+  function files() {
+    var all = picked.concat(lines($('#path-files').value));
+    return all.filter(function (f, i) { return all.indexOf(f) === i; });
+  }
+  function outDir() {
+    var typed = $('#path-out').value.trim();
+    if (typed) return typed;
+    var rb = $('input[name=out]:checked');
+    return rb ? rb.getAttribute('data-dir') : '';
+  }
+  function kind() { return $('input[name=kind]:checked').value; }
+
+  function refresh() {
+    var t = kind() === 'text';
+    $('#in-file').hidden = t; $('#in-text').hidden = !t;
+    var fs = files(), cf = $('#chosen-files');
+    cf.textContent = '';
+    if (!fs.length) cf.appendChild(el('span', '', 'なし'));
+    else { var ul = el('ul'); fs.forEach(function (f) { ul.appendChild(el('li', '', f)); }); cf.appendChild(ul); }
+    $('#chosen-out').textContent = outDir() || '作業フォルダ直下';
+  }
+
+  function say(msg, warn) { var s = $('#state'); s.textContent = msg; s.classList.toggle('sp-warn', !!warn); }
+
+  // 回答の md（intake が読む形式）。本文は末尾に置く（次の見出しか末尾までが本文）
+  function buildMd() {
+    var t = kind() === 'text';
+    var out = ['---', 'start: 1', '---', '## 入力', '- 種別: ' + (t ? 'テキスト' : 'ファイル')];
+    if (!t) files().forEach(function (f) { out.push('- ファイル: ' + oneLine(f)); });
+    out.push('## 出力先', '- フォルダ: ' + oneLine(outDir()), '## 成果物名', '- 名前: ' + oneLine($('#name').value));
+    if (t) out.push('## 本文', $('#text').value.replace(/\r\n/g, '\n'));
+    return out.join('\n') + '\n';
+  }
+  function problem() {
+    if (kind() === 'file') return files().length ? '' : 'ファイルを選ぶか、パス欄に書いてください。';
+    if (!$('#text').value.trim()) return '本文を貼り付けてください。';
+    return $('#name').value.trim() ? '' : 'テキストのときは成果物名が必要です。';
+  }
+
+  // 「回答をコピー」: クリップボードへ入れ、同時に window.__answersMd と window.__submitted を立てる
+  $('#copy').addEventListener('click', function () {
+    var bad = problem(), box = $('#copybox');
+    if (bad) { say(bad, true); return; }
+    var md = buildMd();
+    window.__answersMd = md;
+    window.__submitted = true;
+    var fallback = function () {
+      box.hidden = false; box.value = md; box.focus(); box.select();
+      say('コピーできませんでした。下の文字を選んで、コピーしてください。', true);
+    };
+    try {
+      navigator.clipboard.writeText(md).then(function () {
+        box.hidden = true;
+        say('コピーしました。Claude が待っていれば届きます。待っていなければ、チャットに貼り付けてください。');
+      }, fallback);
+    } catch (e) { fallback(); }
+  });
+
+  DATA.places.forEach(function (p, i) {
+    var a = tree(p.tree, inRow, i === 0), b = tree(p.tree, outRow, i === 0);
+    a.classList.add('place'); b.classList.add('place');
+    $('#tree-in').appendChild(a); $('#tree-out').appendChild(b);
+  });
+  $$('input[name=kind]').forEach(function (x) { x.addEventListener('change', refresh); });
+  ['#path-files', '#path-out'].forEach(function (s) { $(s).addEventListener('input', refresh); });
+  if (DATA.places.length && DATA.places[0].path) show(DATA.places[0].path);
+  refresh();
+})();
+</script>
+</body>
+</html>
