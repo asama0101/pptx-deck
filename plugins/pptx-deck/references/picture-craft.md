@@ -40,16 +40,16 @@
 
 ## 利用者の素材を土台にする
 
-- 画像（スクリーンショット・写真・既存の構成図）は `<作品>/source/material/` に置き、絵の `<svg>` の中で `<image href="material/xxx.png" x y width height preserveAspectRatio="xMidYMid meet"/>` と置く。その上に矢印・番号・枠を重ねる。土台の画像も絵の一部になり、PowerPoint では直せない。
+- 画像（スクリーンショット・写真・既存の構成図）は `<元データ>/material/` に置き、絵の `<svg>` の中で `<image href="material/xxx.png" x y width height preserveAspectRatio="xMidYMid meet"/>` と置く。その上に矢印・番号・枠を重ねる。土台の画像も絵の一部になり、PowerPoint では直せない。
 - **機密**: 画像の文字・IP アドレス・機器名は、そのまま PPTX に埋め込まれる。伏せる所は、画像の上に `sv-f-dark` の四角を重ねて隠す。元の画像は PPTX に入らない（絵として貼られるのは描画した PNG だけ）が、隠した所も画像の一部なので、利用者に最終確認で伏せ字の要否を聞く。
 - 素材の出所・ライセンスは利用者の責任。素材はリポジトリに残さない。
 
 ## 往復（描く → 見る → 直す）
 
-1. `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" draft "<名前>"`（`--slide NN` で 1 枚だけ）。`previews` の画像を `Read` で開いて見て、`violations` を読む。
+1. `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" draft "<元データ>"`（`--slide NN` で 1 枚だけ）。`previews` の画像を `Read` で開いて見て、`violations` を読む。
 2. 利用者に見てもらい（確認用の画像を `browser_navigate` で開く）、チャットで指示を受ける（「ここを右へ」「この線を足して」「構図を左右に変えて」）。
-3. **直す前に** `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" history "<名前>" snapshot --label "<直す内容>"` で版を残す。そのあとで `source/slides/NN-X.html` を直し、1 に戻る。
-4. 「元に戻して」と言われたら `history "<名前>" list` で版を確かめ、`history "<名前>" restore <版> [--slide NN]`。戻す前の状態も新しい版として残るので、取り消せる。
+3. **直す前に** `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" history "<元データ>" snapshot --label "<直す内容>"` で版を残す。そのあとで `<元データ>/slides/NN-X.html` を直し、1 に戻る。
+4. 「元に戻して」と言われたら `history "<元データ>" list` で版を確かめ、`history "<元データ>" restore <版> [--slide NN]`。戻す前の状態も新しい版として残るので、取り消せる。
 5. 直してよいのは、位置・形・色・構図・凡例の見せ方。文言・数字を変えるときは、利用者に確かめる（`create` の中では、②のコメントか編集モードで直す）。
 
 ## 検査（`check`・`build`）

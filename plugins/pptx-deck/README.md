@@ -17,11 +17,11 @@
 |---|---|
 | `/pptx-deck:create` | 資料を新しく作る |
 | `/pptx-deck:revise` | 作った PPTX を直す（型・デザインの選び直し、文言・数字の修正） |
-| `/pptx-deck:rebuild` | `source/` を変えずに PPTX を作り直す |
+| `/pptx-deck:rebuild` | 元データ（`pptx-deck-source/`）を変えずに PPTX を作り直す |
 | `/pptx-deck:review-plan` | 設計図と原稿を HTML で確認する（任意） |
 | `/pptx-deck:diagram` | 型に当てはまらない図（NW 構成図など）を絵にする |
 
-5 つのスキルに `disable-model-invocation` は付けない。自然な言い方（「スライドを作って」など）で起動するのが主な入口で、成果物は実行ディレクトリ直下の `<名前>/` にだけ書き、承認は案の選択の 1 回だけで、外部への送信や不可逆な書き込みをしないため。
+5 つのスキルに `disable-model-invocation` は付けない。自然な言い方（「スライドを作って」など）で起動するのが主な入口で、成果物は利用者が開始ページで選んだ出力先にだけ書き、承認は案の選択の 1 回だけで、外部への送信や不可逆な書き込みをしないため。
 
 ## 初回の準備
 
@@ -36,7 +36,7 @@ Playwright MCP は同梱しない。案の選択と回答の受け取りに使�
 ## アンインストールで消えるもの・残るもの
 
 - **消える:** `~/.claude/plugins/data/pptx-deck-<マーケットプレイス名>/`（仮想環境と状態）。最後のインストール先からアンインストールすると、既定で消える。
-- **残る:** Playwright の chromium（共有の場所。既定は `%LOCALAPPDATA%\ms-playwright`。ほかのツールと共有できる）と、作った作品（実行したディレクトリ直下の `<名前>/`）。
+- **残る:** Playwright の chromium（共有の場所。既定は `%LOCALAPPDATA%\ms-playwright`。ほかのツールと共有できる）と、作った成果物（選んだ出力先の `<成果物名>.pptx` と `pptx-deck-source/`）。
 
 ## ファイルの構成
 

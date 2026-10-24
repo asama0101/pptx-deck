@@ -51,16 +51,17 @@ Claude Code で `/pptx-deck:create` を実行するか、「稟議資料を作�
 
     /pptx-deck:create 新サーバー導入の稟議資料を作って
 
-1. 目的・対象・枚数・配色（`navy`・`green`・`gray` か `#RRGGBB`）・テンプレートの有無を聞かれる。
+1. 開始ページが開くので、入力（ファイルかテキスト）・出力先のフォルダ・成果物の名前を選ぶ。続いて、目的・対象・枚数・配色（`navy`・`green`・`gray` か `#RRGGBB`）・テンプレートの有無を聞かれる。
 2. 設計図と原稿ができ、全スライドの案を並べた HTML（`variants.html`）が開く。
 3. スライドごとに案を選び、「回答をコピー」を押す。コメントや、画面上での文字の直しもできる。
 4. 選んだ案が PPTX になる。
 
-実行したディレクトリの直下にできるもの:
+選んだ出力先にできるもの:
 
-    <名前>/
-      <名前>.pptx    成果物
-      source/        設計図・原稿・スライドの断片・回答など（直しの元データ）
+    <出力先>/                     開始ページで選んだフォルダ
+      <成果物名>.pptx             成果物
+      pptx-deck-source/
+        <成果物名>/               設計図・原稿・スライドの断片・回答など（直しの元データ）
 
 入口は 5 つ。
 
@@ -68,9 +69,11 @@ Claude Code で `/pptx-deck:create` を実行するか、「稟議資料を作�
 |---|---|
 | `/pptx-deck:create` | 資料を新しく作る |
 | `/pptx-deck:revise` | 作った PPTX を直す（型・デザインの選び直し、文言・数字の修正） |
-| `/pptx-deck:rebuild` | `source/` を変えずに PPTX を作り直す |
+| `/pptx-deck:rebuild` | 元データ（`pptx-deck-source/`）を変えずに PPTX を作り直す |
 | `/pptx-deck:review-plan` | 設計図と原稿を HTML で確認する（任意） |
 | `/pptx-deck:diagram` | 型に当てはまらない図を絵にする |
+
+`revise`・`rebuild` は、`<出力先>/<成果物名>.pptx` のパスを渡して頼む（その隣の `pptx-deck-source/<成果物名>/` を使う。PPTX を移動・改名すると見つからない。旧配置（`source` フォルダに元データを置く形）は未対応）。
 
 PowerPoint で直した内容は、`revise`・`rebuild` では取り込まれない（作り直すと消える）。直しは `revise` で頼む。既存の PPTX の編集には使えない。
 

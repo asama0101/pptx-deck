@@ -1,6 +1,6 @@
 # HTML の書き方と描画の規準
 
-SKILL.md の 4 章の細則。断片（`source/slides/NN-X.html`）を書く前に読む。確認用の画像（`previews`）は、この HTML を Chromium で撮ったもので、PPTX の実描画ではない。型の一覧は [components.md](components.md)。
+SKILL.md の 4 章の細則。断片（`<元データ>/slides/NN-X.html`）を書く前に読む。確認用の画像（`previews`）は、この HTML を Chromium で撮ったもので、PPTX の実描画ではない。型の一覧は [components.md](components.md)。
 
 ## HTML の書き方
 
