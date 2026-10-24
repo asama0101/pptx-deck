@@ -29,6 +29,20 @@ Claude Code で次を実行する。
 
 `/reload-plugins` のあと、スキルの一覧に `pptx-deck:create` などが出れば導入できている。
 
+### ローカルに落として導入する
+
+リポジトリを手元に clone し、そのフォルダを配布元として登録する（GitHub から直接導入しない場合）。
+
+    git clone https://github.com/asama0101/pptx-deck.git
+
+Claude Code で、clone したフォルダの絶対パスを指定する。
+
+    /plugin marketplace add C:\Users\<ユーザー名>\...\pptx-deck
+    /plugin install pptx-deck@pptx-deck-market
+    /reload-plugins
+
+導入元は clone したフォルダそのものなので、`git checkout` でブランチを切り替えたり、フォルダを移動・削除したりすると、導入したプラグインの中身も変わる（動かなくなる）。更新は `git pull` のあとに `/plugin marketplace update pptx-deck-market` を実行する。
+
 初回の `/pptx-deck:create` で、Python の専用環境と Chromium（数百 MB）を導入してよいか確認される。承認すると自動で作られる（ネットワークが要る。システムの Python には何も入れない）。
 
 ## 使い方
