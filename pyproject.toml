@@ -1,0 +1,20 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["plugins/pptx-deck", "."]
+addopts = ["--strict-markers", "-ra"]
+xfail_strict = true
+markers = [
+    "slow: 遅いテスト（ブラウザ・PPTX 生成を実際に動かす）",
+]
+
+[tool.ruff]
+line-length = 120
+extend-exclude = ["部品見本.html"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "S", "PT", "PTH", "BLE"]
+
+[tool.ruff.lint.per-file-ignores]
+# JS・CSS・HTML を文字列で埋め込んでいる。折り返すと出力が変わるので行の長さは対象にしない
+"plugins/pptx-deck/pptx_deck/variants.py" = ["E501"]
+"plugins/pptx-deck/pptx_deck/reviewext.py" = ["E501"]

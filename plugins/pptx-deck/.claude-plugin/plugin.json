@@ -1,0 +1,16 @@
+{
+  "name": "pptx-deck",
+  "version": "1.0.0",
+  "description": "ビジネス上の承認文書をコンサルテイストで作る。設計図と原稿の承認 → スライド案（各 3 案）の選択 → 最終 HTML → 編集可能な PPTX。型に当てはまらない図（NW 構成図・障害動作など）は、素材や対話から SVG の絵にして貼る。作った PPTX の再修正・再生成にも対応。利用者のテンプレートに従える。Windows 専用。",
+  "author": {
+    "name": "asama0101"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/asama0101/pptx-deck",
+  "keywords": [
+    "powerpoint",
+    "pptx",
+    "slides",
+    "approval-document"
+  ]
+}

@@ -1,0 +1,74 @@
+<!-- 用途: 役割分担表（記号を面にした図）。行に工程、列に部門を置き、◎＝責任（1 工程に 1 つ）、○＝実行、△＝支援・承認を、記号の形の面で見分けられるようにする。空のセルは何も置かない。
+     デザイン1との違い: 見出しの行の塗りと罫線をやめ、◎＝中間の面・○＝淡い面・△＝枠線のタイルに変える（濃い面を並べず画面を軽くする）。承認の関門の ◎ だけ強調色の面（1 枚 1 点）。責任のある部門が面の濃さで一目で分かる。
+     差し替える所: チャートタイトル（凡例を含む）・工程（6 行まで）・部門（5 列まで）・各タイルの記号・強調する ◎・注釈・論点の文。 -->
+<section class="slide" data-layout="diagram" data-type="raci">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">役割分担</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">切替の責任は基盤グループに一本化し、承認は各拠点ではなく運用センターが担うべきだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行の役割分担（工程×部門。◎＝責任、○＝実行、△＝支援・承認。2026年10月時点）</div>
+  <div class="pp-text b center" data-note="部門の見出し：塗りつぶさず太字で並べる" style="left:296px;top:231px;width:184px;height:27px;font-size:19px;line-height:1.4">基盤グループ</div>
+  <div class="pp-text b center" style="left:480px;top:231px;width:184px;height:27px;font-size:19px;line-height:1.4">運用センター</div>
+  <div class="pp-text b center" style="left:664px;top:231px;width:184px;height:27px;font-size:19px;line-height:1.4">調達部</div>
+  <div class="pp-text b center" style="left:848px;top:231px;width:184px;height:27px;font-size:19px;line-height:1.4">各拠点</div>
+  <div class="pp-text b center" style="left:1032px;top:231px;width:184px;height:27px;font-size:19px;line-height:1.4">ベンダー</div>
+  <div class="pp-line hr" style="left:64px;top:264px;width:1152px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-text b" style="left:72px;top:279px;width:224px;height:27px;font-size:19px;line-height:1.4">① 現状調査</div>
+  <div class="pp-shape f-mid" data-note="記号の面：◎＝中間の面（責任）、○＝淡い面（実行）、△＝枠線（支援・承認）。関門の ◎ だけ強調色" style="left:304px;top:272px;width:168px;height:39px"></div>
+  <div class="pp-text t-dark b center" style="left:304px;top:278px;width:168px;height:27px;font-size:19px;line-height:1.4">◎</div>
+  <div class="pp-shape f-light" style="left:488px;top:272px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:488px;top:278px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-shape f-outline" style="left:672px;top:272px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:672px;top:278px;width:168px;height:27px;font-size:19px;line-height:1.4">△</div>
+  <div class="pp-shape f-light" style="left:856px;top:272px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:856px;top:278px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-shape f-light" style="left:1040px;top:272px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:1040px;top:278px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-text b" style="left:72px;top:326px;width:224px;height:27px;font-size:19px;line-height:1.4">② 設計</div>
+  <div class="pp-shape f-mid" style="left:304px;top:319px;width:168px;height:39px"></div>
+  <div class="pp-text t-dark b center" style="left:304px;top:325px;width:168px;height:27px;font-size:19px;line-height:1.4">◎</div>
+  <div class="pp-shape f-outline" style="left:488px;top:319px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:488px;top:325px;width:168px;height:27px;font-size:19px;line-height:1.4">△</div>
+  <div class="pp-shape f-light" style="left:672px;top:319px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:672px;top:325px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-shape f-light" style="left:1040px;top:319px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:1040px;top:325px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-text b" style="left:72px;top:373px;width:224px;height:27px;font-size:19px;line-height:1.4">③ 構築</div>
+  <div class="pp-shape f-light" style="left:304px;top:366px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:304px;top:372px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-shape f-light" style="left:672px;top:366px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:672px;top:372px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-shape f-outline" style="left:856px;top:366px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:856px;top:372px;width:168px;height:27px;font-size:19px;line-height:1.4">△</div>
+  <div class="pp-shape f-mid" style="left:1040px;top:366px;width:168px;height:39px"></div>
+  <div class="pp-text t-dark b center" style="left:1040px;top:372px;width:168px;height:27px;font-size:19px;line-height:1.4">◎</div>
+  <div class="pp-text b" style="left:72px;top:412px;width:224px;height:44px;font-size:19px;line-height:1.15">④ 拠点切替<br>（Go／NoGo）</div>
+  <div class="pp-shape f-emph" data-part="アクセント" data-note="承認の関門の ◎：強調色の面（1 枚 1 点）" style="left:304px;top:413px;width:168px;height:39px"></div>
+  <div class="pp-text t-white b center" style="left:304px;top:419px;width:168px;height:27px;font-size:19px;line-height:1.4">◎</div>
+  <div class="pp-shape f-outline" style="left:488px;top:413px;width:168px;height:39px"></div>
+  <div class="pp-text b center" style="left:488px;top:419px;width:168px;height:27px;font-size:19px;line-height:1.4">△ 承認</div>
+  <div class="pp-shape f-light" style="left:856px;top:413px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:856px;top:419px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-shape f-light" style="left:1040px;top:413px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:1040px;top:419px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-text b" style="left:72px;top:467px;width:224px;height:27px;font-size:19px;line-height:1.4">⑤ 検証</div>
+  <div class="pp-shape f-light" style="left:304px;top:460px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:304px;top:466px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-shape f-mid" style="left:488px;top:460px;width:168px;height:39px"></div>
+  <div class="pp-text t-dark b center" style="left:488px;top:466px;width:168px;height:27px;font-size:19px;line-height:1.4">◎</div>
+  <div class="pp-shape f-light" style="left:856px;top:460px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:856px;top:466px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-shape f-outline" style="left:1040px;top:460px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:1040px;top:466px;width:168px;height:27px;font-size:19px;line-height:1.4">△</div>
+  <div class="pp-text b" style="left:72px;top:514px;width:224px;height:27px;font-size:19px;line-height:1.4">⑥ 運用引継ぎ</div>
+  <div class="pp-shape f-outline" style="left:304px;top:507px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:304px;top:513px;width:168px;height:27px;font-size:19px;line-height:1.4">△</div>
+  <div class="pp-shape f-mid" style="left:488px;top:507px;width:168px;height:39px"></div>
+  <div class="pp-text t-dark b center" style="left:488px;top:513px;width:168px;height:27px;font-size:19px;line-height:1.4">◎</div>
+  <div class="pp-shape f-light" style="left:856px;top:507px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:856px;top:513px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-shape f-light" style="left:1040px;top:507px;width:168px;height:39px"></div>
+  <div class="pp-text center" style="left:1040px;top:513px;width:168px;height:27px;font-size:19px;line-height:1.4">○</div>
+  <div class="pp-text" data-part="注釈" data-note="注：◎ の決め方と、分担から言える含意" data-role="caption" style="left:64px;top:574px;width:1152px;height:22px;line-height:1.3">注: ◎は1工程に1部門。ベンダーが責任を持つのは構築だけで、切替の判断は社内で行う。切替の責任を基盤グループに置けば、拠点ごとの判断待ち（平均3日）をなくせる</div>
+  <div class="pp-shape f-soft" data-part="メッセージボックス" data-note="メッセージボックス：分担の確定を「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="メッセージボックス：分担の確定を「〜の可否」で 1 行に書く" style="left:84px;top:601px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　切替の責任を基盤グループ、承認を運用センターとするこの分担で、移行体制を確定することの可否</div>
+</section>

@@ -1,0 +1,40 @@
+<!-- 用途: 対応一覧（再発防止策・課題や不具合の一覧・リスクと対策の一覧に共用）。デザイン1（actions）と同じ 5 件・同じ原稿で差し替えられる。課題・不具合なら列を 未着手｜対応中｜完了、リスクなら 未対策｜対策中｜対策済み に読み替える。
+     デザイン1との違い: 表をやめ、状態ごとの 3 列（完了｜設計中｜計画）に対策のカードを並べるかんばん型。列の見出しに件数と区分（暫定・恒久）を書く。要の 1 件（③）だけパネル地で、「要」の札を強調色の面にする（1 枚 1 点）。
+     差し替える所: チャートタイトル・列の見出しと件数（カードの数と合わせる）・カード（対策名・内容は 16 字まで・期限と担当。1 列 3 枚まで）・要のカード・注釈・論点の文。 -->
+<section class="slide" data-layout="table" data-type="actions">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">再発防止策</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">暫定策で再発を抑えつつ、恒久策の3件はSD-WAN移行の計画に組み込むべきだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">本社MPLS回線断（2026年7月、停止10時間）の再発防止策（■＝恒久、□＝暫定。2026年10月時点）</div>
+  <div class="pp-shape f-accent" data-note="かんばん：状態ごとの列に対策のカードを置く。列の見出しに件数と区分" style="left:64px;top:224px;width:368px;height:40px"></div>
+  <div class="pp-text b t-white" data-overlap style="left:78px;top:226px;width:340px;height:36px;font-size:19px">完了　2件（□ 暫定）</div>
+  <div class="pp-shape f-white" style="left:64px;top:272px;width:368px;height:120px"></div>
+  <div class="pp-text b" data-overlap style="left:78px;top:282px;width:340px;height:30px;font-size:19px;line-height:1.3">① 保守契約の短縮</div>
+  <div class="pp-text" data-overlap style="left:78px;top:314px;width:340px;height:30px;font-size:19px;line-height:1.3">駆けつけ契約を4時間→2時間に短縮</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:78px;top:350px;width:340px;height:26px;font-size:19px;line-height:1.3">2026/8/31　調達部</div>
+  <div class="pp-shape f-white" style="left:64px;top:400px;width:368px;height:120px"></div>
+  <div class="pp-text b" data-overlap style="left:78px;top:410px;width:340px;height:30px;font-size:19px;line-height:1.3">② 仮設回線での手動切替</div>
+  <div class="pp-text" data-overlap style="left:78px;top:442px;width:340px;height:30px;font-size:19px;line-height:1.3">本社にLTEルータを仮設、手動で切替</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:78px;top:478px;width:340px;height:26px;font-size:19px;line-height:1.3">2026/9/15　基盤G</div>
+  <div class="pp-shape f-accent" style="left:456px;top:224px;width:368px;height:40px"></div>
+  <div class="pp-text b t-white" data-overlap style="left:470px;top:226px;width:340px;height:36px;font-size:19px">設計中　1件（■ 恒久）</div>
+  <div class="pp-shape f-soft" data-note="要の 1 件：パネル地の面で強調し、「要」の札だけ強調色の面（1 枚 1 点）" style="left:456px;top:272px;width:368px;height:120px"></div>
+  <div class="pp-text b" data-overlap style="left:470px;top:282px;width:280px;height:30px;font-size:19px;line-height:1.3">③ 回線の冗長化と自動切替</div>
+  <div class="pp-shape f-emph" data-part="アクセント" data-overlap style="left:770px;top:284px;width:44px;height:26px"></div>
+  <div class="pp-text b t-white center" data-overlap style="left:770px;top:285px;width:44px;height:24px;font-size:19px;line-height:1.3">要</div>
+  <div class="pp-text" data-overlap style="left:470px;top:314px;width:340px;height:30px;font-size:19px;line-height:1.3">本社・DCを2回線＋LTEに冗長化</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:470px;top:350px;width:340px;height:26px;font-size:19px;line-height:1.3">2027/3/31（確定）　基盤G</div>
+  <div class="pp-shape f-accent" style="left:848px;top:224px;width:368px;height:40px"></div>
+  <div class="pp-text b t-white" data-overlap style="left:862px;top:226px;width:340px;height:36px;font-size:19px">計画　2件（■ 恒久）</div>
+  <div class="pp-shape f-white" style="left:848px;top:272px;width:368px;height:120px"></div>
+  <div class="pp-text b" data-overlap style="left:862px;top:282px;width:340px;height:30px;font-size:19px;line-height:1.3">④ 全拠点の常時監視</div>
+  <div class="pp-text" data-overlap style="left:862px;top:314px;width:340px;height:30px;font-size:19px;line-height:1.3">48拠点を監視センターで常時監視</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:862px;top:350px;width:340px;height:26px;font-size:19px;line-height:1.3">2027/4/30　監視C</div>
+  <div class="pp-shape f-white" style="left:848px;top:400px;width:368px;height:120px"></div>
+  <div class="pp-text b" data-overlap style="left:862px;top:410px;width:340px;height:30px;font-size:19px;line-height:1.3">⑤ 手順と承認の簡素化</div>
+  <div class="pp-text" data-overlap style="left:862px;top:442px;width:340px;height:30px;font-size:19px;line-height:1.3">復旧手順の改版と承認階層の見直し</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:862px;top:478px;width:340px;height:26px;font-size:19px;line-height:1.3">2027/4/30　運用部門</div>
+  <div class="pp-text" data-part="注釈" data-note="注：暫定策の費用と、恒久策の費用の扱い" data-role="caption" style="left:64px;top:556px;width:1152px;height:40px;line-height:1.3">注: 暫定策は実施済み（費用120万円）。恒久策の費用はB案の総費用1.7億円に含む<br>→ 恒久策が揃えば、同種の回線断は自動切替で2時間以内に収まる</div>
+  <div class="pp-shape f-soft" data-part="メッセージボックス" data-note="メッセージボックス：恒久策の承認を「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="メッセージボックス：恒久策の承認を「〜の可否」で 1 行に書く" style="left:84px;top:603px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　暫定策2件の継続を前提に、恒久策3件をSD-WAN移行計画の一部として承認することの可否</div>
+</section>

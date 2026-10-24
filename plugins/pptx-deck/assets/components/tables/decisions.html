@@ -1,0 +1,43 @@
+<!-- 用途: 論点と決定事項の一覧（エグゼクティブサマリ。旧 compare）。案どうしの比較は tables/options。「論点｜求める決定｜主要根拠｜詳細参照」の 4 列で、承認を求める論点ごとに、何を決めてほしいかと、その根拠を 1 行に並べる。
+     見出しは灰の小さな文字と罫線、行の区切りは細い罫線だけ。先頭の論点（いちばん重い決定）の行だけ、パネル地の面で強調する。番号①〜④は、最終ページ（判断）の決定事項と同じ番号にする。
+     差し替える所: チャートタイトル・論点（番号と名前）・求める決定（数字を入れた一文）・主要根拠（40 字まで）・詳細参照・強調する行・注釈・論点の文。行は 3〜4 行まで。 -->
+<section class="slide" data-layout="table" data-type="decisions">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">論点と決定事項</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">削減で生む原資が更改投資を支えるため、4件は一括での承認が必要だ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトルと見出し：何の一覧か（時点・単位）。見出しは灰の小さな文字" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">論点と決定事項の一覧（金額はFY2026〜2030の累計）</div>
+  <div class="pp-text" data-note="チャートタイトルと見出し：何の一覧か（時点・単位）。見出しは灰の小さな文字" data-role="caption" style="left:78px;top:229px;width:240px;height:22px">論点</div>
+  <div class="pp-text" data-note="チャートタイトルと見出し：何の一覧か（時点・単位）。見出しは灰の小さな文字" data-role="caption" style="left:338px;top:229px;width:320px;height:22px">求める決定</div>
+  <div class="pp-text" data-note="チャートタイトルと見出し：何の一覧か（時点・単位）。見出しは灰の小さな文字" data-role="caption" style="left:678px;top:229px;width:380px;height:22px">主要根拠</div>
+  <div class="pp-text" data-note="チャートタイトルと見出し：何の一覧か（時点・単位）。見出しは灰の小さな文字" data-role="caption" style="left:1090px;top:229px;width:120px;height:22px">詳細参照</div>
+  <div class="pp-line" style="left:64px;top:252px;width:1152px;height:1px;background:var(--text-sub)"></div>
+  <table class="pp-table" data-note="4 列の表：論点ごとに、求める決定と主要根拠を 1 行に並べる。行の区切りは細い罫線" style="left:64px;top:255px;width:1152px;font-size:19px;line-height:1.25">
+    <tr style="height:79px" data-note="先頭の論点（最も重い決定）：パネル地の面で強調する">
+      <td style="width:260px;padding:6px 14px;background:var(--bg-soft);border-left:4px solid var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent-dark)">①</span> 柱A<br>拠点ネットワーク標準化</td>
+      <td style="width:340px;padding:6px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);font-weight:700">構成モデルを12から3に統一し、<br>更改投資4.2億円を配分する</td>
+      <td style="width:412px;padding:6px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line)">12モデルの混在で保守契約が38本、<br>障害の55%は非標準の拠点で起きる</td>
+      <td style="width:140px;padding:6px 14px;background:var(--bg-soft);border-bottom:1px solid var(--line);color:var(--text-sub)">第2章<br>p.8-14</td>
+    </tr>
+    <tr style="height:79px">
+      <td style="padding:6px 14px;border-left:4px solid #FFFFFF;border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent-dark)">②</span> 柱B<br>通信コスト構造改革</td>
+      <td style="padding:6px 14px;border-bottom:1px solid var(--line);font-weight:700">通信費を▲1.2億円圧縮し、<br>①の原資にする</td>
+      <td style="padding:6px 14px;border-bottom:1px solid var(--line)">回線と運用委託が通信費の58%を占め、<br>契約の集約と自動化で削れる</td>
+      <td style="padding:6px 14px;border-bottom:1px solid var(--line);color:var(--text-sub)">第3章<br>p.15-21</td>
+    </tr>
+    <tr style="height:79px">
+      <td style="padding:6px 14px;border-left:4px solid #FFFFFF;border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent-dark)">③</span> 柱C<br>監視・運用の自動化</td>
+      <td style="padding:6px 14px;border-bottom:1px solid var(--line);font-weight:700">復旧時間を4.8時間から<br>1.0時間へ短縮する</td>
+      <td style="padding:6px 14px;border-bottom:1px solid var(--line)">未監視の26拠点で障害の62%が利用者の<br>申告で見つかり、復旧が遅れている</td>
+      <td style="padding:6px 14px;border-bottom:1px solid var(--line);color:var(--text-sub)">第4章<br>p.22-28</td>
+    </tr>
+    <tr style="height:79px">
+      <td style="padding:6px 14px;border-left:4px solid #FFFFFF;border-bottom:1px solid var(--line);font-weight:700"><span style="color:var(--accent-dark)">④</span> 柱D<br>組織・プロセス改革</td>
+      <td style="padding:6px 14px;border-bottom:1px solid var(--line);font-weight:700">階層を7から5に減らし、<br>変更リードタイムを21日に半減する</td>
+      <td style="padding:6px 14px;border-bottom:1px solid var(--line)">リードタイム42日のうち実作業は9日。<br>滞留の主因は承認の階層だ</td>
+      <td style="padding:6px 14px;border-bottom:1px solid var(--line);color:var(--text-sub)">第5章<br>p.29-35</td>
+    </tr>
+  </table>
+  <div class="pp-text" data-note="番号①〜④は、最終ページの決定事項と同じ番号で回収する" data-role="caption" style="left:64px;top:575px;width:1152px;height:22px">注: 番号①〜④は、最終ページの決定事項（承認対象）と対応する。金額はFY2026〜2030の累計</div>
+  <div class="pp-shape f-soft" data-part="メッセージボックス" data-note="メッセージボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="メッセージボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:84px;top:603px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　①〜④を一括で承認し、9月の投資委員会から各章の施策に着手することの可否</div>
+</section>

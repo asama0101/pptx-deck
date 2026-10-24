@@ -1,0 +1,51 @@
+<!-- 用途: 2 つの条件の重なりで候補を絞る（各領域に該当数と金額、右に抽出条件の表）。左の 2 円は淡い半透明（color-mix 20%。大きな面に濃い基調色は使わない）で、各円に条件の名前・該当数・金額、重なりに絞り込んだ数と金額（太字）。
+     右のパネルに抽出条件の表（条件｜定義｜該当）と、絞り込んだ候補の内訳。2 グループの作業・項目の重複の整理（同じことを 2 回書かない）もこの型で、デザイン3 が固有と共通を列挙する形。重なる要素には data-overlap を両方に付ける。注の末尾に、絞り込みから言える含意を 1 文。
+     差し替える所: 2 つの条件の名前・該当数・金額・重なりの数と金額・右の表 3 行と内訳 2 行・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="venn">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">通信契約の抽出</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">利用率が低く単価も高い120契約は年4,000万円の無駄で、解約の第一候補に置くべきだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">通信契約の抽出（FY2025、全1,200契約。2条件の重なりが解約候補）</div>
+  <div class="pp-shape" data-note="2 つの円：条件の名前・該当数・金額。重なりに絞り込んだ数と金額" data-shape="ellipse" data-overlap style="left:64px;top:232px;width:380px;height:355px;background:color-mix(in srgb, var(--accent) 20%, transparent)"></div>
+  <div class="pp-shape" data-note="2 つの円：条件の名前・該当数・金額。重なりに絞り込んだ数と金額" data-shape="ellipse" data-overlap style="left:300px;top:232px;width:380px;height:355px;background:color-mix(in srgb, var(--accent-dark) 20%, transparent)"></div>
+  <div class="pp-text b center" data-overlap style="left:84px;top:333px;width:200px;height:28px;font-size:19px">① 利用率30%未満</div>
+  <div class="pp-text b center t-dark" data-overlap style="left:84px;top:362px;width:200px;height:40px;font-size:30px">320契約</div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:84px;top:409px;width:200px;height:20px;color:var(--text)">年8,200万円（全体の7%）</div>
+  <div class="pp-text b center" data-overlap style="left:460px;top:333px;width:200px;height:28px;font-size:19px">② 単価が平均超</div>
+  <div class="pp-text b center t-dark" data-overlap style="left:460px;top:362px;width:200px;height:40px;font-size:30px">210契約</div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:460px;top:409px;width:200px;height:20px;color:var(--text)">年4,600万円（全体の4%）</div>
+  <div class="pp-text b center" data-note="重なり：両方を満たす候補の数と金額を太字に" data-overlap style="left:302px;top:338px;width:140px;height:28px;font-size:19px">①かつ②</div>
+  <div class="pp-text b center t-dark" data-note="重なり：両方を満たす候補の数と金額を太字に" data-overlap style="left:302px;top:365px;width:140px;height:40px;font-size:30px">120</div>
+  <div class="pp-text b center" data-overlap style="left:282px;top:413px;width:180px;height:28px;font-size:19px">年▲4,000万円</div>
+  <div class="pp-shape f-soft" data-note="右のパネル：抽出条件の表と、候補の内訳" style="left:720px;top:232px;width:496px;height:355px"></div>
+  <div class="pp-text b" data-note="右のパネル：抽出条件の表と、候補の内訳" style="left:736px;top:237px;width:464px;height:28px;font-size:19px">抽出条件と該当数</div>
+  <div class="pp-text" data-role="caption" style="left:748px;top:269px;width:120px;height:20px">条件</div>
+  <div class="pp-text" data-role="caption" style="left:878px;top:269px;width:200px;height:20px">定義</div>
+  <div class="pp-text" data-role="caption" style="left:1078px;top:269px;width:122px;height:20px;text-align:right">該当</div>
+  <div class="pp-line" style="left:736px;top:289px;width:464px;height:1px;background:var(--text-sub)"></div>
+  <table class="pp-table" style="left:736px;top:292px;width:464px;font-size:19px;line-height:1.25">
+    <tr style="height:40px">
+      <td style="width:130px;padding:4px 12px;border-bottom:1px solid var(--line);font-weight:700">① 利用率</td>
+      <td style="width:204px;padding:4px 6px;border-bottom:1px solid var(--line)">利用率30%未満</td>
+      <td style="width:130px;padding:4px 12px;border-bottom:1px solid var(--line);text-align:right">320契約</td>
+    </tr>
+    <tr style="height:40px">
+      <td style="padding:4px 12px;border-bottom:1px solid var(--line);font-weight:700">② 単価</td>
+      <td style="padding:4px 6px;border-bottom:1px solid var(--line)">平均単価の1.2倍超</td>
+      <td style="padding:4px 12px;border-bottom:1px solid var(--line);text-align:right">210契約</td>
+    </tr>
+    <tr style="height:40px">
+      <td style="padding:4px 12px;border-bottom:2px solid var(--text);font-weight:700;color:var(--accent-dark)">①かつ②</td>
+      <td style="padding:4px 6px;border-bottom:2px solid var(--text);font-weight:700">両方を満たす</td>
+      <td style="padding:4px 12px;border-bottom:2px solid var(--text);text-align:right;font-weight:700;color:var(--accent-dark)">120契約</td>
+    </tr>
+  </table>
+  <div class="pp-text b" style="left:736px;top:426px;width:464px;height:28px;font-size:19px">候補120契約の内訳（年額）</div>
+  <div class="pp-shape f-accent" data-note="内訳の棒：解約と統合の契約数を長さで示す" style="left:736px;top:458px;width:367px;height:26px"></div>
+  <div class="pp-text t-white" data-role="caption" style="left:746px;top:461px;width:350px;height:20px">解約 95契約（▲3,600万円）</div>
+  <div class="pp-shape f-light" data-note="内訳の棒：解約と統合の契約数を長さで示す" style="left:1103px;top:458px;width:97px;height:26px"></div>
+  <div class="pp-text" data-role="caption" style="left:736px;top:487px;width:464px;height:20px">統合 25契約（▲400万円）は上位契約へ集約。削減は計4,000万円</div>
+  <div class="pp-line hr" style="left:736px;top:514px;width:464px;height:1px"></div>
+  <div class="pp-text" data-role="caption" style="left:736px;top:523px;width:464px;height:54px;line-height:1.3">解約の手順: 利用停止の通知 → 猶予期間（3か月）→ 解約。拠点への案内は代替手段つきで1か月前に行う</div>
+  <div class="pp-text" data-part="注釈" data-note="注：定義の出所と、絞り込みから言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 利用率＝ピーク帯域÷契約帯域（FY2025の月平均）。単価は同種契約の全社平均との比較<br>→ 95契約の解約で通信費は▲3,600万円。利用率30%未満のため、業務への影響は限定的</div>
+</section>

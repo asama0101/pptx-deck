@@ -1,0 +1,34 @@
+<!-- 用途: 文で説明する手順（説明文と主な作業）。情報量が多く、アイコンや期間でなく文で読ませる手順に使う。段階ごとに「見出し→説明文→主な作業 2 つ」を同じ位置に置く。期間・成果物・承認点を持つ承認用の手順は flow-h、段階が多いときは flow-v。
+     デザイン1との違い: 列でも箱でもなく、段階｜内容｜主な作業 の 3 列の表にする。段階の列の下向きの矢印で順を示し、行は罫線で区切る。
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・段階の名前（3 つ）・内容・主な作業（各段階 2 つ、1 行ずつ）・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="flow-text">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">障害対応の流れ</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応は検知・切り分け・復旧の3段階で進め、各段階の作業を決めておく</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の流れ（段階ごとの内容と、その中の主な作業）</div>
+  <div class="pp-text" data-note="見出し：灰の小さな文字と罫線。段階の列の矢印が順" data-role="caption" style="left:64px;top:229px;width:220px;height:22px">段階</div>
+  <div class="pp-text" data-role="caption" style="left:300px;top:229px;width:420px;height:22px">内容</div>
+  <div class="pp-text" data-role="caption" style="left:740px;top:229px;width:476px;height:22px">主な作業</div>
+  <div class="pp-line" style="left:64px;top:252px;width:1152px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-text num t-dark" data-note="段階：大きな番号と名前" style="left:64px;top:264px;width:70px;height:52px;font-size:40px">01</div>
+  <div class="pp-text b" style="left:140px;top:272px;width:150px;height:36px;font-size:24px">検知する</div>
+  <div class="pp-text" data-note="内容：その段階で何をするかを 3 行で書く" style="left:300px;top:264px;width:420px;height:90px;font-size:19px;line-height:1.4">監視装置のアラートか利用部門の連絡で、障害の発生を知る。まず影響する拠点と業務を確認し、重大度を決める。</div>
+  <div class="pp-text" data-note="主な作業：作業名（太字）と説明を 1 行ずつ" style="left:740px;top:268px;width:476px;height:36px;font-size:19px"><b>アラート受信</b>　5分以内に当番へ電話</div>
+  <div class="pp-text" style="left:740px;top:310px;width:476px;height:36px;font-size:19px"><b>影響の確認</b>　止まった拠点を確認</div>
+  <div class="pp-line" style="left:64px;top:365px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-line hr" data-arrow="end" data-overlap style="left:97px;top:320px;width:3px;height:36px;background:var(--accent)"></div>
+  <div class="pp-text num t-dark" style="left:64px;top:372px;width:70px;height:52px;font-size:40px">02</div>
+  <div class="pp-text b" style="left:140px;top:380px;width:150px;height:36px;font-size:24px">切り分ける</div>
+  <div class="pp-text" style="left:300px;top:372px;width:420px;height:90px;font-size:19px;line-height:1.4">回線・機器・設定のどこが原因かを順に絞る。復旧を急いでも、原因の記録は省かず、切り分けの結果を残す。</div>
+  <div class="pp-text" style="left:740px;top:376px;width:476px;height:36px;font-size:19px"><b>回線の確認</b>　キャリア障害情報の確認</div>
+  <div class="pp-text" style="left:740px;top:418px;width:476px;height:36px;font-size:19px"><b>機器の確認</b>　ログと直近の変更の確認</div>
+  <div class="pp-line" style="left:64px;top:473px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-line hr" data-arrow="end" data-overlap style="left:97px;top:428px;width:3px;height:36px;background:var(--accent)"></div>
+  <div class="pp-text num t-dark" style="left:64px;top:480px;width:70px;height:52px;font-size:40px">03</div>
+  <div class="pp-text b" style="left:140px;top:488px;width:150px;height:36px;font-size:24px">復旧する</div>
+  <div class="pp-text" style="left:300px;top:480px;width:420px;height:90px;font-size:19px;line-height:1.4">暫定の復旧を先に行い、利用部門へ状況を連絡する。恒久策は、復旧したあとの別の手順で決める。</div>
+  <div class="pp-text" style="left:740px;top:484px;width:476px;height:36px;font-size:19px"><b>切替・再起動</b>　予備回線へ切り替え</div>
+  <div class="pp-text" style="left:740px;top:526px;width:476px;height:36px;font-size:19px"><b>利用部門への連絡</b>　30分ごとに状況連絡</div>
+  <div class="pp-line" style="left:64px;top:581px;width:1152px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 判断者は当番のネットワーク担当。復旧後の再発防止策は別のページで扱う<br>→ 段階ごとの作業が決まっているため、夜間でも復旧の判断が遅れない</div>
+</section>

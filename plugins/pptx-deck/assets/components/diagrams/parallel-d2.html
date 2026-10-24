@@ -1,0 +1,31 @@
+<!-- 用途: 並列（同格の項目を並べて比べる）。デザイン1（parallel）と同じ 3 項目・同じ原稿で差し替えられる。文が長い（根拠を 2 行で書きたい）ときに使う。
+     デザイン1との違い: 横のカードではなく、パネル地の行を縦に 3 本並べる。左にアイコン、中央に名前（24px）と根拠・前後の差（2 行まで）、右端に数字と変化率を置く。右の列だけを追っても要点が分かる。強調色は 1 行の数字だけ。
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・3 行の名前と根拠・前後の差・右端の数字と変化率・注釈。根拠は 2 行（約 70 字）に収める。 -->
+<section class="slide" data-layout="diagram" data-type="parallel">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">SD-WAN更改の効果</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">更改の効果は、費用・復旧・監視の3点に集約され、いずれも目標値に届く</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN更改の3つの効果（FY2025実績 → FY2030目標）</div>
+  <div class="pp-shape f-soft" data-note="行：アイコン・名前・根拠を 1 行にまとめ、右端に数字と変化率を置く" style="left:64px;top:224px;width:1152px;height:112px"></div>
+  <img class="pp-image" src="icons/coin-accent.svg" alt="通信費" data-role="icon" style="left:88px;top:252px;width:56px;height:56px">
+  <div class="pp-text t-dark b" style="left:172px;top:234px;width:800px;height:36px;font-size:24px">通信費</div>
+  <div class="pp-text" style="left:172px;top:272px;width:800px;height:56px;font-size:19px;line-height:1.4">専用線の解約と運用委託の統合で、年額12.0億円を10.8億円に下げる</div>
+  <div class="pp-line hr" style="left:1000px;top:238px;width:1px;height:84px;background:var(--accent-mid)"></div>
+  <div class="pp-text num center" data-note="数字：効果の大きさ。承認を求める 1 点だけ強調色" style="left:1016px;top:236px;width:184px;height:52px;font-size:32px;color:var(--emphasis)">▲1.2億円</div>
+  <div class="pp-text center" data-role="caption" style="left:1016px;top:294px;width:184px;height:26px">変化率 ▲10%</div>
+  <div class="pp-shape f-soft" style="left:64px;top:350px;width:1152px;height:112px"></div>
+  <img class="pp-image" src="icons/clock-accent.svg" alt="復旧時間" data-role="icon" style="left:88px;top:378px;width:56px;height:56px">
+  <div class="pp-text t-dark b" style="left:172px;top:360px;width:800px;height:36px;font-size:24px">復旧時間</div>
+  <div class="pp-text" style="left:172px;top:398px;width:800px;height:56px;font-size:19px;line-height:1.4">自動検知と回線の自動切替で、障害発生から復旧までの平均を4.8時間から1.0時間に縮める</div>
+  <div class="pp-line hr" style="left:1000px;top:364px;width:1px;height:84px;background:var(--accent-mid)"></div>
+  <div class="pp-text num center" style="left:1016px;top:362px;width:184px;height:52px;font-size:32px;">1.0時間</div>
+  <div class="pp-text center" data-role="caption" style="left:1016px;top:420px;width:184px;height:26px">変化率 ▲79%</div>
+  <div class="pp-shape f-soft" style="left:64px;top:476px;width:1152px;height:112px"></div>
+  <img class="pp-image" src="icons/shield-accent.svg" alt="監視カバー" data-role="icon" style="left:88px;top:504px;width:56px;height:56px">
+  <div class="pp-text t-dark b" style="left:172px;top:486px;width:800px;height:36px;font-size:24px">監視カバー</div>
+  <div class="pp-text" style="left:172px;top:524px;width:800px;height:56px;font-size:19px;line-height:1.4">監視センターへ集約し、監視対象を22拠点から48拠点（全拠点）に広げる</div>
+  <div class="pp-line hr" style="left:1000px;top:490px;width:1px;height:84px;background:var(--accent-mid)"></div>
+  <div class="pp-text num center" style="left:1016px;top:488px;width:184px;height:52px;font-size:32px;">100%</div>
+  <div class="pp-text center" data-role="caption" style="left:1016px;top:546px;width:184px;height:26px">変化率 ＋118%</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 通信費はFY2025の12.0億円に対する年額。復旧時間は障害発生から復旧までの平均（MTTR）<br>→ 3つの効果は同じ更改の成果で、費用の削減が復旧と監視の強化の原資になる</div>
+</section>

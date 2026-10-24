@@ -1,0 +1,41 @@
+<!-- 用途: 4 象限（2 軸で施策・対象を位置づける）。デザイン1（positioning）と同じ軸・同じチップで差し替えられる。
+     デザイン1との違い: 軸の見出しの帯をやめ、細い見出しだけにする。象限の名前を大きくし、チップを横に並べて（名前の下に値）置く。着手する象限は淡い面にし、象限の名前を強調色の小さな面（1 枚 1 点）に載せて示す。
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・象限の名前・チップの番号と名前と値・注釈。値は短く書く。 -->
+<section class="slide" data-layout="diagram" data-type="positioning">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">施策の優先順位</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">施策は効果と実現の容易さで分け、専用線の解約と運用委託の統合から先に着手する</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN更改の6施策（縦：効果、横：実現の容易さ）</div>
+  <div class="pp-text t-sub b center" data-note="軸の見出し：横は実現の容易さ、縦は効果の大小" data-role="caption" style="left:150px;top:224px;width:530px;height:26px">難しい（工数が重い）</div>
+  <div class="pp-text t-sub b center" data-role="caption" style="left:686px;top:224px;width:530px;height:26px">易しい（すぐ着手できる）</div>
+  <div class="pp-text t-dark b center" style="left:64px;top:296px;width:80px;height:56px;font-size:19px">効果<br>大</div>
+  <div class="pp-text t-dark b center" style="left:64px;top:458px;width:80px;height:56px;font-size:19px">効果<br>小</div>
+  <div class="pp-shape f-white" style="left:150px;top:256px;width:530px;height:160px"></div>
+  <div class="pp-text t-dark b" data-overlap style="left:164px;top:264px;width:500px;height:28px;font-size:21px">計画して着手</div>
+  <div class="pp-shape f-soft" data-overlap style="left:164px;top:304px;width:244px;height:96px"></div>
+  <div class="pp-text b" data-overlap style="left:174px;top:312px;width:224px;height:32px;font-size:19px">③ 全拠点の監視集約</div>
+  <div class="pp-text t-dark b" data-role="caption" data-overlap style="left:174px;top:352px;width:224px;height:28px">復旧▲3.8時間</div>
+  <div class="pp-shape f-soft" data-overlap style="left:422px;top:304px;width:244px;height:96px"></div>
+  <div class="pp-text b" data-overlap style="left:432px;top:312px;width:224px;height:32px;font-size:19px">④ 本社・DCの切替</div>
+  <div class="pp-text t-dark b" data-role="caption" data-overlap style="left:432px;top:352px;width:224px;height:28px">停止リスク大</div>
+  <div class="pp-shape f-soft" data-note="象限：着手する象限だけ淡い面にし、名前を強調色の小さな面に載せる（1 枚 1 点）" style="left:686px;top:256px;width:530px;height:160px"></div>
+  <div class="pp-shape f-emph" data-part="アクセント" data-overlap style="left:700px;top:262px;width:150px;height:34px"></div>
+  <div class="pp-text t-white b center" data-overlap style="left:700px;top:264px;width:150px;height:30px;font-size:21px">先に着手</div>
+  <div class="pp-shape f-white" data-part="スティッカー" data-note="チップ：番号つきの施策名と、短い値" data-overlap style="left:700px;top:304px;width:244px;height:96px"></div>
+  <div class="pp-text b" data-overlap style="left:710px;top:312px;width:224px;height:32px;font-size:19px">① 専用線の解約</div>
+  <div class="pp-text t-dark b" data-role="caption" data-overlap style="left:710px;top:352px;width:224px;height:28px">▲1.2億円/年</div>
+  <div class="pp-shape f-white" data-overlap style="left:958px;top:304px;width:244px;height:96px"></div>
+  <div class="pp-text b" data-overlap style="left:968px;top:312px;width:224px;height:32px;font-size:19px">② 運用委託の統合</div>
+  <div class="pp-text t-dark b" data-role="caption" data-overlap style="left:968px;top:352px;width:224px;height:28px">▲0.4億円/年</div>
+  <div class="pp-shape f-white" style="left:150px;top:424px;width:530px;height:160px"></div>
+  <div class="pp-text t-dark b" data-overlap style="left:164px;top:432px;width:500px;height:28px;font-size:21px">見送り</div>
+  <div class="pp-shape f-soft" data-overlap style="left:164px;top:472px;width:244px;height:96px"></div>
+  <div class="pp-text b" data-overlap style="left:174px;top:480px;width:224px;height:32px;font-size:19px">⑥ 旧機器の撤去</div>
+  <div class="pp-text t-dark b" data-role="caption" data-overlap style="left:174px;top:520px;width:224px;height:28px">140台</div>
+  <div class="pp-shape f-white" style="left:686px;top:424px;width:530px;height:160px"></div>
+  <div class="pp-text t-dark b" data-overlap style="left:700px;top:432px;width:500px;height:28px;font-size:21px">余力で着手</div>
+  <div class="pp-shape f-soft" data-overlap style="left:700px;top:472px;width:244px;height:96px"></div>
+  <div class="pp-text b" data-overlap style="left:710px;top:480px;width:224px;height:32px;font-size:19px">⑤ ルータの3モデル統一</div>
+  <div class="pp-text t-dark b" data-role="caption" data-overlap style="left:710px;top:520px;width:224px;height:28px">設定▲2.5人日/拠点</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 効果は年間の削減額と復旧時間の短縮、実現の容易さは必要な工数（人日）で判定。FY2026の計画値<br>→ 先に着手する2施策で、通信費▲1.2億円と運用委託▲0.4億円の削減を確保できる</div>
+</section>

@@ -1,0 +1,57 @@
+<!-- 用途: 前後の数値表（現状→増・減→計画後と、その理由）。ここでは設備の台数。何が何台増えて何台減るかを区分ごとに 1 行で並べる。増は「＋n」、減は「▲n」。数字は右寄せで桁をそろえ、単位はチャートタイトルに書く。見積の前回比（前回→差額→今回・差の理由。旧 quote-compare）もこの型で、列の単位を金額に差し替える。
+     デザイン1との違い: 表の増・減の列を、中央の軸から左（減・淡い棒）と右（増・基調色の棒）に伸びる両側の棒にする（1 台＝2px）。値は棒の端に書き、0 の区分は棒も値も置かない。下の帯に機器の計と回線を分けて書く。
+     強調色は主張に効く 1 行の差分だけ（1 枚 1 点）。単位の違う区分（台と本）は合計せず、機器の計と回線を分けて示す。情報の型なのでメッセージボックスは置かず、注の末尾を「→ 含意」の 1 文で締める。
+     差し替える所: チャートタイトル・区分（5 行まで）・数（棒の幅は数×2px）・計の帯の文・注釈。 -->
+<section class="slide" data-layout="table" data-type="delta">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">設備の増減</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">設備の増減は機器の入れ替えが主で、純増は監視装置26台と回線96本に限られる</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行に伴う設備の増減（現状FY2025 → 計画後FY2027、台・本）</div>
+  <div class="pp-text" data-note="列見出し：左から 区分・現状、中央の軸の左が減（淡い棒）・右が増（基調色の棒）、右に計画後と差分" data-role="caption" style="left:64px;top:228px;width:200px;height:22px">区分</div>
+  <div class="pp-text" data-role="caption" style="left:270px;top:228px;width:70px;height:22px;text-align:right">現状</div>
+  <div class="pp-text" data-role="caption" style="left:360px;top:228px;width:310px;height:22px;text-align:right">◀ 減</div>
+  <div class="pp-text" data-role="caption" style="left:690px;top:228px;width:300px;height:22px">増 ▶</div>
+  <div class="pp-text" data-role="caption" style="left:1076px;top:228px;width:64px;height:22px;text-align:right">計画後</div>
+  <div class="pp-text" data-role="caption" style="left:1150px;top:228px;width:66px;height:22px;text-align:right">差分</div>
+  <div class="pp-line" style="left:64px;top:252px;width:1152px;height:1px;background:var(--text-sub)"></div>
+  <div class="pp-text b" style="left:64px;top:274px;width:200px;height:28px;font-size:19px;line-height:1.3">ルータ（MPLS）</div>
+  <div class="pp-text" style="left:270px;top:274px;width:70px;height:28px;font-size:19px;text-align:right;line-height:1.3">48</div>
+  <div class="pp-shape f-light" data-note="両側の棒：中央の軸から、減は左へ淡い棒、増は右へ基調色の棒（1 台＝2px）。値は棒の端に書く" style="left:584px;top:272px;width:96px;height:32px"></div>
+  <div class="pp-text" style="left:504px;top:274px;width:74px;height:28px;font-size:19px;text-align:right;line-height:1.3">▲48</div>
+  <div class="pp-text" style="left:1076px;top:274px;width:64px;height:28px;font-size:19px;text-align:right;line-height:1.3">0</div>
+  <div class="pp-text b" style="left:1150px;top:274px;width:66px;height:28px;font-size:19px;text-align:right;line-height:1.3">▲48</div>
+  <div class="pp-line" style="left:64px;top:314px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:328px;width:200px;height:28px;font-size:19px;line-height:1.3">SD-WAN機器</div>
+  <div class="pp-text" style="left:270px;top:328px;width:70px;height:28px;font-size:19px;text-align:right;line-height:1.3">0</div>
+  <div class="pp-shape f-accent" data-note="両側の棒：中央の軸から、減は左へ淡い棒、増は右へ基調色の棒（1 台＝2px）。値は棒の端に書く" style="left:681px;top:326px;width:96px;height:32px"></div>
+  <div class="pp-text b" style="left:784px;top:328px;width:90px;height:28px;font-size:19px;line-height:1.3">＋48</div>
+  <div class="pp-text" style="left:1076px;top:328px;width:64px;height:28px;font-size:19px;text-align:right;line-height:1.3">48</div>
+  <div class="pp-text b" style="left:1150px;top:328px;width:66px;height:28px;font-size:19px;text-align:right;line-height:1.3">＋48</div>
+  <div class="pp-line" style="left:64px;top:368px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:382px;width:200px;height:28px;font-size:19px;line-height:1.3">L3スイッチ</div>
+  <div class="pp-text" style="left:270px;top:382px;width:70px;height:28px;font-size:19px;text-align:right;line-height:1.3">96</div>
+  <div class="pp-text" style="left:1076px;top:382px;width:64px;height:28px;font-size:19px;text-align:right;line-height:1.3">96</div>
+  <div class="pp-text b" style="left:1150px;top:382px;width:66px;height:28px;font-size:19px;text-align:right;line-height:1.3">0</div>
+  <div class="pp-line" style="left:64px;top:422px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:436px;width:200px;height:28px;font-size:19px;line-height:1.3">監視装置</div>
+  <div class="pp-text" style="left:270px;top:436px;width:70px;height:28px;font-size:19px;text-align:right;line-height:1.3">22</div>
+  <div class="pp-shape f-accent" style="left:681px;top:434px;width:52px;height:32px"></div>
+  <div class="pp-text b" style="left:740px;top:436px;width:90px;height:28px;font-size:19px;line-height:1.3">＋26</div>
+  <div class="pp-text" style="left:1076px;top:436px;width:64px;height:28px;font-size:19px;text-align:right;line-height:1.3">48</div>
+  <div class="pp-text b t-emph" data-part="アクセント" data-note="差分：主張に効く 1 点だけ強調色" style="left:1150px;top:436px;width:66px;height:28px;font-size:19px;text-align:right;line-height:1.3">＋26</div>
+  <div class="pp-line" style="left:64px;top:476px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-text b" style="left:64px;top:490px;width:200px;height:28px;font-size:19px;line-height:1.3">回線（本）</div>
+  <div class="pp-text" style="left:270px;top:490px;width:70px;height:28px;font-size:19px;text-align:right;line-height:1.3">48</div>
+  <div class="pp-shape f-light" style="left:584px;top:488px;width:96px;height:32px"></div>
+  <div class="pp-text" style="left:504px;top:490px;width:74px;height:28px;font-size:19px;text-align:right;line-height:1.3">▲48</div>
+  <div class="pp-shape f-accent" style="left:681px;top:488px;width:288px;height:32px"></div>
+  <div class="pp-text b" style="left:976px;top:490px;width:90px;height:28px;font-size:19px;line-height:1.3">＋144</div>
+  <div class="pp-text" style="left:1076px;top:490px;width:64px;height:28px;font-size:19px;text-align:right;line-height:1.3">144</div>
+  <div class="pp-text b" style="left:1150px;top:490px;width:66px;height:28px;font-size:19px;text-align:right;line-height:1.3">＋96</div>
+  <div class="pp-line" style="left:64px;top:530px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-line" data-note="中央の軸：減と増の境" style="left:680px;top:258px;width:2px;height:274px;background:var(--text)"></div>
+  <div class="pp-shape f-soft" data-note="計の帯：台と本は足さず、機器の計と回線を分けて書く" style="left:64px;top:538px;width:1152px;height:44px"></div>
+  <div class="pp-text b" data-note="計の帯：台と本は足さず、機器の計と回線を分けて書く" style="left:84px;top:546px;width:540px;height:28px;font-size:19px;line-height:1.3">機器 計（台）　166 → 192（＋26）　入れ替え48・増設26</div>
+  <div class="pp-text b" style="left:660px;top:546px;width:540px;height:28px;font-size:19px;line-height:1.3">回線（本）　48 → 144（＋96）　1拠点3本に多重化</div>
+  <div class="pp-text" data-part="注釈" data-note="注：台数の出所と、増減から言える含意" data-role="caption" style="left:64px;top:602px;width:1152px;height:40px">注: 台数は2026年9月の機器台帳。回線はMPLS 1回線をインターネット2回線＋LTEに置き換える（1拠点3本）<br>→ 機器はルータ48台がSD-WAN機器48台に置き換わるだけで、保守契約の追加は監視装置26台と回線96本の2件に絞られる</div>
+</section>

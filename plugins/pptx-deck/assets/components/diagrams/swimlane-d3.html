@@ -1,0 +1,53 @@
+<!-- 用途: 業務フロー（担当部門をまたぐ手順）。レーン＝担当部門を行に並べ、工程を時間軸の上の棒で置く。棒の長さが所要時間（1 時間＝100px）で、塗り＝作業、枠線＝待ち。判断は ◇ の印と判定の名前で書き、Yes／No の行き先を添える。最大の待ち 1 工程の文字だけ強調色（1 枚 1 点）。最下部にパネル地の帯で合計の内訳。
+     デザイン1との違い: 工程の箱と矢印をやめ、担当の行に時間軸に比例した棒を置く。待ちの長さが棒の長さで見える。
+     差し替える所: 行 4 つ（担当の名前と注記）・棒 7 つ（行・開始時刻・所要・名前。x＝212＋100×開始、幅＝100×所要。所要 0 の判断は ◇ の印だけ）・判断の文・帯の文・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="swimlane">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">障害対応の業務フロー</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">障害対応の所要10時間の半分は部門をまたぐ待ちで生じ、遠隔化はここに絞るべきだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">障害対応の業務フロー（現行、2026年7月14日の実績。行＝担当部門、棒の長さ＝所要時間）</div>
+  <div class="pp-text" data-note="時間軸：1 時間＝100px。棒の長さがそのまま所要時間" data-role="caption" style="left:64px;top:229px;width:120px;height:20px">経過時間（h）</div>
+  <div class="pp-text center" data-role="caption" style="left:192px;top:229px;width:40px;height:20px">0</div>
+  <div class="pp-line " style="left:212px;top:252px;width:1px;height:308px;background:var(--line)"></div>
+  <div class="pp-text center" data-role="caption" style="left:392px;top:229px;width:40px;height:20px">2</div>
+  <div class="pp-line " style="left:412px;top:252px;width:1px;height:308px;background:var(--line)"></div>
+  <div class="pp-text center" data-role="caption" style="left:592px;top:229px;width:40px;height:20px">4</div>
+  <div class="pp-line " style="left:612px;top:252px;width:1px;height:308px;background:var(--line)"></div>
+  <div class="pp-text center" data-role="caption" style="left:792px;top:229px;width:40px;height:20px">6</div>
+  <div class="pp-line " style="left:812px;top:252px;width:1px;height:308px;background:var(--line)"></div>
+  <div class="pp-text center" data-role="caption" style="left:992px;top:229px;width:40px;height:20px">8</div>
+  <div class="pp-line " style="left:1012px;top:252px;width:1px;height:308px;background:var(--line)"></div>
+  <div class="pp-text center" data-role="caption" style="left:1192px;top:229px;width:40px;height:20px">10</div>
+  <div class="pp-line " style="left:1212px;top:252px;width:1px;height:308px;background:var(--line)"></div>
+  <div class="pp-shape f-accent" data-note="レーン：担当部門を左の基調色の面に 1 回だけ書く" style="left:64px;top:255px;width:140px;height:72px"></div>
+  <div class="pp-text t-white b" style="left:72px;top:267px;width:124px;height:28px;font-size:19px">申告者</div>
+  <div class="pp-text t-white" data-role="caption" style="left:72px;top:295px;width:124px;height:20px">業務部門（本社）</div>
+  <div class="pp-shape f-accent" style="left:64px;top:331px;width:140px;height:72px"></div>
+  <div class="pp-text t-white b" style="left:72px;top:343px;width:124px;height:28px;font-size:19px">運用センター</div>
+  <div class="pp-text t-white" data-role="caption" style="left:72px;top:371px;width:124px;height:20px">一次対応・監視</div>
+  <div class="pp-shape f-accent" style="left:64px;top:407px;width:140px;height:72px"></div>
+  <div class="pp-text t-white b" style="left:72px;top:419px;width:124px;height:28px;font-size:19px">基盤グループ</div>
+  <div class="pp-text t-white" data-role="caption" style="left:72px;top:447px;width:124px;height:20px">二次対応・承認</div>
+  <div class="pp-shape f-accent" style="left:64px;top:483px;width:140px;height:72px"></div>
+  <div class="pp-text t-white b" style="left:72px;top:495px;width:124px;height:28px;font-size:19px">ベンダー</div>
+  <div class="pp-text t-white" data-role="caption" style="left:72px;top:523px;width:124px;height:20px">保守委託先</div>
+  <div class="pp-shape f-accent" data-note="棒：塗り＝作業、枠線＝待ち。長さは所要時間に比例" style="left:212px;top:263px;width:50px;height:28px"></div>
+  <div class="pp-text" style="left:212px;top:294px;width:200px;height:26px;font-size:19px">申告 0.5h</div>
+  <div class="pp-shape f-accent" style="left:262px;top:339px;width:200px;height:28px"></div>
+  <div class="pp-text" style="left:262px;top:370px;width:260px;height:26px;font-size:19px">一次切り分け 2.0h</div>
+  <div class="pp-shape f-outline" data-note="判断：所要 0 の判定は ◇ の印（白地の小さな枠）で位置を示し、分岐の行き先を下に書く" style="left:462px;top:417px;width:22px;height:22px"></div>
+  <div class="pp-text b" style="left:492px;top:413px;width:370px;height:30px;font-size:19px">◇ 影響判定（所要0）</div>
+  <div class="pp-text" data-role="caption" style="left:462px;top:444px;width:480px;height:22px">遠隔復旧の可否　Yes→切替の承認へ（現行は不可）／No→到着待ち</div>
+  <div class="pp-shape f-outline" data-note="最大の待ち：所要だけ強調色（1 点）" style="left:462px;top:491px;width:300px;height:28px"></div>
+  <div class="pp-text b t-emph center" data-part="アクセント" data-overlap style="left:468px;top:493px;width:288px;height:26px;font-size:19px;line-height:1.1">到着待ち 3.0h</div>
+  <div class="pp-text" data-role="caption" style="left:462px;top:522px;width:300px;height:26px">出動要請</div>
+  <div class="pp-shape f-accent" style="left:762px;top:491px;width:200px;height:28px"></div>
+  <div class="pp-text" style="left:762px;top:522px;width:200px;height:26px;font-size:19px">機器交換 2.0h</div>
+  <div class="pp-shape f-outline" style="left:962px;top:415px;width:200px;height:28px"></div>
+  <div class="pp-text" style="left:962px;top:446px;width:200px;height:26px;font-size:19px">切替の承認 2.0h</div>
+  <div class="pp-shape f-accent" style="left:1162px;top:339px;width:50px;height:28px"></div>
+  <div class="pp-text right" style="left:1016px;top:370px;width:200px;height:26px;font-size:19px">切替・連絡 0.5h</div>
+  <div class="pp-shape f-soft" data-note="合計の帯：作業と待ちの内訳を数字で示す" style="left:64px;top:563px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="合計の帯：作業と待ちの内訳を数字で示す" style="left:84px;top:566px;width:1112px;height:30px;font-size:19px"><b>合計 10.0h。</b>作業 5.0h、待ち 5.0h（到着3.0h・承認2.0h）。待ちはいずれも部門をまたぐ受け渡しで生じる</div>
+  <div class="pp-text" data-part="注釈" data-note="注：所要の出所と、フローから言える含意" data-role="caption" style="left:64px;top:610px;width:1152px;height:22px">注: 所要は2026年7月14日の対応記録。→ 到着待ちと承認待ちを遠隔復旧と自動切替で消せば、同じフローでも合計は5.0hに縮む</div>
+</section>
