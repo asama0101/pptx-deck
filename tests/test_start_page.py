@@ -6,10 +6,11 @@
 # ruff: noqa: S101  # pytest の assert
 import json
 import re
+import tempfile
 from pathlib import Path
 
 import pytest
-from pptx_deck import cli, intake, start_page
+from pptx_deck import cli, intake, scan, start_page
 
 slow = pytest.mark.slow
 BODY = "一行目\n\n## 見出し\n- 名前: 上書き\n二行目"  # 本文の見出し・箇条書きも本文のまま
@@ -42,7 +43,7 @@ def test_build_は作業フォルダの一覧を埋め込んで書き出す(tmp_
     (cwd / "資料").mkdir(parents=True)
     (cwd / "資料" / "稟議書.docx").write_text("x", encoding="utf-8")
 
-    out = start_page.build(cwd, tmp_path / "page.html")
+    out = start_page.build(cwd, tmp_path / "page.html", tmp_path / "nohome")
 
     assert out == tmp_path / "page.html"
     data = _embedded(out.read_text(encoding="utf-8"))
@@ -52,6 +53,10 @@ def test_build_は作業フォルダの一覧を埋め込んで書き出す(tmp_
 
 def test_cli_start_page_はページのパスを1行で出す(tmp_path, home, monkeypatch, capsys):
     monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(tempfile, "tempdir", str(tmp_path / "os-temp"))  # 本物の一時フォルダに書かない
+    (tmp_path / "os-temp").mkdir()
+    monkeypatch.setattr(scan, "_registry_value", lambda name: None)  # 本物の既知フォルダを読まない
+    monkeypatch.setattr(scan.Path, "home", classmethod(lambda cls: tmp_path / "nohome"))
     assert cli.main(["start-page"]) == 0
     out = capsys.readouterr().out
     assert out.count("\n") == 1
@@ -90,7 +95,7 @@ def open_start(browser, work, tmp_path):
     pages = []
 
     def _open():
-        f = start_page.build(work, tmp_path / "start-page.html")
+        f = start_page.build(work, tmp_path / "start-page.html", tmp_path / "nohome")
         page = browser.new_page(viewport={"width": 1400, "height": 900})
         pages.append(page)
         page.goto(f.as_uri())

@@ -1,6 +1,7 @@
 """開始ページの事前スキャン（入力ファイルと出力先の候補）と、最近使った場所の記録。"""
 
 import json
+import os
 import stat
 from pathlib import Path
 
@@ -55,16 +56,44 @@ def _tree(path: Path, name: str, depth: int) -> dict:
     return node
 
 
+_SHELL_FOLDERS = r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders"
+# (ラベル, home 下の英語名, レジストリの値名)
+_KNOWN = (
+    ("ドキュメント", "Documents", "Personal"),
+    ("デスクトップ", "Desktop", "Desktop"),
+    ("ダウンロード", "Downloads", "{374DE290-123F-4565-9164-39C4925E467B}"),
+)
+
+
+def _registry_value(name: str) -> str | None:
+    """User Shell Folders の値を読む。読めなければ None（Windows 以外では winreg がない）。"""
+    try:
+        import winreg  # noqa: PLC0415  # Windows 以外でも import できるように遅延させる
+
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, _SHELL_FOLDERS) as k:
+            v, _ = winreg.QueryValueEx(k, name)
+    except (ImportError, OSError):
+        return None
+    return v if isinstance(v, str) else None
+
+
+def _known_dir(home: Path | None, english: str, value: str) -> Path:
+    """既知のフォルダ。home を渡さないときは、OneDrive などでの移動先をレジストリから引く（実在するものだけ）。"""
+    if home is not None:
+        return home / english
+    raw = _registry_value(value)
+    if raw:
+        p = Path(os.path.expandvars(raw))
+        if p.is_absolute() and p.is_dir():
+            return p
+    return Path.home() / english
+
+
 def scan(cwd: Path, home: Path | None = None) -> dict:
-    """作業フォルダ・ドキュメント・デスクトップ・ダウンロード・最近使った場所（存在するものだけ）を辿る。"""
-    home = Path.home() if home is None else home
+    """作業フォルダ・ドキュメント・デスクトップ・ダウンロード・最近使った場所（存在するものだけ）を辿る。
+    home を渡すと、レジストリを読まずに home の下の英語名のフォルダを使う（テスト用）。"""
     places = []
-    for label, p in (
-        ("作業フォルダ", cwd),
-        ("ドキュメント", home / "Documents"),
-        ("デスクトップ", home / "Desktop"),
-        ("ダウンロード", home / "Downloads"),
-    ):
+    for label, p in (("作業フォルダ", cwd), *((lb, _known_dir(home, en, v)) for lb, en, v in _KNOWN)):
         if p.is_dir():
             places.append({"label": label, "path": str(p), "tree": _tree(p, label, 0)})
     recent = [Path(d) for d in load_recent() if Path(d).is_dir()]

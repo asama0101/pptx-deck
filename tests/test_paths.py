@@ -111,3 +111,11 @@ def test_cli_は_LayoutError_を終了コード2とエラー表示にする(tmp_
     rc = cli.main(["build", str(tmp_path / "x")])
     assert rc == 2
     assert "エラー" in capsys.readouterr().err
+
+
+def test_旧配置の_pptx_パスは未対応のエラーになる(tmp_path):
+    old = tmp_path / "demo"
+    (old / "source").mkdir(parents=True)
+    (old / "source" / "template.json").write_text("{}", encoding="utf-8")
+    with pytest.raises(paths.LayoutError, match="旧配置は未対応"):
+        paths.resolve_work(old / "demo.pptx")

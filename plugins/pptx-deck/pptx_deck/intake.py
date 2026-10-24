@@ -1,5 +1,6 @@
 """開始ページの回答（md）を読み、入力・出力先・成果物名を検証して解決する。何も作らない。"""
 
+import os
 import re
 import tempfile
 from pathlib import Path
@@ -57,13 +58,27 @@ def _check_name(name: str) -> None:
         raise IntakeError(f'成果物名に使えない文字があります（半角の < > : " / \\ | ? * と制御文字）: {name}')
     if name in (".", "..") or name != name.rstrip(" ."):
         raise IntakeError(f"成果物名の末尾にドットか空白は使えません（`.`・`..` も不可）: {name}")
+    if name.lower().endswith(".pptx"):
+        raise IntakeError(f"成果物名の末尾の .pptx は外してください（拡張子は自動で付きます）: {name}")
     if _RESERVED.fullmatch(name.split(".")[0]):
         raise IntakeError(f"成果物名に Windows の予約名は使えません: {name}")
 
 
 def _abs(p: str, cwd: Path) -> Path:
     q = Path(p)
-    return q if q.is_absolute() else cwd / q
+    q = q if q.is_absolute() else cwd / q
+    if not q.is_absolute():  # `D:` のようなドライブだけの指定は、ドライブ相対になる
+        raise IntakeError(f"絶対パスで指定してください（ドライブ名だけの指定は使えません）: {p}")
+    return q
+
+
+def _same_file(a: Path, b: Path) -> bool:
+    try:
+        if a.exists() and b.exists():
+            return a.samefile(b)
+    except OSError:
+        pass
+    return os.path.normcase(a.resolve()) == os.path.normcase(b.resolve())
 
 
 def resolve(raw: dict, cwd: Path) -> dict:
@@ -95,6 +110,8 @@ def resolve(raw: dict, cwd: Path) -> dict:
         raise IntakeError(f"出力先に書き込めません: {out_dir}（{e}）") from e
     workdir = out_dir / "pptx-deck-source" / name
     pptx = out_dir / f"{name}.pptx"
+    if any(_same_file(pptx, f) for f in files):
+        raise IntakeError("出力の PPTX が入力ファイルと同じです。成果物名か出力先を変えてください")
     return {
         "kind": kind,
         "files": [str(p) for p in files],

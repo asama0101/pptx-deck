@@ -584,7 +584,7 @@ def cmd_history(args) -> int:
             r = history.versions(work)
         else:
             if args.version is None:
-                raise ValueError("restore には版の番号が要ります（history <名前> list で確かめる）")
+                raise ValueError("restore には版の番号が要ります（history <元データ> list で確かめる）")
             r = history.restore(work, args.version, args.slide)
     except ValueError as e:
         print(f"エラー: {e}", file=sys.stderr)

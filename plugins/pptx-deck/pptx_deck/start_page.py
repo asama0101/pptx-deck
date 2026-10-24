@@ -17,7 +17,7 @@ def render(data: dict) -> str:
     return template.replace(_MARK, json.dumps(data, ensure_ascii=False).replace("</", "<\\/"))
 
 
-def build(cwd: Path, out: Path | None = None) -> Path:
+def build(cwd: Path, out: Path | None = None, home: Path | None = None) -> Path:
     out = paths.temp_dir("start") / "start-page.html" if out is None else out
-    out.write_text(render(scan.scan(cwd)), encoding="utf-8")
+    out.write_text(render(scan.scan(cwd, home)), encoding="utf-8")
     return out

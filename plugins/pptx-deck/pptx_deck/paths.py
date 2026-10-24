@@ -81,6 +81,10 @@ def resolve_work(arg: str | Path) -> Path:
     .pptx のパスを渡すと、その隣の pptx-deck-source/<成果物名> にする。"""
     arg = Path(arg)
     is_pptx = arg.suffix.lower() == ".pptx"
+    if is_pptx and (arg.parent / "source" / "template.json").is_file():
+        raise LayoutError(
+            f"旧配置は未対応です（<名前>/<名前>.pptx と <名前>/source の形は使えません。作り直してください）: {arg}"
+        )
     work = arg.parent.resolve() / SOURCE_PARENT / arg.stem if is_pptx else arg.resolve()
     if not work.name:
         raise LayoutError(f"成果物の名前が空です（ドライブ直下は指定できません）: {arg}")

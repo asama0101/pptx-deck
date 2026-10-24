@@ -259,3 +259,13 @@ def test_成果物の用語が統一されている():
     ]
     offenders = [f.relative_to(REPO).as_posix() for f in targets if f.exists() and old in read(f)]
     assert not offenders, offenders
+
+
+def test_部品の_html_に旧配置の_source_スラッシュ_の説明が残っていない():
+    pat = r"(?<![\w-])source/(slides|script|design|final|answers|variants|material|history|picture)"
+    offenders = [
+        f.relative_to(REPO).as_posix()
+        for f in (PKG / "assets" / "components").rglob("*.html")
+        if re.search(pat, read(f))
+    ]
+    assert not offenders, offenders

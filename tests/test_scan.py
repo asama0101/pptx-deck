@@ -140,3 +140,53 @@ def test_PPTX_DECK_HOME_がなければ_remember_recent_は何もしない(tmp_p
     scan.remember_recent([str(tmp_path)])
     assert scan.load_recent() == []
     assert list(tmp_path.iterdir()) == []
+
+
+def _known(monkeypatch, values: dict):
+    """レジストリの読み取りを、値名 -> パスの辞書に差し替える（本物のレジストリを読まない）。"""
+    monkeypatch.setattr(scan, "_registry_value", lambda name: values.get(name))
+
+
+def test_home_なしならレジストリのリダイレクト先を使う(tmp_path, no_recent, monkeypatch):
+    real = tmp_path / "退避" / "デスクトップ"
+    _touch(real / "d.docx")
+    fake_home = tmp_path / "home"
+    (fake_home / "Desktop").mkdir(parents=True)  # 既定の場所は使われないはず
+    monkeypatch.setattr(scan.Path, "home", classmethod(lambda cls: fake_home))
+    _known(monkeypatch, {"Desktop": str(real)})
+    r = scan.scan(tmp_path / "w")
+    assert _place(r, "デスクトップ")["path"] == str(real)
+
+
+def test_レジストリの値が環境変数入りでも展開する(tmp_path, no_recent, monkeypatch):
+    real = tmp_path / "docs"
+    real.mkdir()
+    monkeypatch.setenv("PD_TEST_ROOT", str(tmp_path))
+    _known(monkeypatch, {"Personal": r"%PD_TEST_ROOT%\docs"})
+    monkeypatch.setattr(scan.Path, "home", classmethod(lambda cls: tmp_path / "nohome"))
+    assert _place(scan.scan(tmp_path / "w"), "ドキュメント")["path"] == str(real)
+
+
+def test_レジストリの値がないか存在しないなら_home_の英語名に戻る(tmp_path, no_recent, monkeypatch):
+    fake_home = tmp_path / "home"
+    (fake_home / "Documents").mkdir(parents=True)
+    (fake_home / "Downloads").mkdir()
+    monkeypatch.setattr(scan.Path, "home", classmethod(lambda cls: fake_home))
+    _known(
+        monkeypatch,
+        {"Personal": str(tmp_path / "no-such"), "Desktop": "", "{374DE290-123F-4565-9164-39C4925E467B}": "相対"},
+    )
+    r = scan.scan(tmp_path / "w")
+    assert _place(r, "ドキュメント")["path"] == str(fake_home / "Documents")
+    assert _place(r, "ダウンロード")["path"] == str(fake_home / "Downloads")
+    assert not any(p["label"] == "デスクトップ" for p in r["places"])
+
+
+def test_home_を渡すとレジストリを読まない(tmp_path, no_recent, monkeypatch):
+    def boom(name):
+        raise AssertionError("レジストリを読んではいけない")
+
+    monkeypatch.setattr(scan, "_registry_value", boom)
+    home = tmp_path / "home"
+    (home / "Documents").mkdir(parents=True)
+    assert _place(scan.scan(tmp_path / "w", home=home), "ドキュメント")["path"] == str(home / "Documents")

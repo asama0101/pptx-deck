@@ -134,6 +134,8 @@ def test_日本語と空白を含む出力先でも解決できる(tmp_path):
         "abc ",
         ".",
         "..",
+        "稟議.pptx",
+        "稟議.PPTX",
     ],
     ids=lambda s: repr(s),
 )
@@ -267,3 +269,31 @@ def test_cli_intake_は_UTF8_でない回答ファイルを終了コード_2_に
     code = cli.main(["intake", str(ans)])
     assert code == 2
     assert "UTF-8" in capsys.readouterr().err
+
+
+def test_resolve_は拡張子_pptx_付きの入力ファイルの幹から決めた名前をエラーにする(tmp_path):
+    f = _touch(tmp_path, "a.pptx.pdf")  # 幹が "a.pptx" になる
+    with pytest.raises(intake.IntakeError, match=r"\.pptx は外して"):
+        _resolve(_md(files=[str(f)]), tmp_path)
+
+
+def test_resolve_は出力の_pptx_が入力ファイルと同じならエラーにする(tmp_path):
+    _touch(tmp_path, "proposal.pptx")
+    md = _md(files=[str(tmp_path / "proposal.pptx")])  # 出力先も名前も空 -> cwd / proposal.pptx
+    with pytest.raises(intake.IntakeError, match="入力ファイルと同じ"):
+        _resolve(md, tmp_path)
+
+
+def test_cli_intake_は出力が入力と同じなら_allow_existing_でも終了コード_2(tmp_path, capsys):
+    f = _touch(tmp_path, "proposal.pptx")
+    md = _md(files=[str(f)], out=str(tmp_path))
+    code, cap = _run(tmp_path, md, "--allow-existing", capsys=capsys)
+    assert code == 2
+    assert "入力ファイルと同じ" in cap.err
+
+
+def test_resolve_はドライブ名だけの出力先をエラーにする(tmp_path):
+    f = _touch(tmp_path, "a.docx")
+    other = "Z:" if tmp_path.drive.upper() != "Z:" else "Y:"  # 作業フォルダと別のドライブ -> ドライブ相対になる
+    with pytest.raises(intake.IntakeError, match="絶対パス"):
+        _resolve(_md(files=[str(f)], out=other, name="n"), tmp_path)
