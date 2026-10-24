@@ -1,6 +1,7 @@
 """開始ページ（入力と保存先を選ぶ HTML）を作る。作業フォルダの一覧は scan で調べて埋め込む（サーバーなし）。"""
 
 import json
+import tempfile
 from pathlib import Path
 
 from . import paths, scan
@@ -18,6 +19,7 @@ def render(data: dict) -> str:
 
 
 def build(cwd: Path, out: Path | None = None) -> Path:
-    out = paths.temp_dir("start") / "start-page.html" if out is None else out
+    if out is None:  # 呼ぶたびに別のフォルダへ作る（同時のセッションで上書きし合わない）
+        out = Path(tempfile.mkdtemp(dir=paths.temp_dir("start"))) / "start-page.html"
     out.write_text(render(scan.scan(cwd)), encoding="utf-8")
     return out

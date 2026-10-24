@@ -66,6 +66,10 @@ def test_cli_start_page_はページのパスを1行で出す(tmp_path, temp_roo
     assert _embedded(page.read_text(encoding="utf-8"))["cwd"] == str(cwd)
 
 
+def test_start_page_は呼ぶたびに別のパスに作る(tmp_path, temp_root):
+    assert start_page.build(tmp_path) != start_page.build(tmp_path)
+
+
 # ---- 画面の操作 ----
 
 
