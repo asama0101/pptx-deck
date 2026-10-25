@@ -16,7 +16,6 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;backgr
 .sp section{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
 .sp h2{font-size:16px;border-left:3px solid var(--sp-fg);padding-left:10px}
 .sp .note{color:var(--sp-sub);font-size:13px}
-.sp .note.sp-warn{color:var(--sp-cm);font-weight:700}
 .sp [hidden]{display:none!important}
 .sp .where{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;background:var(--sp-panel);border:1px solid var(--sp-line);padding:8px 14px;font-size:13.5px}
 .sp .where b{color:var(--sp-sub);font-weight:400;margin-right:8px}
@@ -66,7 +65,7 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;backgr
     <button type="button" id="reread">フォルダを読み直す</button>
     <span class="note" id="read-at"></span>
     <span class="note" id="reread-msg" role="status"></span>
-    <p class="note" id="reread-hint">選んだフォルダの名前だけで作業フォルダか確認します。別の場所の同名フォルダを選ぶと、実在しないパスが並びます</p>
+    <p class="note" id="reread-hint">押すと Claude が作業フォルダを読み直し、開始ページを開き直します（選んだ内容は消えます）</p>
   </div>
 
   <section aria-labelledby="h-in">
@@ -112,14 +111,9 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;backgr
 <script>
 (function () {
   var DATA = /*__DATA__*/null;
-  // 「フォルダを読み直す」で辿る規則。scan.py（MAX_DEPTH・MAX_ENTRIES・EXTS・SKIP_DIRS）と一致させる
-  var MAX_DEPTH = 3, MAX_ENTRIES = 200;
-  var EXTS = ['.docx', '.pdf', '.pptx', '.md', '.txt'], SKIP_DIRS = ['pptx-deck-source', '.git', 'node_modules'];
-  var AUTOMATED = navigator.webdriver === true;
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
   var picked = [];   // 選んだ順のファイル（先頭のファイル名が成果物名の既定になる）
-  var current = null;
   var folders = {};  // パス → ノード
 
   function el(tag, cls, text) {
@@ -157,7 +151,6 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;backgr
     return r;
   }
   function show(path) {
-    current = path;
     $$('#tree-in .row').forEach(function (r) { r.setAttribute('aria-current', String(r.dataset.node === path)); });
     var node = folders[path], ul = $('#files');
     $('#folder-h').textContent = path;
@@ -193,24 +186,15 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;backgr
     return r;
   }
 
-  // 入力と保存先のツリーを DATA から作り直す（場所は作業フォルダ 1 つ）。消えたファイルのチェックは外し、
-  // 保存先と開いていたフォルダは残っていれば保つ。選んでいた保存先が消えて作業フォルダに戻したときは true を返す
+  // 入力と保存先のツリーを DATA から作る（場所は作業フォルダ 1 つ。保存先の既定は作業フォルダ）
   function render() {
-    var rb = $('input[name=out]:checked'), out = rb ? rb.getAttribute('data-dir') : DATA.cwd;
     folders = {};
     var root = DATA.places[0].tree, a = tree(root, inRow, true), b = tree(root, outRow, true);
     a.classList.add('place'); b.classList.add('place');
     $('#tree-in').replaceChildren(a); $('#tree-out').replaceChildren(b);
-    var exists = {};
-    Object.keys(folders).forEach(function (k) { folders[k].files.forEach(function (f) { exists[f] = true; }); });
-    picked = picked.filter(function (f) { return exists[f]; });
-    var radios = $$('#tree-out input[data-dir]');
-    var keep = radios.filter(function (r) { return r.getAttribute('data-dir') === out; })[0]
-      || radios.filter(function (r) { return r.getAttribute('data-dir') === DATA.cwd; })[0];
-    keep.checked = true;
-    show(folders[current] ? current : DATA.cwd);
+    $$('#tree-out input[data-dir]').filter(function (r) { return r.getAttribute('data-dir') === DATA.cwd; })[0].checked = true;
+    show(DATA.cwd);
     refresh();
-    return keep.getAttribute('data-dir') !== out;
   }
 
   function files() {
@@ -236,65 +220,16 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;backgr
   }
 
   function say(msg, warn) { var s = $('#state'); s.textContent = msg; s.classList.toggle('sp-warn', !!warn); }
-  function note(msg, warn) { var m = $('#reread-msg'); m.textContent = msg; m.classList.toggle('sp-warn', !!warn); }
+  function note(msg) { $('#reread-msg').textContent = msg; }
   function readAt() {
     var d = new Date(), two = function (n) { return ('0' + n).slice(-2); };
     $('#read-at').textContent = '読み込み: ' + two(d.getHours()) + ':' + two(d.getMinutes());
   }
 
-  // 選ばれたフォルダ（FileSystemDirectoryHandle）を scan.py と同じ規則で辿り、同じ形のノードを作る。path は作業フォルダのパスに \ でつなぐ
-  async function walk(handle, path, name, depth) {
-    var node = {name: name, path: path, dirs: [], files: []}, items = [];
-    try {
-      for await (var h of handle.values()) items.push(h);
-    } catch (e) {
-      if (depth === 0) throw e;  // 作業フォルダそのものが読めなければ、一覧を差し替えない
-      return node;  // 読めないサブフォルダは中身なしで出す（scan.py と同じ）
-    }
-    items.sort(function (a, b) { var x = a.name.toLowerCase(), y = b.name.toLowerCase(); return x < y ? -1 : x > y ? 1 : 0; });
-    var count = 0;
-    for (var i = 0; i < items.length && count < MAX_ENTRIES; i++) {
-      var it = items[i], n = it.name, sub = path.replace(/\\+$/, '') + '\\' + n;
-      if (n.charAt(0) === '.' || n.indexOf('~$') === 0) continue;  // 隠し・Office のロックファイル
-      if (it.kind === 'directory') {
-        if (SKIP_DIRS.indexOf(n) >= 0 || depth >= MAX_DEPTH) continue;  // 深さの上限のフォルダは、ファイルだけ拾う
-        node.dirs.push(await walk(it, sub, n, depth + 1));
-      } else if (n.lastIndexOf('.') > 0 && EXTS.indexOf(n.slice(n.lastIndexOf('.')).toLowerCase()) >= 0) {
-        node.files.push(sub);
-      } else {
-        continue;
-      }
-      count++;
-    }
-    return node;
-  }
-
-  // 「フォルダを読み直す」: 利用者が選んだフォルダだけを読む。名前が作業フォルダと違えば差し替えない。
-  // 取り消しは一覧を変えない。前回の通知は押すたびに消す
-  $('#reread').addEventListener('click', async function () {
-    var btn = $('#reread');
-    note('');
-    if (AUTOMATED) {  // Claude 操作用のブラウザは OS のフォルダ選択を出せない。Claude に、ページの作り直しを頼む
-      window.__regenerate = true;
-      note('Claude に開始ページの作り直しを頼みました。新しいページが開くまでお待ちください（開かないときは、Claude に「開始ページを作り直して」と伝えてください）');
-      return;
-    }
-    btn.disabled = true;
-    try {
-      var handle = await window.showDirectoryPicker({mode: 'read'});
-      var want = DATA.cwd.replace(/[\\\/]+$/, '').split(/[\\\/]/).pop();
-      if (handle.name.toLowerCase() !== want.toLowerCase()) {
-        note('選んだフォルダ名（' + handle.name + '）が作業フォルダ（' + want + '）と違います。作業フォルダを選んでください', true);
-        return;
-      }
-      DATA.places[0].tree = await walk(handle, DATA.cwd, DATA.places[0].tree.name, 0);
-      if (render()) note('選んでいた保存先が見つからないため、作業フォルダに戻しました');
-      readAt();
-    } catch (e) {
-      if (!e || e.name !== 'AbortError') note('フォルダを読み直せませんでした（' + (e && e.name || e) + '）', true);
-    } finally {
-      btn.disabled = false;
-    }
+  // 「フォルダを読み直す」: Claude 操作用のブラウザは OS のフォルダ選択を出せない。Claude に、ページの作り直しを頼む
+  $('#reread').addEventListener('click', function () {
+    window.__regenerate = true;
+    note('Claude に開始ページの作り直しを頼みました。新しいページが開くまでお待ちください（開かないときは、Claude に「開始ページを作り直して」と伝えてください）');
   });
 
   // 回答の md（intake が読む形式）。本文は最後の節に置く（「## 本文」の後ろは、見出しも含めて末尾まで本文として読まれる）
@@ -334,12 +269,6 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;backgr
   $$('input[name=kind]').forEach(function (x) { x.addEventListener('change', refresh); });
   ['#path-files', '#path-out'].forEach(function (s) { $(s).addEventListener('input', refresh); });
   $('#cwd').textContent = DATA.cwd;
-  if (AUTOMATED) {
-    $('#reread-hint').textContent = 'このブラウザでは、押すと Claude に開始ページの作り直しを頼みます（選んだ内容は消えます）';
-  } else if (typeof window.showDirectoryPicker !== 'function') {
-    $('#reread').disabled = true;
-    note('このブラウザでは使えません（Chrome か Edge で開くか、ページを作り直してください）');
-  }
   readAt();
   render();
 })();
