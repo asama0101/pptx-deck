@@ -3,6 +3,9 @@ __pycache__/
 *.log
 .venv/
 
+# 開発用の専用 venv の置き場（CLAUDE.md の「コマンド」の H。リポジトリ内に作り、コミットしない）
+.dev/
+
 # テスト・lint のキャッシュ
 .pytest_cache/
 .ruff_cache/

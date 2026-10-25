@@ -99,7 +99,9 @@ def work(tmp_path):
 # {name, spec}（spec はファイル名 -> null、フォルダ名 -> 入れ子の spec。"unreadable" はそのフォルダの values() が
 # 例外を出す）か {error: 例外名} を入れて使う
 NOT_AUTOMATED = "Object.defineProperty(navigator, 'webdriver', {get: () => false});\n"
-FAKE_PICKER = NOT_AUTOMATED + """
+FAKE_PICKER = (
+    NOT_AUTOMATED
+    + """
 window.__mkdir = function mk(name, spec) {
   return {kind: 'directory', name: name, values: async function* () {
     if (spec === 'unreadable') throw new DOMException('読めません', 'NotAllowedError');
@@ -113,6 +115,7 @@ window.showDirectoryPicker = async function (opts) {
   return window.__mkdir(p.name, p.spec);
 };
 """
+)
 NO_PICKER = NOT_AUTOMATED + "window.showDirectoryPicker = undefined;"
 LOADED = datetime(2026, 10, 24, 9, 5)
 
