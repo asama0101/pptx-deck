@@ -31,8 +31,11 @@ allowed-tools: 'Bash(python "${CLAUDE_PLUGIN_ROOT}/run.py" *)'
 
 ### 1.0 開始ページ（最初にやる）
 1. `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" start-page` を実行する。出力は、入力（ファイルかテキスト）・保存先のフォルダ・成果物名を選ぶ HTML のパス。一覧は作業フォルダの中だけで、ほかの場所は利用者がパス欄に手動で書く。
-2. そのパスを Playwright MCP の `browser_navigate` で `file:///C:/…` として開き、「入力と保存先、成果物の名前を選んで、『回答をコピー』を押してください」と伝える。`browser_resize` で窓の大きさを変えない。ページを開いたあとに作業フォルダへ置いたファイルが一覧にないと言われたら、「フォルダを読み直す」を押して作業フォルダを選ぶよう伝える（押せないブラウザなら、`start-page` からページを作り直す）。
-3. 3 章の手順 4 と同じ `browser_evaluate` の待ち方（18 回まで、続行方法の質問を含む）で `window.__submitted` を待ち、`window.__answersMd` を取る。Playwright MCP がないときは、利用者に回答を貼り付けてもらう。
+2. そのパスを Playwright MCP の `browser_navigate` で `file:///C:/…` として開き、「入力と保存先、成果物の名前を選んで、『回答をコピー』を押してください」と伝える。`browser_resize` で窓の大きさを変えない。ページを開いたあとに作業フォルダへ置いたファイルが一覧にないと言われたら、「フォルダを読み直す」を押してもらう（Playwright MCP のブラウザでは、フォルダ選択の代わりに、ページの作り直しを頼む `window.__regenerate` が立つ。次の 3）。
+3. 3 章の手順 4 と同じ待ち方（約 100 秒ずつ、18 回まで、続行方法の質問を含む）で、次のスクリプトを `browser_evaluate` で実行する。`submitted` が true なら `md` を取る。`regenerate` が true なら、`start-page` を実行し直して新しいパスを開き直し（選んだ内容は消えると伝え、2 の案内をもう一度する）、待ちの回数を数え直して待つ。どちらも false なら同じ呼び出しを繰り返す。Playwright MCP がないときは、利用者に回答を貼り付けてもらう。
+
+   `() => new Promise(res => { const t0 = Date.now(); const id = setInterval(() => { if (window.__submitted || window.__regenerate || Date.now() - t0 > 100000) { clearInterval(id); res({ submitted: !!window.__submitted, regenerate: !!window.__regenerate, md: window.__answersMd }); } }, 500); })`
+
 4. 回答の md を、セッションのスクラッチパッド（OS の一時フォルダ。プロジェクトの中ではない）に保存する。
 5. `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" intake "<保存した回答ファイル>"` を実行する。何も作らず、JSON（`kind`・`files`・`text`・`out_dir`・`name`・`workdir`・`pptx`・`collisions`）を出す。
    - 終了コード 2: 標準エラーのメッセージを利用者に伝え、開始ページからやり直すか、入力し直してもらう。

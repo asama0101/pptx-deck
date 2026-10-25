@@ -98,7 +98,8 @@ def work(tmp_path):
 # 「フォルダを読み直す」の外部（ブラウザのフォルダ選択）の代わり。window.__pick に
 # {name, spec}（spec はファイル名 -> null、フォルダ名 -> 入れ子の spec。"unreadable" はそのフォルダの values() が
 # 例外を出す）か {error: 例外名} を入れて使う
-FAKE_PICKER = """
+NOT_AUTOMATED = "Object.defineProperty(navigator, 'webdriver', {get: () => false});\n"
+FAKE_PICKER = NOT_AUTOMATED + """
 window.__mkdir = function mk(name, spec) {
   return {kind: 'directory', name: name, values: async function* () {
     if (spec === 'unreadable') throw new DOMException('読めません', 'NotAllowedError');
@@ -112,7 +113,7 @@ window.showDirectoryPicker = async function (opts) {
   return window.__mkdir(p.name, p.spec);
 };
 """
-NO_PICKER = "window.showDirectoryPicker = undefined;"
+NO_PICKER = NOT_AUTOMATED + "window.showDirectoryPicker = undefined;"
 LOADED = datetime(2026, 10, 24, 9, 5)
 
 
@@ -420,6 +421,20 @@ def test_フォルダ選択がないブラウザではボタンを無効にし�
         == "このブラウザでは使えません（Chrome か Edge で開くか、ページを作り直してください）"
     )
     assert page.inner_text("#read-at") == "読み込み: 09:05"
+
+
+@slow
+def test_自動操作のブラウザでは読み直しの代わりにページの作り直しをClaudeに頼む(open_start):
+    # Playwright が起動したブラウザは navigator.webdriver が true（Claude 操作用のブラウザと同じ）
+    page = open_start(init="window.showDirectoryPicker = () => { window.__picked = true; };")
+    assert page.inner_text("#reread") == "フォルダを読み直す"
+    assert page.evaluate("window.__regenerate") is None
+    page.click("#reread")
+    assert page.evaluate("window.__regenerate") is True
+    assert "開始ページの作り直しを頼みました" in page.inner_text("#reread-msg")
+    assert page.evaluate("window.__picked") is None  # フォルダ選択は開かない
+    assert not page.is_disabled("#reread")  # 頼みが届かなかったときに、もう一度押せる
+    assert page.evaluate("window.__submitted") is None  # 回答ではない
 
 
 @slow

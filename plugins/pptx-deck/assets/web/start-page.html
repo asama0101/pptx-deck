@@ -115,6 +115,7 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;backgr
   // 「フォルダを読み直す」で辿る規則。scan.py（MAX_DEPTH・MAX_ENTRIES・EXTS・SKIP_DIRS）と一致させる
   var MAX_DEPTH = 3, MAX_ENTRIES = 200;
   var EXTS = ['.docx', '.pdf', '.pptx', '.md', '.txt'], SKIP_DIRS = ['pptx-deck-source', '.git', 'node_modules'];
+  var AUTOMATED = navigator.webdriver === true;
   var $ = function (s) { return document.querySelector(s); };
   var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
   var picked = [];   // 選んだ順のファイル（先頭のファイル名が成果物名の既定になる）
@@ -272,8 +273,13 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;backgr
   // 取り消しは一覧を変えない。前回の通知は押すたびに消す
   $('#reread').addEventListener('click', async function () {
     var btn = $('#reread');
-    btn.disabled = true;
     note('');
+    if (AUTOMATED) {  // Claude 操作用のブラウザは OS のフォルダ選択を出せない。Claude に、ページの作り直しを頼む
+      window.__regenerate = true;
+      note('Claude に開始ページの作り直しを頼みました。新しいページが開くまでお待ちください（開かないときは、Claude に「開始ページを作り直して」と伝えてください）');
+      return;
+    }
+    btn.disabled = true;
     try {
       var handle = await window.showDirectoryPicker({mode: 'read'});
       var want = DATA.cwd.replace(/[\\\/]+$/, '').split(/[\\\/]/).pop();
@@ -328,7 +334,9 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;backgr
   $$('input[name=kind]').forEach(function (x) { x.addEventListener('change', refresh); });
   ['#path-files', '#path-out'].forEach(function (s) { $(s).addEventListener('input', refresh); });
   $('#cwd').textContent = DATA.cwd;
-  if (typeof window.showDirectoryPicker !== 'function') {
+  if (AUTOMATED) {
+    $('#reread-hint').textContent = 'このブラウザでは、押すと Claude に開始ページの作り直しを頼みます（選んだ内容は消えます）';
+  } else if (typeof window.showDirectoryPicker !== 'function') {
     $('#reread').disabled = true;
     note('このブラウザでは使えません（Chrome か Edge で開くか、ページを作り直してください）');
   }
