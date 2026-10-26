@@ -53,7 +53,9 @@ def fill_text_frame(tf, paras, anchor=MSO_ANCHOR.TOP):
         first = False
         p.alignment = ALIGN[para["align"]]
         size = next((r["size_px"] for r in para["runs"] if "text" in r), 20)
-        p.line_spacing = max(0.9, round(para["lh"] / 1.2, 2))
+        # 固定ポイント。倍率だと、フォントの行の高さで間隔が変わる。行は最大の文字に合わせて伸びる
+        line_px = max((r["size_px"] for r in para["runs"] if "text" in r), default=size)
+        p.line_spacing = Pt(round(para["lh"] * line_px * 0.75, 2))
         if para.get("mb"):
             p.space_after = Pt(round(para["mb"] * 0.75, 1))
         if para["bullet"]:
