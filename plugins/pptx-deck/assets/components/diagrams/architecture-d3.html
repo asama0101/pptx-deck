@@ -1,0 +1,74 @@
+<!-- 用途: 構成図（層×系列の格子）。デザイン1（architecture）の層の構成図と同じ型で、見せる問いが「どの範囲を自社が受け持っているか（守備範囲・未監視の範囲）」のときに使う。上に系列（運用の責任範囲で束ねた拠点の区分）の見出し 4 つ、左に層の名前、格子の中に箱を置き、層の間を下向きの矢印でつなぐ。最下部のブラケットで、監視センターが届く範囲の合計と、届かない残りをくくる。
+     デザイン1との違い: 層を行、系列を列にした格子で範囲を示す（d1・d2 は箱の記号で変更の範囲を示す）。強調は主張の側（未監視の系列③④）に置き、強調色の枠とブラケットの文で 1 点にする。監視済みの側は濃くしない（見出し・箱はすべてパネル地）。語彙は監視センター／拠点担当／未監視で書く。
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・系列の見出し（4 つ）・層の名前（3 層まで）・箱の名前と補足・箱のない所の一言・強調する範囲（枠の列）・ブラケットの文・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="architecture">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">拠点ネットワークの構成</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">トラフィックの55%を流す拠点が未監視のため、監視センターの対象拡大が必要だ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">拠点ネットワークの構成と監視の接点（FY2025、シェアはトラフィック量ベース）</div>
+  <div class="pp-shape " data-note="未監視の範囲：主張の側（系列③④）を強調色の枠で囲む。監視済みの側は濃くしない" data-overlap style="left:700px;top:224px;width:520px;height:372px;background:none;border:3px solid var(--emphasis)"></div>
+  <div class="pp-shape f-soft" data-note="系列の見出し：列の上に 1 回ずつ。面は全列パネル地で、濃淡で優劣を付けない" style="left:186px;top:226px;width:248px;height:47px"></div>
+  <div class="pp-text b center" style="left:190px;top:227px;width:240px;height:26px;font-size:19px;line-height:1.35">系列① 本社・DC</div>
+  <div class="pp-text center" data-role="caption" style="left:190px;top:250px;width:240px;height:20px">監視センターが常時監視</div>
+  <div class="pp-shape f-soft" style="left:446px;top:226px;width:248px;height:47px"></div>
+  <div class="pp-text b center" style="left:450px;top:227px;width:240px;height:26px;font-size:19px;line-height:1.35">系列② 工場6拠点</div>
+  <div class="pp-text center" data-role="caption" style="left:450px;top:250px;width:240px;height:20px">拠点担当が日中に監視</div>
+  <div class="pp-shape f-soft" data-overlap style="left:706px;top:226px;width:248px;height:47px"></div>
+  <div class="pp-text b center" data-overlap style="left:710px;top:227px;width:240px;height:26px;font-size:19px;line-height:1.35">系列③ 営業所40拠点</div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:710px;top:250px;width:240px;height:20px">未監視・申告ベース</div>
+  <div class="pp-shape f-soft" data-overlap style="left:966px;top:226px;width:248px;height:47px"></div>
+  <div class="pp-text b center" data-overlap style="left:970px;top:227px;width:240px;height:26px;font-size:19px;line-height:1.35">系列④ 海外8拠点</div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:970px;top:250px;width:240px;height:20px">現地ベンダー任せ</div>
+  <div class="pp-text b" data-note="層の名前：左の列に 1 回ずつ。格子の中に層×系列の箱を置く" style="left:64px;top:312px;width:116px;height:28px;font-size:19px">WAN（回線）</div>
+  <div class="pp-text b" style="left:64px;top:390px;width:116px;height:28px;font-size:19px">LAN</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:415px;width:116px;height:20px">（拠点の機器）</div>
+  <div class="pp-text b" style="left:64px;top:485px;width:116px;height:28px;font-size:19px">端末・利用者</div>
+  <div class="pp-line" data-overlap style="left:64px;top:370px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-line" data-overlap style="left:64px;top:456px;width:1152px;height:1px;background:var(--line)"></div>
+  <div class="pp-shape f-soft" data-note="格子の箱：層×系列に 1 つ。回線・機器・利用者の順に下へ矢印でつなぐ" style="left:202px;top:291px;width:216px;height:68px"></div>
+  <div class="pp-text b center" style="left:206px;top:298px;width:208px;height:28px;font-size:19px">MPLS 100Mbps×2</div>
+  <div class="pp-text center" data-role="caption" style="left:206px;top:329px;width:208px;height:20px">監視センターが24時間監視</div>
+  <div class="pp-text" data-role="caption" style="left:320px;top:397px;width:104px;height:36px;line-height:1.3">コアSWに直結<br>（拠点機器なし）</div>
+  <div class="pp-line" data-arrow="end" style="left:309px;top:359px;width:2px;height:103px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-white" style="left:202px;top:464px;width:216px;height:68px"></div>
+  <div class="pp-text center" style="left:206px;top:472px;width:208px;height:58px;font-size:19px;line-height:1.5"><b>本社・DC 1,200人</b><br>トラフィックの25%</div>
+  <div class="pp-shape f-soft" style="left:462px;top:291px;width:216px;height:68px"></div>
+  <div class="pp-text b center" style="left:466px;top:298px;width:208px;height:28px;font-size:19px">MPLS 50Mbps</div>
+  <div class="pp-text center" data-role="caption" style="left:466px;top:329px;width:208px;height:20px">拠点担当が日中に確認</div>
+  <div class="pp-shape f-soft" style="left:462px;top:377px;width:216px;height:68px"></div>
+  <div class="pp-text b center" style="left:466px;top:384px;width:208px;height:28px;font-size:19px">工場SW 18台</div>
+  <div class="pp-text center" data-role="caption" style="left:466px;top:415px;width:208px;height:20px">Wi-Fi・生産ライン</div>
+  <div class="pp-line" data-arrow="end" style="left:569px;top:359px;width:2px;height:18px;background:var(--text-sub)"></div>
+  <div class="pp-line" data-arrow="end" style="left:569px;top:446px;width:2px;height:18px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-white" style="left:462px;top:464px;width:216px;height:68px"></div>
+  <div class="pp-text center" style="left:466px;top:472px;width:208px;height:58px;font-size:19px;line-height:1.5"><b>工場 6拠点 800人</b><br>トラフィックの20%</div>
+  <div class="pp-shape f-soft" data-overlap style="left:722px;top:291px;width:216px;height:68px"></div>
+  <div class="pp-text b center" data-overlap style="left:726px;top:298px;width:208px;height:28px;font-size:19px">MPLS 10Mbps</div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:726px;top:329px;width:208px;height:20px">監視なし・申告待ち</div>
+  <div class="pp-shape f-soft" data-overlap style="left:722px;top:377px;width:216px;height:68px"></div>
+  <div class="pp-text b center" data-overlap style="left:726px;top:384px;width:208px;height:28px;font-size:19px">営業所SW 25台</div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:726px;top:415px;width:208px;height:20px">型が古く遠隔設定が不可</div>
+  <div class="pp-line" data-arrow="end" data-overlap style="left:829px;top:359px;width:2px;height:18px;background:var(--text-sub)"></div>
+  <div class="pp-line" data-arrow="end" data-overlap style="left:829px;top:446px;width:2px;height:18px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-white" data-overlap style="left:722px;top:464px;width:216px;height:68px"></div>
+  <div class="pp-text center" data-overlap style="left:726px;top:472px;width:208px;height:58px;font-size:19px;line-height:1.5"><b>営業所 1,500人</b><br>トラフィックの30%</div>
+  <div class="pp-shape f-soft" data-overlap style="left:982px;top:291px;width:216px;height:68px"></div>
+  <div class="pp-text b center" data-overlap style="left:986px;top:298px;width:208px;height:28px;font-size:19px">現地ISP回線</div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:986px;top:329px;width:208px;height:20px">当社の監視なし</div>
+  <div class="pp-shape f-soft" data-overlap style="left:982px;top:377px;width:216px;height:68px"></div>
+  <div class="pp-text b center" data-overlap style="left:986px;top:384px;width:208px;height:28px;font-size:19px">現地ベンダー機器</div>
+  <div class="pp-text center" data-role="caption" data-overlap style="left:986px;top:415px;width:208px;height:20px">仕様は拠点ごとに異なる</div>
+  <div class="pp-line" data-arrow="end" data-overlap style="left:1089px;top:359px;width:2px;height:18px;background:var(--text-sub)"></div>
+  <div class="pp-line" data-arrow="end" data-overlap style="left:1089px;top:446px;width:2px;height:18px;background:var(--text-sub)"></div>
+  <div class="pp-shape f-white" data-overlap style="left:982px;top:464px;width:216px;height:68px"></div>
+  <div class="pp-text center" data-overlap style="left:986px;top:472px;width:208px;height:58px;font-size:19px;line-height:1.5"><b>海外 8拠点 600人</b><br>トラフィックの25%</div>
+  <div class="pp-line" data-note="ブラケット：監視センターが届くトラフィックの合計と、届かない残りを系列の下にくくる" style="left:186px;top:557px;width:508px;height:2px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:186px;top:550px;width:2px;height:10px;background:var(--text-sub)"></div>
+  <div class="pp-line" style="left:692px;top:550px;width:2px;height:10px;background:var(--text-sub)"></div>
+  <div class="pp-text b center" style="left:186px;top:565px;width:508px;height:30px;font-size:19px">監視センターのカバー＝トラフィックの45%</div>
+  <div class="pp-line" data-overlap style="left:706px;top:557px;width:508px;height:2px;background:var(--emphasis)"></div>
+  <div class="pp-line" data-overlap style="left:706px;top:550px;width:2px;height:10px;background:var(--emphasis)"></div>
+  <div class="pp-line" data-overlap style="left:1212px;top:550px;width:2px;height:10px;background:var(--emphasis)"></div>
+  <div class="pp-text b t-emph center" data-part="アクセント" data-note="強調（1 点）：未監視の範囲の枠と、その合計の文" data-overlap style="left:706px;top:565px;width:508px;height:30px;font-size:19px">未監視＝トラフィックの55%</div>
+  <div class="pp-text" data-part="注釈" data-note="注：区分の定義と、分布から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 系列＝運用の責任範囲で束ねた拠点の区分。台数は資産台帳ベース<br>→ 未監視の55%のうち、営業所の30%は回線をMPLSに統一済みで、監視センターへの接続だけで取り込める</div>
+</section>

@@ -1,0 +1,36 @@
+<!-- 用途: 論証テーブル（課題→現状→打ち手。旧 rating）。課題ごとの縦のカード。案の評価は tables/options。課題 3 つを横に並べ、各カードを上から「課題名の見出し → 課題 → 現状（定量） → 打ち手」の順に積んで、事実から打ち手までを 1 枚ずつ論証する。
+     デザイン1との違い: 表の行を、課題ごとの縦のカード 3 枚にする。課題名は基調色の面の見出し、現状はパネル地の箱、打ち手は枠線の箱で段を見分け、段の間に短い太線を置く。基調色の太字は打ち手の要の 1 点だけ。
+     差し替える所: チャートタイトル（上から 課題・現状・打ち手と書く）・課題名と番号・各段の文（■ は 1 項目 1 行）・基調色の太字の 1 点・注釈・論点の文。カードは 3 枚まで。 -->
+<section class="slide" data-layout="diagram" data-type="argument">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">運用の課題と打ち手</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">運用の打ち手は監視センターへの集約に収れんするため、一括で付議すべきだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">ネットワーク運用の3課題と打ち手（FY2025時点、件数は年間。上から 課題・現状・打ち手）</div>
+  <div class="pp-shape f-accent" data-note="課題の見出し：番号と課題名を基調色の面に白い字で" style="left:64px;top:226px;width:373px;height:40px"></div>
+  <div class="pp-text t-white b" style="left:76px;top:232px;width:349px;height:27px;font-size:19px;line-height:1.4">①　監視範囲が薄い</div>
+  <div class="pp-text" data-note="課題：何が起きているかを 1〜2 項目で" style="left:68px;top:270px;width:365px;height:76px;font-size:19px;line-height:1.25">■ 監視の対象は本社・DC・工場の<br>22拠点だけ<br><span style="color:var(--accent)">➢</span> 営業所の大半に届いていない</div>
+  <div class="pp-shape f-soft" data-note="現状：定量の事実をパネル地の箱に" style="left:64px;top:350px;width:373px;height:88px"></div>
+  <div class="pp-text" style="left:74px;top:354px;width:353px;height:80px;font-size:19px;line-height:1.25">■ 監視は22拠点（全体の45%）<br>■ 営業所の自動検知はゼロ<br><span style="color:var(--accent)">➢</span> 26拠点が申告待ちのまま</div>
+  <div class="pp-shape f-accent" style="left:236px;top:444px;width:28px;height:4px"></div>
+  <div class="pp-shape f-outline" data-note="打ち手：太字の打ち手名と、要になる 1 点だけ基調色の太字" style="left:64px;top:454px;width:373px;height:100px"></div>
+  <div class="pp-text" style="left:74px;top:458px;width:353px;height:92px;font-size:19px;line-height:1.25"><b>全拠点を監視センターへ集約</b><br>■ 未監視の26拠点を順次接続<br><span style="color:var(--accent)">➢</span> <b style="color:var(--accent)">検知の入口を全48拠点に広げる</b></div>
+  <div class="pp-shape f-accent" style="left:453px;top:226px;width:373px;height:40px"></div>
+  <div class="pp-text t-white b" style="left:465px;top:232px;width:349px;height:27px;font-size:19px;line-height:1.4">②　運用人材が不足</div>
+  <div class="pp-text" style="left:457px;top:270px;width:365px;height:76px;font-size:19px;line-height:1.25">■ 運用員18人、平均48歳<br><span style="color:var(--accent)">➢</span> 検知しても復旧が詰まる</div>
+  <div class="pp-shape f-soft" style="left:453px;top:350px;width:373px;height:88px"></div>
+  <div class="pp-text" style="left:463px;top:354px;width:353px;height:80px;font-size:19px;line-height:1.25">■ 夜間対応の23%が48時間超の待ち<br>■ 採用2人に対し退職4人<br><span style="color:var(--accent)">➢</span> 現体制の対応上限は月120件</div>
+  <div class="pp-shape f-accent" style="left:625px;top:444px;width:28px;height:4px"></div>
+  <div class="pp-shape f-outline" style="left:453px;top:454px;width:373px;height:100px"></div>
+  <div class="pp-text" style="left:463px;top:458px;width:353px;height:92px;font-size:19px;line-height:1.25"><b>遠隔で直す体制へ移る</b><br>■ ベンダーの認定技術者20人<br><span style="color:var(--accent)">➢</span> 対応能力を月120→500件へ</div>
+  <div class="pp-shape f-accent" style="left:842px;top:226px;width:373px;height:40px"></div>
+  <div class="pp-text t-white b" style="left:854px;top:232px;width:349px;height:27px;font-size:19px;line-height:1.4">③　手順が属人的</div>
+  <div class="pp-text" style="left:846px;top:270px;width:365px;height:76px;font-size:19px;line-height:1.25">■ 手順書のない作業が62%<br><span style="color:var(--accent)">➢</span> 特定の担当に復旧が集中する</div>
+  <div class="pp-shape f-soft" style="left:842px;top:350px;width:373px;height:88px"></div>
+  <div class="pp-text" style="left:852px;top:354px;width:353px;height:80px;font-size:19px;line-height:1.25">■ 復旧の55%を3人が担う<br>■ 設定ミスの再発が年12件<br><span style="color:var(--accent)">➢</span> 人が代わると復旧が止まる</div>
+  <div class="pp-shape f-accent" style="left:1014px;top:444px;width:28px;height:4px"></div>
+  <div class="pp-shape f-outline" style="left:842px;top:454px;width:373px;height:100px"></div>
+  <div class="pp-text" style="left:852px;top:458px;width:353px;height:92px;font-size:19px;line-height:1.25"><b>3段のランブックで標準化</b><br>■ 一次対応の手順を48本整備<br><span style="color:var(--accent)">➢</span> 復旧時間を4.8→1.0時間へ</div>
+  <div class="pp-text" data-part="注釈" data-note="注：数字の出所と、打ち手をまとめて付議する含意" data-role="caption" style="left:64px;top:568px;width:1152px;height:22px">注: 件数・人数はFY2025の運用実績（運用センター集計）。3つの打ち手はいずれも監視センターを前提にするため、個別でなく一括で付議する</div>
+  <div class="pp-shape f-soft" data-part="メッセージボックス" data-note="メッセージボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:64px;top:600px;width:1152px;height:40px"></div>
+  <div class="pp-text" data-note="メッセージボックス：決めてほしいことを「〜の可否」で 1 行に書く" style="left:84px;top:601px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　監視センター・認定制度・ランブックを、9月の投資委員会へ一括で付議することの可否</div>
+</section>

@@ -1,0 +1,47 @@
+<!-- 用途: 前後の数値表（現状→増・減→計画後と、その理由）。ここでは設備の台数。何が何台増えて何台減るかを区分ごとに 1 行で並べる。増は「＋n」、減は「▲n」。数字は右寄せで桁をそろえ、単位はチャートタイトルに書く。見積の前回比（前回→差額→今回・差の理由。旧 quote-compare）もこの型で、列の単位を金額に差し替える。
+     デザイン1との違い: 表をやめ、区分ごとのカードを横に 5 枚並べる。上に現状→計画後、中に差分の大きな数字（40px）、下に増・減の内訳と理由。純増の区分だけパネル地で、差分の 1 点だけ強調色。下の帯に機器の計と回線を分けて書く。
+     強調色は主張に効く 1 行の差分だけ（1 枚 1 点）。単位の違う区分（台と本）は合計せず、機器の計と回線を分けて示す。情報の型なのでメッセージボックスは置かず、注の末尾を「→ 含意」の 1 文で締める。
+     差し替える所: チャートタイトル・カード（5 枚まで。4 枚なら幅 278px）・数・理由（2 行まで）・計の帯の文・注釈。 -->
+<section class="slide" data-layout="table" data-type="delta">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">設備の増減</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">設備の増減は機器の入れ替えが主で、純増は監視装置26台と回線96本に限られる</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">SD-WAN移行に伴う設備の増減（現状FY2025 → 計画後FY2027、台・本）</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:226px;width:1152px;height:22px">カードの読み方: 上から 現状 → 計画後、差分、増・減の内訳、理由</div>
+  <div class="pp-shape f-white" data-note="区分カード：上に現状→計画後、中に差分の大きな数字、下に増・減の内訳と理由。差分の 1 点だけ強調色" style="left:64px;top:252px;width:220px;height:250px"></div>
+  <div class="pp-text b" style="left:78px;top:262px;width:192px;height:28px;font-size:19px;line-height:1.3">ルータ（MPLS）</div>
+  <div class="pp-text num" style="left:78px;top:296px;width:192px;height:37px;font-size:27px;line-height:1.3">48 → 0</div>
+  <div class="pp-text num" style="left:78px;top:340px;width:192px;height:54px;font-size:40px;line-height:1.3">▲48</div>
+  <div class="pp-text" style="left:78px;top:402px;width:192px;height:28px;font-size:19px;line-height:1.3">増 0　減 ▲48</div>
+  <div class="pp-text t-sub" style="left:78px;top:438px;width:192px;height:54px;font-size:19px;line-height:1.3">SD-WANに置き換え</div>
+  <div class="pp-shape f-white" style="left:297px;top:252px;width:220px;height:250px"></div>
+  <div class="pp-text b" style="left:311px;top:262px;width:192px;height:28px;font-size:19px;line-height:1.3">SD-WAN機器</div>
+  <div class="pp-text num" style="left:311px;top:296px;width:192px;height:37px;font-size:27px;line-height:1.3">0 → 48</div>
+  <div class="pp-text num" style="left:311px;top:340px;width:192px;height:54px;font-size:40px;line-height:1.3">＋48</div>
+  <div class="pp-text" style="left:311px;top:402px;width:192px;height:28px;font-size:19px;line-height:1.3">増 ＋48　減 0</div>
+  <div class="pp-text t-sub" style="left:311px;top:438px;width:192px;height:54px;font-size:19px;line-height:1.3">全48拠点に新設</div>
+  <div class="pp-shape f-white" style="left:530px;top:252px;width:220px;height:250px"></div>
+  <div class="pp-text b" style="left:544px;top:262px;width:192px;height:28px;font-size:19px;line-height:1.3">L3スイッチ</div>
+  <div class="pp-text num" style="left:544px;top:296px;width:192px;height:37px;font-size:27px;line-height:1.3">96 → 96</div>
+  <div class="pp-text num" style="left:544px;top:340px;width:192px;height:54px;font-size:40px;line-height:1.3">±0</div>
+  <div class="pp-text" style="left:544px;top:402px;width:192px;height:28px;font-size:19px;line-height:1.3">増 0　減 0</div>
+  <div class="pp-text t-sub" style="left:544px;top:438px;width:192px;height:54px;font-size:19px;line-height:1.3">現行のまま使う</div>
+  <div class="pp-shape f-soft" data-note="区分カード：上に現状→計画後、中に差分の大きな数字、下に増・減の内訳と理由。差分の 1 点だけ強調色" style="left:763px;top:252px;width:220px;height:250px"></div>
+  <div class="pp-text b" style="left:777px;top:262px;width:192px;height:28px;font-size:19px;line-height:1.3">監視装置</div>
+  <div class="pp-text num" style="left:777px;top:296px;width:192px;height:37px;font-size:27px;line-height:1.3">22 → 48</div>
+  <div class="pp-text num t-emph" data-part="アクセント" style="left:777px;top:340px;width:192px;height:54px;font-size:40px;line-height:1.3">＋26</div>
+  <div class="pp-text" style="left:777px;top:402px;width:192px;height:28px;font-size:19px;line-height:1.3">増 ＋26　減 0</div>
+  <div class="pp-text t-sub" style="left:777px;top:438px;width:192px;height:54px;font-size:19px;line-height:1.3">営業所の未監視を解消</div>
+  <div class="pp-shape f-white" style="left:996px;top:252px;width:220px;height:250px"></div>
+  <div class="pp-text b" style="left:1010px;top:262px;width:192px;height:28px;font-size:19px;line-height:1.3">回線（本）</div>
+  <div class="pp-text num" style="left:1010px;top:296px;width:192px;height:37px;font-size:27px;line-height:1.3">48 → 144</div>
+  <div class="pp-text num" style="left:1010px;top:340px;width:192px;height:54px;font-size:40px;line-height:1.3">＋96</div>
+  <div class="pp-text" style="left:1010px;top:402px;width:192px;height:28px;font-size:19px;line-height:1.3">増 ＋144　減 ▲48</div>
+  <div class="pp-text t-sub" style="left:1010px;top:438px;width:192px;height:54px;font-size:19px;line-height:1.3">1拠点3本に多重化</div>
+  <div class="pp-shape f-soft" data-note="計の帯：台と本は足さず、機器の計と回線を分けて書く" style="left:64px;top:512px;width:1152px;height:76px"></div>
+  <div class="pp-text b" data-note="計の帯：台と本は足さず、機器の計と回線を分けて書く" style="left:84px;top:520px;width:540px;height:28px;font-size:19px;line-height:1.3">機器 計（台）</div>
+  <div class="pp-text b" style="left:84px;top:550px;width:540px;height:28px;font-size:19px;line-height:1.3">166 → 192（＋26）　入れ替え48・増設26</div>
+  <div class="pp-text b" style="left:660px;top:520px;width:540px;height:28px;font-size:19px;line-height:1.3">回線（本）</div>
+  <div class="pp-text b" style="left:660px;top:550px;width:540px;height:28px;font-size:19px;line-height:1.3">48 → 144（＋96）　1拠点3本に多重化</div>
+  <div class="pp-text" data-part="注釈" data-note="注：台数の出所と、増減から言える含意" data-role="caption" style="left:64px;top:602px;width:1152px;height:40px">注: 台数は2026年9月の機器台帳。回線はMPLS 1回線をインターネット2回線＋LTEに置き換える（1拠点3本）<br>→ 機器はルータ48台がSD-WAN機器48台に置き換わるだけで、保守契約の追加は監視装置26台と回線96本の2件に絞られる</div>
+</section>

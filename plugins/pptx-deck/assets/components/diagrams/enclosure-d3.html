@@ -1,0 +1,24 @@
+<!-- 用途: 包括（要素が、より大きな範囲に属することを示す）。外枠（全体）→ 中の枠（属する要素）→ 内側の枠（今回の対象）を、左下にそろえて重ねる。内側の枠だけ強調色の太い枠。
+     デザイン1との違い: 子要素を横に並べず、入れ子を左下にそろえて重ね、各段の名前を右に空いた所に書く。対象外の要素（LAN・DC）は外枠の右の空きに白い箱で並べる。段が 3 つの包含（全体 ⊃ 要素 ⊃ 対象）を 1 目で見せたいときに向く。
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・外枠の名前・中の枠の名前と説明・対象外の箱 2 つ・内側の対象の文・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="enclosure">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">更改の対象範囲</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">今回の更改はWANの専用線だけを対象とし、全社ネットワークのLANとDC内は変えない</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">ネットワークの構成と更改の対象範囲（FY2025末時点）</div>
+  <div class="pp-shape f-soft" data-note="外枠：全体（全社ネットワーク）。内側の枠ほど左に寄せ、右に空いた所に各段の名前を書く" style="left:64px;top:224px;width:1152px;height:364px"></div>
+  <div class="pp-text b t-dark" data-overlap style="left:80px;top:228px;width:600px;height:28px;font-size:21px">全社ネットワーク（48拠点・DC）</div>
+  <div class="pp-shape f-white" data-note="対象外の要素：外枠の右の空きに白い箱で並べる" style="left:912px;top:284px;width:288px;height:124px"></div>
+  <div class="pp-text b t-dark" data-overlap style="left:924px;top:292px;width:264px;height:30px;font-size:21px">LAN（拠点内）</div>
+  <div class="pp-text" data-overlap style="left:924px;top:328px;width:264px;height:72px;font-size:19px;line-height:1.4">48拠点のスイッチと無線。<br>今回は更改しない</div>
+  <div class="pp-shape f-white" style="left:912px;top:420px;width:288px;height:124px"></div>
+  <div class="pp-text b t-dark" data-overlap style="left:924px;top:428px;width:264px;height:30px;font-size:21px">DCネットワーク</div>
+  <div class="pp-text" data-overlap style="left:924px;top:464px;width:264px;height:72px;font-size:19px;line-height:1.4">DC内のサーバ。<br>今回は更改しない</div>
+  <div class="pp-shape f-white" data-note="中の枠：対象が属する要素（WAN）。外枠の左下に寄せて重ねる" style="left:80px;top:266px;width:800px;height:306px"></div>
+  <div class="pp-text b t-dark" data-overlap style="left:576px;top:276px;width:290px;height:32px;font-size:21px">WAN（拠点間の回線）</div>
+  <div class="pp-text" data-overlap style="left:576px;top:316px;width:290px;height:80px;font-size:19px;line-height:1.4">48拠点をつなぐ回線と機器。<br>この中の専用線が対象</div>
+  <div class="pp-shape f-outline" data-note="内側の枠：今回の更改の対象だけ強調色の太い枠（1 点）" style="left:96px;top:300px;width:440px;height:256px;border:3px solid var(--emphasis)"></div>
+  <div class="pp-text b" data-overlap style="left:116px;top:316px;width:400px;height:40px;font-size:28px;color:var(--emphasis)">今回の更改</div>
+  <div class="pp-text" data-overlap style="left:116px;top:368px;width:410px;height:180px;font-size:28px;line-height:1.5">専用線48拠点を<br>SD-WANへ置換。<br>月の回線費は1,000万円</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: LANは各拠点内の機器、DC内はデータセンター内の機器。WANは拠点間をつなぐ回線と機器<br>→ 対象をWANに絞るため、拠点内の配線やDC内の機器の工事は発生しない</div>
+</section>

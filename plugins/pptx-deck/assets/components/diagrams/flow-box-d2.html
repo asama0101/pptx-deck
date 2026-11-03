@@ -1,0 +1,58 @@
+<!-- 用途: フロー（箱型）。条件で分かれる手順を、箱とラベルで枝分かれさせて最後の対応まで示す。分岐の条件は角丸のラベル、状態や対応は箱に書く。一本道の手順は flow-h・flow-v、担当部門をまたぐ手順は swimlane を使う。
+     デザイン1との違い: 左から右へ分岐を広げる。出発点を左端、最後の対応を右端の縦 4 段に置き、条件と箱を矢印でつなぐ。
+     差し替える所: 題・ヘッドメッセージ・チャートタイトル・出発点の文・分岐の条件・箱の文・最後の対応（4 つ）・注釈。分岐を 3 つ以上に増やすときは、段の幅を詰め直す。  -->
+<section class="slide" data-layout="diagram" data-type="flow-box">
+  <div class="pp-text" data-part="タイトル" data-role="title" data-note="タイトル：短い題（名詞句・20字以内）" style="top:36px;height:50px;font-size:37px">回線断の切り分け</div>
+  <div class="pp-shape f-soft" data-note="ヘッドメッセージの帯：判断を言い切る 1 文（30〜60字、2 行まで）" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">回線断は拠点ルータの応答の有無で二手に分け、予備の有無で最後の対応を決める</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-note="チャートタイトル：対象・期間・単位" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">回線断の切り分けの流れ（分岐の条件と、最後の対応）</div>
+  <div class="pp-shape f-light" data-note="出発点：最初に確認する事象。左端に置き、右へ分岐する" style="left:64px;top:333px;width:160px;height:140px"></div>
+  <div class="pp-text b center" style="left:72px;top:339px;width:144px;height:128px;font-size:19px;line-height:1.3">回線断のアラート<br>（拠点ルータへ ping を打つ）</div>
+  <div class="pp-line hr" style="left:237px;top:311px;width:2px;height:185px;background:var(--accent-mid)"></div>
+  <div class="pp-line hr" style="left:224px;top:402px;width:14px;height:2px;background:var(--accent-mid)"></div>
+  <div class="pp-line " data-arrow="end" style="left:238px;top:310px;width:14px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-white" data-note="分岐の条件：角丸のラベルに条件を書く" style="left:252px;top:295px;width:190px;height:32px;border-radius:16px"></div>
+  <div class="pp-text center b" style="left:252px;top:296px;width:190px;height:30px;font-size:19px">ping 応答なし</div>
+  <div class="pp-line " data-arrow="end" style="left:442px;top:310px;width:28px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-soft" style="left:470px;top:283px;width:230px;height:56px"></div>
+  <div class="pp-text b center" style="left:476px;top:285px;width:218px;height:52px;font-size:19px;line-height:1.35">機器の障害<br>（拠点ルータの故障）</div>
+  <div class="pp-line hr" style="left:713px;top:265px;width:2px;height:92px;background:var(--accent-mid)"></div>
+  <div class="pp-line hr" style="left:700px;top:310px;width:14px;height:2px;background:var(--accent-mid)"></div>
+  <div class="pp-line " data-arrow="end" style="left:714px;top:264px;width:14px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-white" style="left:728px;top:249px;width:190px;height:32px;border-radius:16px"></div>
+  <div class="pp-text center b" style="left:728px;top:250px;width:190px;height:30px;font-size:19px">予備機あり</div>
+  <div class="pp-line " data-arrow="end" style="left:918px;top:264px;width:28px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-white" data-note="最後の対応：対応名（太字）と期限などの説明" style="left:946px;top:224px;width:270px;height:82px"></div>
+  <div class="pp-text b" style="left:956px;top:228px;width:250px;height:28px;font-size:19px">予備機へ切替</div>
+  <div class="pp-text" style="left:956px;top:256px;width:250px;height:48px;font-size:19px;line-height:1.25">30分以内に切替</div>
+  <div class="pp-line " data-arrow="end" style="left:714px;top:356px;width:14px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-white" style="left:728px;top:341px;width:190px;height:32px;border-radius:16px"></div>
+  <div class="pp-text center b" style="left:728px;top:342px;width:190px;height:30px;font-size:19px">予備機なし</div>
+  <div class="pp-line " data-arrow="end" style="left:918px;top:356px;width:28px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-white" style="left:946px;top:316px;width:270px;height:82px"></div>
+  <div class="pp-text b" style="left:956px;top:320px;width:250px;height:28px;font-size:19px">保守会社へ依頼</div>
+  <div class="pp-text" style="left:956px;top:348px;width:250px;height:48px;font-size:19px;line-height:1.25">4時間以内に出動依頼</div>
+  <div class="pp-line " data-arrow="end" style="left:238px;top:494px;width:14px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-white" style="left:252px;top:479px;width:190px;height:32px;border-radius:16px"></div>
+  <div class="pp-text center b" style="left:252px;top:480px;width:190px;height:30px;font-size:19px">ping 応答あり</div>
+  <div class="pp-line " data-arrow="end" style="left:442px;top:494px;width:28px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-soft" style="left:470px;top:467px;width:230px;height:56px"></div>
+  <div class="pp-text b center" style="left:476px;top:469px;width:218px;height:52px;font-size:19px;line-height:1.35">回線の障害<br>（キャリア側の断）</div>
+  <div class="pp-line hr" style="left:713px;top:449px;width:2px;height:92px;background:var(--accent-mid)"></div>
+  <div class="pp-line hr" style="left:700px;top:494px;width:14px;height:2px;background:var(--accent-mid)"></div>
+  <div class="pp-line " data-arrow="end" style="left:714px;top:448px;width:14px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-white" style="left:728px;top:433px;width:190px;height:32px;border-radius:16px"></div>
+  <div class="pp-text center b" style="left:728px;top:434px;width:190px;height:30px;font-size:19px">予備回線あり</div>
+  <div class="pp-line " data-arrow="end" style="left:918px;top:448px;width:28px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-white" style="left:946px;top:408px;width:270px;height:82px"></div>
+  <div class="pp-text b" style="left:956px;top:412px;width:250px;height:28px;font-size:19px">予備回線へ切替</div>
+  <div class="pp-text" style="left:956px;top:440px;width:250px;height:48px;font-size:19px;line-height:1.25">自動で切り替わるか確認</div>
+  <div class="pp-line " data-arrow="end" style="left:714px;top:540px;width:14px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-white" style="left:728px;top:525px;width:190px;height:32px;border-radius:16px"></div>
+  <div class="pp-text center b" style="left:728px;top:526px;width:190px;height:30px;font-size:19px">予備回線なし</div>
+  <div class="pp-line " data-arrow="end" style="left:918px;top:540px;width:28px;height:2px;background:var(--accent)"></div>
+  <div class="pp-shape f-white" style="left:946px;top:500px;width:270px;height:82px"></div>
+  <div class="pp-text b" style="left:956px;top:504px;width:250px;height:28px;font-size:19px">キャリアへ修理依頼</div>
+  <div class="pp-text" style="left:956px;top:532px;width:250px;height:48px;font-size:19px;line-height:1.25">障害番号を取って連絡</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 応答の確認は運用センターが ping で行い、結果を当番へ伝える<br>→ 分岐の条件を先に決めておくため、当番の判断は2回で済み、対応の着手が早まる</div>
+</section>

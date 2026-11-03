@@ -1,0 +1,69 @@
+<!-- 用途: 配置表（対象×区分の件数。ここでは拠点種別×設備の台数）。行に拠点種別、列に設備を置き、各セルに台数を書く。計画で変わるセルだけパネル地にして「現状→計画後」で書き、変わらないセルは現状の数だけ。
+     右端の列に拠点ごとの合計、最下行に設備ごとの合計（太字で上に太い罫線）。最大の増設になる 1 セルだけ強調色の面に白い文字（1 枚 1 点）。見出しの行は基調色の面に白い文字。表の下のパネル地の帯に、増設の中身と入れ替えの台数を数字で書く。
+     情報の型なのでメッセージボックスは置かず、注の末尾を「→ 含意」の 1 文で締める。
+     差し替える所: チャートタイトル・行（拠点種別 4 行まで）・列（設備 5 列まで）・各セルの数（行と列の合計が合うように）・強調するセル・帯の文・注釈。 -->
+<section class="slide" data-layout="table" data-type="site-matrix">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">設備の配置</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">機器は全拠点で入れ替わるが、純増するのは営業所の監視装置26台と回線本数だけだ</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">拠点種別×設備の配置（現状FY2025 → 計画後FY2027、台・本。パネル地のセルが計画で変わる）</div>
+  <table class="pp-table" data-note="配置表：行＝拠点種別、列＝設備。変わるセルだけパネル地に現状→計画後" style="left:64px;top:228px;width:1152px;font-size:19px;line-height:1.25">
+    <tr style="height:40px">
+      <td style="width:220px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700">拠点種別</td>
+      <td style="width:170px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">ルータ（MPLS）</td>
+      <td style="width:170px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">SD-WAN機器</td>
+      <td style="width:150px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">L3スイッチ</td>
+      <td style="width:170px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">監視装置</td>
+      <td style="width:150px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">回線（本）</td>
+      <td style="width:122px;padding:5px 14px;background:var(--accent);color:#FFFFFF;font-weight:700;text-align:right">拠点計</td>
+    </tr>
+    <tr style="height:50px">
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">本社（1拠点）</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">1→0</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">0→1</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">8</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">1</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">1→3</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">11→13</td>
+    </tr>
+    <tr style="height:50px">
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">DC（1拠点）</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">1→0</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">0→1</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">8</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">1</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">1→3</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">11→13</td>
+    </tr>
+    <tr style="height:50px">
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">工場（6拠点）</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">6→0</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">0→6</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">24</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">6</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">6→18</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">42→54</td>
+    </tr>
+    <tr style="height:50px">
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);font-weight:700">営業所（40拠点）</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">40→0</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">0→40</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right">56</td>
+      <td data-note="最大の増設になる 1 セルだけ強調色の面に白い文字（1 枚 1 点）" style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--emphasis);color:#FFFFFF;text-align:right;font-weight:700">14→40</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);background:var(--bg-soft);text-align:right">40→120</td>
+      <td style="padding:5px 14px;border-bottom:1px solid var(--line);text-align:right;font-weight:700">150→256</td>
+    </tr>
+    <tr style="height:47px" data-note="合計の行：設備ごとの現状→計画後。行の合計と列の合計を一致させる">
+      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700">合計（48拠点）</td>
+      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">48→0</td>
+      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">0→48</td>
+      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">96</td>
+      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">22→48</td>
+      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">48→144</td>
+      <td style="padding:5px 14px;border-top:3px solid var(--text);font-weight:700;text-align:right">214→336</td>
+    </tr>
+  </table>
+  <div class="pp-shape f-soft" data-note="増減の帯：増設の中身と、入れ替えの台数を数字で書く" style="left:64px;top:526px;width:1152px;height:62px"></div>
+  <div class="pp-text" data-note="増減の帯：増設の中身と、入れ替えの台数を数字で書く" style="left:88px;top:530px;width:1104px;height:54px;font-size:19px;line-height:1.4"><b>増設は監視装置＋26台（営業所14→40）と回線＋96本。</b><br>ルータ48台はSD-WAN機器48台に置き換わり、L3スイッチ96台は現行のまま使う</div>
+  <div class="pp-text" data-part="注釈" data-note="注：台数の出所と、配置から言える含意" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 台数は2026年9月の機器台帳、計画後はFY2027の切替完了時。回線は1拠点3本（インターネット2回線＋LTE）<br>→ 保守契約の追加は監視装置と回線の2件で、本社・DC・工場は機器の入れ替えだけで済む</div>
+</section>

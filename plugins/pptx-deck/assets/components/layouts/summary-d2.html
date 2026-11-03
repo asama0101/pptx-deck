@@ -1,0 +1,46 @@
+<!-- 用途: 数字サマリ（章の冒頭・要約）。指標ごとに、指標名・目標の数値・現状からの差分・現状・到達の根拠（定量）・担当・詳細参照を示し、最下部のメッセージボックスで決めてほしいことを「〜の可否」で 1 行に書く。
+     強調色はヘッドメッセージの主張に当たる数値 1 つだけ（例: 通信費▲1.2億円。指数のような意味が薄い数字でなく、金額・時間の側に置く）。注（→ 含意）をメッセージボックスの上に置く。
+     障害の概要（障害報告の冒頭）にも使う: 指標を停止時間・影響範囲・損失・復旧手段にし、最下部の帯を「論点」でなく「現状」（復旧の状態と、暫定・恒久対策の扱い）にして、注に → 含意を書く（情報の型。再発防止の判断は actions・decision で求める）。
+     デザイン1との違い: カードと表を分けず、指標ごとの 1 行（左に指標名と目標の数値〔パネル地〕、中央に差分と現状、右に根拠・担当・参照）に数字と根拠をまとめる。
+     差し替える所: 4 行の指標名・数値・差分・現状・根拠（2 行に収める）・担当・参照・強調する 1 指標・注釈・論点（または現状）の文。 -->
+<section class="slide" data-layout="content" data-type="summary">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">数値目標</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">中計の4目標は、FY2030に通信費▲1.2億円・復旧時間1.0時間へ到達する</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">ネットワーク基盤 中期計画の数値目標（FY2025実績 → FY2030目標）</div>
+  <div class="pp-shape f-white" data-note="指標の行：左に指標名と目標、中央に現状からの差分、右に到達の根拠・担当・参照。主張の数値（②の金額）だけ強調色" style="left:64px;top:224px;width:1152px;height:76px"></div>
+  <div class="pp-shape f-soft" style="left:65px;top:225px;width:316px;height:74px"></div>
+  <div class="pp-text" data-role="caption" style="left:80px;top:230px;width:290px;height:22px">① 拠点の標準化率</div>
+  <div class="pp-text num" style="left:80px;top:250px;width:290px;height:46px;font-size:36px">100%</div>
+  <div class="pp-text b t-dark" style="left:400px;top:232px;width:300px;height:28px;font-size:19px">＋75pt（3モデルへ統一）</div>
+  <div class="pp-text" data-role="caption" style="left:400px;top:262px;width:300px;height:34px;line-height:1.2">FY2025実績 25%（12拠点）<br>構成モデル12→3</div>
+  <div class="pp-text" style="left:720px;top:230px;width:484px;height:48px;font-size:19px;line-height:1.2">工場6・営業所40を3モデルで更改。<br>年12拠点ずつ4年で完了</div>
+  <div class="pp-text" data-role="caption" style="left:720px;top:278px;width:484px;height:18px">担当 基盤グループ　／　詳細 第2章 p.8</div>
+  <div class="pp-shape f-white" style="left:64px;top:306px;width:1152px;height:76px"></div>
+  <div class="pp-shape f-soft" style="left:65px;top:307px;width:316px;height:74px"></div>
+  <div class="pp-text" data-role="caption" style="left:80px;top:312px;width:290px;height:22px">② 通信費（指数）</div>
+  <div class="pp-text num" style="left:80px;top:332px;width:290px;height:46px;font-size:36px;color:var(--emphasis)">▲1.2億円</div>
+  <div class="pp-text b t-dark" style="left:400px;top:314px;width:300px;height:28px;font-size:19px">指数100→90（▲10）</div>
+  <div class="pp-text" data-role="caption" style="left:400px;top:344px;width:300px;height:34px;line-height:1.2">FY2025実績 12.0億円（指数100）<br>回線と運用委託で▲7</div>
+  <div class="pp-text" style="left:720px;top:312px;width:484px;height:48px;font-size:19px;line-height:1.2">回線38→34、運用委託20→17の2項目で▲7、<br>残り3項目で▲3</div>
+  <div class="pp-text" data-role="caption" style="left:720px;top:360px;width:484px;height:18px">担当 調達部　／　詳細 第3章 p.15</div>
+  <div class="pp-shape f-white" style="left:64px;top:388px;width:1152px;height:76px"></div>
+  <div class="pp-shape f-soft" style="left:65px;top:389px;width:316px;height:74px"></div>
+  <div class="pp-text" data-role="caption" style="left:80px;top:394px;width:290px;height:22px">③ 復旧時間（MTTR）</div>
+  <div class="pp-text num" style="left:80px;top:414px;width:290px;height:46px;font-size:36px">1.0時間</div>
+  <div class="pp-text b t-dark" style="left:400px;top:396px;width:300px;height:28px;font-size:19px">▲3.8時間（▲79%）</div>
+  <div class="pp-text" data-role="caption" style="left:400px;top:426px;width:300px;height:34px;line-height:1.2">FY2025実績 4.8時間<br>自動検知と回線の自動切替</div>
+  <div class="pp-text" style="left:720px;top:394px;width:484px;height:48px;font-size:19px;line-height:1.2">検知・切り分け▲1.8h、復旧・承認▲2.0hの<br>6手を積み上げ</div>
+  <div class="pp-text" data-role="caption" style="left:720px;top:442px;width:484px;height:18px">担当 運用センター　／　詳細 第4章 p.22</div>
+  <div class="pp-shape f-white" style="left:64px;top:470px;width:1152px;height:76px"></div>
+  <div class="pp-shape f-soft" style="left:65px;top:471px;width:316px;height:74px"></div>
+  <div class="pp-text" data-role="caption" style="left:80px;top:476px;width:290px;height:22px">④ 監視カバー率</div>
+  <div class="pp-text num" style="left:80px;top:496px;width:290px;height:46px;font-size:36px">100%</div>
+  <div class="pp-text b t-dark" style="left:400px;top:478px;width:300px;height:28px;font-size:19px">＋55pt（全48拠点）</div>
+  <div class="pp-text" data-role="caption" style="left:400px;top:508px;width:300px;height:34px;line-height:1.2">FY2025実績 45%（22拠点）<br>監視センターへ集約</div>
+  <div class="pp-text" style="left:720px;top:476px;width:484px;height:48px;font-size:19px;line-height:1.2">未監視の26拠点をFY2027までに監視センターへ接続</div>
+  <div class="pp-text" data-role="caption" style="left:720px;top:524px;width:484px;height:18px">担当 運用センター　／　詳細 第5章 p.29</div>
+  <div class="pp-text" data-part="注釈" data-note="注：出典・前提と、→ 含意" data-role="caption" style="left:64px;top:556px;width:1152px;height:36px;line-height:1.3">注: 実績はFY2025の年度値、目標はFY2030末。通信費は指数（FY2025＝100）で管理し、金額は12.0億円を基準に換算<br>→ ②③の2指標で中計の効果の大半を占めるため、各章の審議はこの2つの到達の確かさを中心に進める</div>
+  <div class="pp-shape f-soft" data-part="メッセージボックス" data-note="メッセージボックス：決めてほしいことを「〜の可否」で 1 行に書く（障害の概要では「現状」の帯にする）" style="left:64px;top:600px;width:1152px;height:40px"></div>
+  <div class="pp-text" style="left:84px;top:603px;width:1112px;height:32px;font-size:19px"><b style="color:var(--accent-dark)">論点</b>　4目標を中計の数値目標として確定し、各章の施策の審議に進むことの可否</div>
+</section>

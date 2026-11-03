@@ -1,0 +1,94 @@
+<!-- 用途: 更改ロードマップ（設備×年度）。デザイン1（roadmap）と同じ設備・年度・台数で差し替えられる。年度ごとの台数の推移を、設備ごとの小さな縦棒で見せる。
+     デザイン1との違い: 印（＋n・更 n・▲n）でなく、年度末の台数を縦棒の高さで見せる。棒の高さは設備ごとに最大を 24px にそろえ（台数の大小は設備の中で比べる）、台数の数字を棒の上に置く。濃い棒＝その年に変更、枠線の棒＝更改、淡い棒＝変更なし。最も大きい変更の 1 本だけ強調色。切替の年度の列はパネル地。最終年度の姿は右端の札に置く。
+     差し替える所: 設備（5 行まで。名前と現行台数）・年度ごとの台数（棒の高さ＝台数×最大の設備の倍率）・変更の年度の棒の種類・一言・右端の札・強調する 1 本・注釈。 -->
+<section class="slide" data-layout="diagram" data-type="roadmap">
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">設備の更改計画</div>
+  <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
+  <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">更改はFY2027の切替に集中し、以降は旧型スイッチの計画更改だけが残る</div>
+  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:700px;height:32px;font-size:21px">ネットワーク設備の更改ロードマップ（FY2026〜FY2030、台数・本数）</div>
+  <div class="pp-text" data-part="凡例" data-note="凡例：棒の高さは設備ごとに最大を 24px にそろえる。濃い棒＝その年に変更、枠線＝更改、淡い棒＝変更なし" data-role="caption" style="left:780px;top:194px;width:436px;height:20px">年度末の台数。濃い＝変更、枠線＝更改、淡い＝変更なし</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:226px;width:180px;height:22px">設備（現行の台数）</div>
+  <div class="pp-shape f-soft" data-overlap data-note="切替の年度の列：パネル地で縦に囲む" style="left:382px;top:224px;width:120px;height:362px;border:1px solid var(--accent-mid)"></div>
+  <div class="pp-text center" data-role="caption" style="left:262px;top:226px;width:120px;height:22px">FY2026</div>
+  <div class="pp-text center b" data-role="caption" data-overlap style="left:382px;top:226px;width:120px;height:22px">◆ FY2027</div>
+  <div class="pp-text center" data-role="caption" style="left:502px;top:226px;width:120px;height:22px">FY2028</div>
+  <div class="pp-text center" data-role="caption" style="left:622px;top:226px;width:120px;height:22px">FY2029</div>
+  <div class="pp-text center" data-role="caption" style="left:742px;top:226px;width:120px;height:22px">FY2030</div>
+  <div class="pp-text" data-role="caption" style="left:870px;top:226px;width:346px;height:22px">FY2030末の姿（台数と状態）</div>
+  <div class="pp-shape f-soft" data-overlap style="left:64px;top:258px;width:180px;height:56px"></div>
+  <div class="pp-text b" data-overlap style="left:76px;top:260px;width:164px;height:28px;font-size:19px">MPLSルータ</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:76px;top:288px;width:164px;height:22px">現行 48台</div>
+  <div class="pp-shape f-mid" data-note="年度末の台数の縦棒：高さは設備ごとに最大を 24px にそろえる。濃い＝その年に変更、枠線＝更改、淡い＝変更なし。最も大きい変更の 1 本だけ強調色" style="left:294px;top:290px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:262px;top:258px;width:120px;height:24px;font-size:19px">48</div>
+  <div class="pp-text center" data-overlap style="left:382px;top:282px;width:120px;height:24px;font-size:19px">0</div>
+  <div class="pp-text center" style="left:502px;top:282px;width:120px;height:24px;font-size:19px">0</div>
+  <div class="pp-text center" style="left:622px;top:282px;width:120px;height:24px;font-size:19px">0</div>
+  <div class="pp-text center" style="left:742px;top:282px;width:120px;height:24px;font-size:19px">0</div>
+  <div class="pp-text" data-role="caption" style="left:870px;top:270px;width:196px;height:40px;line-height:1.3">FY2027に全廃</div>
+  <div class="pp-shape f-soft" data-shape="round" style="left:1076px;top:264px;width:124px;height:40px"></div>
+  <div class="pp-text b center" style="left:1080px;top:268px;width:116px;height:30px;font-size:21px">0台</div>
+  <div class="pp-shape f-soft" data-overlap style="left:64px;top:324px;width:180px;height:56px"></div>
+  <div class="pp-text b" data-overlap style="left:76px;top:326px;width:164px;height:28px;font-size:19px">SD-WAN機器</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:76px;top:354px;width:164px;height:22px">現行 0台</div>
+  <div class="pp-text center" style="left:262px;top:348px;width:120px;height:24px;font-size:19px">0</div>
+  <div class="pp-shape f-emph" data-part="アクセント" data-overlap style="left:414px;top:356px;width:56px;height:24px"></div>
+  <div class="pp-text center" data-overlap style="left:382px;top:324px;width:120px;height:24px;font-size:19px">48</div>
+  <div class="pp-shape f-mid" style="left:534px;top:356px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:502px;top:324px;width:120px;height:24px;font-size:19px">48</div>
+  <div class="pp-shape f-mid" style="left:654px;top:356px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:622px;top:324px;width:120px;height:24px;font-size:19px">48</div>
+  <div class="pp-shape f-mid" style="left:774px;top:356px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:742px;top:324px;width:120px;height:24px;font-size:19px">48</div>
+  <div class="pp-text" data-role="caption" style="left:870px;top:336px;width:196px;height:40px;line-height:1.3">48拠点に1台ずつ</div>
+  <div class="pp-shape f-soft" data-shape="round" style="left:1076px;top:330px;width:124px;height:40px"></div>
+  <div class="pp-text b center" style="left:1080px;top:334px;width:116px;height:30px;font-size:21px">48台</div>
+  <div class="pp-shape f-soft" data-overlap style="left:64px;top:390px;width:180px;height:56px"></div>
+  <div class="pp-text b" data-overlap style="left:76px;top:392px;width:164px;height:28px;font-size:19px">スイッチ</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:76px;top:420px;width:164px;height:22px">現行 43台</div>
+  <div class="pp-shape f-outline" style="left:294px;top:422px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:262px;top:390px;width:120px;height:24px;font-size:19px">43</div>
+  <div class="pp-shape f-outline" data-overlap style="left:414px;top:422px;width:56px;height:24px"></div>
+  <div class="pp-text center" data-overlap style="left:382px;top:390px;width:120px;height:24px;font-size:19px">43</div>
+  <div class="pp-shape f-outline" style="left:534px;top:422px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:502px;top:390px;width:120px;height:24px;font-size:19px">43</div>
+  <div class="pp-shape f-mid" style="left:654px;top:422px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:622px;top:390px;width:120px;height:24px;font-size:19px">43</div>
+  <div class="pp-shape f-mid" style="left:774px;top:422px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:742px;top:390px;width:120px;height:24px;font-size:19px">43</div>
+  <div class="pp-text" data-role="caption" style="left:870px;top:402px;width:196px;height:40px;line-height:1.3">更改済みで維持</div>
+  <div class="pp-shape f-soft" data-shape="round" style="left:1076px;top:396px;width:124px;height:40px"></div>
+  <div class="pp-text b center" style="left:1080px;top:400px;width:116px;height:30px;font-size:21px">43台</div>
+  <div class="pp-shape f-soft" data-overlap style="left:64px;top:456px;width:180px;height:56px"></div>
+  <div class="pp-text b" data-overlap style="left:76px;top:458px;width:164px;height:28px;font-size:19px">監視装置</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:76px;top:486px;width:164px;height:22px">現行 2台</div>
+  <div class="pp-shape f-mid" style="left:294px;top:500px;width:56px;height:12px"></div>
+  <div class="pp-text center" style="left:262px;top:468px;width:120px;height:24px;font-size:19px">2</div>
+  <div class="pp-shape f-accent" data-overlap style="left:414px;top:488px;width:56px;height:24px"></div>
+  <div class="pp-text center" data-overlap style="left:382px;top:456px;width:120px;height:24px;font-size:19px">4</div>
+  <div class="pp-shape f-mid" style="left:534px;top:488px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:502px;top:456px;width:120px;height:24px;font-size:19px">4</div>
+  <div class="pp-shape f-mid" style="left:654px;top:488px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:622px;top:456px;width:120px;height:24px;font-size:19px">4</div>
+  <div class="pp-shape f-mid" style="left:774px;top:488px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:742px;top:456px;width:120px;height:24px;font-size:19px">4</div>
+  <div class="pp-text" data-role="caption" style="left:870px;top:468px;width:196px;height:40px;line-height:1.3">監視を2系統に</div>
+  <div class="pp-shape f-soft" data-shape="round" style="left:1076px;top:462px;width:124px;height:40px"></div>
+  <div class="pp-text b center" style="left:1080px;top:466px;width:116px;height:30px;font-size:21px">4台</div>
+  <div class="pp-shape f-soft" data-overlap style="left:64px;top:522px;width:180px;height:56px"></div>
+  <div class="pp-text b" data-overlap style="left:76px;top:524px;width:164px;height:28px;font-size:19px">回線</div>
+  <div class="pp-text" data-role="caption" data-overlap style="left:76px;top:552px;width:164px;height:22px">現行 48本（MPLS）</div>
+  <div class="pp-shape f-mid" style="left:294px;top:570px;width:56px;height:8px"></div>
+  <div class="pp-text center" style="left:262px;top:538px;width:120px;height:24px;font-size:19px">48</div>
+  <div class="pp-shape f-accent" data-overlap style="left:414px;top:554px;width:56px;height:24px"></div>
+  <div class="pp-text center" data-overlap style="left:382px;top:522px;width:120px;height:24px;font-size:19px">144</div>
+  <div class="pp-shape f-mid" style="left:534px;top:554px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:502px;top:522px;width:120px;height:24px;font-size:19px">144</div>
+  <div class="pp-shape f-mid" style="left:654px;top:554px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:622px;top:522px;width:120px;height:24px;font-size:19px">144</div>
+  <div class="pp-shape f-mid" style="left:774px;top:554px;width:56px;height:24px"></div>
+  <div class="pp-text center" style="left:742px;top:522px;width:120px;height:24px;font-size:19px">144</div>
+  <div class="pp-text" data-role="caption" style="left:870px;top:534px;width:196px;height:40px;line-height:1.3">ネット96＋LTE48</div>
+  <div class="pp-shape f-soft" data-shape="round" style="left:1076px;top:528px;width:124px;height:40px"></div>
+  <div class="pp-text b center" style="left:1080px;top:532px;width:116px;height:30px;font-size:21px">144本</div>
+  <div class="pp-text" data-role="caption" style="left:64px;top:598px;width:1152px;height:40px">注: 台数は資産台帳（2026年9月）。スイッチの更改は保守切れの順（旧型25台 → 工場18台）、回線は切替の前年度に先行して開通する<br>→ FY2028以降の更改は工場のスイッチ18台だけで、年度の投資は機器の償却（9,000万円を5年）と保守に収まる</div>
+</section>
