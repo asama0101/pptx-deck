@@ -24,7 +24,7 @@
 Claude Code で次を実行する。
 
     /plugin marketplace add asama0101/pptx-deck
-    /plugin install pptx-deck@pptx-deck-market
+    /plugin install pptx-deck@pptx-deck
     /reload-plugins
 
 `/reload-plugins` のあと、スキルの一覧に `pptx-deck:create` などが出れば導入できている。
@@ -38,10 +38,10 @@ GitHub から直接導入しない場合は、リポジトリを手元に clone 
 Claude Code で、clone したフォルダの絶対パスを指定する。
 
     /plugin marketplace add C:\Users\<ユーザー名>\...\pptx-deck
-    /plugin install pptx-deck@pptx-deck-market
+    /plugin install pptx-deck@pptx-deck
     /reload-plugins
 
-導入元は clone したフォルダそのものなので、`git checkout` でブランチを切り替えたり、フォルダを移動・削除したりすると、導入したプラグインの中身も変わる（動かなくなる）。更新は `git pull` のあとに `/plugin marketplace update pptx-deck-market` を実行する。
+導入元は clone したフォルダそのものなので、`git checkout` でブランチを切り替えたり、フォルダを移動・削除したりすると、導入したプラグインの中身も変わる（動かなくなる）。更新は `git pull` のあとに `/plugin marketplace update pptx-deck` を実行する。
 
 ### 初回の準備
 

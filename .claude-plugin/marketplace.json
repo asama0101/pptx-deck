@@ -1,5 +1,5 @@
 {
-  "name": "pptx-deck-market",
+  "name": "pptx-deck",
   "owner": { "name": "pptx-deck contributors" },
   "metadata": { "description": "ビジネス上の承認文書から編集可能な PPTX を作るプラグイン pptx-deck の配布用マーケットプレイス。" },
   "plugins": [
