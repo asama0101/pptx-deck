@@ -154,3 +154,122 @@ def test_preview_uses_scale(browser, pkg):
     assert all(abs(x - 13.333) > 0.01 for x in base)  # 既定の倍率では下限が効かず、見た目が変わらない
     assert max(big) > max(base)
     assert min(small) == pytest.approx(10 * 96 / 72)  # 縮小では 10pt を下限にする
+
+
+# --- 断片の直書き（Task 3） ---
+_COMP = PKG / "assets" / "components"
+_ROLES = ("title", "lead", "body", "caption")
+# 役割付きの要素で font-size を残してよいもの → 理由。
+# (役割, 値): 直書きがなく旧 base.css の役割の既定（題28・ヘッド22・注記14）で表示されていた要素。
+#   役割の既定が 37/27/16 に変わったので、見た目を変えないよう旧の値を書いた（どの断片でも可）。
+ALLOWED_OLD_ROLE = {
+    ("caption", "14px"): "直書きのない注記。旧 base.css の 14px を保つ",
+    ("title", "28px"): "直書きのない題。旧 base.css の 28px を保つ",
+    ("lead", "22px"): "直書きのない帯の文。旧 base.css の 22px を保つ",
+}
+# (断片, 役割, 値): 役割の既定と違う直書き。表にない大きさとして残した。
+ALLOWED = {
+    ("diagrams/cycle.html", "caption", "19px"): "循環の矢印の説明。本文の大きさの注記",
+    ("layouts/section.html", "title", "40px"): "章扉の題。表紙の題と同じ 40px",
+    ("layouts/section-d2.html", "title", "40px"): "章扉の題。表紙の題と同じ 40px",
+    ("layouts/section-d3.html", "title", "40px"): "章扉の題。表紙の題と同じ 40px",
+    ("layouts/text-d3.html", "caption", "18px"): "要点の番号の横の説明。表にない 18px",
+    ("tables/actions-d2.html", "caption", "19px"): "行動の表の補足。本文の大きさの注記",
+    ("tables/actions-d3.html", "caption", "19px"): "行動の表の補足。本文の大きさの注記",
+}
+# 倍率にしない小さい数字: 0.7 倍で本文の下限 19px を割るため（倍率は 30px 以上だけ）。
+NUM_SCALE_MIN = 30
+
+
+def _fragment_elements():
+    """(断片の相対パス, 属性の辞書) を、pp-picture の中を除いて返す。"""
+    from html.parser import HTMLParser
+
+    void = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+
+    class P(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.stack: list[bool] = []
+            self.found: list[dict] = []
+
+        def handle_starttag(self, tag, attrs, empty=False):
+            a = dict(attrs)
+            pic = any(self.stack) or "pp-picture" in (a.get("class") or "").split()
+            if not empty and tag not in void:
+                self.stack.append(pic)
+            if not pic:
+                self.found.append(a)
+
+        def handle_startendtag(self, tag, attrs):
+            self.handle_starttag(tag, attrs, empty=True)
+
+        def handle_endtag(self, tag):
+            if tag not in void and self.stack:
+                self.stack.pop()
+
+    out = []
+    for f in sorted(_COMP.rglob("*.html")):
+        rel = f.relative_to(_COMP).as_posix()
+        if rel.startswith("pictures/"):
+            continue
+        p = P()
+        p.feed(f.read_text(encoding="utf-8"))
+        out += [(rel, a) for a in p.found]
+    return out
+
+
+def _inline_size(a):
+    import re
+
+    m = re.search(r"(?:^|;)\s*font-size\s*:\s*([^;]*?)\s*(?:;|$)", a.get("style") or "")
+    return m.group(1) if m else None
+
+
+def test_fragments_have_no_hardcoded_role_sizes():
+    bad = []
+    for rel, a in _fragment_elements():
+        role, size = a.get("data-role"), _inline_size(a)
+        if role not in _ROLES or size is None:
+            continue
+        if (role, size) not in ALLOWED_OLD_ROLE and (rel, role, size) not in ALLOWED:
+            bad.append((rel, a.get("data-part"), role, size))
+    assert bad == []
+
+
+def test_fragments_use_scale_for_num():
+    bad = []
+    for rel, a in _fragment_elements():
+        size = _inline_size(a)
+        if "num" not in (a.get("class") or "").split() or size is None or "calc(" in size:
+            continue
+        if not (size.endswith("px") and float(size[:-2]) < NUM_SCALE_MIN):
+            bad.append((rel, a.get("data-part"), size))
+    assert bad == []
+
+
+@pytest.mark.slow
+def test_default_check_violations_unchanged(tmp_path):
+    from collections import Counter
+
+    from pptx_deck import check, measure, template
+
+    from tests._paths import REPO
+
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
+    initdir.init(base, color="navy")
+    work = paths.resolve_work(base)
+    info = template.TemplateInfo.from_dict(json.loads((work / "template.json").read_text(encoding="utf-8"))["info"])
+    got = {}
+    for f in sorted(_COMP.rglob("*.html")):
+        (work / "final.html").write_text(
+            '<!doctype html><html lang="ja"><head><meta charset="utf-8"><link rel="stylesheet" href="theme.css">'
+            '<link rel="stylesheet" href="base.css"></head><body>' + f.read_text(encoding="utf-8") + "</body></html>",
+            encoding="utf-8",
+        )
+        c = Counter()
+        for v in check.check_model(measure.measure(work / "final.html"), info):
+            c[v["rule"] if v["severity"] == "error" else v["rule"] + ":warning"] += 1
+        got[f.relative_to(_COMP).as_posix()] = dict(sorted(c.items()))
+    want = json.loads((REPO / "tests" / "fixtures" / "fs_baseline.json").read_text(encoding="utf-8"))
+    assert {k: v for k, v in got.items() if v != want.get(k)} == {}
