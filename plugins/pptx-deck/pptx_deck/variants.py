@@ -9,7 +9,7 @@ import json
 import re
 from pathlib import Path
 
-from . import paths, reviewext, svgids
+from . import paths, reviewai, reviewext, svgids
 
 FREE = "R"  # 自由設計の推奨案（型の選定表にとらわれない。デザインは 1 のみ。絵 pp-picture は使わない）
 FRAG = re.compile(
@@ -54,7 +54,7 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .pt.has{background:#E8A33E;color:#1a1a1a}
 .rv .pt.up{transform:translateY(-100%)}
 .rv .nopt .pt-layer{display:none}
-.rv .plist{display:grid;gap:6px}.rv .plist li{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:8px;align-items:start}
+.rv .plist{display:grid;gap:6px}.rv .plist li{display:grid;grid-template-columns:150px minmax(0,1fr) auto auto;gap:8px;align-items:start}
 .rv .plist li b{font-size:13px;padding-top:6px}.rv .plist textarea{height:44px}
 .rv .cols{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
 .rv .cols>div{background:var(--panel);padding:12px 14px;font-size:13.5px;min-width:0}
@@ -160,11 +160,13 @@ _SCRIPT = r"""<script>
     var li = $('.plist li[data-key="' + key.replace(/"/g, '\\"') + '"]', p);
     if (!li) {
       li = document.createElement('li'); li.dataset.key = key;
-      li.innerHTML = '<b></b><textarea aria-label="部位のコメント" placeholder="この部位をどうしてほしいか"></textarea><button type="button" class="b1">消す</button>';
+      li.innerHTML = '<b></b><textarea aria-label="部位のコメント" placeholder="この部位をどうしてほしいか"></textarea><button type="button" class="b1 aiAsk">頼む</button><button type="button" class="b1 aiDel">消す</button>';
       $('b', li).textContent = partLabel(key);
       $('textarea', li).oninput = function () { partChanged(p); };
-      $('button', li).onclick = function () { li.remove(); partChanged(p); };
+      $('.aiAsk', li).onclick = function () { if (window.__rvAiAsk) window.__rvAiAsk(p, key, li); };
+      $('.aiDel', li).onclick = function () { li.remove(); partChanged(p); };
       $('.plist', p).appendChild(li);
+      if (window.__rvAiRefresh) window.__rvAiRefresh(p);
     }
     if (text) $('textarea', li).value = text;
     return li;
@@ -191,7 +193,7 @@ _SCRIPT = r"""<script>
       var b = document.createElement('button'); b.type = 'button'; b.className = 'pt'; b.dataset.key = key;
       b.textContent = '✦ AI に頼む：' + name; b.style.left = e.r.x + 'px'; b.style.top = e.r.y + 'px';
       if (e.r.y > 26) b.classList.add('up');                  // 部位の文字にかぶらないよう、枠の左上の外に置く（上に余白がないときは中）
-      b.title = name + 'にコメントする';
+      b.title = name + 'について AI に頼む';
       b.onclick = function () { var li = partRow(p, key); $('textarea', li).focus(); };
       layer.appendChild(b);
     });
@@ -713,7 +715,7 @@ def _page(
         if docs is None:  # 設計図と原稿の確認ページには部位がない
             rest.append(
                 '<div class="parts"><div class="nh"><h3>AI への指示（✦ の紫のボタンを押すと、その部位への指示を書けます）</h3></div>'
-                '<ul class="plist"></ul></div>'
+                '<ul class="plist"></ul><div class="aiState" aria-live="polite"></div></div>'
             )
         sel.append(
             '<div class="judge"><div class="sub">'
@@ -783,7 +785,7 @@ def _page(
         p.extend(rest + sel + bar)
         panes.append("".join(p))
     parts = [
-        HEAD.format(title=title, extra=_STYLE + "<style>" + reviewext.CSS + "</style>"),
+        HEAD.format(title=title, extra=_STYLE + "<style>" + reviewext.CSS + reviewai.CSS + "</style>"),
         f'<div class="rv"><h1 title="{esc(lead, quote=True)}">{title}</h1><p class="lead">{lead}</p>'
         f'<div class="strip"><span>スライド <b>{len(frags)}</b> 枚</span><span id="prog"></span>'
         + _scheme_html(scheme)
@@ -811,7 +813,7 @@ def _page(
         .replace("__HASH__", digest)
         .replace("__PRESET__", preset_js)
         .replace("__SCHEME__", json.dumps(scheme[0] if scheme else None).replace("</", "<\\/"))
-        .replace("/*__EXT__*/", reviewext.JS)
+        .replace("/*__EXT__*/", reviewext.JS + reviewai.JS)
     )  # 編集モード（同じ IIFE の中に入る）
     parts.append("</body></html>")
     return "".join(parts)

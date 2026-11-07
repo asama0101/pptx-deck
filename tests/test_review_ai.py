@@ -80,3 +80,69 @@ def test_バッジは紫で部位名を含む(ai_page):
     ]
     bg = ai_page.evaluate("getComputedStyle(document.querySelector('.pane[data-slide=\"01\"] .pt')).backgroundColor")
     assert bg == "rgb(106, 63, 181)"
+
+
+ROW = '.pane[data-slide="01"] .plist li'
+STATE = '.pane[data-slide="01"] .aiState'
+MSG_IDLE = "いま Claude が待ち受けていません。指示を回答に入れて送ると、あとで直します"
+MSG_BUSY = "Claude が直しています…"
+MSG_LOST = "応答がありません。指示を部位のコメントに移しました"
+
+
+def _write(page, text="短く"):
+    """注釈のバッジを押し、行の欄に指示を書く。"""
+    page.click('.pane[data-slide="01"] .pt >> text=注釈')
+    page.fill(f"{ROW} textarea", text)
+
+
+def test_待ち受け中でないと頼むは押せず案内が出る(ai_page):
+    _write(ai_page)
+    assert ai_page.is_disabled(f"{ROW} .aiAsk")
+    assert ai_page.text_content(STATE) == MSG_IDLE
+
+
+def test_頼むとキューに依頼が積まれる(ai_page):
+    ai_page.evaluate("window.__aiWatchAt = Date.now()")
+    _write(ai_page)
+    ai_page.click(f"{ROW} .aiAsk")
+    q = ai_page.evaluate("window.__aiQueue")
+    assert len(q) == 1
+    assert {k: q[0][k] for k in ("type", "slide", "k", "d", "f", "part", "text", "edits")} == {
+        "type": "edit",
+        "slide": "01",
+        "k": "A",
+        "d": 1,
+        "f": "01-A",
+        "part": "注釈",
+        "text": "短く",
+        "edits": [],
+    }
+    assert q[0]["id"].startswith("ai-")
+    assert ai_page.text_content(STATE) == MSG_BUSY
+
+
+def test_処理が終わるまで同じ断片の頼むは押せない(ai_page):
+    ai_page.evaluate("window.__aiWatchAt = Date.now()")
+    _write(ai_page)
+    assert ai_page.is_enabled(f"{ROW} .aiAsk")
+    ai_page.click(f"{ROW} .aiAsk")
+    assert ai_page.is_disabled(f"{ROW} .aiAsk")
+
+
+def test_180秒返答がないと応答なしになり指示が部位のコメントに残る(ai_page):
+    ai_page.clock.install()
+    ai_page.evaluate("window.__aiWatchAt = Date.now()")
+    _write(ai_page)
+    ai_page.click(f"{ROW} .aiAsk")
+    old = ai_page.evaluate("window.__aiQueue[0].id")
+    ai_page.clock.run_for(181000)
+    assert ai_page.text_content(STATE) == MSG_LOST
+    assert ai_page.input_value(f"{ROW} textarea") == "短く"
+    assert ai_page.evaluate("window.__aiQueue.length") == 0
+    ai_page.click('.pane[data-slide="01"] .copyBtn')
+    assert "- 部位: 案 A 注釈 ／ コメント: 短く" in ai_page.input_value('.pane[data-slide="01"] .copybox') or (
+        "- 部位: 案 A 注釈 ／ コメント: 短く" in ai_page.evaluate("window.__answersMd")
+    )
+    ai_page.evaluate("id => window.__aiReply({id: id, ok: true, html: '<p>x</p>'})", old)
+    assert ai_page.text_content(STATE) == MSG_LOST
+    assert ai_page.input_value(f"{ROW} textarea") == "短く"
