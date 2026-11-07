@@ -310,3 +310,42 @@ def test_再読み込みしても元に戻すが残る(ai_page):
     ai_page.reload()
     assert ai_page.locator(f"{AFTER} .aiUndo").count() == 1
     assert ai_page.locator(f"{AFTER} .aiRetry").count() == 1
+
+
+# ---- 依頼中は編集モードを使えない ----
+TOGGLE = f"{PANE} .rv-edit-toggle"
+
+
+def test_依頼中は編集モードのスイッチが押せず終わると押せる(ai_page):
+    assert ai_page.is_enabled(TOGGLE)
+    req = _ask(ai_page)
+    assert ai_page.is_disabled(TOGGLE)
+    _reply(ai_page, id=req["id"], ok=True, html=NEW_FRAG)
+    assert ai_page.is_enabled(TOGGLE)
+    ai_page.evaluate("window.__aiWatchAt = Date.now()")
+    ai_page.click(f"{AFTER} .aiUndo")
+    assert ai_page.is_disabled(TOGGLE)  # 元に戻すの依頼中も同じ
+    _reply(ai_page, id=ai_page.evaluate("window.__aiQueue.shift().id"), ok=False, error="x")
+    assert ai_page.is_enabled(TOGGLE)
+
+
+def test_依頼中に編集モードがオンなら閉じる(ai_page):
+    ai_page.evaluate("window.__aiWatchAt = Date.now()")
+    ai_page.click(f"{PANE} .pt >> text=注釈")
+    ai_page.fill(f"{ROW} textarea", "短く")
+    ai_page.check(TOGGLE)
+    assert ai_page.locator(f'{PANE} .big [contenteditable="true"]').count() > 0
+    ai_page.click(f"{ROW} .aiAsk")
+    req = ai_page.evaluate("window.__aiQueue.shift()")
+    assert ai_page.locator(f'{PANE} [contenteditable="true"]').count() == 0
+    assert ai_page.is_checked(TOGGLE) is False
+    assert ai_page.is_disabled(TOGGLE)
+    _reply(ai_page, id=req["id"], ok=True, html=NEW_FRAG)
+    assert ai_page.is_enabled(TOGGLE)
+    assert ai_page.is_checked(TOGGLE) is False  # 編集モードは戻さない
+
+
+def test_元に戻すだけが待つ状態で待ち受けが切れると案内は元に戻す向け(ai_page):
+    _fixed(ai_page)
+    ai_page.evaluate("() => { window.__aiWatchAt = 0; window.__rvAiRefresh(); }")
+    assert ai_page.text_content(STATE) == "元に戻すには Claude の待ち受けが必要です"

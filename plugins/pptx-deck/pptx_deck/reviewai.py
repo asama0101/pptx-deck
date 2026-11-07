@@ -29,9 +29,15 @@ JS = r"""
     });
     var undos = $$('.aiUndo', p);
     undos.forEach(function (b) { var q = aiBusy(p, b.closest('[data-f]').dataset.f); busy = busy || q; b.disabled = !aiWatching() || q; });
+    var any = Object.keys(aiPending).some(function (id) { return aiPending[id].p === p; }), tg = $('.rv-edit-toggle', p);
+    if (tg) {                                                  // 依頼中は編集モードを使えない。オンなら change で閉じる（reviewext に任せる）
+      if (any && tg.checked) { tg.checked = false; tg.dispatchEvent(new Event('change')); }
+      tg.disabled = any;
+    }
     st.textContent = !rows.length && !undos.length ? '' : busy ? 'Claude が直しています…'
       : p.__aiErr ? p.__aiErr : p.__aiLost ? '応答がありません。指示を部位のコメントに移しました'
-      : aiWatching() ? '' : 'いま Claude が待ち受けていません。指示を回答に入れて送ると、あとで直します';
+      : aiWatching() ? '' : !rows.length ? '元に戻すには Claude の待ち受けが必要です'
+      : 'いま Claude が待ち受けていません。指示を回答に入れて送ると、あとで直します';
   }
   function aiDrop(id) {                                        // 依頼を表とキューから外す（返事・応答なし）
     var r = aiPending[id]; if (!r) return null;
