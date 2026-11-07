@@ -88,7 +88,9 @@ def ensure_derived(work: Path) -> bool:
     from . import initdir
 
     work = Path(work)
-    if all((work / n).exists() for n in ("theme.css", "base.css", "chart-preview.js", "icons")):
+    if all((work / n).exists() for n in ("theme.css", "base.css", "chart-preview.js", "icons")) and (
+        "--fs-title" in paths.read_text(work / "theme.css")  # 文字サイズの変数を持たない古い theme.css は作り直す
+    ):
         return False
     cfg = paths.read_cfg(work)
     initdir.write_derived(work, cfg)

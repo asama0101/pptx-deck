@@ -465,7 +465,7 @@ def cmd_set_color(args) -> int:
         return 2
     for n in notes:
         print(n, file=sys.stderr)
-    print(f"配色を {args.color} に変えました。PPTX は build で作り直してください")
+    print(f"配色を {args.color} に変えました。finalize してから build で PPTX を作り直してください")
     return 0
 
 
@@ -474,21 +474,12 @@ def _apply_fontsizes_from_answers(work: Path, mds: list[str], names: list[str] |
     キーごとに（値, それを最後に書いた回答のファイル名）を cfg["answers_fontsizes"] に覚え、
     記録と同じキーは再適用しない（set-font-size の指定を戻さない）。別の回答ファイルが書いたキーは反映する。
     names は mds と同じ順の回答のファイル名（分からなければ値だけで比べる）。"""
-    from . import initdir, lifecycle
+    from . import initdir, lifecycle, variants
 
-    want: dict[str, tuple[float, str | None]] = {}
-    for i, md in enumerate(mds):
-        for k, v in fontsize.parse_line(md).items():
-            want[k] = (v, names[i] if names else None)
     cfg = paths.read_cfg(work)
     rec = cfg.get("answers_fontsizes")
     rec = rec if isinstance(rec, dict) else {}
-
-    def consumed(k: str, v: float, src: str | None) -> bool:
-        r = rec.get(k)
-        return isinstance(r, list) and len(r) == 2 and r[0] == v and (r[1] is None or src is None or r[1] == src)
-
-    fresh = {k: (v, src) for k, (v, src) in want.items() if not consumed(k, v, src)}
+    fresh = variants.fontsize_pending(cfg, mds, names)
     if not fresh:
         return "none"
     now = fontsize.current(cfg)
@@ -541,7 +532,7 @@ def cmd_set_font_size(args) -> int:
     notes = initdir.set_font_size(work, changes)
     for n in notes:
         print(n, file=sys.stderr)
-    print("文字サイズを変えました。PPTX は build で作り直してください")
+    print("文字サイズを変えました。finalize してから build で PPTX を作り直してください")
     return 0
 
 

@@ -107,3 +107,28 @@ def test_initial_from_cfg(work, open_page):
     page = open_page()
     assert page.input_value('input[data-fs="title"]') == "40"
     assert "文字サイズ" not in answers(page)
+
+
+def test_carried_over_applies_and_reset_emits_default(work, browser):
+    (work / "answers-1.md").write_text(
+        "---\nround: 1\n---\n- 文字サイズ: title=45\n## S01\n- 選択: A\n- 判定: 承認\n", encoding="utf-8"
+    )
+    page = browser.new_page(viewport={"width": 1400, "height": 900})
+    page.goto(variants.assemble(work, 2).as_uri())
+    assert page.input_value('input[data-fs="title"]') == "45"
+    assert page.evaluate("s => getComputedStyle(document.querySelector(s)).fontSize", BIG) == "45px"
+    assert "文字サイズ" not in answers(page)  # 触らなければ行は出ない（前の回の行が有効）
+    page.locator("details.rv-fs > summary").click()
+    page.click(".rv-fs-reset")
+    page.click('.pane[data-slide="01"] .copyBtn')
+    assert "- 文字サイズ: title=37\n" in page.evaluate("window.__answersMd")
+    page.close()
+
+
+def test_typed_value_survives_reload(open_page):
+    page = open_page()
+    page.locator("details.rv-fs > summary").click()
+    page.fill('input[data-fs="title"]', "45")
+    page.reload()
+    assert page.input_value('input[data-fs="title"]') == "45"
+    assert page.evaluate("s => getComputedStyle(document.querySelector(s)).fontSize", BIG) == "45px"

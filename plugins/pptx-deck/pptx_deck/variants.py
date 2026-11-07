@@ -120,6 +120,7 @@ _SCRIPT = r"""<script>
     try {
       var t = {};                                              // ai は p.__rvAi そのものなので、写しを作って落とす（画面側の全文は消さない）
       Object.keys(o).forEach(function (k) {
+        if (k === '_fs') { t[k] = o[k]; return; }
         t[k] = Object.assign({}, o[k], { ai: {} });
         Object.keys(o[k].ai || {}).forEach(function (f) { t[k].ai[f] = Object.assign({}, o[k].ai[f]); delete t[k].ai[f].html; });
       });
@@ -134,10 +135,12 @@ _SCRIPT = r"""<script>
       var d = {}; $$('.dgroup input[type=radio]:checked', p).forEach(function (x) { d[x.closest('.dgroup').dataset.k] = x.value; });
       o[p.dataset.slide] = { c: r ? r.value : '', t: $('.cm', p).value, v: p.dataset.verdict || '', au: p.dataset.auto === '1', d: d, pc: partTexts(p), ed: editsOf(p), ai: p.__rvAi || {} };
     });
+    if (fsIn.length) { o._fs = {}; fsIn.forEach(function (i) { o._fs[i.dataset.fs] = i.value; }); }
     return o;
   }
   function restore() {
     var o = load();
+    if (o._fs) fsIn.forEach(function (i) { if (o._fs[i.dataset.fs] !== undefined) i.value = o._fs[i.dataset.fs]; });
     panes.forEach(function (p) {
       var a = o[p.dataset.slide]; if (!a) return;
       p.__rvAi = a.ai || {};                                   // 「AI に頼む」で直した断片を、覚えた全文で置き換える（編集はその上に戻す）
@@ -439,12 +442,16 @@ _SCRIPT = r"""<script>
     fsIn.forEach(function (i) { document.documentElement.style.setProperty(i.dataset.var, fsVal(i) + (i.dataset.kind === 'px' ? 'px' : '')); });
     $$('.pp-chart', panes[cur]).forEach(function (h) { if (window.__chartPreview) window.__chartPreview(h); });
   }
+  function fsSave() { store(snapshot()); }
   fsIn.forEach(function (i) {
-    i.oninput = fsApply;
-    i.onchange = function () { i.value = fsVal(i); fsApply(); };
+    i.oninput = function () { fsApply(); fsSave(); };
+    i.onchange = function () { i.value = fsVal(i); fsApply(); fsSave(); };
   });
   var fsReset = $('.rv-fs-reset');
-  if (fsReset) fsReset.onclick = function () { fsIn.forEach(function (i) { i.value = i.dataset.def; }); fsApply(); };
+  if (fsReset) fsReset.onclick = function () { fsIn.forEach(function (i) { i.value = i.dataset.def; }); fsApply(); fsSave(); };
+  function fsSync() {            // 読み込み時: theme.css の値と違う入力（前の回の選択・再読み込み前の入力）を画面に反映する
+    if (fsIn.some(function (i) { return fsVal(i) !== parseFloat(i.dataset.tpl); })) fsApply();
+  }
 
   function buildMd() {
     var lines = ['---', 'deck: ' + __DECK__, 'round: __ROUND__', '---'];
@@ -510,6 +517,7 @@ _SCRIPT = r"""<script>
 /*__EXT__*/
   function start() {
     restore();
+    fsSync();
     applyPreset();
     $$('input[type=radio][name^="s"]:checked').forEach(function (x) { x.dataset.was = '1'; });
     refresh(); store(snapshot()); go(0);
@@ -631,8 +639,9 @@ def _scheme_html(scheme) -> str:
     )
 
 
-def _fontsize_html(values: dict[str, float] | None) -> str:
-    """文字サイズの欄。data-init が読み込み時の値（template.json の現在の値）、data-def が既定。"""
+def _fontsize_html(values: dict[str, float] | None, base: dict[str, float] | None = None) -> str:
+    """文字サイズの欄。data-init が読み込み時の値（前の回で選んだ未反映の値を含む）、data-tpl が theme.css の値、data-def が既定。"""
+    base = base or values
     if not values:
         return ""
     esc = _html.escape
@@ -641,7 +650,7 @@ def _fontsize_html(values: dict[str, float] | None) -> str:
         step = 1 if it.kind == "px" else 0.05
         rows.append(
             f'<label>{esc(it.label)}<input type="number" data-fs="{it.key}" data-var="{it.var}"'
-            f' data-kind="{it.kind}" data-init="{values[it.key]:g}" data-def="{it.default:g}"'
+            f' data-kind="{it.kind}" data-init="{values[it.key]:g}" data-tpl="{base[it.key]:g}" data-def="{it.default:g}"'
             f' value="{values[it.key]:g}" min="{it.lo:g}" max="{it.hi:g}" step="{step}"'
             f' aria-label="{esc(it.label, quote=True)}"></label>'
         )
@@ -736,6 +745,7 @@ def _page(
     scheme: tuple | None = None,
     out_format: str = "pptx",
     fontsizes: dict[str, float] | None = None,
+    fontsizes_base: dict[str, float] | None = None,
 ) -> str:
     """scheme は（選択肢の値 → CSS 変数, 初期値[, 選択済みの値]）。渡すと、画面上部に配色の選択が出る。out_format は出力形式（最終成果物）の読み込み時の選択。最終確認・設計図の確認のページには出さない。
     ids は最終確認ページ（final=True）で、スライドの断片 ID（例 "01-B-d2"）。編集の記録（- 編集: の f）に使う。
@@ -861,7 +871,7 @@ def _page(
         HEAD.format(title=title, extra=_STYLE + "<style>" + reviewext.CSS + reviewai.CSS + "</style>"),
         f'<div class="rv"><h1 title="{esc(lead, quote=True)}">{title}</h1><p class="lead">{lead}</p>'
         f'<div class="strip"><span>スライド <b>{len(frags)}</b> 枚</span><span id="prog"></span>'
-        + ("" if final or docs is not None else _fontsize_html(fontsizes))
+        + ("" if final or docs is not None else _fontsize_html(fontsizes, fontsizes_base))
         + _scheme_html(scheme)
         + ("" if final or docs is not None else _format_html(out_format))
         + "</div>"
@@ -909,12 +919,34 @@ def _color_applied(work: Path, color: str, source: str | None = None) -> bool:
         return False
 
 
-def _fontsizes_now(work: Path) -> dict[str, float]:
-    """template.json の現在の文字サイズ（読めなければ既定）。"""
+def fontsize_pending(cfg: dict, mds: list[str], names: list[str] | None = None) -> dict[str, tuple[float, str | None]]:
+    """回答の文字サイズのうち、まだ反映していないもの（キー → 値, それを最後に書いた回答のファイル名）。
+    cfg["answers_fontsizes"] の（値, ファイル名）と同じものは反映済み。ファイル名が分からなければ値だけで比べる。"""
+    want: dict[str, tuple[float, str | None]] = {}
+    for i, md in enumerate(mds):
+        for k, v in fontsize.parse_line(md).items():
+            want[k] = (v, names[i] if names else None)
+    rec = cfg.get("answers_fontsizes")
+    rec = rec if isinstance(rec, dict) else {}
+
+    def consumed(k: str, v: float, src: str | None) -> bool:
+        r = rec.get(k)
+        return isinstance(r, list) and len(r) == 2 and r[0] == v and (r[1] is None or src is None or r[1] == src)
+
+    return {k: (v, src) for k, (v, src) in want.items() if not consumed(k, v, src)}
+
+
+def _fontsizes_now(work: Path, mds: list[str], names: list[str]) -> tuple[dict[str, float], dict[str, float]]:
+    """（ページの初期値, theme.css の現在値）。初期値は、前の回で選んだ未反映の文字サイズを現在値に重ねたもの。"""
     try:
-        return fontsize.current(paths.read_cfg(work))
+        cfg = paths.read_cfg(work)
     except (OSError, ValueError):
-        return fontsize.current({})
+        cfg = {}
+    base = fontsize.current(cfg)
+    now = dict(base)
+    for k, (v, _) in fontsize_pending(cfg, mds, names).items():
+        now[k] = fontsize.clamp(k, v)
+    return now, base
 
 
 def assemble(work: Path, round_no: int = 1) -> Path:
@@ -940,6 +972,7 @@ def assemble(work: Path, round_no: int = 1) -> Path:
         and not _color_applied(work, st["color"], files[ci].name if ci is not None else None)
     ):
         scheme = (scheme[0], scheme[1], st["color"])
+    fs_now, fs_base = _fontsizes_now(work, mds, [f.name for f in files])
     out.write_text(
         _page(
             work,
@@ -951,7 +984,8 @@ def assemble(work: Path, round_no: int = 1) -> Path:
             preset=preset,
             scheme=scheme,
             out_format=st["format"] or "pptx",
-            fontsizes=_fontsizes_now(work),
+            fontsizes=fs_now,
+            fontsizes_base=fs_base,
         ),
         encoding="utf-8",
     )
