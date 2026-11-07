@@ -309,3 +309,9 @@ def test_ページがあきらめた依頼はディスクを戻すと書いて�
     assert '() => window.__aiReply({"id":"ai-…","ok":true,"html":"<section …>…</section>"})' in skill
     assert "`retry` が真" in skill
     assert "`idx`" in skill
+
+
+def test_create_の_戻し方は_restore_に_fragment_を使う():
+    t = skill_text("create")
+    assert "restore <saved_as> --fragment" in t
+    assert "restore <saved_as> --slide" not in t
