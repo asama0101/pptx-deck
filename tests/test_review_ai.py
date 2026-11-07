@@ -349,3 +349,37 @@ def test_元に戻すだけが待つ状態で待ち受けが切れると案内�
     _fixed(ai_page)
     ai_page.evaluate("() => { window.__aiWatchAt = 0; window.__rvAiRefresh(); }")
     assert ai_page.text_content(STATE) == "元に戻すには Claude の待ち受けが必要です"
+
+
+# ---- 通し（実際の Claude 抜き） ----
+def test_頼む_返答_元に戻す_頼み直すが通しで動く(ai_page):
+    orig = ai_page.evaluate(ORIG_STAGE)
+    # 頼む → 返答で断片が置き換わる
+    req = _ask(ai_page, text="もっと短く")
+    assert req["type"] == "edit"
+    assert req["text"] == "もっと短く"
+    _reply(ai_page, id=req["id"], ok=True, html=NEW_FRAG)
+    assert "新しい題" in ai_page.text_content(f"{PANE} .big .stage")
+    assert ai_page.locator(f"{AFTER} .aiUndo").count() == 1
+    assert ai_page.locator(f"{AFTER} .aiRetry").count() == 1
+    # 元に戻す → undo の依頼 → 元の全文で返答すると戻る
+    ai_page.click(f"{AFTER} .aiUndo")
+    undo = ai_page.evaluate("window.__aiQueue.shift()")
+    assert undo["type"] == "undo"
+    _reply(ai_page, id=undo["id"], ok=True, html=PART_FRAG)
+    assert "新しい題" not in ai_page.text_content(f"{PANE} .big .stage")
+    assert ai_page.evaluate(ORIG_STAGE) == orig
+    assert ai_page.locator(f"{AFTER} button").count() == 0
+    # もう一度直し、頼み直す → 前の指示が残って行が開き、もう一度頼める
+    req = _ask(ai_page, text="もっと短く")
+    _reply(ai_page, id=req["id"], ok=True, html=NEW_FRAG)
+    ai_page.click(f"{AFTER} .aiRetry")
+    assert ai_page.input_value(f"{ROW} textarea") == "もっと短く"
+    ai_page.click(f"{ROW} .aiAsk")
+    again = ai_page.evaluate("window.__aiQueue.shift()")
+    assert again["type"] == "edit"
+    assert again["text"] == "もっと短く"
+    assert again["id"] not in (req["id"], undo["id"])
+    # 返答が来れば、AI への指示は部位のコメントとして回答 md に出ない
+    _reply(ai_page, id=again["id"], ok=True, html=NEW_FRAG)
+    assert "- 部位:" not in _md(ai_page)
