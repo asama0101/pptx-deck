@@ -222,7 +222,9 @@ def test_2回目の回答で配色に触れなければset_colorの色が残る(
 def test_PPTXがあるときの警告は1回だけでPPTX削除後のfinalizeで反映される(deck, finalize):
     (deck.base.parent.parent / "deck.pptx").write_bytes(b"dummy")
     deck.answers(1, "green")
-    assert "PPTX が作成済み" in finalize()
+    first = finalize()
+    assert "PPTX が作成済み" in first
+    assert "finalize → build" in first  # build だけでは、final.html が消えていて作り直せない
     assert "PPTX が作成済み" not in finalize()  # 同じ警告は繰り返さない
     assert color_of(deck.work) == NAVY
     (deck.base.parent.parent / "deck.pptx").unlink()

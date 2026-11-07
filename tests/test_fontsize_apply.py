@@ -69,6 +69,7 @@ def test_finalize_skips_when_pptx_exists(deck, run):
     err = run("finalize")
     assert css(deck.base) == before
     assert "set-font-size" in err
+    assert "finalize → build" in err  # build だけでは、final.html が消えていて作り直せない
     assert "set-font-size" not in run("finalize")  # 同じ警告は繰り返さない
 
 

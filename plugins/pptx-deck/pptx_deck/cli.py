@@ -398,7 +398,7 @@ def cmd_finalize(args) -> int:
     elif r == "skipped_pptx":
         print(
             "PPTX が作成済みなので配色は変えていません。"
-            "変えるなら set-color を使ってください（そのあと build で PPTX を作り直します）",
+            "変えるなら set-color を使ってください（そのあと finalize → build で PPTX を作り直します）",
             file=sys.stderr,
         )
     old = fontsize.current(paths.read_cfg(work))
@@ -410,7 +410,7 @@ def cmd_finalize(args) -> int:
     elif r == "skipped_pptx":
         print(
             "PPTX が作成済みなので文字サイズは変えていません。"
-            "変えるなら set-font-size を使ってください（そのあと build で PPTX を作り直します）",
+            "変えるなら set-font-size を使ってください（そのあと finalize → build で PPTX を作り直します）",
             file=sys.stderr,
         )
     return 0
