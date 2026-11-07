@@ -252,7 +252,7 @@ _SCRIPT = r"""<script>
   }
   function viewKey(p) {
     var r = $('input[type=radio][name^="s"]:checked', p);
-    return p.dataset.view || (r ? r.value : $('.opt', p).dataset.k);
+    return p.dataset.view || (r && r.value !== 'FIX' ? r.value : $('.opt', p).dataset.k);   // FIX（要修正）は案ではない。復元された FIX を案のキーにすると、大きな表示が空になる
   }
   function dsel(p, k) { var r = $('.dgroup[data-k="' + k + '"] input[type=radio]:checked', p); return r ? +r.value : 1; }
   function showBig(p, k, d) {
