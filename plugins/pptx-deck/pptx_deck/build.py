@@ -10,7 +10,7 @@ from pptx.enum.text import MSO_ANCHOR, MSO_AUTO_SIZE, PP_ALIGN
 from pptx.oxml.ns import qn
 from pptx.util import Pt
 
-from . import paths, template
+from . import fontsize, paths, template
 from .pptxutil import clone_footer_placeholders, drop_all_slides, emu, file_url_to_path, rgb, set_run_font
 
 ALIGN = {"left": PP_ALIGN.LEFT, "center": PP_ALIGN.CENTER, "right": PP_ALIGN.RIGHT, "justify": PP_ALIGN.JUSTIFY}
@@ -237,6 +237,8 @@ def build(
 ) -> Path:
     from . import charts
 
+    cfg = paths.read_cfg(base_dir) if (base_dir / "template.json").exists() else {}  # 作業フォルダ以外では既定値
+    chart_scale = fontsize.current(cfg)["chart-scale"]
     prs = template.open_template(template_path)
     drop_all_slides(prs)
     for s in model:
@@ -292,7 +294,7 @@ def build(
             elif k == "table":
                 add_table(slide, el)
             elif k == "chart":
-                charts.add_chart(slide, el, palette)
+                charts.add_chart(slide, el, palette, chart_scale)
             else:
                 raise ValueError(f"未対応の要素: {k}")
     out = Path(out)

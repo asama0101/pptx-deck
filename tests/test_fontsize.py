@@ -3,6 +3,7 @@
 # ruff: noqa: S101  # pytest の assert
 import json
 
+import pytest
 from pptx_deck import fontsize, initdir, paths
 
 from tests._paths import PKG
@@ -79,3 +80,74 @@ def test_theme_css_vars_are_inside_balanced_root(tmp_path):
     for it in fontsize.ITEMS:
         assert f"{it.var}:" in inside
         assert css.count(f"{it.var}:") == 1
+
+
+@pytest.fixture
+def browser():
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as p:
+        b = p.chromium.launch()
+        yield b
+        b.close()
+
+
+def test_chart_pt():
+    from pptx_deck import charts
+
+    assert charts.chart_pt(1.0) == 12
+    assert charts.chart_pt(0.84) == 10
+    assert charts.chart_pt(1.5) == 18
+    assert charts.chart_pt(0.7) == 10
+
+
+@pytest.mark.slow
+def test_build_chart_font_follows_scale(pkg, tmp_path):
+    import html
+    import json
+
+    from pptx import Presentation
+    from pptx_deck import build, template
+
+    from tests._measure import model_of
+
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
+    initdir.init(base, color="navy")
+    work = paths.resolve_work(base)
+    initdir.set_font_size(work, {"chart-scale": 1.25})
+    spec = {"type": "bar", "categories": ["a", "b"], "series": [{"name": "x", "values": [1, 2]}]}
+    box = 'style="position:absolute;left:100px;top:150px;width:600px;height:400px"'
+    model = model_of(f"<div class=\"pp-chart\" {box} data-chart='{html.escape(json.dumps(spec), quote=True)}'></div>")
+    from types import SimpleNamespace
+
+    pal = SimpleNamespace(accent="#00AA55", accent_mid="#55AA88", accent_dark="#005522")
+    tpl = pkg / "assets" / "template" / "standard.potx"
+    out = build.build(model, tpl, template.analyze(tpl), pal, tmp_path / "o.pptx", base_dir=work)
+    chart = [s for s in Presentation(str(out)).slides[0].shapes if s.has_chart][0].chart
+    assert chart.font.size.pt == 15
+
+
+@pytest.mark.slow
+def test_preview_uses_scale(browser, pkg):
+    import json
+
+    js = (pkg / "assets" / "web" / "chart-preview.js").read_text(encoding="utf-8")
+    spec = {"type": "bar", "categories": ["a", "b"], "series": [{"name": "x", "values": [1, 2]}]}
+    html = (
+        "<html><body><div class='pp-chart' style='position:relative;width:600px;height:400px' "
+        f"data-chart='{json.dumps(spec)}'></div></body></html>"
+    )
+
+    def sizes(scale):
+        page = browser.new_page()
+        page.set_content(html)
+        page.evaluate(f"document.documentElement.style.setProperty('--chart-scale', '{scale}')")
+        page.add_script_tag(content=js)
+        page.evaluate("document.querySelectorAll('.pp-chart').forEach(window.__chartPreview)")
+        out = page.evaluate("[...document.querySelectorAll('svg text')].map(t => +t.getAttribute('font-size'))")
+        page.close()
+        return out
+
+    base, big = sizes(1), sizes(1.5)
+    assert base
+    assert max(big) > max(base)

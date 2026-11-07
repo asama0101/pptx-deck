@@ -20,6 +20,13 @@ TYPES = {
     "waterfall": C.COLUMN_STACKED,
 }
 FONT_PT = 12
+
+
+def chart_pt(scale: float) -> int:
+    """グラフ内の文字の大きさ(pt)。既定の 12pt に倍率をかけ、10pt を下限にする。"""
+    return max(10, round(FONT_PT * scale))
+
+
 SMALL_STEP = (
     0.08  # 軸の最大値（axis.max がなければデータの最大）に対する割合。これ未満の増減は、ラベルを棒の外（下）に出す
 )
@@ -187,7 +194,7 @@ def _fill(series, hex6):
     series.format.fill.fore_color.rgb = rgb(hex6)
 
 
-def add_chart(slide, el, palette):
+def add_chart(slide, el, palette, scale: float = 1.0):
     spec, r = el["chart"], el["rect"]
     t = spec["type"]
     if problems := validate(spec):
@@ -203,7 +210,7 @@ def add_chart(slide, el, palette):
             cd.add_series(s["name"], s["values"])
     gf = slide.shapes.add_chart(TYPES[t], emu(r["x"]), emu(r["y"]), emu(r["w"]), emu(r["h"]), cd)
     chart = gf.chart
-    chart.font.size = Pt(FONT_PT)
+    chart.font.size = Pt(chart_pt(scale))
     chart.font.name = FONT
     latin = chart.font._element.find(qn("a:latin"))
     ea = etree.Element(qn("a:ea"))
@@ -232,7 +239,7 @@ def add_chart(slide, el, palette):
 
     value_axis = chart.value_axis
     value_axis.has_major_gridlines = False
-    value_axis.tick_labels.font.size = Pt(FONT_PT)
+    value_axis.tick_labels.font.size = Pt(chart_pt(scale))
     value_axis.tick_labels.number_format = _axis_fmt(fmt)  # 目盛の桁区切りをラベルと揃える（30000 → 30,000）
     value_axis.tick_labels.number_format_is_linked = False
     axis = spec.get("axis") or {}  # 小グラフを並べるときは、軸の最小・最大・目盛を全パネルで揃える
@@ -243,7 +250,7 @@ def add_chart(slide, el, palette):
         value_axis.maximum_scale = axis["max"]
     if "major" in axis:
         value_axis.major_unit = axis["major"]
-    chart.category_axis.tick_labels.font.size = Pt(FONT_PT)
+    chart.category_axis.tick_labels.font.size = Pt(chart_pt(scale))
     plot.gap_width = spec.get("gap", 60)  # 棒の間隔（%）。幅の狭いグラフで棒を太くするとき小さくする
 
     if t == "waterfall":
@@ -264,7 +271,7 @@ def add_chart(slide, el, palette):
             dl.show_value = True
             dl.number_format = f'[>={_plain(threshold)}]{_axis_fmt(fmt)};""'
             dl.number_format_is_linked = False
-            dl.font.size = Pt(FONT_PT)
+            dl.font.size = Pt(chart_pt(scale))
             dl.font.color.rgb = rgb(color)  # 濃い棒は白、淡い棒は本文色でコントラスト 4.5:1 以上
         # 注目する項目（highlight）だけ強調色。増減のどちらの系列にあるかで塗る点を選ぶ
         for i in _highlights(spec):
@@ -272,7 +279,7 @@ def add_chart(slide, el, palette):
             pt = s.points[i]
             pt.format.fill.solid()
             pt.format.fill.fore_color.rgb = rgb(palette.emphasis)
-            pt.data_label.font.size = Pt(FONT_PT)
+            pt.data_label.font.size = Pt(chart_pt(scale))
             pt.data_label.font.color.rgb = rgb("#FFFFFF")
         for i, (u, d) in enumerate(zip(w["up"], w["down"], strict=False)):
             step = u or d
@@ -281,7 +288,7 @@ def add_chart(slide, el, palette):
                 lbl.text_frame.text = _label_text(step, fmt)
                 lbl.position = XL_LABEL_POSITION.INSIDE_END
                 for obj in (lbl.font, lbl.text_frame.paragraphs[0].runs[0].font):
-                    obj.size = Pt(FONT_PT)
+                    obj.size = Pt(chart_pt(scale))
                     obj.color.rgb = rgb(palette.text)
         chart.has_legend = False
         return
@@ -306,7 +313,7 @@ def add_chart(slide, el, palette):
     plot.has_data_labels = True
     plot.data_labels.number_format = fmt
     plot.data_labels.number_format_is_linked = False
-    plot.data_labels.font.size = Pt(FONT_PT)
+    plot.data_labels.font.size = Pt(chart_pt(scale))
     for ser, s in zip(plot.series, spec["series"], strict=False):
         if s.get("labels") is False:  # 系列ごとにラベルを消す（折れ線で値が重なるとき、注目する系列だけ残す）
             ser.data_labels.show_value = False
