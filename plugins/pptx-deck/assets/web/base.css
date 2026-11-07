@@ -31,6 +31,8 @@ table.pp-table { border-collapse: collapse; color: var(--text); }
 [data-role="body"]    { font-size: 20px; color: var(--text); }
 [data-role="caption"] { font-size: 14px; color: var(--text-sub); }
 [data-role="display"] { font-size: 40px; font-weight: 700; color: var(--text); }
+/* ヘッドメッセージの帯: 1 行のときも帯の縦中央に置く。PPTX の文字枠は測った文字の位置に置かれるので、ここで中央にすれば PPTX も同じ位置になる */
+[data-part="ヘッドメッセージ"][data-role="lead"] { display: flex; flex-direction: column; justify-content: center; }
 
 /* テンプレートの位置に合わせる（theme.css の変数） */
 [data-role="title"]:not([data-ph]) { left: var(--title-x); top: var(--title-y); width: var(--title-w); }
