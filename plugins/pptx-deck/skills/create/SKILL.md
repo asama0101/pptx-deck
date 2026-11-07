@@ -73,7 +73,7 @@ allowed-tools: 'Bash(python "${CLAUDE_PLUGIN_ROOT}/run.py" *)'
 - ページごと: 題／ヘッドメッセージ（ヘッド）／文型／型（`${CLAUDE_PLUGIN_ROOT}/references/patterns.md` の選定表で第 1 候補・次点を決め、`${CLAUDE_PLUGIN_ROOT}/references/components.md` の一覧で確かめる）／チャートタイトル（名詞句。時点と単位を含める）／レイアウト記述（縦軸・横軸・各エリアの中身・強調の 1 点）／証拠対応表（ヘッドの各節を、本体のどの要素が証明するか）／注記と出所（出所は必要なときだけ）。
 
 ### 2.2 題とヘッドメッセージ（ヘッド）の規則
-ページ枠は 題 → ヘッドメッセージの帯 → チャートタイトル → 本体 → 注釈。**題**（原稿の `題`）は名詞句 20 字以内で主題だけを書く（判断は書かない。`lint-script` が検査）。**ヘッドメッセージ**（原稿の `見出し`）に判断を言い切る。
+ページ枠は 題 → ヘッドメッセージの帯 → チャートタイトル（図・グラフ・表の型だけ。文章中心の型には置かない）→ 本体 → 注釈。**題**（原稿の `題`）は名詞句 20 字以内で主題だけを書く（判断は書かない。`lint-script` が検査）。**ヘッドメッセージ**（原稿の `見出し`）に判断を言い切る。
 細則（判断語の例・文型・書き方の 5 段階・逆テスト・`lint-script` が見るものと人が見るもの）は [references/head-rules.md](${CLAUDE_PLUGIN_ROOT}/references/head-rules.md) にある。ヘッドを書く前に読み、従う。要点:
 - 主語と述語のある完全な文で、事実＋判断を 1 文に持つ。判断語は `lint-script` の固定リスト。1 ページ 1 メッセージ。
 - ヘッドメッセージは 30〜60 字（`check` が警告）。帯の中に収め、入らないときは設計図に戻って削る。題は 20 字以内。
@@ -107,7 +107,7 @@ allowed-tools: 'Bash(python "${CLAUDE_PLUGIN_ROOT}/run.py" *)'
 ### 型の選び方
 型の選び方は [references/patterns.md](${CLAUDE_PLUGIN_ROOT}/references/patterns.md)（問い → 型 → デザインの選定表）、型の一覧（51 型・147 本の用途・判断を求める型か情報の型か・文書の種類ごとの組み合わせ）は [references/components.md](${CLAUDE_PLUGIN_ROOT}/references/components.md) にある。選ぶ前に読み、各断片の先頭のコメント（用途・差し替える所・デザイン 1 との違い）も読む。
 
-- 本文の部品に共通の構成: 題（`data-role="title"`。20 字以内の名詞句）→ ヘッドメッセージの帯（`data-role="lead"`。判断を言い切る 30〜60 字）→ チャートタイトル → 図表本体 → 注釈（`caption`）。箱・行・棒のすべてに定量を 1 つ以上書き、本文領域の下端（y 640）まで使う。
+- 本文の部品に共通の構成: 題（`data-role="title"`。20 字以内の名詞句）→ ヘッドメッセージの帯（`data-role="lead"`。判断を言い切る 30〜60 字）→ チャートタイトル（図・グラフ・表の型だけ）→ 図表本体 → 注釈（`caption`）。箱・行・棒のすべてに定量を 1 つ以上書き、本文領域の下端（y 640）まで使う。
 - **判断を求める型**（`decision`・`summary`・`decisions`・`argument`・`options`・`raci`・`actions`・`gantt`）は最下部にメッセージボックス（「論点　〜の可否」1 行）を置く。**情報の型**はメッセージボックスを置かず、注釈の末尾を「→ 含意」の 1 文で締める。
 - 内容に合う型がなければ、`diagram`（`${CLAUDE_PLUGIN_ROOT}/skills/diagram/SKILL.md`）の手順で、SVG の絵（`pp-picture`）にする。見本は `${CLAUDE_PLUGIN_ROOT}/assets/components/pictures/`、作法は [references/picture-craft.md](${CLAUDE_PLUGIN_ROOT}/references/picture-craft.md)。絵のページの案・承認は create の流れ（②）に従い、追加の承認は出さない。絵の中身は PowerPoint で直せない（描き直す）。新しい型やデザインを作ったら、`${CLAUDE_PLUGIN_ROOT}/assets/components/` に足し、`components.md`・`patterns.md` にも加え、`check` で違反が 0 件になることを確かめる。
 
