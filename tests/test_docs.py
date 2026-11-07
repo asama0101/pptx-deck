@@ -288,3 +288,24 @@ def test_依頼の処理は反映_snapshot_の順で_失敗は_ok_false_で返�
     assert "## S<slide>" in skill  # 節の外の編集は捨てられる
     assert "ok: false" in skill
     assert "ai-snapshot` まで進んだときだけ" in skill
+
+
+def test_依頼の形はスキルとページで同じ():
+    from pptx_deck import reviewai
+
+    skill = skill_text("create")
+    pushes = re.findall(r"__aiQueue\.push\(\{(.*?)\}\);", reviewai.JS)
+    assert len(pushes) == 2  # 頼む・元に戻す
+    for body in pushes:
+        keys = re.findall(r"(\w+):", re.sub(r"'[^']*'", "''", body))
+        assert "{" + ", ".join(keys) + "}" in skill, keys
+
+
+def test_ページがあきらめた依頼はディスクを戻すと書いてある():
+    skill = skill_text("create")
+    assert "() => { window.__aiWatchAt = Date.now(); return (window.__aiQueue || []).map(q => q.id); }" in skill
+    i = skill.index("`__aiReply` が `false` を返したら")
+    assert "ai-undo" in skill[i : i + 300]
+    assert '() => window.__aiReply({"id":"ai-…","ok":true,"html":"<section …>…</section>"})' in skill
+    assert "`retry` が真" in skill
+    assert "`idx`" in skill

@@ -98,14 +98,23 @@ allowed-tools: 'Bash(python "${CLAUDE_PLUGIN_ROOT}/run.py" *)'
 
    `() => new Promise(res => { window.__aiWatchAt = Date.now(); const t0 = Date.now(); const id = setInterval(() => { window.__aiWatchAt = Date.now(); const q = window.__aiQueue || []; if (window.__submitted || q.length > 0 || Date.now() - t0 > 100000) { clearInterval(id); res({ submitted: !!window.__submitted, md: window.__answersMd, queue: JSON.parse(JSON.stringify(q)) }); } }, 500); })`
 
-   **`queue` が空でないとき（「AI に頼む」の依頼）**: 回答（`md`）より先に、依頼を古い順に 1 件ずつ処理する（`submitted` も true のときも同じ。処理のあとで `md` を 5 で読む）。依頼は `{id, type, slide, k, d, f, part, text, edits}`（`f` は断片名。例: `02-A`・`02-A-d2`）。各依頼の前後と返信の直前に、`browser_evaluate` で `() => { window.__aiWatchAt = Date.now(); }` を実行して、待ち受け中の印を保つ（処理中も「頼む」が使えるように）。
+   **`queue` が空でないとき（「AI に頼む」の依頼）**: 回答（`md`）より先に、依頼を古い順に 1 件ずつ処理する（`submitted` も true のときも同じ。処理のあとで `md` を 5 で読む）。依頼は `{id, type, slide, k, d, f, part, text, edits, retry, idx}`（`f` は断片名。例: `02-A`・`02-A-d2`。`idx` は、`slides/<f>.html` の中で `data-part` を持つ要素を文書順に数えた位置（0 始まり。分からなければ -1）。`part` の名前が複数あるとき（例: `スティッカー②`）は、`idx` で要素を特定する）。
+
+   **待ち受けの更新**: 各依頼の処理を始める前と、`draft` の前ごとに（返信の直前にも）、`browser_evaluate` で次を呼ぶ。待ち受け中の印を保ち（処理中も「頼む」が使えるように）、ページに残っている依頼の id を返す。返ってきた id に、いま処理している依頼の id がなければ、ページはその依頼をあきらめている（返事が 180 秒ないと、ページは依頼を捨てて、指示を部位のコメントへ移す）。ディスクを触る前なら何もせず、触った後なら下の「戻し方」で戻して、次の依頼へ進む。
+
+   `() => { window.__aiWatchAt = Date.now(); return (window.__aiQueue || []).map(q => q.id); }`
+
+   **返事**: `browser_evaluate` で `() => window.__aiReply({"id":"ai-…","ok":true,"html":"<section …>…</section>"})` の形で渡す（`html` は断片ファイルの全文を、そのまま JSON の文字列にする。引用符・改行を壊さない）。失敗は `{"id":"ai-…","ok":false,"error":"<理由>"}`。`__aiReply` は、受け付けたら `true`、無視したら（id が不明・処理済み・応答なしにしたあと）`false` を返す。`__aiReply` が `false` を返したら、ページはすでに依頼をあきらめ、指示を部位のコメントへ移している（画面は依頼の前のまま）。`ok: true` を返したときは、ディスクの断片を、下の「戻し方」で依頼を処理する前の状態に戻す（ふつうの依頼は `history "<元データ>" ai-undo --fragment <f>`）。`ok: false` を返したときは、もう戻してあるので何もしない。
+
+   **戻し方**（ディスクの断片を、依頼を処理する前の状態に戻す）: `retry` が偽の `type: "edit"` は、`python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" history "<元データ>" ai-undo --fragment <f>`（`ai-undo` は、2 の `ai-snapshot` まで進んだときだけ実行する。進んでいなければ何もしない）。`retry` が真の `type: "edit"` と `type: "undo"` は、最初に実行した `ai-undo` の出力の `saved_as`（前の AI の結果を残した版）を、`python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" history "<元データ>" restore <saved_as> --slide <slide>` で戻す（画面は前の AI の結果のままなので、ディスクもそれに合わせる）。
    - `type: "edit"`:
+     0. `retry` が真（「頼み直す」の依頼）なら、まず `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" history "<元データ>" ai-undo --fragment <f>` で前の AI の結果を戻してから、1〜5 を行う（頼む前の状態から直し直す）。出力の `saved_as` は戻し方で使う。`retry` の依頼の `edits` は空（前の AI の結果の上の編集は、頼む前の状態には当てはまらない）。
      1. `edits`（`- 編集: {json}` の行）が空でなければ、一時の回答ファイル（スクラッチパッド。プロジェクトの中ではない）に、1 行目へ節見出し `## S<slide>`（依頼の `slide`。例: `## S01`。節の外の `- 編集:` の行は捨てられる）、その下へ `edits` の行だけを書き、`python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" apply-edits "<元データ>" --answers "<一時の回答ファイル>"` で断片へ反映する（編集モードで打ち換えた文字を、ディスクへ反映するため）。終了コードが 1 か 2 のときは、断片を書き換えず、`window.__aiReply({id, ok: false, error: "<理由>"})` を返して次の依頼へ進む（まだ `ai-snapshot` していないので `ai-undo` は実行しない）。
      2. `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" history "<元データ>" ai-snapshot --fragment <f>` で、直す前の状態を残す（JSON を出す）。
-     3. 指示（`text`）と部位（`part`）に従って、`<元データ>/slides/<f>.html` だけを直す（数字・固有名詞は作らず、足りなければ「xx」。他の断片には触らない）。
-     4. `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" draft "<元データ>" --fragment <f>` が `ok: true` になるまで直す。直せなければ、`python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" history "<元データ>" ai-undo --fragment <f>` で戻し（`ai-undo` は、2 の `ai-snapshot` まで進んだときだけ実行する）、`window.__aiReply({id, ok: false, error: "<理由>"})` を返す。
-     5. 直した断片ファイルの全文を、`browser_evaluate` で `window.__aiReply({id, ok: true, html})` に渡す（`html` は JSON の文字列リテラルにして、引用符・改行を壊さない）。
-   - `type: "undo"`: `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" history "<元データ>" ai-undo --fragment <f>` を実行し、出力 `{restored_version, html}` の `html` を `window.__aiReply({id, ok: true, html})` に渡す（戻せなければ `ok: false` と `error`）。
+     3. 指示（`text`）と部位（`part`。同じ名前の要素が複数あれば `idx`）に従って、`<元データ>/slides/<f>.html` だけを直す（数字・固有名詞は作らず、足りなければ「xx」。他の断片には触らない）。
+     4. `python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" draft "<元データ>" --fragment <f>` が `ok: true` になるまで直す（`draft` の試行の前ごとに、待ち受けの更新を呼ぶ）。直せなければ、戻し方で戻し、`window.__aiReply({id, ok: false, error: "<理由>"})` を返す。
+     5. 直した断片ファイルの全文を、返事の形で `window.__aiReply({id, ok: true, html})` に渡す。`false` が返ったら、戻し方で戻す。
+   - `type: "undo"`: 始める前に待ち受けの更新を呼び、`python "${CLAUDE_PLUGIN_ROOT}/run.py" --data "${CLAUDE_PLUGIN_DATA}" history "<元データ>" ai-undo --fragment <f>` を実行して、出力 `{restored_version, saved_as, html}` の `html` を `window.__aiReply({id, ok: true, html})` に渡す（戻せなければ `ok: false` と `error`）。`false` が返ったら、戻し方（`saved_as` を `restore`）で戻す。
    - 依頼をすべて返したら、4 の待ち受けに戻る（回数は数え直さない）。ページが待ち受け中でない運用（回答を貼り付ける）では依頼は届かないので、従来どおり回答の `- 部位:` の行を読んで直す。
 
 5. `submitted` が true なら、`md` を `<元データ>/answers-N.md` に書く（N は何回目か）。利用者がチャットに貼り付けた md も同じように書く。回答の書式は [references/review-flow.md](${CLAUDE_PLUGIN_ROOT}/references/review-flow.md)。
