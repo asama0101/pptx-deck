@@ -62,3 +62,26 @@ def test_最新のai編集の版を返す(work):
     for _ in range(3):
         last = history.snapshot_fragment(work, "02-A")["version"]
     assert history.latest_ai_edit(work, "02-A")["version"] == last
+
+
+def test_ai_snapshotとai_undoで1断片が戻る(tmp_path, capsys):
+    import json
+
+    from pptx_deck import cli
+
+    work = tmp_path / "pptx-deck-source" / "demo"
+    (work / "slides").mkdir(parents=True)
+    (work / "slides" / "02-A.html").write_text("A-元", encoding="utf-8")
+
+    def run(*argv):
+        capsys.readouterr()
+        rc = cli.main(list(argv))
+        return rc, capsys.readouterr().out
+
+    assert run("history", str(work), "ai-undo", "--fragment", "02-A")[0] == 2
+    assert run("history", str(work), "ai-snapshot", "--fragment", "02-A")[0] == 0
+    (work / "slides" / "02-A.html").write_text("A-新", encoding="utf-8")
+    rc, out = run("history", str(work), "ai-undo", "--fragment", "02-A")
+    assert rc == 0
+    assert json.loads(out)["html"] == "A-元"
+    assert _read(work, "02-A.html") == "A-元"

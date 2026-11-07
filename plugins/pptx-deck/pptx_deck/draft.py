@@ -28,6 +28,20 @@ def assemble(work: Path, pick: str = "A", slides: list[str] | None = None) -> tu
         opts = designs[nn]
         key = pick if pick in opts else sorted(opts)[0]
         body.append(opts[key][1])
+    return _write_draft(work, body), nns
+
+
+def assemble_fragment(work: Path, fragment: str) -> tuple[Path, list[str]]:
+    """slides/<fragment>.html（例 02-A-d2）1 つだけを一時の draft-*.html にする（呼び出し側が消す）。
+    戻り値は（一時 HTML のパス, [スライド番号]）。断片がなければ ValueError。"""
+    work = Path(work)
+    src = work / "slides" / f"{fragment}.html"
+    if not src.is_file():
+        raise ValueError(f"{src} がありません（断片 {fragment}）")
+    return _write_draft(work, [src.read_text(encoding="utf-8")]), [fragment[:2]]
+
+
+def _write_draft(work: Path, body: list[str]) -> Path:
     # 実行ごとに一意な名前にする（連続・並走しても互いを上書きしない）。base.css 等の相対参照のため work の中に置く
     with tempfile.NamedTemporaryFile(
         "w", dir=work, prefix="draft-", suffix=".html", delete=False, encoding="utf-8"
@@ -37,4 +51,4 @@ def assemble(work: Path, pick: str = "A", slides: list[str] | None = None) -> tu
             + "\n".join(body)
             + "</body></html>"
         )
-    return Path(f.name), nns
+    return Path(f.name)
