@@ -231,16 +231,17 @@ def test_切り替えは常に見え初期はすべてオフでスライドを�
     labels = page.evaluate(
         "Array.from(document.querySelectorAll('.pane[data-slide=\"01\"] .tgl label')).map(l => l.textContent.trim())"
     )
-    assert labels == ["型と選んだ理由", "見どころ", "部位のバッジ"]
-    for cls in ("coToggle", "vrToggle", "ptToggle"):
+    assert labels == ["見どころ", "部位のバッジ"]
+    assert page.locator(pane + ".vrToggle").count() == 0  # 型と選んだ理由の切り替えはない
+    assert page.locator(pane + ".vr").count() == 0
+    for cls in ("coToggle", "ptToggle"):
         assert page.is_visible(pane + "." + cls)  # チェックボックスは常に見える
         assert not page.is_checked(pane + "." + cls)  # どれも初期はオフ
-    for sel in (".legend", ".co", ".vr", ".pt"):
-        assert not page.is_visible(pane + sel)  # 見どころ・理由・バッジは初期は隠れる
+    for sel in (".legend", ".co", ".pt"):
+        assert not page.is_visible(pane + sel)  # 見どころ・バッジは初期は隠れる
     page.check(pane + ".coToggle")
-    page.check(pane + ".vrToggle")
     page.check(pane + ".ptToggle")
-    for sel in (".legend", ".co", ".vr", ".pt"):
+    for sel in (".legend", ".co", ".pt"):
         assert page.is_visible(pane + sel)
     page.uncheck(pane + ".coToggle")
     assert not page.is_visible(pane + ".legend")
