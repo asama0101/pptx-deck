@@ -260,3 +260,17 @@ def test_回答の編集を断片へ反映し版を残してfinal_htmlを消す(
     assert "旧A" in (tmp_path / "history" / "001" / "01-A.html").read_text(encoding="utf-8")
     assert not (tmp_path / "final.html").exists()
     assert fragedit.has_unapplied(ans.read_text(encoding="utf-8")) is False
+
+
+def test_本文がすでに同じでも書式だけの違いは書く():
+    src = '<div class="pp-text">新</div>'
+    want = '<div class="pp-text"><b>新</b></div>'
+    assert fragedit.apply_edit(src, {"t": "t0", "before": "旧", "after": "<b>新</b>"}) == want
+    assert fragedit.apply_edit(src, {"t": "t0", "before": "新", "after": "<b>新</b>"}) == want
+
+
+def test_HTMLまで同じなら何もしない_本文が違えば断る():
+    src = '<div class="pp-text"><b>新</b></div>'
+    assert fragedit.apply_edit(src, {"t": "t0", "before": "旧", "after": "<b>新</b>"}) == src
+    with pytest.raises(ValueError, match="旧"):
+        fragedit.apply_edit(src, {"t": "t0", "before": "旧", "after": "別"})
