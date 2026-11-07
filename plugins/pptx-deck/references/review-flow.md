@@ -10,13 +10,15 @@ create/SKILL.md の 3 章の手順 3〜8 の細則。ページの構成・ボタ
 
 **表示の切り替え**: スライド上部の行に、「見どころ」「AI に頼む」のチェックボックスが常にある（ページの並び順。全スライドで共通）。どれも初期はオフで、チェックで出る（見どころはピンクの番号枠と一覧、AI に頼むは部位ごとの指示用（紫の「✦ AI に頼む：部位名」のバッジ））。前回のコメントと今回の直しは常に出る。ページの並びは、スライド → 見どころ・部位のコメント → 案・デザインの選択で、承認・要修正・全部承認・コメント・選択を外す・回答をコピーは画面下に固定される。
 
-**部位のバッジ**: 大きな 1 案には、断片の `data-part` の部位名が青いバッジで重なる（同じ部位が複数あるときは、左上から右下の順に ①②③。例: スティッカー②）。バッジを押すと「部位のコメント」の欄にその部位の入力行が開く（空の行は回答に出ない）。部位のコメントを書くと、承認も要修正も押していなければ「要修正」になる（自動の要修正。「要修正」を 1 回押すと確定して次へ進む）。バッジは `pp-*` ではなく、ページ専用（PPTX には出ない）。「部位のバッジを表示」で消せる。グラフ（`チャート`）は全体で 1 つのバッジで、凡例・データラベル・軸ラベルは、コメントの中で名前を使って指す。部位名の一覧と付け方は [html-rules.md](html-rules.md)。
+**部位のバッジ（AI に頼む）**: 「AI に頼む」をオンにすると、大きな 1 案に、断片の `data-part` の部位名が紫の「✦ AI に頼む：部位名」のバッジで重なる（同じ部位が複数あるときは、左上から右下の順に ①②③。例: スティッカー②）。バッジを押すと「部位のコメント」の欄にその部位の入力行が開く（空の行は回答に出ない）。部位のコメントを書くと、承認も要修正も押していなければ「要修正」になる（自動の要修正。「要修正」を 1 回押すと確定して次へ進む）。バッジは `pp-*` ではなく、ページ専用（PPTX には出ない）。「AI に頼む」のチェックで出し入れできる（初期はオフ）。グラフ（`チャート`）は全体で 1 つのバッジで、凡例・データラベル・軸ラベルは、コメントの中で名前を使って指す。部位名の一覧と付け方は [html-rules.md](html-rules.md)。
 
 ## 手順 4: 「回答をコピー」を待つ
 
-「回答をコピー」が押されるのを待つ（ユーザーに「完了」と入力させない）。押されると、回答はクリップボードに入り、同時に `window.__submitted` が立つ。`browser_evaluate` で次を実行し、送信されるか約 100 秒たつまでブロックして結果を返す。`submitted` が false なら同じ呼び出しを繰り返す（合計約 30 分、18 回まで）。18 回を超えても送信されないときは、続行方法（もう一度待つ／回答を貼り付けて渡す／中止）を利用者に質問して止まる。ユーザーがターミナルに入力したときは待ちをやめて、その内容に従う。
+「回答をコピー」が押されるのを待つ（ユーザーに「完了」と入力させない）。押されると、回答はクリップボードに入り、同時に `window.__submitted` が立つ。`browser_evaluate` で次を実行する。最初に `window.__aiWatchAt` を今の時刻にして（ページの「AI に頼む」の「頼む」は、これが 130 秒以内のときだけ使える）、送信されるか、`window.__aiQueue` に依頼が入るか、約 100 秒たつまでブロックして結果（`submitted`・`md`・`queue`）を返す。`submitted` も `queue` も空なら同じ呼び出しを繰り返す（合計約 30 分、18 回まで）。18 回を超えても送信されないときは、続行方法（もう一度待つ／回答を貼り付けて渡す／中止）を利用者に質問して止まる。ユーザーがターミナルに入力したときは待ちをやめて、その内容に従う。
 
-`() => new Promise(res => { const t0 = Date.now(); const id = setInterval(() => { if (window.__submitted || Date.now() - t0 > 100000) { clearInterval(id); res({ submitted: !!window.__submitted, md: window.__answersMd }); } }, 500); })`
+`() => new Promise(res => { window.__aiWatchAt = Date.now(); const t0 = Date.now(); const id = setInterval(() => { window.__aiWatchAt = Date.now(); const q = window.__aiQueue || []; if (window.__submitted || q.length > 0 || Date.now() - t0 > 100000) { clearInterval(id); res({ submitted: !!window.__submitted, md: window.__answersMd, queue: JSON.parse(JSON.stringify(q)) }); } }, 500); })`
+
+`queue` が空でなければ、回答より先に依頼（`{id, type: "edit"|"undo", slide, k, d, f, part, text, edits}`）を古い順に 1 件ずつ処理して、`window.__aiReply({id, ok, html?, error?})` で返す。`edit` は、`edits` を `apply-edits --answers <一時ファイル>` で反映 → `history <元データ> ai-snapshot --fragment <f>` → `slides/<f>.html` を指示（`text`）と部位（`part`）に従って直す → `draft <元データ> --fragment <f>` が `ok: true` になるまで直す（直せなければ `history <元データ> ai-undo --fragment <f>` で戻し、`ok: false` と理由を返す）→ 断片の全文を `html` で返す。`undo` は `history <元データ> ai-undo --fragment <f>` の出力の `html` を返す。処理中も `window.__aiWatchAt` を更新し続ける。処理のあとは待ちに戻り、18 回の数え方は変えない。`submitted` も true なら、依頼を処理してから回答を読む。回答を貼り付ける運用（待ち受けなし）では、従来どおり `- 部位:` の行を読む。手順の詳細は create の SKILL.md の 3 章の手順 4。
 
 ## 手順 5: 回答の保存と書式
 
@@ -32,4 +34,4 @@ create/SKILL.md の 3 章の手順 3〜8 の細則。ページの構成・ボタ
 
 ## 手順 8: 最終 HTML（`final-review.html`）は参照用
 
-最終 HTML の承認は求めない（承認は、スライド案の選択の 1 回。設計図と原稿に人の承認の関門はない）。`finalize` のあと、そのまま `build` へ進む。`final-review.html` は、完成後に利用者が全体を見返す参照用で、部位のバッジも出る（直しは `revise`）。`finalize` を使わずにページだけ作り直すときは `review-final "<元データ>"`（`--answers` を省くと `answers-*.md` を自動で使う）。
+最終 HTML の承認は求めない（承認は、スライド案の選択の 1 回。設計図と原稿に人の承認の関門はない）。`finalize` のあと、そのまま `build` へ進む。`final-review.html` は、完成後に利用者が全体を見返す参照用で、「AI に頼む」の部位のバッジも出る（直しは `revise`）。`finalize` を使わずにページだけ作り直すときは `review-final "<元データ>"`（`--answers` を省くと `answers-*.md` を自動で使う）。

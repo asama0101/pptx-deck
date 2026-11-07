@@ -269,3 +269,13 @@ def test_部品の_html_に旧配置の_source_スラッシュ_の説明が残�
         if re.search(pat, read(f))
     ]
     assert not offenders, offenders
+
+
+def test_スキルとページが同じ窓口の名前を使う():
+    from pptx_deck import reviewai
+
+    skill = skill_text("create")
+    for name in ("__aiWatchAt", "__aiQueue", "__aiReply", "ai-snapshot", "ai-undo", "--fragment"):
+        assert name in skill, f"create/SKILL.md に {name} がない"
+    for name in ("__aiWatchAt", "__aiQueue", "__aiReply"):
+        assert name in reviewai.JS, f"reviewai.JS に {name} がない"
