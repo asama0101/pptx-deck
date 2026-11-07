@@ -27,7 +27,9 @@ JS = r"""
       busy = busy || q;
       if (b) b.disabled = !aiWatching() || q;
     });
-    st.textContent = !rows.length ? '' : busy ? 'Claude が直しています…'
+    var undos = $$('.aiUndo', p);
+    undos.forEach(function (b) { var q = aiBusy(p, b.closest('[data-f]').dataset.f); busy = busy || q; b.disabled = !aiWatching() || q; });
+    st.textContent = !rows.length && !undos.length ? '' : busy ? 'Claude が直しています…'
       : p.__aiErr ? p.__aiErr : p.__aiLost ? '応答がありません。指示を部位のコメントに移しました'
       : aiWatching() ? '' : 'いま Claude が待ち受けていません。指示を回答に入れて送ると、あとで直します';
   }
@@ -37,16 +39,47 @@ JS = r"""
     window.__aiQueue = window.__aiQueue.filter(function (q) { return q.id !== id; });
     return r;
   }
+  function aiTimeout(id) {                                     // 180 秒返事がない
+    var r = aiDrop(id); if (!r) return;
+    if (r.undo) r.p.__aiErr = '応答がありません';              // 元に戻すは、移す指示がない
+    else r.p.__aiLost = true;                                  // 指示は部位のコメント（textarea）にそのまま残る
+    aiPaint(r.p);
+  }
+  function aiKD(p, f) {                                        // 断片 f の案と、デザイン（.opt なら 1）
+    var h = $$('.opt[data-f], .dopt[data-f]', p).filter(function (x) { return x.dataset.f === f; })[0];
+    return h ? { k: h.dataset.k, d: Number(h.dataset.d || 1) } : { k: '', d: 1 };
+  }
+  function aiAfterPaint(p) {                                   // 直したあとの「元に戻す」「頼み直す」
+    var box = $('.aiAfter', p); if (!box) return;
+    box.textContent = '';
+    Object.keys(p.__rvAi || {}).forEach(function (f) {
+      var d = document.createElement('div'); d.dataset.f = f;
+      d.innerHTML = '<span></span> <button type="button" class="b1 aiUndo">元に戻す</button> <button type="button" class="b1 aiRetry">頼み直す</button>';
+      $('span', d).textContent = '「' + p.__rvAi[f].part + '」を直しました';
+      $('.aiUndo', d).onclick = function () { aiUndoAsk(p, f); };
+      $('.aiRetry', d).onclick = function () {
+        var a = p.__rvAi[f], li = partRow(p, aiKD(p, f).k + '|' + a.part, a.text);
+        $('textarea', li).focus();
+      };
+      box.appendChild(d);
+    });
+    aiPaint(p);
+  }
+  function aiUndoAsk(p, f) {
+    if (!aiWatching() || aiBusy(p, f)) return;
+    var id = 'ai-' + Date.now().toString(36) + '-' + (++aiSeq), kd = aiKD(p, f);
+    window.__aiQueue.push({ id: id, type: 'undo', slide: p.dataset.slide, k: kd.k, d: kd.d, f: f, part: '', text: '', edits: [] });
+    aiPending[id] = { p: p, f: f, key: '', undo: true, timer: setTimeout(function () { aiTimeout(id); }, AI_TIMEOUT) };
+    p.__aiLost = false; p.__aiErr = ''; aiPaint(p);
+  }
+  window.__rvAiAfter = aiAfterPaint;
   window.__rvAiAsk = function (p, key, li) {
     var text = $('textarea', li).value, fr = aiFrag(p, key);
     if (!text.trim() || !aiWatching() || aiBusy(p, fr.f)) return;
     var id = 'ai-' + Date.now().toString(36) + '-' + (++aiSeq);   // ページを開き直しても重ならない
     var edits = editLines(p).filter(function (l) { try { return JSON.parse(l.slice('- 編集: '.length)).f === fr.f; } catch (e) { return false; } });
     window.__aiQueue.push({ id: id, type: 'edit', slide: p.dataset.slide, k: fr.k, d: fr.d, f: fr.f, part: key.slice(key.indexOf('|') + 1), text: text, edits: edits });
-    aiPending[id] = { p: p, f: fr.f, key: key, timer: setTimeout(function () {
-      var r = aiDrop(id); if (!r) return;
-      r.p.__aiLost = true; aiPaint(r.p);                       // 指示は部位のコメント（textarea）にそのまま残る
-    }, AI_TIMEOUT) };
+    aiPending[id] = { p: p, f: fr.f, key: key, timer: setTimeout(function () { aiTimeout(id); }, AI_TIMEOUT) };
     p.__aiLost = false; p.__aiErr = ''; aiPaint(p);
   };
   // Claude の返事。依頼の表にない id（応答なしにしたあとの返事）は、何もしない
@@ -70,11 +103,16 @@ JS = r"""
       p.__aiLost = false; p.__aiErr = String(r.error || 'error'); aiRefresh();
       return;
     }
+    if (q.undo) {                                              // 元に戻す: 戻した断片で置き換え、もう一度は戻せない
+      aiApply(p, q.f, r.html); delete (p.__rvAi || {})[q.f];
+      p.__aiLost = false; p.__aiErr = ''; aiAfterPaint(p); partChanged(p);
+      return;
+    }
     var text = li ? $('textarea', li).value : '';
     aiApply(p, q.f, r.html);
     if (li) { $('textarea', li).value = ''; li.remove(); }      // 頼んだ内容は回答に出さない（頼み直すために覚えておく）
     (p.__rvAi || (p.__rvAi = {}))[q.f] = { f: q.f, part: q.key.slice(q.key.indexOf('|') + 1), text: text };
-    p.__aiLost = false; p.__aiErr = ''; partChanged(p); aiRefresh();
+    p.__aiLost = false; p.__aiErr = ''; aiAfterPaint(p); partChanged(p); aiRefresh();
   };
   window.__rvAiRefresh = aiRefresh;
   setInterval(function () { aiRefresh(); }, 1000);             // Claude が待ち受けの時刻を立てたのを拾う
@@ -85,4 +123,7 @@ CSS = r"""
 .rv .aiAsk:disabled{opacity:.45;cursor:not-allowed}
 .rv .aiState{font-size:12.5px;color:var(--sub);margin-top:6px}
 .rv .aiState:empty{display:none}
+.rv .aiAfter{margin-top:8px;font-size:12.5px}
+.rv .aiAfter:empty{display:none}
+.rv .aiUndo:disabled{opacity:.45;cursor:not-allowed}
 """

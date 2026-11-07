@@ -116,7 +116,7 @@ _SCRIPT = r"""<script>
     panes.forEach(function (p) {
       var r = $('input[type=radio][name^="s"]:checked', p);
       var d = {}; $$('.dgroup input[type=radio]:checked', p).forEach(function (x) { d[x.closest('.dgroup').dataset.k] = x.value; });
-      o[p.dataset.slide] = { c: r ? r.value : '', t: $('.cm', p).value, v: p.dataset.verdict || '', au: p.dataset.auto === '1', d: d, pc: partTexts(p), ed: editsOf(p) };
+      o[p.dataset.slide] = { c: r ? r.value : '', t: $('.cm', p).value, v: p.dataset.verdict || '', au: p.dataset.auto === '1', d: d, pc: partTexts(p), ed: editsOf(p), ai: p.__rvAi || {} };
     });
     return o;
   }
@@ -130,6 +130,7 @@ _SCRIPT = r"""<script>
       p.dataset.verdict = a.v || '';
       if (a.au) p.dataset.auto = '1'; else delete p.dataset.auto;
       Object.keys(a.pc || {}).forEach(function (k) { partRow(p, k, a.pc[k]); });
+      p.__rvAi = a.ai || {}; if (window.__rvAiAfter) window.__rvAiAfter(p);     // 直したあとの「元に戻す」だけ戻す（断片は戻さない）
       Object.keys(a.d || {}).forEach(function (k) { var x = $('.dgroup[data-k="' + k + '"] input[value="' + a.d[k] + '"]', p); if (x) x.checked = true; });
     });
   }

@@ -240,3 +240,73 @@ def test_依頼のidはページを開き直しても重ならない(ai_page):
     req = _ask(ai_page)
     assert req["id"] != "ai-1"
     assert req["id"].startswith("ai-")
+
+
+# ---- 元に戻す・頼み直す・再読み込み ----
+AFTER = f"{PANE} .aiAfter"
+ORIG_STAGE = 'document.querySelector(\'.pane[data-slide="01"] .opt[data-k="A"] .stage\').innerHTML'
+
+
+def _fixed(page, text="短く"):
+    """頼んで、直った状態にする。"""
+    req = _ask(page, text=text)
+    _reply(page, id=req["id"], ok=True, html=NEW_FRAG)
+
+
+def test_直ったあとに元に戻すと頼み直すが出る(ai_page):
+    assert ai_page.locator(f"{AFTER} button").count() == 0
+    _fixed(ai_page)
+    assert ai_page.locator(f"{AFTER} .aiUndo").count() == 1
+    assert ai_page.locator(f"{AFTER} .aiRetry").count() == 1
+
+
+def test_元に戻すはundoの依頼を積み返答で断片が戻る(ai_page):
+    orig = ai_page.evaluate(ORIG_STAGE)
+    _fixed(ai_page)
+    ai_page.click(f"{AFTER} .aiUndo")
+    q = ai_page.evaluate("window.__aiQueue")
+    assert len(q) == 1
+    assert {k: q[0][k] for k in ("type", "slide", "k", "d", "f", "part", "text", "edits")} == {
+        "type": "undo",
+        "slide": "01",
+        "k": "A",
+        "d": 1,
+        "f": "01-A",
+        "part": "",
+        "text": "",
+        "edits": [],
+    }
+    assert q[0]["id"].startswith("ai-")
+    _reply(ai_page, id=q[0]["id"], ok=True, html=PART_FRAG)
+    assert "新しい題" not in ai_page.text_content(f"{PANE} .big .stage")
+    assert "新しい題" not in ai_page.text_content(f'{PANE} .opt[data-k="A"] .stage')
+    assert ai_page.evaluate(ORIG_STAGE) == orig
+    assert ai_page.locator(f"{AFTER} button").count() == 0
+
+
+def test_元に戻すが応答なしでも指示は部位の行に移らない(ai_page):
+    ai_page.clock.install()
+    _fixed(ai_page)
+    ai_page.click(f"{AFTER} .aiUndo")
+    ai_page.clock.run_for(181000)
+    assert "応答がありません" in ai_page.text_content(STATE)
+    assert MSG_LOST not in ai_page.text_content(STATE)
+    assert ai_page.locator(ROW).count() == 0
+    assert ai_page.evaluate("window.__aiQueue.length") == 0
+    assert ai_page.locator(f"{AFTER} .aiUndo").count() == 1
+
+
+def test_頼み直すは前の指示を残して開く(ai_page):
+    _fixed(ai_page, text="短く")
+    ai_page.click(f"{AFTER} .aiRetry")
+    assert ai_page.input_value(f"{ROW} textarea") == "短く"
+    assert ai_page.evaluate("document.activeElement.tagName") == "TEXTAREA"
+    assert ai_page.is_enabled(f"{ROW} .aiAsk")
+    assert ai_page.locator(f"{AFTER} .aiUndo").count() == 1
+
+
+def test_再読み込みしても元に戻すが残る(ai_page):
+    _fixed(ai_page)
+    ai_page.reload()
+    assert ai_page.locator(f"{AFTER} .aiUndo").count() == 1
+    assert ai_page.locator(f"{AFTER} .aiRetry").count() == 1
