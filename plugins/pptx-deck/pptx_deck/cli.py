@@ -391,7 +391,7 @@ def cmd_finalize(args) -> int:
             file=sys.stderr,
         )
     old = fontsize.current(paths.read_cfg(work))
-    r = _apply_fontsizes_from_answers(work, mds)
+    r = _apply_fontsizes_from_answers(work, mds, [f.name for f in files])
     if r == "applied":
         new = fontsize.current(paths.read_cfg(work))
         diff = ", ".join(f"{k} {old[k]:g} → {new[k]:g}" for k in new if new[k] != old[k])
@@ -469,31 +469,46 @@ def cmd_set_color(args) -> int:
     return 0
 
 
-def _apply_fontsizes_from_answers(work: Path, mds: list[str]) -> str:
+def _apply_fontsizes_from_answers(work: Path, mds: list[str], names: list[str] | None = None) -> str:
     """回答の「- 文字サイズ:」を template.json に反映する。"none"・"applied"・"skipped_pptx"。
-    反映済みの回答値（cfg["answers_fontsizes"]）は再適用しない（set-font-size の指定を戻さない）。"""
-    from . import initdir, lifecycle, variants
+    キーごとに（値, それを最後に書いた回答のファイル名）を cfg["answers_fontsizes"] に覚え、
+    記録と同じキーは再適用しない（set-font-size の指定を戻さない）。別の回答ファイルが書いたキーは反映する。
+    names は mds と同じ順の回答のファイル名（分からなければ値だけで比べる）。"""
+    from . import initdir, lifecycle
 
-    want = variants.parse_settings(mds)["fontsizes"]
+    want: dict[str, tuple[float, str | None]] = {}
+    for i, md in enumerate(mds):
+        for k, v in fontsize.parse_line(md).items():
+            want[k] = (v, names[i] if names else None)
     cfg = paths.read_cfg(work)
-    if not want or want == cfg.get("answers_fontsizes"):
+    rec = cfg.get("answers_fontsizes")
+    rec = rec if isinstance(rec, dict) else {}
+
+    def consumed(k: str, v: float, src: str | None) -> bool:
+        r = rec.get(k)
+        return isinstance(r, list) and len(r) == 2 and r[0] == v and (r[1] is None or src is None or r[1] == src)
+
+    fresh = {k: (v, src) for k, (v, src) in want.items() if not consumed(k, v, src)}
+    if not fresh:
         return "none"
     now = fontsize.current(cfg)
-    changes = {k: v for k, v in want.items() if fontsize.clamp(k, v) != now[k]}
+    changes = {k: v for k, (v, _) in fresh.items() if fontsize.clamp(k, v) != now[k]}
+    record = {**rec, **{k: [v, src] for k, (v, src) in fresh.items()}}
     if not changes:
-        cfg["answers_fontsizes"] = want  # すでに同じ。反映済みとして覚える
+        cfg["answers_fontsizes"] = record  # すでに同じ。反映済みとして覚える
         paths.write_cfg(work, cfg)
         return "none"
     pptx = paths.deck_dir(work) / f"{paths.deck_name(work)}.pptx"
     if lifecycle.fingerprint_status(work, pptx) != "missing":
-        if want == cfg.get("skipped_fontsizes"):
+        if changes == cfg.get("skipped_fontsizes"):
             return "none"  # 同じ警告は繰り返さない
-        cfg["skipped_fontsizes"] = want
+        cfg["skipped_fontsizes"] = changes
         paths.write_cfg(work, cfg)
         return "skipped_pptx"
     initdir.set_font_size(work, changes)
     cfg = paths.read_cfg(work)
-    cfg["answers_fontsizes"] = want
+    cfg["answers_fontsizes"] = record
+    cfg.pop("skipped_fontsizes", None)
     paths.write_cfg(work, cfg)
     return "applied"
 

@@ -121,6 +121,9 @@ def init(workdir, color: str | None = None, template_path=None, force: bool = Fa
     for key in (
         "answers_color",
         "answers_color_from",
+        "fontsizes",
+        "answers_fontsizes",
+        "skipped_fontsizes",
     ):  # 反映済みの回答の色と、それを書いた回答を覚えておく（finalize が再適用しない）
         if old.get(key):
             cfg[key] = old[key]

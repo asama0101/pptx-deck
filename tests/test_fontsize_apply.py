@@ -95,3 +95,69 @@ def test_set_font_size_cli_errors(deck, run):
 def test_initdir_set_font_size_unknown_key(deck):
     with pytest.raises(ValueError, match="nope"):
         initdir.set_font_size(deck.base, {"nope": 1})
+
+
+# ---- 回答の反映記録（キーごとの値と回答ファイル） ----
+
+
+def test_partial_later_round_does_not_revert_set_font_size(deck, run):
+    deck.answers(1, "- 文字サイズ: title=40")
+    run("finalize")
+    run("set-font-size", "--set", "title=45")
+    deck.answers(2, "- 文字サイズ: body=22")
+    run("finalize")
+    assert cfg(deck.base)["fontsizes"] == {"title": 45, "body": 22}
+
+
+def test_same_value_in_new_answers_file_is_applied(deck, run):
+    deck.answers(1, "- 文字サイズ: title=40")
+    run("finalize")
+    run("set-font-size", "--set", "title=45")
+    deck.answers(2, "- 文字サイズ: title=40")
+    run("finalize")
+    assert cfg(deck.base)["fontsizes"] == {"title": 40}
+
+
+def test_same_file_and_value_after_set_font_size_stays(deck, run):
+    deck.answers(1, "- 文字サイズ: title=40")
+    run("finalize")
+    run("set-font-size", "--set", "title=45")
+    run("finalize")
+    run("finalize")
+    assert cfg(deck.base)["fontsizes"] == {"title": 45}
+
+
+def test_init_force_keeps_fontsizes_and_record(deck, run):
+    deck.answers(1, "- 文字サイズ: title=40")
+    run("finalize")
+    before = cfg(deck.base)
+    initdir.init(deck.base, force=True)
+    after = cfg(deck.base)
+    assert after["fontsizes"] == {"title": 40}
+    assert after["answers_fontsizes"] == before["answers_fontsizes"]
+    assert "--fs-title: 40px;" in css(deck.base)
+
+
+def test_reset_then_finalize_does_not_reapply_old_answers(deck, run):
+    deck.answers(1, "- 文字サイズ: title=40")
+    run("finalize")
+    run("set-font-size", "--reset")
+    run("finalize")
+    assert "fontsizes" not in cfg(deck.base)
+
+
+def test_all_equal_answers_are_none_and_recorded(deck):
+    md = [MD_HEAD + "- 文字サイズ: title=37 body=5\n"]
+    assert cli._apply_fontsizes_from_answers(deck.base, md, ["a.md"]) == "none"
+    assert set(cfg(deck.base)["answers_fontsizes"]) == {"title", "body"}
+    assert "fontsizes" not in cfg(deck.base)
+
+
+def test_skipped_cleared_after_successful_apply(deck):
+    md = [MD_HEAD + "- 文字サイズ: title=40\n"]
+    deck.pptx.write_bytes(b"dummy")
+    assert cli._apply_fontsizes_from_answers(deck.base, md, ["a.md"]) == "skipped_pptx"
+    assert "skipped_fontsizes" in cfg(deck.base)
+    deck.pptx.unlink()
+    assert cli._apply_fontsizes_from_answers(deck.base, md, ["a.md"]) == "applied"
+    assert "skipped_fontsizes" not in cfg(deck.base)
