@@ -113,7 +113,7 @@ def derive(base: str) -> Palette:
     )
 
 
-def theme_css(p: Palette) -> str:
+def theme_css(p: Palette, extra: str = "") -> str:
     rows = [
         ("accent", p.accent),
         ("accent-dark", p.accent_dark),
@@ -127,4 +127,4 @@ def theme_css(p: Palette) -> str:
         ("bg-soft", p.bg_soft),
     ]
     body = "".join(f"  --{k}: {v};\n" for k, v in rows)
-    return f":root {{\n{body}}}\n"
+    return f":root {{\n{body}{extra}}}\n"

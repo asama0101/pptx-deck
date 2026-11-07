@@ -64,3 +64,18 @@ def test_base_css_reads_vars():
         "calc(44px * var(--num-scale, 1))",
     ):
         assert token in css, token
+
+
+def test_theme_css_vars_are_inside_balanced_root(tmp_path):
+    import re
+
+    base = tmp_path / "out" / "pptx-deck-source" / "deck"
+    initdir.init(base, color="navy")
+    css = (paths.resolve_work(base) / "theme.css").read_text(encoding="utf-8")
+    assert css.count("{") == css.count("}")
+    roots = re.findall(r":root\s*\{([^{}]*)\}", css)
+    assert roots
+    inside = "\n".join(roots)
+    for it in fontsize.ITEMS:
+        assert f"{it.var}:" in inside
+        assert css.count(f"{it.var}:") == 1

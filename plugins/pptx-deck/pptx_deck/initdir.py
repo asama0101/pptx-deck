@@ -28,7 +28,7 @@ def write_derived(work: Path, cfg: dict) -> list[str]:
     palette = theme.derive(cfg["color"])
     info = template.TemplateInfo.from_dict(cfg["info"])
     colors, notes = template.background_colors(work / cfg["template"], info)
-    root = theme.theme_css(palette).removesuffix("}\n") + fontsize.css(fontsize.current(cfg)) + "}\n"
+    root = theme.theme_css(palette, fontsize.css(fontsize.current(cfg)))
     (work / "theme.css").write_text(root + template.layout_css(info, colors["body"], colors), encoding="utf-8")
     shutil.copyfile(paths.ASSETS / "web" / "base.css", work / "base.css")
     preview = paths.ASSETS / "web" / "chart-preview.js"
