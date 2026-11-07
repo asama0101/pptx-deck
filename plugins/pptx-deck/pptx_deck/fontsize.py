@@ -28,6 +28,7 @@ ITEMS: tuple[Item, ...] = (
     Item("chart-scale", "グラフ内の文字の倍率", "--chart-scale", 1.0, 0.84, 1.5, "scale"),
 )
 _BY_KEY = {i.key: i for i in ITEMS}
+KEYS = tuple(_BY_KEY)
 _LINE = re.compile(r"^- 文字サイズ:(.*)$", re.MULTILINE)
 
 

@@ -68,13 +68,16 @@ def test_プリセットと同じ色は名前で初期値になり選択肢は�
 @pytest.mark.parametrize(
     ("mds", "expected"),
     [
-        ([MD_HEAD + "- 配色: green\n- 出力形式: html\n## S01\n- 選択: A\n"], {"color": "green", "format": "html"}),
+        (
+            [MD_HEAD + "- 配色: green\n- 出力形式: html\n## S01\n- 選択: A\n"],
+            {"color": "green", "format": "html", "fontsizes": {}},
+        ),
         (
             [MD_HEAD + "- 配色: green\n- 出力形式: html\n## S01\n- 選択: A\n", MD_HEAD + "- 配色: #123456\n"],
-            {"color": "#123456", "format": "html"},
+            {"color": "#123456", "format": "html", "fontsizes": {}},
         ),  # 後の回が配色だけ上書きし、形式は前の回が残る
-        ([MD_HEAD], {"color": None, "format": None}),
-        ([MD_HEAD + "- 出力形式: xls\n"], {"color": None, "format": None}),  # 未知の形式は無視
+        ([MD_HEAD], {"color": None, "format": None, "fontsizes": {}}),
+        ([MD_HEAD + "- 出力形式: xls\n"], {"color": None, "format": None, "fontsizes": {}}),  # 未知の形式は無視
     ],
     ids=["1回", "後勝ち", "設定なし", "未知の形式"],
 )

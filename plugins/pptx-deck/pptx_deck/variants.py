@@ -694,12 +694,13 @@ _SETTING_FORMAT = re.compile(r"^- 出力形式:\s*(pptx|html|both)\s*$", re.M)
 
 
 def parse_settings(mds: list[str]) -> dict:
-    """回答の「- 配色:」「- 出力形式:」を、回の順に後勝ちで読む。"""
-    out: dict = {"color": None, "format": None}
+    """回答の「- 配色:」「- 出力形式:」「- 文字サイズ:」を、回の順に後勝ちで読む（文字サイズはキーごと）。"""
+    out: dict = {"color": None, "format": None, "fontsizes": {}}
     for md in mds:
         for key, rx in (("color", _SETTING_COLOR), ("format", _SETTING_FORMAT)):
             for m in rx.finditer(md):
                 out[key] = m.group(1)
+        out["fontsizes"].update(fontsize.parse_line(md))
     return out
 
 

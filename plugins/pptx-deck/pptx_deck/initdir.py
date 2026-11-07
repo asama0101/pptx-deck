@@ -53,6 +53,8 @@ def set_font_size(work: Path, changes: dict[str, float]) -> list[str]:
     """文字サイズを変える。丸めて template.json の fontsizes に足し、theme.css を作り直す。
     既定と同じ値になった項目は fontsizes から外す。"""
     work = Path(work)
+    if unknown := [k for k in changes if k not in fontsize.KEYS]:
+        raise ValueError(f"未知の文字サイズの項目: {', '.join(unknown)}（使えるのは {', '.join(fontsize.KEYS)}）")
     cfg = paths.read_cfg(work)
     saved = dict(cfg.get("fontsizes") or {})
     for key, value in changes.items():
