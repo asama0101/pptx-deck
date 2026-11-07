@@ -28,7 +28,7 @@
     [0.1, 0.2, 0.5, 1, 2, 5, 10].some(function (m) { step = m * p; return v / step <= 8; });
     return Math.ceil(v * 1.05 / step) * step;
   };
-  var fmt = function (v) { return Math.round(v * 10) / 10 + ''; };
+  var fmt = function (v) { return (Math.round(v * 10) / 10).toLocaleString('en-US', { maximumFractionDigits: 1 }); };    // 桁区切りは、PowerPoint の既定の書式（#,##0）に合わせる
   // 横幅 maxW（px）に収まるよう、軸ラベルを最大 2 行に折り返す。空白があればそこで折り、2 行を超える分だけ「…」で省く
   var wrap = function (s, maxW) {
     var cw = function (c) { return c.charCodeAt(0) > 255 ? 13 : 7; };      // 13px の全角・半角の概算幅
@@ -53,10 +53,14 @@
     if (spec.type === 'waterfall') {
       var vals = S[0].values, tot = {}, run = 0;
       (spec.totals || [0, n - 1]).forEach(function (i) { tot[i] = 1; });
+      var hl = {};
+      [].concat(spec.highlight == null ? [] : spec.highlight).forEach(function (i) { hl[i] = 1; });
+      // 色は PowerPoint のグラフと同じ（増加＝淡い灰、減少＝濃い灰、合計＝中間の灰。注目する項目だけ強調色）
+      var pick = function (i, c) { return hl[i] ? css('--emphasis') : c; };
       return vals.map(function (v, i) {
-        if (tot[i]) { run = v; return [{ lo: 0, hi: v, v: v, color: '#767676' }]; }
-        if (v >= 0) { var a = [{ lo: run, hi: run + v, v: v, color: css('--accent') }]; run += v; return a; }
-        var b = [{ lo: run + v, hi: run, v: -v, color: '#404040' }]; run += v; return b;
+        if (tot[i]) { run = v; return [{ lo: 0, hi: v, v: v, color: pick(i, '#767676') }]; }
+        if (v >= 0) { var a = [{ lo: run, hi: run + v, v: v, color: pick(i, '#BFBFBF') }]; run += v; return a; }
+        var b = [{ lo: run + v, hi: run, v: -v, color: pick(i, '#404040') }]; run += v; return b;
       });
     }
     var pal = palette(), stacked = spec.type.indexOf('stacked') === 0;

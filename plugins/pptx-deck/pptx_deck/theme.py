@@ -56,6 +56,13 @@ def _hls(h: str):
     return colorsys.rgb_to_hls(r, g, b)
 
 
+def tint(base: str, t: float) -> str:
+    """基調色を白へ t だけ近づけた淡色。RGB で白と混ぜると灰色に見えるので、色相と彩度（65%）を残して明るくする。"""
+    h, light, s = _hls(base)
+    r, g, b = colorsys.hls_to_rgb(h, light + (1 - light) * t, s * 0.65)
+    return _hex((r * 255, g * 255, b * 255))
+
+
 def is_gray(h: str) -> bool:
     _, light, s = _hls(h)
     return s < 0.15 or light > 0.97 or light < 0.03
@@ -85,19 +92,19 @@ def derive(base: str) -> Palette:
         emphasis = next(
             (c for c in _EMPHASIS if hue_distance(c, accent) >= 60 and contrast(c, "#FFFFFF") >= 4.5), "#404040"
         )
-    accent_mid = mix(accent, "#FFFFFF", 0.52)
+    accent_mid = tint(accent, 0.52)
     dark_ratio = 0.35
     while contrast(mix(accent, "#000000", dark_ratio), accent_mid) < 4.5 and dark_ratio < 0.8:
         dark_ratio += 0.05  # 濃い基調色の文字が、中間の面（accent_mid）の上でも読めること
     soft_ratio = 0.28
-    while contrast("#FFFFFF", mix(accent, "#FFFFFF", soft_ratio)) < 4.5 and soft_ratio > 0:
+    while contrast("#FFFFFF", tint(accent, soft_ratio)) < 4.5 and soft_ratio > 0:
         soft_ratio = max(0.0, soft_ratio - 0.04)  # 白い文字が、淡い基調色の面（accent_soft）の上でも読めること
     return Palette(
         accent=accent,
         accent_dark=mix(accent, "#000000", dark_ratio),
-        accent_soft=mix(accent, "#FFFFFF", soft_ratio),
+        accent_soft=tint(accent, soft_ratio),
         accent_mid=accent_mid,
-        accent_light=mix(accent, "#FFFFFF", 0.75),
+        accent_light=tint(accent, 0.75),
         emphasis=emphasis,
         text="#1A1A1A",
         text_sub="#595959",
