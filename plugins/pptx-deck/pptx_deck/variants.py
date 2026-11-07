@@ -11,7 +11,8 @@ from pathlib import Path
 
 from . import fontsize, paths, reviewai, reviewext, svgids
 
-FREE = "R"  # 自由設計の推奨案（型の選定表にとらわれない。デザインは 1 のみ。絵 pp-picture は使わない）
+FREE = "R"  # 自由設計の推奨案（型の選定表にとらわれない。デザインは 1 のみ。絵 pp-picture も使える）
+UNIQUE_TYPES = ("cover", "agenda", "section", "closing", "decision")  # 型が一意のページ（data-type）。R は足さない
 FRAG = re.compile(
     r"^(\d{2})-([A-Z])(?:-d([23]))?\.html$"
 )  # NN-A.html（デザイン 1）・NN-A-d2.html・NN-A-d3.html（同じ型のデザイン 2・3）
@@ -558,15 +559,8 @@ def collect_designs(work: Path) -> dict[str, dict[str, dict[int, str]]]:
         m = FRAG.match(f.name)
         if m:
             dn = int(m.group(3) or 1)
-            if m.group(2) == FREE:
-                if dn != 1:
-                    raise ValueError(
-                        f"slides/{f.name}: 自由設計の案（R）にデザイン 2・3 は作りません（NN-R.html だけ）"
-                    )
-                if "pp-picture" in f.read_text(encoding="utf-8"):
-                    raise ValueError(
-                        f"slides/{f.name}: 自由設計の案（R）に絵（pp-picture）は使えません（図形・表・グラフだけで描く。絵は diagram の流れ）"
-                    )
+            if m.group(2) == FREE and dn != 1:
+                raise ValueError(f"slides/{f.name}: 自由設計の案（R）にデザイン 2・3 は作りません（NN-R.html だけ）")
             # 絵（pp-picture）の SVG の id は、案ごとに一意にする（複数の絵で同じ id の定義が前の絵に引かれて、アイコンや矢じりが消えるのを防ぐ）
             text = svgids.uniquify(f.read_text(encoding="utf-8"), f"s{m.group(1)}{m.group(2).lower()}{dn}-")
             out.setdefault(m.group(1), {}).setdefault(m.group(2), {})[dn] = text
@@ -578,6 +572,20 @@ def collect_designs(work: Path) -> dict[str, dict[str, dict[int, str]]]:
                 raise ValueError(
                     f"slides/{nn}-{k}.html（デザイン 1）がありません（{nn}-{k}-d2/-d3 だけでは出せません）"
                 )
+    return out
+
+
+def missing_free(work: Path) -> list[str]:
+    """自由設計の案（R）のないスライド番号。型が一意のページ（UNIQUE_TYPES。表紙・章扉・目次・裏表紙・クロージングの決定）は除く。
+    型は案 A（デザイン 1）の data-type で見る。"""
+    out = []
+    for nn, opts in sorted(collect_designs(work).items()):
+        if FREE in opts:
+            continue
+        m = re.search(r'data-type="([^"]*)"', opts.get("A", {}).get(1, ""))
+        if m and m.group(1) in UNIQUE_TYPES:
+            continue
+        out.append(nn)
     return out
 
 

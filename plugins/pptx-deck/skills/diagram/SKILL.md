@@ -42,7 +42,7 @@ allowed-tools: 'Bash(python "${CLAUDE_PLUGIN_ROOT}/run.py" *)'
 ## 5. 描く（初回の案）
 
 - 要素が少ない絵（自己紹介など）: 凍結した構造のとおり、1 案を `<元データ>/slides/NN-A.html` に書く。
-- 要素が多い・あいまいな絵（NW 構成図・障害動作など）: **構図の違う 2〜3 案**（左から右の流れ／上下の層／中心と周辺など）を `NN-A.html`・`NN-B.html`・`NN-C.html` に書く。内容（文言・数字）は案の間で同じにする。各案に `data-variant="構図名｜選んだ理由"` を付ける。
+- 要素が多い・あいまいな絵（NW 構成図・障害動作など）: **構図の違う 2〜3 案**（左から右の流れ／上下の層／中心と周辺など）を `NN-A.html`・`NN-B.html`・`NN-C.html` に書く。内容（文言・数字）は案の間で同じにする。各案に `data-variant="構図名｜選んだ理由"` を付ける。create の決まりで、自由設計の案 R（`NN-R.html`）も足す（R は絵を使ってよい。A/B/C と違う構図で描く）。
 - 見本（`${CLAUDE_PLUGIN_ROOT}/assets/components/pictures/`）をコピーして差し替える。書き方と図の種類ごとの作法は picture-craft.md に従う。型で足りる図は、patterns.md の型を使う。
 - 描いたら `draft "<元データ>"`（`--slide NN`）で確認用の画像と検査の結果を得て、`violations` が 0 件になるまで直す。
 

@@ -333,11 +333,22 @@ def cmd_variants(args) -> int:
     if code := _guard_edits(work):
         return code
     _ensure_derived(work)
+    round_no = args.round or variants.next_round(work)
     try:
-        print(variants.assemble(work, round_no=args.round or variants.next_round(work)))
+        print(variants.assemble(work, round_no=round_no))
+        # 第 2 回以降は、直したスライドだけを出すので警告しない
+        missing = variants.missing_free(work) if round_no == 1 else []
     except ValueError as e:
         print(f"エラー: {e}", file=sys.stderr)
         return 2
+    if missing:
+        print(
+            "警告: 自由設計の案（R）がないスライドがあります: "
+            + "・".join(f"S{nn}" for nn in missing)
+            + "（型が一意の表紙・章扉・目次・裏表紙・クロージングの決定は除く）。"
+            "NN-R.html を足して、variants をやり直してください",
+            file=sys.stderr,
+        )
     return 0
 
 

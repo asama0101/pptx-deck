@@ -320,14 +320,10 @@ def test_Rは集められページに出てfinalizeで統合される(tmp_path):
             {"01-A.html": FRAG.format(n="a"), "01-R.html": FRAG.format(n="r"), "01-R-d2.html": FRAG.format(n="r2")},
             "デザイン 2・3",
         ),
-        (
-            {"01-A.html": FRAG.format(n="a"), "01-R.html": FRAG.format(n="r") + '<div class="pp-picture"></div>'},
-            "pp-picture",
-        ),
     ],
-    ids=["Rにデザイン2", "Rにpp-picture"],
+    ids=["Rにデザイン2"],
 )
-def test_Rはデザイン違いと絵を持てない(tmp_path, files, message):
+def test_Rはデザイン違いを持てない(tmp_path, files, message):
     work = make_work(tmp_path, files)
     with pytest.raises(ValueError, match=message):
         variants.collect_designs(work)
@@ -344,17 +340,57 @@ def test_案が1つで要修正のときコメントを添えて止まる(tmp_pa
     assert "【注釈】出典を足す" in str(e.value)
 
 
-def test_variantsコマンドは絵のあるRをトレースバックなしでエラーにする(tmp_path):
+def test_Rは絵を使える(tmp_path):
+    work = make_work(
+        tmp_path,
+        {"01-A.html": FRAG.format(n="a"), "01-R.html": FRAG.format(n="r") + '<div class="pp-picture"></div>'},
+    )
+    assert sorted(variants.collect_designs(work)["01"]) == ["A", "R"]
+
+
+def typed(n, t):
+    return FRAG.format(n=n).replace('data-layout="content"', f'data-layout="content" data-type="{t}"')
+
+
+def test_Rがないスライドは型が一意のものを除いて報告する(tmp_path):
+    work = make_work(
+        tmp_path,
+        {
+            "01-A.html": typed("c", "cover"),  # 型が一意: 除く
+            "02-A.html": typed("t", "text"),  # R なし: 報告
+            "03-A.html": typed("s", "summary"),
+            "03-R.html": FRAG.format(n="r"),  # R あり
+            "04-A.html": FRAG.format(n="p") + '<div class="pp-picture"></div>',  # 絵のページも R が要る
+            "05-A.html": typed("d", "decision"),  # 型が一意: 除く
+            "06-A.html": typed("a", "agenda"),
+            "07-A.html": typed("x", "section"),
+            "08-A.html": typed("z", "closing"),
+        },
+    )
+    assert variants.missing_free(work) == ["02", "04"]
+
+
+def _variants_cmd(tmp_path, *extra):
     base = tmp_path / "out" / "pptx-deck-source" / "demo"
     with contextlib.redirect_stdout(io.StringIO()):
         assert cli.main(["init", str(base)]) == 0
     slides = paths.resolve_work(base) / "slides"
-    (slides / "01-A.html").write_text(FRAG.format(n="a"), encoding="utf-8")
-    (slides / "01-R.html").write_text(FRAG.format(n="r") + '<div class="pp-picture"></div>', encoding="utf-8")
+    (slides / "01-A.html").write_text(typed("t", "text"), encoding="utf-8")
     err = io.StringIO()
     with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
-        rc = cli.main(["variants", str(base)])
-    assert rc == 2
-    assert "エラー:" in err.getvalue()
-    assert "pp-picture" in err.getvalue()
-    assert "Traceback" not in err.getvalue()
+        rc = cli.main(["variants", str(base), *extra])
+    return rc, err.getvalue()
+
+
+def test_variantsコマンドは第1回でRがないスライドを警告する(tmp_path):
+    rc, err = _variants_cmd(tmp_path)
+    assert rc == 0  # 警告だけで止めない
+    assert "警告" in err
+    assert "S01" in err
+    assert "自由設計" in err
+
+
+def test_variantsコマンドは第2回以降はRの警告を出さない(tmp_path):
+    rc, err = _variants_cmd(tmp_path, "--round", "2")
+    assert rc == 0
+    assert "警告" not in err
