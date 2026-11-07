@@ -148,6 +148,9 @@ def test_preview_uses_scale(browser, pkg):
         page.close()
         return out
 
-    base, big = sizes(1), sizes(1.5)
+    base, big, small = sizes(1), sizes(1.5), sizes(0.84)
     assert base
+    assert 13 in base
+    assert all(abs(x - 13.333) > 0.01 for x in base)  # 既定の倍率では下限が効かず、見た目が変わらない
     assert max(big) > max(base)
+    assert min(small) == pytest.approx(10 * 96 / 72)  # 縮小では 10pt を下限にする

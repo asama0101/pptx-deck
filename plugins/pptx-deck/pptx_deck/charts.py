@@ -23,7 +23,8 @@ FONT_PT = 12
 
 
 def chart_pt(scale: float) -> int:
-    """グラフ内の文字の大きさ(pt)。既定の 12pt に倍率をかけ、10pt を下限にする。"""
+    """グラフ内の文字の大きさ(pt)。既定の 12pt に倍率をかけ、10pt を下限にする。
+    倍率は呼び出し側が fontsize.current で範囲内に収める。"""
     return max(10, round(FONT_PT * scale))
 
 
