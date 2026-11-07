@@ -175,11 +175,20 @@ _ROLES = ("title", "lead", "body", "caption")
 # 役割付きの要素で font-size を残してよいもの → 理由。
 # 注記のうち、旧 base.css の 14px で表示されていたもの（表の見出し・出典・脚注）は var(--fs-source) を読む。
 ROLE_VARS = {("caption", "var(--fs-source)")}
-# (役割, 値): 直書きがなく旧 base.css の役割の既定（題28・ヘッド22）で表示されていた要素。
-#   役割の既定が 37/27 に変わったので、見た目を変えないよう旧の値を書いた（どの断片でも可）。
+# (断片, 役割, 値) → 個数: 直書きがなく旧 base.css の役割の既定（題28・ヘッド22）で表示されていた要素。
+#   役割の既定が 37/27 に変わったので、見た目を変えないよう旧の値を書いた。目次（agenda）の 3 本だけ。
+#   個数も固定する（ここにない要素や、増減は、テストが落ちる）。
 ALLOWED_OLD_ROLE = {
-    ("title", "28px"): "直書きのない題。旧 base.css の 28px を保つ",
-    ("lead", "22px"): "直書きのない帯の文。旧 base.css の 22px を保つ",
+    ("layouts/agenda.html", "title", "28px"): 1,
+    ("layouts/agenda.html", "lead", "22px"): 4,
+    ("layouts/agenda-d2.html", "title", "28px"): 1,
+    ("layouts/agenda-d2.html", "lead", "22px"): 4,
+    ("layouts/agenda-d3.html", "title", "28px"): 1,
+    ("layouts/agenda-d3.html", "lead", "22px"): 4,
+}
+# 役割のない太字で、小見出し（var(--fs-subhead)）にせず 24px のままのもの → 理由。
+ALLOWED_SUBHEAD_HARDCODED = {
+    ("diagrams/timeline-d3.html", "24px"): "強調色の「3.0」。22px だとコントラストの検査に通らない",
 }
 # (断片, 役割, 値): 役割の既定と違う直書き。表にない大きさとして残した。
 ALLOWED = {
@@ -248,15 +257,35 @@ def _inline_size(a):
 
 
 def test_fragments_have_no_hardcoded_role_sizes():
-    bad = []
+    from collections import Counter
+
+    bad, old_role = [], Counter()
     for rel, a in _fragment_elements():
         role, size = a.get("data-role"), _inline_size(a)
         if role not in _ROLES or size is None:
             continue
-        if (role, size) in ROLE_VARS or (role, size) in ALLOWED_OLD_ROLE:
+        if (role, size) in ROLE_VARS:
             continue
-        if (rel, role, size) not in ALLOWED:
+        if (rel, role, size) in ALLOWED_OLD_ROLE:
+            old_role[(rel, role, size)] += 1
+        elif (rel, role, size) not in ALLOWED:
             bad.append((rel, a.get("data-part"), role, size))
+    assert bad == []
+    assert dict(old_role) == ALLOWED_OLD_ROLE  # 旧の値を書いた要素は、この表の個数どおり
+
+
+def test_fragments_read_vars_for_body_note_and_subhead():
+    """役割のない要素は、本文（19）・注記（16）・出典（14）・小見出し（太字の 21/22/24）の大きさを、直書きしない。"""
+    bad = []
+    for rel, a in _fragment_elements():
+        size, cls = _inline_size(a), (a.get("class") or "").split()
+        if a.get("data-role") or size is None or not size.endswith("px"):
+            continue
+        v = float(size[:-2])
+        if v in (19, 16, 14):
+            bad.append((rel, a.get("data-part"), size, "var(--fs-body|--fs-caption|--fs-source) を読む"))
+        elif v in (21, 22, 24) and "b" in cls and "num" not in cls and (rel, size) not in ALLOWED_SUBHEAD_HARDCODED:
+            bad.append((rel, a.get("data-part"), size, "var(--fs-subhead) を読む"))
     assert bad == []
 
 
