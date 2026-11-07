@@ -146,3 +146,97 @@ def test_180秒返答がないと応答なしになり指示が部位のコメ�
     ai_page.evaluate("id => window.__aiReply({id: id, ok: true, html: '<p>x</p>'})", old)
     assert ai_page.text_content(STATE) == MSG_LOST
     assert ai_page.input_value(f"{ROW} textarea") == "短く"
+
+
+# ---- 返答を受け取って画面を置き換える ----
+PANE = '.pane[data-slide="01"]'
+NEW_FRAG = PART_FRAG.replace(">題<", ">新しい題<")
+
+
+def _ask(page, part="注釈", text="短く"):
+    """待ち受け中にして、部位の行に指示を書いて頼み、キューから依頼を取り出して返す。"""
+    page.evaluate("window.__aiWatchAt = Date.now()")
+    page.click(f"{PANE} .pt >> text={part}")
+    page.fill(f"{ROW} textarea", text)
+    page.click(f"{ROW} .aiAsk")
+    return page.evaluate("window.__aiQueue.shift()")
+
+
+def _reply(page, **r):
+    page.evaluate("r => window.__aiReply(r)", r)
+
+
+def _md(page):
+    """01 を A の承認にして回答 md を出す（編集の記録は判定がないと出せないため）。"""
+    page.evaluate(
+        "() => { const p = document.querySelector('.pane[data-slide=\"01\"]'); p.dataset.verdict = '承認';"
+        " p.querySelector('input[name^=s][value=A]').checked = true; window.__answersMd = null; }"
+    )
+    page.click(f"{PANE} .copyBtn")
+    return page.evaluate("window.__answersMd")
+
+
+def test_okの返答で断片が置き換わり大きな表示も変わる(ai_page):
+    req = _ask(ai_page)
+    _reply(ai_page, id=req["id"], ok=True, html=NEW_FRAG)
+    assert "新しい題" in ai_page.text_content(f"{PANE} .big .stage")
+    assert "新しい題" in ai_page.text_content(f'{PANE} .opt[data-k="A"] .stage')
+    assert "新しい題" not in ai_page.text_content(f'{PANE} .opt[data-k="B"] .stage')  # 別の案は変わらない
+
+
+def test_okの返答で指示は欄からも回答mdからも消え内容は覚えておく(ai_page):
+    req = _ask(ai_page, text="短く")
+    _reply(ai_page, id=req["id"], ok=True, html=NEW_FRAG)
+    assert ai_page.locator(ROW).count() == 0
+    assert ai_page.evaluate("document.querySelector('.pane[data-slide=\"01\"] .aiAfter') !== null")
+    assert ai_page.evaluate("document.querySelector('.pane[data-slide=\"01\"]').__rvAi['01-A']") == {
+        "f": "01-A",
+        "part": "注釈",
+        "text": "短く",
+    }
+    assert "- 部位:" not in _md(ai_page)
+    assert ai_page.evaluate("window.__aiQueue.length") == 0
+
+
+def test_ngの返答では断片は変わらず理由が出る(ai_page):
+    req = _ask(ai_page)
+    _reply(ai_page, id=req["id"], ok=False, error="検査の違反: overlap")
+    assert "新しい題" not in ai_page.text_content(f"{PANE} .big .stage")
+    assert ai_page.text_content(f"{PANE} .big .stage").count("題") == 1
+    assert ai_page.text_content(STATE) == "検査の違反: overlap"
+    assert ai_page.is_enabled(f"{ROW} .aiAsk")
+    assert ai_page.input_value(f"{ROW} textarea") == "短く"  # 指示は残る（頼み直す・回答で送る）
+
+
+def test_idが合わない返答は無視する(ai_page):
+    _ask(ai_page)
+    _reply(ai_page, id="ai-nothing", ok=True, html=NEW_FRAG)
+    assert "新しい題" not in ai_page.text_content(f"{PANE} .big .stage")
+    assert ai_page.is_disabled(f"{ROW} .aiAsk")  # 依頼はまだ保留中
+
+
+def test_返答のあと編集の記録が回答に出ない(ai_page):
+    ai_page.check(f"{PANE} .rv-edit-toggle")
+    ai_page.evaluate(
+        "() => { const e = document.querySelector('.pane[data-slide=\"01\"] .big .stage .pp-text');"
+        " e.focus(); e.innerHTML = '打ち換え'; e.blur(); }"
+    )
+    ai_page.uncheck(f"{PANE} .rv-edit-toggle")  # 編集中は部位のバッジが隠れる。記録は残る
+    ai_page.evaluate("window.__aiWatchAt = Date.now()")
+    ai_page.click(f"{PANE} .pt >> text=注釈")
+    ai_page.fill(f"{ROW} textarea", "短く")
+    ai_page.click(f"{ROW} .aiAsk")
+    req = ai_page.evaluate("window.__aiQueue.shift()")
+    assert len(req["edits"]) == 1
+    assert req["edits"][0].startswith("- 編集: ")
+    assert "打ち換え" in req["edits"][0]
+    assert "- 編集: " in _md(ai_page)
+    _reply(ai_page, id=req["id"], ok=True, html=NEW_FRAG)
+    assert "- 編集: " not in _md(ai_page)
+    assert ai_page.evaluate("Object.keys(document.querySelector('.pane[data-slide=\"01\"]').__rvOrig || {})") == []
+
+
+def test_依頼のidはページを開き直しても重ならない(ai_page):
+    req = _ask(ai_page)
+    assert req["id"] != "ai-1"
+    assert req["id"].startswith("ai-")

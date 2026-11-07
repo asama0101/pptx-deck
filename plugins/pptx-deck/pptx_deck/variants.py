@@ -715,7 +715,7 @@ def _page(
         if docs is None:  # 設計図と原稿の確認ページには部位がない
             rest.append(
                 '<div class="parts"><div class="nh"><h3>AI への指示（✦ の紫のボタンを押すと、その部位への指示を書けます）</h3></div>'
-                '<ul class="plist"></ul><div class="aiState" aria-live="polite"></div></div>'
+                '<ul class="plist"></ul><div class="aiState" aria-live="polite"></div><div class="aiAfter"></div></div>'
             )
         sel.append(
             '<div class="judge"><div class="sub">'

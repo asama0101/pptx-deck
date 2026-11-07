@@ -28,7 +28,7 @@ JS = r"""
       if (b) b.disabled = !aiWatching() || q;
     });
     st.textContent = !rows.length ? '' : busy ? 'Claude が直しています…'
-      : p.__aiLost ? '応答がありません。指示を部位のコメントに移しました'
+      : p.__aiErr ? p.__aiErr : p.__aiLost ? '応答がありません。指示を部位のコメントに移しました'
       : aiWatching() ? '' : 'いま Claude が待ち受けていません。指示を回答に入れて送ると、あとで直します';
   }
   function aiDrop(id) {                                        // 依頼を表とキューから外す（返事・応答なし）
@@ -40,19 +40,41 @@ JS = r"""
   window.__rvAiAsk = function (p, key, li) {
     var text = $('textarea', li).value, fr = aiFrag(p, key);
     if (!text.trim() || !aiWatching() || aiBusy(p, fr.f)) return;
-    var id = 'ai-' + (++aiSeq);
+    var id = 'ai-' + Date.now().toString(36) + '-' + (++aiSeq);   // ページを開き直しても重ならない
     var edits = editLines(p).filter(function (l) { try { return JSON.parse(l.slice('- 編集: '.length)).f === fr.f; } catch (e) { return false; } });
     window.__aiQueue.push({ id: id, type: 'edit', slide: p.dataset.slide, k: fr.k, d: fr.d, f: fr.f, part: key.slice(key.indexOf('|') + 1), text: text, edits: edits });
     aiPending[id] = { p: p, f: fr.f, key: key, timer: setTimeout(function () {
       var r = aiDrop(id); if (!r) return;
       r.p.__aiLost = true; aiPaint(r.p);                       // 指示は部位のコメント（textarea）にそのまま残る
     }, AI_TIMEOUT) };
-    p.__aiLost = false; aiPaint(p);
+    p.__aiLost = false; p.__aiErr = ''; aiPaint(p);
   };
   // Claude の返事。依頼の表にない id（応答なしにしたあとの返事）は、何もしない
+  function aiApply(p, f, html) {                               // 断片 f のサムネの中身を置き換え、表示中なら大きな表示も描き直す
+    $$('[data-f]', p).filter(function (h) { return h.dataset.f === f; }).forEach(function (h) {
+      var st = $('.stage', h); if (!st) return;
+      st.innerHTML = html;
+      $$('.pp-chart', st).forEach(function (c) { if (window.__chartPreview) window.__chartPreview(c); });
+    });
+    if (window.__arrows) window.__arrows(p);
+    var e = editsOf(p), o = p.__rvOrig || {};                  // この断片への手作業の編集は、新しい断片には当てはまらないので捨てる
+    Object.keys(e).forEach(function (k) { if (e[k].f === f) delete e[k]; });
+    Object.keys(o).forEach(function (k) { if (k.indexOf(f + '#') === 0) delete o[k]; });
+    var v = viewKey(p);
+    if (aiFrag(p, v + '|').f === f) showBig(p, v);
+  }
   window.__aiReply = function (r) {
     if (!r || !aiPending[r.id]) return;
-    aiDrop(r.id); aiRefresh();
+    var q = aiDrop(r.id), p = q.p, li = $('.plist li[data-key="' + q.key.replace(/"/g, '\\"') + '"]', p);
+    if (r.ok !== true || typeof r.html !== 'string') {         // 失敗: 画面は変えない。指示は欄に残る
+      p.__aiLost = false; p.__aiErr = String(r.error || 'error'); aiRefresh();
+      return;
+    }
+    var text = li ? $('textarea', li).value : '';
+    aiApply(p, q.f, r.html);
+    if (li) { $('textarea', li).value = ''; li.remove(); }      // 頼んだ内容は回答に出さない（頼み直すために覚えておく）
+    (p.__rvAi || (p.__rvAi = {}))[q.f] = { f: q.f, part: q.key.slice(q.key.indexOf('|') + 1), text: text };
+    p.__aiLost = false; p.__aiErr = ''; partChanged(p); aiRefresh();
   };
   window.__rvAiRefresh = aiRefresh;
   setInterval(function () { aiRefresh(); }, 1000);             // Claude が待ち受けの時刻を立てたのを拾う
