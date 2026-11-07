@@ -18,4 +18,3 @@ select = ["E", "W", "F", "I", "B", "UP", "SIM", "S", "PT", "PTH", "BLE"]
 # JS・CSS・HTML を文字列で埋め込んでいる。折り返すと出力が変わるので行の長さは対象にしない
 "plugins/pptx-deck/pptx_deck/variants.py" = ["E501"]
 "plugins/pptx-deck/pptx_deck/reviewext.py" = ["E501"]
-"plugins/pptx-deck/pptx_deck/reviewai.py" = ["E501"]

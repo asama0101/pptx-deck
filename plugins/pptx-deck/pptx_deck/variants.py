@@ -1,6 +1,6 @@
 """スライド案のレビューページ（variants.html・final-review.html）の生成、回答の解析、最終 HTML（final.html）の統合。
 
-レビューページは、左に一覧、右に 1 枚ずつ縦に並べる（大きな 1 案 → 見どころ・前回のコメント・今回の直し・部位のコメント → 案とデザインのサムネ）。題の右のチェックで、見どころ・「AI に頼む」のバッジを出す（初期はオフ）。承認・要修正・コメント・「回答をコピー」などは画面下に固定される。「回答をコピー」を押すと、クリップボードへ入れると同時に
+レビューページは、左に一覧、右に 1 枚ずつ縦に並べる（大きな 1 案 → 見どころ・前回のコメント・今回の直し・部位のコメント → 案とデザインのサムネ）。題の右のチェックで、見どころ・部位のバッジを出す（初期はオフ）。承認・要修正・コメント・「回答をコピー」などは画面下に固定される。「回答をコピー」を押すと、クリップボードへ入れると同時に
 window.__answersMd（回答の md）と window.__submitted が立つ。回答の形式は従来から変えない。"""
 
 import hashlib
@@ -9,7 +9,7 @@ import json
 import re
 from pathlib import Path
 
-from . import fontsize, paths, reviewai, reviewext, svgids
+from . import fontsize, paths, reviewext, svgids
 
 FREE = "R"  # 自由設計の推奨案（型の選定表にとらわれない。デザインは 1 のみ。絵 pp-picture も使える）
 UNIQUE_TYPES = ("cover", "agenda", "section", "closing", "decision")  # 型が一意のページ（data-type）。R は足さない
@@ -51,11 +51,11 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .co-n{position:absolute;right:calc(-14px / var(--s));top:calc(-14px / var(--s));width:calc(28px / var(--s));height:calc(28px / var(--s));border-radius:50%;background:var(--co);color:#fff;font:700 calc(16px / var(--s))/calc(28px / var(--s)) sans-serif;text-align:center}
 .rv .nocol .co-layer{display:none}
 .rv .pt-layer{position:absolute;left:0;top:0;width:1280px;height:720px;pointer-events:none}
-.rv .pt{position:absolute;pointer-events:auto;cursor:pointer;font:700 calc(13px / var(--s))/1.25 sans-serif;padding:calc(2px / var(--s)) calc(7px / var(--s));background:#6A3FB5;color:#fff;border:0;border-radius:calc(11px / var(--s));white-space:nowrap}
+.rv .pt{position:absolute;pointer-events:auto;cursor:pointer;font:700 calc(13px / var(--s))/1.25 sans-serif;padding:calc(2px / var(--s)) calc(7px / var(--s));background:#1B6FD1;color:#fff;border:0;border-radius:calc(11px / var(--s));white-space:nowrap}
 .rv .pt.has{background:#E8A33E;color:#1a1a1a}
 .rv .pt.up{transform:translateY(-100%)}
 .rv .nopt .pt-layer{display:none}
-.rv .plist{display:grid;gap:6px}.rv .plist li{display:grid;grid-template-columns:150px minmax(0,1fr) auto auto;gap:8px;align-items:start}
+.rv .plist{display:grid;gap:6px}.rv .plist li{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:8px;align-items:start}
 .rv .plist li b{font-size:13px;padding-top:6px}.rv .plist textarea{height:44px}
 .rv .cols{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
 .rv .cols>div{background:var(--panel);padding:12px 14px;font-size:13.5px;min-width:0}
@@ -115,26 +115,14 @@ _SCRIPT = r"""<script>
   var panes = $$('.pane'), cur = 0, KEY = 'pptxdeck-review-' + __DECK__ + '-__ROUND__-__HASH__';
   var PRESET = __PRESET__;
 
-  function store(o) {
-    try { sessionStorage.setItem(KEY, JSON.stringify(o)); return; } catch (e) {}
-    // 容量超過など: AI の断片の全文だけを落として、判定・コメント・編集・直したあとの状態は残す
-    try {
-      var t = {};                                              // ai は p.__rvAi そのものなので、写しを作って落とす（画面側の全文は消さない）
-      Object.keys(o).forEach(function (k) {
-        if (k === '_fs') { t[k] = o[k]; return; }
-        t[k] = Object.assign({}, o[k], { ai: {} });
-        Object.keys(o[k].ai || {}).forEach(function (f) { t[k].ai[f] = Object.assign({}, o[k].ai[f]); delete t[k].ai[f].html; });
-      });
-      sessionStorage.setItem(KEY, JSON.stringify(t)); window.__rvStoreDegraded = true;
-    } catch (e) {}
-  }
+  function store(o) { try { sessionStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} }
   function load() { try { return JSON.parse(sessionStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; } }
   function snapshot() {
     var o = {};
     panes.forEach(function (p) {
       var r = $('input[type=radio][name^="s"]:checked', p);
       var d = {}; $$('.dgroup input[type=radio]:checked', p).forEach(function (x) { d[x.closest('.dgroup').dataset.k] = x.value; });
-      o[p.dataset.slide] = { c: r ? r.value : '', t: $('.cm', p).value, v: p.dataset.verdict || '', au: p.dataset.auto === '1', d: d, pc: partTexts(p), ed: editsOf(p), ai: p.__rvAi || {} };
+      o[p.dataset.slide] = { c: r ? r.value : '', t: $('.cm', p).value, v: p.dataset.verdict || '', au: p.dataset.auto === '1', d: d, pc: partTexts(p), ed: editsOf(p) };
     });
     if (fsIn.length) { o._fs = {}; fsIn.forEach(function (i) { o._fs[i.dataset.fs] = i.value; }); }
     return o;
@@ -144,15 +132,12 @@ _SCRIPT = r"""<script>
     if (o._fs) fsIn.forEach(function (i) { if (o._fs[i.dataset.fs] !== undefined) i.value = o._fs[i.dataset.fs]; });
     panes.forEach(function (p) {
       var a = o[p.dataset.slide]; if (!a) return;
-      p.__rvAi = a.ai || {};                                   // 「AI に頼む」で直した断片を、覚えた全文で置き換える（編集はその上に戻す）
-      Object.keys(p.__rvAi).forEach(function (f) { var h = p.__rvAi[f].html; if (typeof h === 'string' && window.__rvAiApply) window.__rvAiApply(p, f, h); });
       applyEdits(p, a.ed);                                     // 編集モードで直した文字を、サムネの断片へ戻す
       if (a.c) { var r = $('input[type=radio][name^="s"][value="' + a.c + '"]', p); if (r) r.checked = true; }
       $('.cm', p).value = a.t || '';
       p.dataset.verdict = a.v || '';
       if (a.au) p.dataset.auto = '1'; else delete p.dataset.auto;
       Object.keys(a.pc || {}).forEach(function (k) { partRow(p, k, a.pc[k]); });
-      if (window.__rvAiAfter) window.__rvAiAfter(p);                          // 直したあとの「元に戻す」「頼み直す」を戻す
       Object.keys(a.d || {}).forEach(function (k) { var x = $('.dgroup[data-k="' + k + '"] input[value="' + a.d[k] + '"]', p); if (x) x.checked = true; });
     });
   }
@@ -183,13 +168,11 @@ _SCRIPT = r"""<script>
     var li = $('.plist li[data-key="' + key.replace(/"/g, '\\"') + '"]', p);
     if (!li) {
       li = document.createElement('li'); li.dataset.key = key;
-      li.innerHTML = '<b></b><textarea aria-label="部位のコメント" placeholder="この部位をどうしてほしいか"></textarea><button type="button" class="b1 aiAsk">頼む</button><button type="button" class="b1 aiDel">消す</button>';
+      li.innerHTML = '<b></b><textarea aria-label="部位のコメント" placeholder="この部位をどうしてほしいか"></textarea><button type="button" class="b1">消す</button>';
       $('b', li).textContent = partLabel(key);
       $('textarea', li).oninput = function () { partChanged(p); };
-      $('.aiAsk', li).onclick = function () { if (window.__rvAiAsk) window.__rvAiAsk(p, key, li); };
-      $('.aiDel', li).onclick = function () { li.remove(); partChanged(p); };
+      $('button', li).onclick = function () { li.remove(); partChanged(p); };
       $('.plist', p).appendChild(li);
-      if (window.__rvAiRefresh) window.__rvAiRefresh(p);
     }
     if (text) $('textarea', li).value = text;
     return li;
@@ -202,24 +185,21 @@ _SCRIPT = r"""<script>
     var t = partTexts(p);
     $$('.pt', p).forEach(function (b) { b.classList.toggle('has', !!t[b.dataset.key]); });
   }
-  // 大きな 1 案に、部位（data-part）の名前のバッジを重ねる。同じ部位が複数あるときは、左上から右下の順に ①②③ を付ける。
-  // 行の key ごとに、断片の中の文書順の位置（i。0 始まり）を p.__ptIdx に覚える（「AI に頼む」の依頼の idx）
+  // 大きな 1 案に、部位（data-part）の名前のバッジを重ねる。同じ部位が複数あるときは、左上から右下の順に ①②③ を付ける
   function addPartBadges(p, clone, k, big) {
-    var els = $$('[data-part]', clone).map(function (el, i) { return { el: el, r: rel(el, clone), n: el.getAttribute('data-part'), i: i }; });
+    var els = $$('[data-part]', clone).map(function (el) { return { el: el, r: rel(el, clone), n: el.getAttribute('data-part') }; });
     els.sort(function (a, b) { return (a.r.y - b.r.y) || (a.r.x - b.r.x); });
-    var total = {}, seen = {}, ix = p.__ptIdx || (p.__ptIdx = {}), pre = (p.dataset.single === '1' ? '' : k) + '|';
-    Object.keys(ix).forEach(function (x) { if (x.indexOf(pre) === 0) delete ix[x]; });   // この案の前の描画（別のデザイン）の分は捨てる
+    var total = {}, seen = {};
     els.forEach(function (e) { total[e.n] = (total[e.n] || 0) + 1; });
     var layer = document.createElement('div'); layer.className = 'pt-layer';
     els.forEach(function (e) {
       seen[e.n] = (seen[e.n] || 0) + 1;
       var name = total[e.n] > 1 ? e.n + String.fromCharCode(0x2460 + seen[e.n] - 1) : e.n;
-      var key = pre + name;
-      ix[key] = e.i;
+      var key = (p.dataset.single === '1' ? '' : k) + '|' + name;
       var b = document.createElement('button'); b.type = 'button'; b.className = 'pt'; b.dataset.key = key;
-      b.textContent = '✦ AI に頼む：' + name; b.style.left = e.r.x + 'px'; b.style.top = e.r.y + 'px';
+      b.textContent = name; b.style.left = e.r.x + 'px'; b.style.top = e.r.y + 'px';
       if (e.r.y > 26) b.classList.add('up');                  // 部位の文字にかぶらないよう、枠の左上の外に置く（上に余白がないときは中）
-      b.title = name + 'について AI に頼む';
+      b.title = name + 'にコメントする';
       b.onclick = function () { var li = partRow(p, key); $('textarea', li).focus(); };
       layer.appendChild(b);
     });
@@ -482,13 +462,6 @@ _SCRIPT = r"""<script>
   $$('.copyBtn').forEach(function (btn) {
     btn.onclick = function () {
       var pane = btn.closest('.pane'), md = buildMd(), box = $('.copybox', pane);
-      // 「AI に頼む」の依頼が保留中のスライドは、コピーさせない（指示が回答にも出て、二重に直すため）
-      var busy = window.__rvAiPending ? panes.filter(window.__rvAiPending)[0] : null;
-      if (busy) {
-        go(panes.indexOf(busy));
-        say(busy, 'S' + busy.dataset.slide + ' は Claude が直している最中です。直り終わってから押してください', true);
-        return;
-      }
       // コピーさせないスライド: 修正事項がなくなった要修正と、コメントはあるが判定のないもの（回答に出ずコメントが消えるため）、
       // 文字を直したが判定のないもの（直しは回答に出るが、案が決まらず finalize で止まるため）
       var bad = panes.filter(function (q) { return verdictOf(q) === '要修正' ? !hasFix(q) : !verdictOf(q) && (hasFix(q) || editLines(q).length > 0); })[0];
@@ -531,7 +504,7 @@ _SCRIPT = r"""<script>
 # スライド上部の行の表示の切り替え。どれも初期は隠す（ページ全体で共通。チェックで出す）
 _TOGGLES = (
     '<div class="tgl"><label><input type="checkbox" class="coToggle"> 見どころ</label>'
-    '<label><input type="checkbox" class="ptToggle"> AI に頼む</label></div>'
+    '<label><input type="checkbox" class="ptToggle"> 部位のバッジ</label></div>'
 )
 
 
@@ -805,8 +778,8 @@ def _page(
         rest.append('<div class="notes"><div class="nh"><h3>見どころ</h3></div><ol class="legend"></ol></div></div>')
         if docs is None:  # 設計図と原稿の確認ページには部位がない
             rest.append(
-                '<div class="parts"><div class="nh"><h3>AI への指示（✦ の紫のボタンを押すと、その部位への指示を書けます）</h3></div>'
-                '<ul class="plist"></ul><div class="aiState" aria-live="polite"></div><div class="aiAfter"></div></div>'
+                '<div class="parts"><div class="nh"><h3>部位のコメント（スライドの青いバッジを押すと、その部位に書けます）</h3></div>'
+                '<ul class="plist"></ul></div>'
             )
         sel.append(
             '<div class="judge"><div class="sub">'
@@ -876,7 +849,7 @@ def _page(
         p.extend(rest + sel + bar)
         panes.append("".join(p))
     parts = [
-        HEAD.format(title=title, extra=_STYLE + "<style>" + reviewext.CSS + reviewai.CSS + "</style>"),
+        HEAD.format(title=title, extra=_STYLE + "<style>" + reviewext.CSS + "</style>"),
         f'<div class="rv"><h1 title="{esc(lead, quote=True)}">{title}</h1><p class="lead">{lead}</p>'
         f'<div class="strip"><span>スライド <b>{len(frags)}</b> 枚</span><span id="prog"></span>'
         + ("" if final or docs is not None else _fontsize_html(fontsizes, fontsizes_base))
@@ -905,7 +878,7 @@ def _page(
         .replace("__HASH__", digest)
         .replace("__PRESET__", preset_js)
         .replace("__SCHEME__", json.dumps(scheme[0] if scheme else None).replace("</", "<\\/"))
-        .replace("/*__EXT__*/", reviewext.JS + reviewai.JS)
+        .replace("/*__EXT__*/", reviewext.JS)
     )  # 編集モード（同じ IIFE の中に入る）
     parts.append("</body></html>")
     return "".join(parts)

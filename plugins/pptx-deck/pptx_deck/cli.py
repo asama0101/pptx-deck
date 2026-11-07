@@ -611,14 +611,8 @@ def cmd_draft(args) -> int:
         return code
     _ensure_derived(work)
     name = paths.deck_name(work)
-    if args.fragment and (args.slide or args.pick != "A"):
-        print("エラー: --fragment は --slide・--pick と同時に使えません", file=sys.stderr)
-        return 2
     try:
-        if args.fragment:
-            html, nns = draft.assemble_fragment(work, args.fragment)
-        else:
-            html, nns = draft.assemble(work, pick=args.pick, slides=args.slide)
+        html, nns = draft.assemble(work, pick=args.pick, slides=args.slide)
     except ValueError as e:
         print(f"エラー: {e}", file=sys.stderr)
         return 2
@@ -684,27 +678,10 @@ def cmd_history(args) -> int:
             r = history.snapshot(work, args.label or "")
         elif args.action == "list":
             r = history.versions(work)
-        elif args.action == "ai-snapshot":
-            if not args.fragment:
-                raise ValueError("ai-snapshot には --fragment が要ります")
-            r = history.snapshot_fragment(work, args.fragment)
-        elif args.action == "ai-undo":
-            if not args.fragment:
-                raise ValueError("ai-undo には --fragment が要ります")
-            latest = history.latest_ai_edit(work, args.fragment)
-            if latest is None:
-                raise ValueError(f"断片 {args.fragment} の ai-snapshot がありません")
-            r = history.restore_fragment(work, latest["version"], args.fragment)
-            r["html"] = (work / "slides" / f"{args.fragment}.html").read_text(encoding="utf-8")
         else:
             if args.version is None:
                 raise ValueError("restore には版の番号が要ります（history <元データ> list で確かめる）")
-            if args.fragment and args.slide:
-                raise ValueError("--fragment は --slide と同時に使えません")
-            if args.fragment:
-                r = history.restore_fragment(work, args.version, args.fragment)
-            else:
-                r = history.restore(work, args.version, args.slide)
+            r = history.restore(work, args.version, args.slide)
     except ValueError as e:
         print(f"エラー: {e}", file=sys.stderr)
         return 2
@@ -869,9 +846,6 @@ def main(argv: list[str]) -> int:
     p.add_argument("workdir")
     p.add_argument("--pick", default="A", help="各スライドで使う案（A/B/C。なければ最初の案）")
     p.add_argument("--slide", action="append", default=None, help="このスライドだけ（例: 02。複数指定できる）")
-    p.add_argument(
-        "--fragment", default=None, help="断片 1 つだけを検査する（例: 02-A-d2。--slide・--pick と併用不可）"
-    )
     p.set_defaults(fn=cmd_draft)
     help_review_picture = (
         "絵にする箇所の提案と、読み取った構造の確認ページ（picture-plan.json から picture-review.html）"
@@ -889,11 +863,10 @@ def main(argv: list[str]) -> int:
     p.set_defaults(fn=cmd_picture_status)
     p = sub.add_parser("history", help="絵の往復の履歴（直す前の slides/*.html を残す・戻す）")
     p.add_argument("workdir")
-    p.add_argument("action", choices=["snapshot", "list", "restore", "ai-snapshot", "ai-undo"])
+    p.add_argument("action", choices=["snapshot", "list", "restore"])
     p.add_argument("version", nargs="?", type=int, default=None, help="restore する版の番号")
     p.add_argument("--label", default=None, help="snapshot の名前（例: 構図を変える前）")
     p.add_argument("--slide", default=None, help="restore で戻すスライドの番号（例: 02）。省略すると全部")
-    p.add_argument("--fragment", default=None, help="ai-snapshot・ai-undo・restore の断片名（例: 02-A）")
     p.set_defaults(fn=cmd_history)
     p = sub.add_parser(
         "intake", help="開始ページの回答を検証し、作業フォルダと PPTX の置き場を JSON で出す（何も作らない）"

@@ -398,10 +398,6 @@ def _mismatch(t, before, now):
     )
 
 
-def _nows(s):
-    return re.sub(r"\s+", "", s)
-
-
 def _chart_edit(src, node, kind, j, after, before=None):
     m = _ATTR.search(node.tag_text)
     if not m:
@@ -412,9 +408,7 @@ def _chart_edit(src, node, kind, j, after, before=None):
         data = json.loads(html.unescape(m.group(g)))
         items = data["categories" if kind == "cat" else "series"]
         now = str(items[j] if kind == "cat" else items[j]["name"])
-        if before is None or any(_nows(x) == _nows(now) for x in (before, after)):
-            if after == now:  # すでに反映済み。JSON も書き直さない
-                return src
+        if before is None or re.sub(r"\s+", "", before) == re.sub(r"\s+", "", now):
             if kind == "cat":
                 items[j] = after
             else:
@@ -433,8 +427,6 @@ def _chart_edit(src, node, kind, j, after, before=None):
 
 def apply_edit(src: str, edit: dict) -> str:
     """edit = {"t": "t3" | "c0.cat2" | "c0.ser1", "after": str}。
-    before が今の文字と違っても、今の文字がすでに after と同じ（タグ・空白は無視）なら、
-    書式の違いだけを書く。HTML まで同じなら src のまま。
     編集する要素（グラフは data-chart の値）の外は 1 バイトも変えない。
     data-chart の値だけは、JSON を読み直して compact（separators=(",", ":")）に書き直す。"""
     m = _ID.match(str(edit.get("t", "")))
@@ -450,10 +442,9 @@ def apply_edit(src: str, edit: dict) -> str:
         if i >= len(nodes):
             raise ValueError(f"対象 t{i} がありません（{len(nodes)} 件）")
         n = nodes[i]
-        before, now = edit.get("before"), src[n.inner_start : n.inner_end]
-        if isinstance(before, str) and _plain(before) != _plain(now) and _plain(after) != _plain(now):
-            # 本文がすでに after と同じなら反映済み。書式の違いは下で書く
-            raise _mismatch(f"t{i}", before, _plain_text(now))
+        before = edit.get("before")
+        if isinstance(before, str) and _plain(before) != _plain(src[n.inner_start : n.inner_end]):
+            raise _mismatch(f"t{i}", before, _plain_text(src[n.inner_start : n.inner_end]))
         return src[: n.inner_start] + sanitize_inline(after) + src[n.inner_end :]
     charts = _charts(root)
     i = int(m.group(2))
