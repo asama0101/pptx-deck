@@ -50,7 +50,7 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .co-n{position:absolute;right:calc(-14px / var(--s));top:calc(-14px / var(--s));width:calc(28px / var(--s));height:calc(28px / var(--s));border-radius:50%;background:var(--co);color:#fff;font:700 calc(16px / var(--s))/calc(28px / var(--s)) sans-serif;text-align:center}
 .rv .nocol .co-layer{display:none}
 .rv .pt-layer{position:absolute;left:0;top:0;width:1280px;height:720px;pointer-events:none}
-.rv .pt{position:absolute;pointer-events:auto;cursor:pointer;font:700 calc(13px / var(--s))/1.25 sans-serif;padding:calc(2px / var(--s)) calc(7px / var(--s));background:#1B6FD1;color:#fff;border:0;border-radius:calc(11px / var(--s));white-space:nowrap}
+.rv .pt{position:absolute;pointer-events:auto;cursor:pointer;font:700 calc(13px / var(--s))/1.25 sans-serif;padding:calc(2px / var(--s)) calc(7px / var(--s));background:#6A3FB5;color:#fff;border:0;border-radius:calc(11px / var(--s));white-space:nowrap}
 .rv .pt.has{background:#E8A33E;color:#1a1a1a}
 .rv .pt.up{transform:translateY(-100%)}
 .rv .nopt .pt-layer{display:none}
@@ -189,7 +189,7 @@ _SCRIPT = r"""<script>
       var name = total[e.n] > 1 ? e.n + String.fromCharCode(0x2460 + seen[e.n] - 1) : e.n;
       var key = (p.dataset.single === '1' ? '' : k) + '|' + name;
       var b = document.createElement('button'); b.type = 'button'; b.className = 'pt'; b.dataset.key = key;
-      b.textContent = name; b.style.left = e.r.x + 'px'; b.style.top = e.r.y + 'px';
+      b.textContent = '✦ AI に頼む：' + name; b.style.left = e.r.x + 'px'; b.style.top = e.r.y + 'px';
       if (e.r.y > 26) b.classList.add('up');                  // 部位の文字にかぶらないよう、枠の左上の外に置く（上に余白がないときは中）
       b.title = name + 'にコメントする';
       b.onclick = function () { var li = partRow(p, key); $('textarea', li).focus(); };
@@ -470,7 +470,7 @@ _SCRIPT = r"""<script>
 # スライド上部の行の表示の切り替え。どれも初期は隠す（ページ全体で共通。チェックで出す）
 _TOGGLES = (
     '<div class="tgl"><label><input type="checkbox" class="coToggle"> 見どころ</label>'
-    '<label><input type="checkbox" class="ptToggle"> 部位のバッジ</label></div>'
+    '<label><input type="checkbox" class="ptToggle"> AI に頼む</label></div>'
 )
 
 
@@ -712,7 +712,7 @@ def _page(
         rest.append('<div class="notes"><div class="nh"><h3>見どころ</h3></div><ol class="legend"></ol></div></div>')
         if docs is None:  # 設計図と原稿の確認ページには部位がない
             rest.append(
-                '<div class="parts"><div class="nh"><h3>部位のコメント（スライドの青いバッジを押すと、その部位に書けます）</h3></div>'
+                '<div class="parts"><div class="nh"><h3>AI への指示（✦ の紫のボタンを押すと、その部位への指示を書けます）</h3></div>'
                 '<ul class="plist"></ul></div>'
             )
         sel.append(

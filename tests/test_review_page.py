@@ -168,7 +168,7 @@ def test_バッジは同名の部位だけに番号が付き左上から右下�
     names = parts_page.evaluate(
         "Array.from(document.querySelectorAll('.pane[data-slide=\"01\"] .pt')).map(b => b.textContent)"
     )
-    assert names == ["タイトル", "スティッカー①", "スティッカー②", "注釈"]
+    assert names == [f"✦ AI に頼む：{n}" for n in ["タイトル", "スティッカー①", "スティッカー②", "注釈"]]
     left1 = parts_page.evaluate("parseFloat(document.querySelectorAll('.pane[data-slide=\"01\"] .pt')[1].style.left)")
     assert left1 == 100  # 左のスティッカーが①
 
@@ -231,7 +231,7 @@ def test_切り替えは常に見え初期はすべてオフでスライドを�
     labels = page.evaluate(
         "Array.from(document.querySelectorAll('.pane[data-slide=\"01\"] .tgl label')).map(l => l.textContent.trim())"
     )
-    assert labels == ["見どころ", "部位のバッジ"]
+    assert labels == ["見どころ", "AI に頼む"]
     assert page.locator(pane + ".vrToggle").count() == 0  # 型と選んだ理由の切り替えはない
     assert page.locator(pane + ".vr").count() == 0
     for cls in ("coToggle", "ptToggle"):
