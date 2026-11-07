@@ -2,10 +2,10 @@
      デザイン1との違い: 全幅の低い滝グラフを上段、項目ごとのカード（差額の大きな数字つき）と基調色の合計カードを下段に横一列で置く。前回・今回・差を大きく見せたいときに使う。
      差し替える所: チャートタイトル・data-chart・項目カードの 4 枚（項目・差額・理由・前後の値）・合計のカード・注釈。 -->
 <section class="slide" data-layout="chart" data-type="waterfall">
-  <div class="pp-text t-accent" data-part="タイトル" data-role="title" style="top:48px;height:34px;font-size:24px">見積の増減</div>
+  <div class="pp-text" data-part="タイトル" data-role="title" style="top:36px;height:50px;font-size:37px">見積の増減</div>
   <div class="pp-shape f-soft" style="left:64px;top:90px;width:1152px;height:92px"></div>
   <div class="pp-text b" data-part="ヘッドメッセージ" data-role="lead" style="left:84px;top:98px;width:1112px;height:76px;font-size:27px;line-height:1.35">今回の見積は前回より1,000万円低いが、差の実質は保守の計上先の変更にすぎない</div>
-  <div class="pp-text b" data-part="チャートタイトル" data-role="body" style="left:64px;top:186px;width:1152px;height:32px;font-size:21px">見積の差額の内訳（前回2026年6月 → 今回9月、万円・税抜）</div>
+  <div class="pp-text" data-part="チャートタイトル" data-role="body" style="left:64px;top:190px;width:1152px;height:30px;font-size:19px">見積の差額の内訳（前回2026年6月 → 今回9月、万円・税抜）</div>
   <div class="pp-chart" data-part="チャート" data-overlap data-note="滝グラフ：全幅で低め。主役の 1 項目だけ強調色" data-chart='{"type":"waterfall","categories":["前回 6月","機器","設計","切替作業","保守","今回 9月"],"series":[{"name":"見積（万円）","values":[12000,600,-900,300,-1000,11000]}],"totals":[0,5],"highlight":4,"fmt":"#,##0","axis":{"min":0,"max":15000,"major":5000}}' style="left:64px;top:224px;width:1152px;height:256px"></div>
   <div class="pp-shape f-white" data-note="項目カード：項目ごとの理由と前後の値、差額の大きな数字。主役の項目だけパネル地" style="left:64px;top:488px;width:220px;height:100px"></div>
   <div class="pp-text b" style="left:76px;top:495px;width:100px;height:28px;font-size:19px">機器</div>

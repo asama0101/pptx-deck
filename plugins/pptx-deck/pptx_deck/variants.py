@@ -1,6 +1,6 @@
 """スライド案のレビューページ（variants.html・final-review.html）の生成、回答の解析、最終 HTML（final.html）の統合。
 
-レビューページは、左に一覧、右に 1 枚ずつ縦に並べる（大きな 1 案 → 見どころ・前回のコメント・今回の直し・部位のコメント → 案とデザインのサムネ）。題の右のチェックで、見どころ・型と選んだ理由・部位のバッジを出す（初期はオフ）。承認・要修正・コメント・「回答をコピー」などは画面下に固定される。「回答をコピー」を押すと、クリップボードへ入れると同時に
+レビューページは、左に一覧、右に 1 枚ずつ縦に並べる（大きな 1 案 → 見どころ・前回のコメント・今回の直し・部位のコメント → 案とデザインのサムネ）。題の右のチェックで、見どころ・部位のバッジを出す（初期はオフ）。承認・要修正・コメント・「回答をコピー」などは画面下に固定される。「回答をコピー」を押すと、クリップボードへ入れると同時に
 window.__answersMd（回答の md）と window.__submitted が立つ。回答の形式は従来から変えない。"""
 
 import hashlib
@@ -99,7 +99,6 @@ body{font-family:'BIZ UDPGothic','Yu Gothic','Meiryo',sans-serif;margin:0;paddin
 .rv .tgl{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--sub)}
 .rv .tgl label{display:inline-flex;gap:5px;align-items:center;cursor:pointer}
 .rv:not(.show-co) .co-layer,.rv:not(.show-co) .notes{display:none}
-.rv:not(.show-vr) .vr{display:none}
 .rv:not(.show-pt) .pt-layer{display:none}
 </style>"""
 
@@ -200,12 +199,11 @@ _SCRIPT = r"""<script>
     markParts(p);
   }
 
-  // 見どころ・型と選んだ理由は、チェックが入っているときだけ出す。前回のコメントと今回の直しは常に出す
+  // 見どころは、チェックが入っているときだけ出す。前回のコメントと今回の直しは常に出す
   function updateCols(p) {
     var root = $('.rv');
     var vis = $$('.cols > div', p).filter(function (d) {
       if (d.hidden) return false;
-      if (d.classList.contains('vr')) return root.classList.contains('show-vr');
       if (d.classList.contains('notes')) return root.classList.contains('show-co');
       return true;
     });
@@ -237,9 +235,6 @@ _SCRIPT = r"""<script>
     $$('.opt', p).forEach(function (o) { o.classList.toggle('view', o.dataset.k === k); });
     $$('.dgroup', p).forEach(function (g) { g.hidden = g.dataset.k !== k; });      // 選んだ型のデザイン（1〜3）だけを出す
     $$('.dopt', p).forEach(function (o) { o.classList.toggle('view', o.dataset.k === k && +o.dataset.d === d); });
-    var vr = $('.vr', p), op = $('.opt[data-k="' + k + '"]', p);
-    var vt = op ? [op.dataset.name || '', op.dataset.reason || ''].filter(Boolean).join('：') : '';
-    $('span', vr).textContent = vt; vr.hidden = !vt;
     var src = (d > 1 ? $('.dopt[data-k="' + k + '"][data-d="' + d + '"] .stage .slide', p) : null) || $('.opt[data-k="' + k + '"] .stage .slide', p);
     var big = $('.big .stage', p);
     big.innerHTML = '';
@@ -379,7 +374,7 @@ _SCRIPT = r"""<script>
       $('input[type=radio]', o).onchange = pick;
     });
     $('.cm', p).oninput = function () { refresh(); store(snapshot()); };
-    [['coToggle', 'show-co'], ['vrToggle', 'show-vr'], ['ptToggle', 'show-pt']].forEach(function (t) {
+    [['coToggle', 'show-co'], ['ptToggle', 'show-pt']].forEach(function (t) {
       var cb = $('.' + t[0], p); if (!cb) return;
       cb.onchange = function () {
         var on = this.checked;
@@ -474,8 +469,7 @@ _SCRIPT = r"""<script>
 
 # スライド上部の行の表示の切り替え。どれも初期は隠す（ページ全体で共通。チェックで出す）
 _TOGGLES = (
-    '<div class="tgl"><label><input type="checkbox" class="vrToggle"> 型と選んだ理由</label>'
-    '<label><input type="checkbox" class="coToggle"> 見どころ</label>'
+    '<div class="tgl"><label><input type="checkbox" class="coToggle"> 見どころ</label>'
     '<label><input type="checkbox" class="ptToggle"> 部位のバッジ</label></div>'
 )
 
@@ -715,7 +709,6 @@ def _page(
             rest.append(f'<div class="q"><h3>前回のコメント</h3>{esc(pc)}</div>')
         if fx:
             rest.append(f'<div class="fix"><h3>今回の直し</h3>{esc(fx)}</div>')
-        rest.append('<div class="vr" hidden><h3>型と選んだ理由</h3><span></span></div>')
         rest.append('<div class="notes"><div class="nh"><h3>見どころ</h3></div><ol class="legend"></ol></div></div>')
         if docs is None:  # 設計図と原稿の確認ページには部位がない
             rest.append(
@@ -737,10 +730,10 @@ def _page(
             else ('<div class="opts n4">' if len(letters) >= 4 else '<div class="opts">')
         )  # 1 案だけのときは、案の選択（サムネとラジオ）を隠す
         for k in letters:
-            vname, vreason = _variant_info(opts[k])
+            vname, _ = _variant_info(opts[k])
             fid = (ids or {}).get(nn, f"{nn}-{k}") if final else f"{nn}-{k}"
             sel.append(
-                f'<div class="opt" data-k="{k}" data-f="{esc(fid, quote=True)}" data-name="{esc(vname, quote=True)}" data-reason="{esc(vreason, quote=True)}">'
+                f'<div class="opt" data-k="{k}" data-f="{esc(fid, quote=True)}">'
                 f'<div class="thumb" role="button" tabindex="0" aria-label="案 {k} を大きく見る">'
                 f'<div class="stage">{opts[k]}</div></div>'
             )
