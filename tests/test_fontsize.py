@@ -13,6 +13,7 @@ def test_defaults():
     cur = fontsize.current({})
     assert cur["title"] == 37
     assert cur["caption"] == 16
+    assert cur["source"] == 14
     assert cur["chart-scale"] == 1.0
 
 
@@ -21,6 +22,17 @@ def test_clamp():
     assert fontsize.clamp("body", 99) == 30
     assert fontsize.clamp("chart-scale", 0.5) == 0.84
     assert fontsize.clamp("num-scale", 1.234) == 1.23
+    assert fontsize.clamp("source", 10) == 14
+    assert fontsize.clamp("source", 99) == 20
+
+
+def test_items_order_and_source():
+    keys = [i.key for i in fontsize.ITEMS]
+    assert len(keys) == 10
+    assert keys[keys.index("caption") + 1] == "source"
+    src = fontsize.ITEMS[keys.index("source")]
+    got = (src.label, src.var, src.default, src.lo, src.hi, src.kind)
+    assert got == ("出典・脚注", "--fs-source", 14, 14, 20, "px")
 
 
 def test_parse_line_last_wins_and_drops_unknown():
@@ -41,6 +53,7 @@ def test_theme_css_has_vars(tmp_path):
     css = (work / "theme.css").read_text(encoding="utf-8")
     assert "--fs-title: 37px;" in css
     assert "--fs-cover-sub: 22px;" in css
+    assert "--fs-source: 14px;" in css
     assert "--num-scale: 1;" in css
 
     initdir.set_font_size(work, {"title": 40})
@@ -160,10 +173,11 @@ def test_preview_uses_scale(browser, pkg):
 _COMP = PKG / "assets" / "components"
 _ROLES = ("title", "lead", "body", "caption")
 # 役割付きの要素で font-size を残してよいもの → 理由。
-# (役割, 値): 直書きがなく旧 base.css の役割の既定（題28・ヘッド22・注記14）で表示されていた要素。
-#   役割の既定が 37/27/16 に変わったので、見た目を変えないよう旧の値を書いた（どの断片でも可）。
+# 注記のうち、旧 base.css の 14px で表示されていたもの（表の見出し・出典・脚注）は var(--fs-source) を読む。
+ROLE_VARS = {("caption", "var(--fs-source)")}
+# (役割, 値): 直書きがなく旧 base.css の役割の既定（題28・ヘッド22）で表示されていた要素。
+#   役割の既定が 37/27 に変わったので、見た目を変えないよう旧の値を書いた（どの断片でも可）。
 ALLOWED_OLD_ROLE = {
-    ("caption", "14px"): "直書きのない注記。旧 base.css の 14px を保つ",
     ("title", "28px"): "直書きのない題。旧 base.css の 28px を保つ",
     ("lead", "22px"): "直書きのない帯の文。旧 base.css の 22px を保つ",
 }
@@ -179,6 +193,13 @@ ALLOWED = {
 }
 # 倍率にしない小さい数字: 0.7 倍で本文の下限 19px を割るため（倍率は 30px 以上だけ）。
 NUM_SCALE_MIN = 30
+# 役割のない 30px 以上の太字で、倍率にしないもの（数字ではない記号・言葉を含む見出し） → 理由。
+ALLOWED_BIG_BOLD = {
+    ("diagrams/before-after.html", "34px"): "「現行　10.0h」「改革後　5.0h」。言葉を含む見出し",
+    ("diagrams/before-after-d3.html", "30px"): "「縮んだ ▲5.0h」。言葉を含む見出し",
+    ("diagrams/cycle.html", "30px"): "循環の矢印の記号（↘↙↖↗）",
+    ("diagrams/venn-d2.html", "30px"): "集合の番号の記号（①②）",
+}
 
 
 def _fragment_elements():
@@ -232,7 +253,9 @@ def test_fragments_have_no_hardcoded_role_sizes():
         role, size = a.get("data-role"), _inline_size(a)
         if role not in _ROLES or size is None:
             continue
-        if (role, size) not in ALLOWED_OLD_ROLE and (rel, role, size) not in ALLOWED:
+        if (role, size) in ROLE_VARS or (role, size) in ALLOWED_OLD_ROLE:
+            continue
+        if (rel, role, size) not in ALLOWED:
             bad.append((rel, a.get("data-part"), role, size))
     assert bad == []
 
@@ -273,3 +296,15 @@ def test_default_check_violations_unchanged(tmp_path):
         got[f.relative_to(_COMP).as_posix()] = dict(sorted(c.items()))
     want = json.loads((REPO / "tests" / "fixtures" / "fs_baseline.json").read_text(encoding="utf-8"))
     assert {k: v for k, v in got.items() if v != want.get(k)} == {}
+
+
+def test_fragments_scale_big_bold_numbers():
+    """役割のない 30px 以上の太字（.num のない大きな数字）は、倍率を読む。"""
+    bad = []
+    for rel, a in _fragment_elements():
+        size, cls = _inline_size(a), (a.get("class") or "").split()
+        if a.get("data-role") or "b" not in cls or size is None or not size.endswith("px"):
+            continue
+        if float(size[:-2]) >= NUM_SCALE_MIN and (rel, size) not in ALLOWED_BIG_BOLD:
+            bad.append((rel, a.get("data-part"), size))
+    assert bad == []

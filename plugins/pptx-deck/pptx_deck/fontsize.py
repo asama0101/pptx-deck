@@ -20,6 +20,7 @@ ITEMS: tuple[Item, ...] = (
     Item("lead", "ヘッドメッセージ", "--fs-lead", 27, 19, 40, "px"),
     Item("body", "本文", "--fs-body", 19, 19, 30, "px"),
     Item("caption", "注記", "--fs-caption", 16, 14, 24, "px"),
+    Item("source", "出典・脚注", "--fs-source", 14, 14, 20, "px"),
     Item("cover-title", "表紙・章扉の題", "--fs-cover-title", 40, 19, 64, "px"),
     Item("cover-sub", "表紙・章扉の副題", "--fs-cover-sub", 22, 19, 36, "px"),
     Item("subhead", "小見出し", "--fs-subhead", 22, 19, 32, "px"),
