@@ -123,3 +123,13 @@ def test_反映できる編集とできない編集が混ざると_反映して�
     assert code == 1
     assert read(d.frag) == '<div class="pp-text">新</div>'
     assert "09-Z" in err
+
+
+def test_依頼の_edits_を節見出しの下に書いた一時の回答ファイルで反映できる(d, run, tmp_path):
+    """create の SKILL.md の手順どおり（`## S<slide>` の下に edits の行だけ）の一時ファイル。"""
+    req = {"slide": "01", "edits": ['- 編集: {"f":"01-A","t":"t0","before":"旧","after":"新"}']}
+    tmp = tmp_path / "ai-edits.md"
+    tmp.write_text(f"## S{req['slide']}\n" + "\n".join(req["edits"]) + "\n", encoding="utf-8")
+    code, _, err = run("apply-edits", str(d.deck), "--answers", str(tmp))
+    assert code == 0, err
+    assert read(d.frag) == '<div class="pp-text">新</div>'

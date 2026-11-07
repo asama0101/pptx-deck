@@ -279,3 +279,12 @@ def test_スキルとページが同じ窓口の名前を使う():
         assert name in skill, f"create/SKILL.md に {name} がない"
     for name in ("__aiWatchAt", "__aiQueue", "__aiReply"):
         assert name in reviewai.JS, f"reviewai.JS に {name} がない"
+
+
+def test_依頼の処理は反映_snapshot_の順で_失敗は_ok_false_で返すと書いてある():
+    skill = skill_text("create")
+    i = skill.index("apply-edits", skill.index("__aiQueue"))
+    assert i < skill.index("ai-snapshot", i), "apply-edits が ai-snapshot より先にない"
+    assert "## S<slide>" in skill  # 節の外の編集は捨てられる
+    assert "ok: false" in skill
+    assert "ai-snapshot` まで進んだときだけ" in skill
