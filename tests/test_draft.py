@@ -106,3 +106,27 @@ def test_違反があれば終了コード1で報告し_画像は出す(deck, ca
     assert (rc, r["ok"]) == (1, False)
     assert "imageAlt" in {v["rule"] for v in r["violations"]}
     assert len(r["previews"]) == 2  # 画像は出す（直す手がかり）
+
+
+def test_fragmentは指定した断片1つだけを検査する(deck, capsys):
+    base, _ = deck
+    rc, out, err = run(capsys, "draft", str(base), "--fragment", "02-A")
+    assert rc == 0, out + err
+    r = json.loads(out)
+    assert r["slides"] == ["02"]
+    assert len(r["previews"]) == 1
+
+
+def test_fragmentが無い断片は終了コード2(deck, capsys):
+    base, _ = deck
+    rc, _, err = run(capsys, "draft", str(base), "--fragment", "09-A")
+    assert rc == 2
+    assert "09-A" in err
+
+
+def test_fragmentの名前の形が違えば_slidesの外を読まず終了コード2(deck, capsys):
+    base, work = deck
+    (work / "x.html").write_text((work / "slides" / "02-A.html").read_text(encoding="utf-8"), encoding="utf-8")
+    rc, _, err = run(capsys, "draft", str(base), "--fragment", "../x")
+    assert rc == 2
+    assert "断片名の形" in err

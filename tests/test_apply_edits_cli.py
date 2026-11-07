@@ -71,6 +71,19 @@ def test_apply_edits_は断片を書き換え_final_html_を消して_止めて�
     assert "final.html がありません" in err  # 編集の未反映では止まらなくなった
 
 
+def test_反映済みの編集をもう一度_apply_edits_しても終了コード0で断片は変わらない(d, run, tmp_path):
+    code, _, err = run("apply-edits", str(d.deck))
+    assert code == 0, err
+    again = tmp_path / "again.md"  # 「AI に頼む」で、同じ編集をもう一度送ったとき
+    again.write_text(EDIT_MD, encoding="utf-8")
+    code, out, err = run("apply-edits", str(d.deck), "--answers", str(again))
+    assert code == 0, err
+    assert read(d.frag) == '<div class="pp-text">新</div>'
+    res = json.loads(out)
+    assert res[0]["skipped"] == []
+    assert len(res[0]["applied"]) == 1
+
+
 def test_反映済みの編集が1つもないとき_apply_edits_は空の結果を返しガードも外れる(d, run):
     (d.work / "answers-1.md").write_text("# 回答\n", encoding="utf-8")
     code, out, _ = run("apply-edits", str(d.deck))
@@ -123,3 +136,13 @@ def test_反映できる編集とできない編集が混ざると_反映して�
     assert code == 1
     assert read(d.frag) == '<div class="pp-text">新</div>'
     assert "09-Z" in err
+
+
+def test_依頼の_edits_を節見出しの下に書いた一時の回答ファイルで反映できる(d, run, tmp_path):
+    """create の SKILL.md の手順どおり（`## S<slide>` の下に edits の行だけ）の一時ファイル。"""
+    req = {"slide": "01", "edits": ['- 編集: {"f":"01-A","t":"t0","before":"旧","after":"新"}']}
+    tmp = tmp_path / "ai-edits.md"
+    tmp.write_text(f"## S{req['slide']}\n" + "\n".join(req["edits"]) + "\n", encoding="utf-8")
+    code, _, err = run("apply-edits", str(d.deck), "--answers", str(tmp))
+    assert code == 0, err
+    assert read(d.frag) == '<div class="pp-text">新</div>'
