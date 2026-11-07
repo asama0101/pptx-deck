@@ -122,3 +122,11 @@ def test_fragmentが無い断片は終了コード2(deck, capsys):
     rc, _, err = run(capsys, "draft", str(base), "--fragment", "09-A")
     assert rc == 2
     assert "09-A" in err
+
+
+def test_fragmentの名前の形が違えば_slidesの外を読まず終了コード2(deck, capsys):
+    base, work = deck
+    (work / "x.html").write_text((work / "slides" / "02-A.html").read_text(encoding="utf-8"), encoding="utf-8")
+    rc, _, err = run(capsys, "draft", str(base), "--fragment", "../x")
+    assert rc == 2
+    assert "断片名の形" in err

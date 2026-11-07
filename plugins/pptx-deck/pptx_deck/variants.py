@@ -1,6 +1,6 @@
 """スライド案のレビューページ（variants.html・final-review.html）の生成、回答の解析、最終 HTML（final.html）の統合。
 
-レビューページは、左に一覧、右に 1 枚ずつ縦に並べる（大きな 1 案 → 見どころ・前回のコメント・今回の直し・部位のコメント → 案とデザインのサムネ）。題の右のチェックで、見どころ・部位のバッジを出す（初期はオフ）。承認・要修正・コメント・「回答をコピー」などは画面下に固定される。「回答をコピー」を押すと、クリップボードへ入れると同時に
+レビューページは、左に一覧、右に 1 枚ずつ縦に並べる（大きな 1 案 → 見どころ・前回のコメント・今回の直し・部位のコメント → 案とデザインのサムネ）。題の右のチェックで、見どころ・「AI に頼む」のバッジを出す（初期はオフ）。承認・要修正・コメント・「回答をコピー」などは画面下に固定される。「回答をコピー」を押すと、クリップボードへ入れると同時に
 window.__answersMd（回答の md）と window.__submitted が立つ。回答の形式は従来から変えない。"""
 
 import hashlib
@@ -124,13 +124,15 @@ _SCRIPT = r"""<script>
     var o = load();
     panes.forEach(function (p) {
       var a = o[p.dataset.slide]; if (!a) return;
+      p.__rvAi = a.ai || {};                                   // 「AI に頼む」で直した断片を、覚えた全文で置き換える（編集はその上に戻す）
+      Object.keys(p.__rvAi).forEach(function (f) { var h = p.__rvAi[f].html; if (typeof h === 'string' && window.__rvAiApply) window.__rvAiApply(p, f, h); });
       applyEdits(p, a.ed);                                     // 編集モードで直した文字を、サムネの断片へ戻す
       if (a.c) { var r = $('input[type=radio][name^="s"][value="' + a.c + '"]', p); if (r) r.checked = true; }
       $('.cm', p).value = a.t || '';
       p.dataset.verdict = a.v || '';
       if (a.au) p.dataset.auto = '1'; else delete p.dataset.auto;
       Object.keys(a.pc || {}).forEach(function (k) { partRow(p, k, a.pc[k]); });
-      p.__rvAi = a.ai || {}; if (window.__rvAiAfter) window.__rvAiAfter(p);     // 直したあとの「元に戻す」だけ戻す（断片は戻さない）
+      if (window.__rvAiAfter) window.__rvAiAfter(p);                          // 直したあとの「元に戻す」「頼み直す」を戻す
       Object.keys(a.d || {}).forEach(function (k) { var x = $('.dgroup[data-k="' + k + '"] input[value="' + a.d[k] + '"]', p); if (x) x.checked = true; });
     });
   }
@@ -180,17 +182,20 @@ _SCRIPT = r"""<script>
     var t = partTexts(p);
     $$('.pt', p).forEach(function (b) { b.classList.toggle('has', !!t[b.dataset.key]); });
   }
-  // 大きな 1 案に、部位（data-part）の名前のバッジを重ねる。同じ部位が複数あるときは、左上から右下の順に ①②③ を付ける
+  // 大きな 1 案に、部位（data-part）の名前のバッジを重ねる。同じ部位が複数あるときは、左上から右下の順に ①②③ を付ける。
+  // 行の key ごとに、断片の中の文書順の位置（i。0 始まり）を p.__ptIdx に覚える（「AI に頼む」の依頼の idx）
   function addPartBadges(p, clone, k, big) {
-    var els = $$('[data-part]', clone).map(function (el) { return { el: el, r: rel(el, clone), n: el.getAttribute('data-part') }; });
+    var els = $$('[data-part]', clone).map(function (el, i) { return { el: el, r: rel(el, clone), n: el.getAttribute('data-part'), i: i }; });
     els.sort(function (a, b) { return (a.r.y - b.r.y) || (a.r.x - b.r.x); });
-    var total = {}, seen = {};
+    var total = {}, seen = {}, ix = p.__ptIdx || (p.__ptIdx = {}), pre = (p.dataset.single === '1' ? '' : k) + '|';
+    Object.keys(ix).forEach(function (x) { if (x.indexOf(pre) === 0) delete ix[x]; });   // この案の前の描画（別のデザイン）の分は捨てる
     els.forEach(function (e) { total[e.n] = (total[e.n] || 0) + 1; });
     var layer = document.createElement('div'); layer.className = 'pt-layer';
     els.forEach(function (e) {
       seen[e.n] = (seen[e.n] || 0) + 1;
       var name = total[e.n] > 1 ? e.n + String.fromCharCode(0x2460 + seen[e.n] - 1) : e.n;
-      var key = (p.dataset.single === '1' ? '' : k) + '|' + name;
+      var key = pre + name;
+      ix[key] = e.i;
       var b = document.createElement('button'); b.type = 'button'; b.className = 'pt'; b.dataset.key = key;
       b.textContent = '✦ AI に頼む：' + name; b.style.left = e.r.x + 'px'; b.style.top = e.r.y + 'px';
       if (e.r.y > 26) b.classList.add('up');                  // 部位の文字にかぶらないよう、枠の左上の外に置く（上に余白がないときは中）
@@ -432,6 +437,13 @@ _SCRIPT = r"""<script>
   $$('.copyBtn').forEach(function (btn) {
     btn.onclick = function () {
       var pane = btn.closest('.pane'), md = buildMd(), box = $('.copybox', pane);
+      // 「AI に頼む」の依頼が保留中のスライドは、コピーさせない（指示が回答にも出て、二重に直すため）
+      var busy = window.__rvAiPending ? panes.filter(window.__rvAiPending)[0] : null;
+      if (busy) {
+        go(panes.indexOf(busy));
+        say(busy, 'S' + busy.dataset.slide + ' は Claude が直している最中です。直り終わってから押してください', true);
+        return;
+      }
       // コピーさせないスライド: 修正事項がなくなった要修正と、コメントはあるが判定のないもの（回答に出ずコメントが消えるため）、
       // 文字を直したが判定のないもの（直しは回答に出るが、案が決まらず finalize で止まるため）
       var bad = panes.filter(function (q) { return verdictOf(q) === '要修正' ? !hasFix(q) : !verdictOf(q) && (hasFix(q) || editLines(q).length > 0); })[0];

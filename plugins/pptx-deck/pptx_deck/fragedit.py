@@ -417,6 +417,8 @@ def _chart_edit(src, node, kind, j, after, before=None):
     except (ValueError, KeyError, IndexError, TypeError) as e:
         raise ValueError(f"グラフのラベル {kind}{j} を書き換えられません") from e
     if now is not None:
+        if re.sub(r"\s+", "", after) == re.sub(r"\s+", "", now):  # すでに反映済み。何もしない（文字と同じ扱い）
+            return src
         raise _mismatch(f"{kind}{j}", before, now)
     val = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("&", "&amp;")
     val = val.replace(q, "&#39;" if q == "'" else "&quot;")
@@ -427,6 +429,7 @@ def _chart_edit(src, node, kind, j, after, before=None):
 
 def apply_edit(src: str, edit: dict) -> str:
     """edit = {"t": "t3" | "c0.cat2" | "c0.ser1", "after": str}。
+    before が今の文字と違っても、今の文字がすでに after と同じなら、反映済みとして何もせず src を返す。
     編集する要素（グラフは data-chart の値）の外は 1 バイトも変えない。
     data-chart の値だけは、JSON を読み直して compact（separators=(",", ":")）に書き直す。"""
     m = _ID.match(str(edit.get("t", "")))
@@ -442,9 +445,11 @@ def apply_edit(src: str, edit: dict) -> str:
         if i >= len(nodes):
             raise ValueError(f"対象 t{i} がありません（{len(nodes)} 件）")
         n = nodes[i]
-        before = edit.get("before")
-        if isinstance(before, str) and _plain(before) != _plain(src[n.inner_start : n.inner_end]):
-            raise _mismatch(f"t{i}", before, _plain_text(src[n.inner_start : n.inner_end]))
+        before, now = edit.get("before"), src[n.inner_start : n.inner_end]
+        if isinstance(before, str) and _plain(before) != _plain(now):
+            if _plain(after) == _plain(now):  # すでに反映済み（「AI に頼む」で同じ編集を再送したとき）。何もしない
+                return src
+            raise _mismatch(f"t{i}", before, _plain_text(now))
         return src[: n.inner_start] + sanitize_inline(after) + src[n.inner_end :]
     charts = _charts(root)
     i = int(m.group(2))

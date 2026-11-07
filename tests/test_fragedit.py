@@ -200,6 +200,16 @@ def test_グラフのラベルもbeforeと一致すれば直せ違えば断る()
         fragedit.apply_edit(src, {"t": "c0.cat1", "before": "Z", "after": "X"})
 
 
+def test_現在の文字がすでにafterなら何もせず成功にする():
+    src = '<div class="pp-text"><b>新</b> 文</div>'
+    assert fragedit.apply_edit(src, {"t": "t0", "before": "旧 文", "after": "<b>新</b> 文"}) == src
+
+
+def test_グラフのラベルもすでにafterなら何もせず成功にする():
+    src = '<div class="pp-chart" data-chart=\'{"categories": ["A", "X"], "series": []}\'></div>'
+    assert fragedit.apply_edit(src, {"t": "c0.cat1", "before": "B", "after": "X"}) == src  # JSON も書き直さない
+
+
 def test_回答の編集でbeforeが違えば反映せずskippedに載せ断片を残す(tmp_path):
     (tmp_path / "slides").mkdir()
     (tmp_path / "slides" / "01-A.html").write_text('<div class="pp-text">変わった</div>\n', encoding="utf-8")

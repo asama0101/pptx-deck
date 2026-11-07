@@ -7,7 +7,7 @@ import html as _html
 import tempfile
 from pathlib import Path
 
-from . import paths, variants
+from . import history, paths, variants
 
 
 def assemble(work: Path, pick: str = "A", slides: list[str] | None = None) -> tuple[Path, list[str]]:
@@ -33,7 +33,9 @@ def assemble(work: Path, pick: str = "A", slides: list[str] | None = None) -> tu
 
 def assemble_fragment(work: Path, fragment: str) -> tuple[Path, list[str]]:
     """slides/<fragment>.html（例 02-A-d2）1 つだけを一時の draft-*.html にする（呼び出し側が消す）。
-    戻り値は（一時 HTML のパス, [スライド番号]）。断片がなければ ValueError。"""
+    戻り値は（一時 HTML のパス, [スライド番号]）。断片名の形が違うか、断片がなければ ValueError。"""
+    if not history.FRAGMENT.fullmatch(fragment):  # slides/ の外（../x など）を読まない
+        raise ValueError(f"断片名の形が違います（例 02-A、02-A-d2）: {fragment!r}")
     work = Path(work)
     src = work / "slides" / f"{fragment}.html"
     if not src.is_file():

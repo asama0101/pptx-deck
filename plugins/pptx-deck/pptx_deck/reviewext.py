@@ -6,7 +6,7 @@ contenteditable になる。直した内容はサムネの断片（.opt / .dopt 
 JS は variants._SCRIPT の IIFE の中（function start() の直前）に入り、$・$$・panes・cur・showBig・viewKey・store・snapshot を使う。
 CSS 変数・クラス名は、テーマ（theme.css）と混ざらないよう rv- の接頭辞を付ける（.rv の editing だけは例外）。"""
 
-# スライドの上の帯（見どころ・部位のバッジの左）に置くスイッチ
+# スライドの上の帯（見どころ・「AI に頼む」の左）に置くスイッチ
 TOGGLE = '<label class="rv-edit-sw"><input type="checkbox" class="rv-edit-toggle"> 編集モード</label>'
 
 # 大きな 1 案の下に出すツールバー（編集中だけ見える）。色はテーマの文字色のクラス（fragedit.TEXT_CLASSES）
@@ -250,6 +250,7 @@ JS = r"""
   // 直した文字を確定する（blur・ツールバーの操作のあと）。元と同じに戻したら記録を消す
   function commit(el) {
     var o = el.__rv; if (!o) return;
+    if (window.__rvAiBusy && window.__rvAiBusy(o.p, o.f)) return;   // 「AI に頼む」の依頼中の断片は記録しない（返事で置き換わる）
     var raw = el.innerHTML; if (raw === o.start) return;
     var key = o.f + '#' + o.t, eds = editsOf(o.p), orig = origOf(o.p, o.f, o.t);
     var after = sanitizeHtml(raw), now;
@@ -282,6 +283,7 @@ JS = r"""
     closePanel();
     if (!editing || !src) return;
     var h = src.closest('[data-f]'); if (!h) return;
+    if (window.__rvAiBusy && window.__rvAiBusy(p, h.dataset.f)) return;   // 「AI に頼む」の依頼中の断片だけは直せない
     chartsOf(clone).forEach(function (c, i) { c.addEventListener('click', function () { openPanel(p, h.dataset.f, i, c); }); });
     editTargets(clone).forEach(function (el, i) {
       el.setAttribute('contenteditable', 'true');
