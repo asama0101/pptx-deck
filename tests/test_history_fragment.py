@@ -85,3 +85,30 @@ def test_ai_snapshotとai_undoで1断片が戻る(tmp_path, capsys):
     assert rc == 0
     assert json.loads(out)["html"] == "A-元"
     assert _read(work, "02-A.html") == "A-元"
+
+
+def test_history_restoreの_fragment_で1断片だけ戻る(tmp_path, capsys):
+    import json
+
+    from pptx_deck import cli
+
+    work = tmp_path / "pptx-deck-source" / "demo"
+    (work / "slides").mkdir(parents=True)
+    (work / "slides" / "02-A.html").write_text("A-元", encoding="utf-8")
+    (work / "slides" / "02-B.html").write_text("B-元", encoding="utf-8")
+
+    def run(*argv):
+        capsys.readouterr()
+        rc = cli.main(list(argv))
+        return rc, capsys.readouterr().out
+
+    rc, out = run("history", str(work), "ai-snapshot", "--fragment", "02-A")
+    v = str(json.loads(out)["version"])
+    (work / "slides" / "02-A.html").write_text("A-新", encoding="utf-8")
+    (work / "slides" / "02-B.html").write_text("B-新", encoding="utf-8")
+    rc, out = run("history", str(work), "restore", v, "--fragment", "02-A")
+    assert rc == 0
+    assert json.loads(out)["restored"] == ["02-A.html"]
+    assert _read(work, "02-A.html") == "A-元"
+    assert _read(work, "02-B.html") == "B-新"
+    assert run("history", str(work), "restore", v, "--fragment", "02-A", "--slide", "02")[0] == 2

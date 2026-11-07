@@ -114,7 +114,7 @@ JS = r"""
     var q = aiDrop(r.id), p = q.p, li = $('.plist li[data-key="' + q.key.replace(/"/g, '\\"') + '"]', p);
     if (r.ok !== true || typeof r.html !== 'string') {         // 失敗: 画面は変えない。指示は欄に残る
       p.__aiLost = false; p.__aiErr = String(r.error || 'error'); aiRefresh(); aiRedraw(p, q.f);
-      return true;
+      return r.ok !== true;                         // ok なのに html が無い返事は、ページが適用していないので false
     }
     if (q.undo) {                                              // 元に戻す: 戻した断片で置き換え、もう一度は戻せない（覚えた全文も消す）
       aiApply(p, q.f, r.html); delete (p.__rvAi || {})[q.f];

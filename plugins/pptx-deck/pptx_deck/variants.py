@@ -109,7 +109,18 @@ _SCRIPT = r"""<script>
   var panes = $$('.pane'), cur = 0, KEY = 'pptxdeck-review-' + __DECK__ + '-__ROUND__-__HASH__';
   var PRESET = __PRESET__;
 
-  function store(o) { try { sessionStorage.setItem(KEY, JSON.stringify(o)); } catch (e) {} }
+  function store(o) {
+    try { sessionStorage.setItem(KEY, JSON.stringify(o)); return; } catch (e) {}
+    // 容量超過など: AI の断片の全文だけを落として、判定・コメント・編集・直したあとの状態は残す
+    try {
+      var t = {};                                              // ai は p.__rvAi そのものなので、写しを作って落とす（画面側の全文は消さない）
+      Object.keys(o).forEach(function (k) {
+        t[k] = Object.assign({}, o[k], { ai: {} });
+        Object.keys(o[k].ai || {}).forEach(function (f) { t[k].ai[f] = Object.assign({}, o[k].ai[f]); delete t[k].ai[f].html; });
+      });
+      sessionStorage.setItem(KEY, JSON.stringify(t)); window.__rvStoreDegraded = true;
+    } catch (e) {}
+  }
   function load() { try { return JSON.parse(sessionStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; } }
   function snapshot() {
     var o = {};

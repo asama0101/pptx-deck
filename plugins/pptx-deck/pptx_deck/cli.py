@@ -608,7 +608,12 @@ def cmd_history(args) -> int:
         else:
             if args.version is None:
                 raise ValueError("restore には版の番号が要ります（history <元データ> list で確かめる）")
-            r = history.restore(work, args.version, args.slide)
+            if args.fragment and args.slide:
+                raise ValueError("--fragment は --slide と同時に使えません")
+            if args.fragment:
+                r = history.restore_fragment(work, args.version, args.fragment)
+            else:
+                r = history.restore(work, args.version, args.slide)
     except ValueError as e:
         print(f"エラー: {e}", file=sys.stderr)
         return 2
@@ -792,7 +797,7 @@ def main(argv: list[str]) -> int:
     p.add_argument("version", nargs="?", type=int, default=None, help="restore する版の番号")
     p.add_argument("--label", default=None, help="snapshot の名前（例: 構図を変える前）")
     p.add_argument("--slide", default=None, help="restore で戻すスライドの番号（例: 02）。省略すると全部")
-    p.add_argument("--fragment", default=None, help="ai-snapshot・ai-undo の断片名（例: 02-A）")
+    p.add_argument("--fragment", default=None, help="ai-snapshot・ai-undo・restore の断片名（例: 02-A）")
     p.set_defaults(fn=cmd_history)
     p = sub.add_parser(
         "intake", help="開始ページの回答を検証し、作業フォルダと PPTX の置き場を JSON で出す（何も作らない）"

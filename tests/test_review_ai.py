@@ -557,3 +557,38 @@ def test_頼む_返答_元に戻す_頼み直すが通しで動く(ai_page):
     # 返答が来れば、AI への指示は部位のコメントとして回答 md に出ない
     _reply(ai_page, id=again["id"], ok=True, html=NEW_FRAG)
     assert "- 部位:" not in _md(ai_page)
+
+
+def test_htmlの無いokの返答は適用されないのでfalseを返し依頼は消える(ai_page):
+    req = _ask(ai_page)
+    assert ai_page.evaluate("r => window.__aiReply(r)", {"id": req["id"], "ok": True}) is False
+    assert ai_page.text_content(f"{PANE} .big .stage").count("題") == 1
+    assert "新しい題" not in ai_page.text_content(f"{PANE} .big .stage")
+    assert ai_page.is_enabled(f"{ROW} .aiAsk")  # 依頼は落ちている
+    assert ai_page.evaluate("r => window.__aiReply(r)", {"id": req["id"], "ok": True, "html": NEW_FRAG}) is False
+
+
+def test_保存の容量超過では全文を落として再保存し_判定とコメントは残る(open_html):
+    frags = {"01": {"A": PART_FRAG, "B": PART_FRAG}, "02": {"A": PART_FRAG}}
+    page = open_html(variants._page(Path("deck"), frags, "1"))
+    page.check('.pane[data-slide="01"] .ptToggle')
+    page.evaluate(
+        "() => { const o = Storage.prototype.setItem; Storage.prototype.setItem = function (k, v) {"
+        " if (v.length > 4000) throw new DOMException('quota', 'QuotaExceededError'); return o.call(this, k, v); }; }"
+    )
+    page.fill(f"{PANE} .cm", "全体のコメント")
+    _reply_ok = _ask(page)
+    _reply(page, id=_reply_ok["id"], ok=True, html=NEW_FRAG + "<!--" + "x" * 5000 + "-->")
+    assert page.evaluate("window.__rvStoreDegraded") is True
+    saved = page.evaluate(
+        "() => JSON.parse(sessionStorage.getItem("
+        "Object.keys(sessionStorage).find(k => k.startsWith('pptxdeck-review-'))))"
+    )
+    s = saved["01"]
+    assert s["t"] == "全体のコメント"
+    assert s["ai"]["01-A"]["part"] == "注釈"
+    assert "html" not in s["ai"]["01-A"]
+    assert page.evaluate("typeof document.querySelector('.pane[data-slide=\"01\"]').__rvAi['01-A'].html") == "string"
+    page.reload()  # html の無い ai でも再読み込みは壊れない
+    assert page.input_value(f"{PANE} .cm") == "全体のコメント"
+    assert page.locator(f"{AFTER} .aiUndo").count() == 1
