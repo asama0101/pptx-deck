@@ -4,7 +4,7 @@ import filecmp
 import shutil
 from pathlib import Path
 
-from . import paths, template, theme
+from . import fontsize, paths, template, theme
 
 ICON_TONES = ("accent", "emphasis", "white", "gray")
 
@@ -28,9 +28,8 @@ def write_derived(work: Path, cfg: dict) -> list[str]:
     palette = theme.derive(cfg["color"])
     info = template.TemplateInfo.from_dict(cfg["info"])
     colors, notes = template.background_colors(work / cfg["template"], info)
-    (work / "theme.css").write_text(
-        theme.theme_css(palette) + template.layout_css(info, colors["body"], colors), encoding="utf-8"
-    )
+    root = theme.theme_css(palette, fontsize.css(fontsize.current(cfg)))
+    (work / "theme.css").write_text(root + template.layout_css(info, colors["body"], colors), encoding="utf-8")
     shutil.copyfile(paths.ASSETS / "web" / "base.css", work / "base.css")
     preview = paths.ASSETS / "web" / "chart-preview.js"
     if preview.exists():
@@ -46,6 +45,29 @@ def set_color(work: Path, color: str) -> list[str]:
     base = theme.resolve(color)
     cfg = paths.read_cfg(work)
     cfg["color"] = base
+    paths.write_cfg(work, cfg)
+    return write_derived(work, cfg)
+
+
+def set_font_size(work: Path, changes: dict[str, float]) -> list[str]:
+    """文字サイズを変える。丸めて template.json の fontsizes に足し、theme.css を作り直す。
+    既定と同じ値になった項目は fontsizes から外す。"""
+    work = Path(work)
+    if unknown := [k for k in changes if k not in fontsize.KEYS]:
+        raise ValueError(f"未知の文字サイズの項目: {', '.join(unknown)}（使えるのは {', '.join(fontsize.KEYS)}）")
+    cfg = paths.read_cfg(work)
+    saved = dict(cfg.get("fontsizes") or {})
+    for key, value in changes.items():
+        v = fontsize.clamp(key, value)
+        item = next(i for i in fontsize.ITEMS if i.key == key)
+        if v == item.default:
+            saved.pop(key, None)
+        else:
+            saved[key] = int(v) if item.kind == "px" else v
+    if saved:
+        cfg["fontsizes"] = saved
+    else:
+        cfg.pop("fontsizes", None)
     paths.write_cfg(work, cfg)
     return write_derived(work, cfg)
 
@@ -99,6 +121,9 @@ def init(workdir, color: str | None = None, template_path=None, force: bool = Fa
     for key in (
         "answers_color",
         "answers_color_from",
+        "fontsizes",
+        "answers_fontsizes",
+        "skipped_fontsizes",
     ):  # 反映済みの回答の色と、それを書いた回答を覚えておく（finalize が再適用しない）
         if old.get(key):
             cfg[key] = old[key]

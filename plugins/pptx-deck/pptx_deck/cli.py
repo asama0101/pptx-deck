@@ -1,10 +1,11 @@
 import argparse
 import json
+import math
 import sys
 import tempfile
 from pathlib import Path
 
-from . import __version__, paths
+from . import __version__, fontsize, paths
 
 
 def _has_font(registered: list[str], family: str) -> bool:
@@ -389,6 +390,18 @@ def cmd_finalize(args) -> int:
             "変えるなら set-color を使ってください（そのあと build で PPTX を作り直します）",
             file=sys.stderr,
         )
+    old = fontsize.current(paths.read_cfg(work))
+    r = _apply_fontsizes_from_answers(work, mds, [f.name for f in files])
+    if r == "applied":
+        new = fontsize.current(paths.read_cfg(work))
+        diff = ", ".join(f"{k} {old[k]:g} → {new[k]:g}" for k in new if new[k] != old[k])
+        print(f"文字サイズを変えました（{diff}。theme.css を作り直しました）", file=sys.stderr)
+    elif r == "skipped_pptx":
+        print(
+            "PPTX が作成済みなので文字サイズは変えていません。"
+            "変えるなら set-font-size を使ってください（そのあと build で PPTX を作り直します）",
+            file=sys.stderr,
+        )
     return 0
 
 
@@ -452,7 +465,74 @@ def cmd_set_color(args) -> int:
         return 2
     for n in notes:
         print(n, file=sys.stderr)
-    print(f"配色を {args.color} に変えました。PPTX は build で作り直してください")
+    print(f"配色を {args.color} に変えました。finalize してから build で PPTX を作り直してください")
+    return 0
+
+
+def _apply_fontsizes_from_answers(work: Path, mds: list[str], names: list[str] | None = None) -> str:
+    """回答の「- 文字サイズ:」を template.json に反映する。"none"・"applied"・"skipped_pptx"。
+    キーごとに（値, それを最後に書いた回答のファイル名）を cfg["answers_fontsizes"] に覚え、
+    記録と同じキーは再適用しない（set-font-size の指定を戻さない）。別の回答ファイルが書いたキーは反映する。
+    names は mds と同じ順の回答のファイル名（分からなければ値だけで比べる）。"""
+    from . import initdir, lifecycle, variants
+
+    cfg = paths.read_cfg(work)
+    rec = cfg.get("answers_fontsizes")
+    rec = rec if isinstance(rec, dict) else {}
+    fresh = variants.fontsize_pending(cfg, mds, names)
+    if not fresh:
+        return "none"
+    now = fontsize.current(cfg)
+    changes = {k: v for k, (v, _) in fresh.items() if fontsize.clamp(k, v) != now[k]}
+    record = {**rec, **{k: [v, src] for k, (v, src) in fresh.items()}}
+    if not changes:
+        cfg["answers_fontsizes"] = record  # すでに同じ。反映済みとして覚える
+        paths.write_cfg(work, cfg)
+        return "none"
+    pptx = paths.deck_dir(work) / f"{paths.deck_name(work)}.pptx"
+    if lifecycle.fingerprint_status(work, pptx) != "missing":
+        if changes == cfg.get("skipped_fontsizes"):
+            return "none"  # 同じ警告は繰り返さない
+        cfg["skipped_fontsizes"] = changes
+        paths.write_cfg(work, cfg)
+        return "skipped_pptx"
+    initdir.set_font_size(work, changes)
+    cfg = paths.read_cfg(work)
+    cfg["answers_fontsizes"] = record
+    cfg.pop("skipped_fontsizes", None)
+    paths.write_cfg(work, cfg)
+    return "applied"
+
+
+def cmd_set_font_size(args) -> int:
+    from . import initdir
+
+    work = paths.resolve_work(args.workdir)
+    if not (work / "template.json").exists():
+        print(f"エラー: {work} に template.json がありません（成果物の元データが見つかりません）", file=sys.stderr)
+        return 2
+    changes: dict[str, float] = {}
+    for item in args.set or []:
+        key, _, raw = item.partition("=")
+        try:
+            value = float(raw)
+        except ValueError:
+            value = float("nan")
+        if key not in fontsize.KEYS or not math.isfinite(value):
+            print(
+                f"エラー: --set は キー=数値 で指定してください（{item}）。キー: {', '.join(fontsize.KEYS)}",
+                file=sys.stderr,
+            )
+            return 2
+        changes[key] = value
+    if args.reset:
+        cfg = paths.read_cfg(work)
+        cfg.pop("fontsizes", None)
+        paths.write_cfg(work, cfg)
+    notes = initdir.set_font_size(work, changes)
+    for n in notes:
+        print(n, file=sys.stderr)
+    print("文字サイズを変えました。finalize してから build で PPTX を作り直してください")
     return 0
 
 
@@ -761,6 +841,11 @@ def main(argv: list[str]) -> int:
     p.add_argument("workdir")
     p.add_argument("color", help="プリセット名（navy・green・gray）か #RRGGBB")
     p.set_defaults(fn=cmd_set_color)
+    p = sub.add_parser("set-font-size", help="文字サイズを変える（theme.css を作り直す。PPTX は build で作り直す）")
+    p.add_argument("workdir")
+    p.add_argument("--set", action="append", metavar="キー=値", help="例: title=40（複数指定可）")
+    p.add_argument("--reset", action="store_true", help="先に全項目を既定へ戻す")
+    p.set_defaults(fn=cmd_set_font_size)
     p = sub.add_parser("output-format", help="最終成果物の形式（pptx・html・both のいずれか 1 語）を出す")
     p.add_argument("workdir")
     p.set_defaults(fn=cmd_output_format)

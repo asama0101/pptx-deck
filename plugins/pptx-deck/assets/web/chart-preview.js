@@ -9,9 +9,15 @@
     if (p) p.appendChild(e);
     return e;
   };
+  // 文字の倍率（--chart-scale）。縮小（1 未満）のときだけ 10pt（約 13.3px）を下限にする
+  var fs = function (size) {
+    var sc = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--chart-scale')) || 1;
+    var v = Math.round(size * sc);
+    return sc < 1 ? Math.max(10 * 96 / 72, v) : v;
+  };
   var txt = function (p, x, y, s, o) {
     o = o || {};
-    var t = el('text', { x: x, y: y, 'font-size': o.size || 14, 'text-anchor': o.anchor || 'middle',
+    var t = el('text', { x: x, y: y, 'font-size': fs(o.size || 14), 'text-anchor': o.anchor || 'middle',
       fill: o.fill || css('--text'), 'font-weight': o.bold ? 700 : 400 }, p);
     t.textContent = s;
     return t;
